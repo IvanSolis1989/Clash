@@ -9,6 +9,78 @@
 
 ---
 
+## 🚀 零基础快速开始
+
+### 这是什么？
+v2rayN 是 Windows 上最流行的代理客户端，**免费、开源、中文界面**。它自己不是内核，而是调度「mihomo / sing-box / Xray」三种核心，你选哪种核，就吃对应格式的配置文件。
+
+### 我要准备什么？
+1. **Windows 10 / 11 电脑**（macOS / Linux 请看对应目录）
+2. **[v2rayN 最新版](https://github.com/2dust/v2rayN/releases)**（下 `v2rayN-windows-64-SelfContained.zip` 最简单，解压双击即用）
+3. **一个机场订阅 URL**
+4. **v2rayN 7.0+**（低版本不支持 mihomo/sing-box 多核切换）
+
+### 一句话决定走哪条路径
+- **想要 Smart + LightGBM 自动择优** → **不要用 v2rayN**（做不到），用 **Clash Verge Rev / Mihomo Party**（看仓库 `Clash Party/README.md`）
+- **想要 28 业务组 + 9 区域组的完整体验** → **路径 A**（mihomo 核）或 **路径 B**（sing-box 核）
+- **只要基础上网，节点池共用一个** → **路径 C**（Xray 核，导入本目录的路由 JSON）
+
+### 3 条路径的 3 分钟速览
+
+| 步骤 | 路径 A（mihomo） | 路径 B（sing-box） | 路径 C（Xray） |
+|---|---|---|---|
+| 1. 换核心 | 设置 → 核心基础设置 → mihomo | 设置 → 核心基础设置 → sing-box | （保持默认 Xray）|
+| 2. 导入配置 | 订阅 → 新增 Clash 订阅，URL 填 CMFA YAML | 自定义配置服务器 → 导入 `singbox-smart-full.json` | 路由设置 → 导入 `v2rayn-smart-xray-routing.json` |
+| 3. 加节点 | Clash 订阅会自动带节点 | JSON 里占位节点替换成你机场的 | 正常通过 v2rayN 订阅加节点 |
+| 规则数 | 375+ | 387 | 29 |
+| 业务组 | 28 | 28 | ❌ 只有 proxy/direct/block |
+
+详见下面的「🎯 三条路径总览」和各路径详解。
+
+### 跑起来怎么验证？
+- 浏览器打开 `https://www.google.com` 能打开 = 代理通了
+- v2rayN 右下角托盘图标应该是绿色/彩色（有流量）
+- 路径 A / B 下，主面板应能看到 28+ 个策略组；路径 C 下没有业务组（Xray 限制）
+
+### 最常见踩坑
+- ❌ **v2rayN 版本太旧**：6.x 以下无 mihomo/sing-box 多核支持。升级到 7.0+。
+- ❌ **路径 A 报"找不到 mihomo.exe"**：首次切换到 mihomo 核心时 v2rayN 会自动下载；如果没弹下载提示，去 https://github.com/MetaCubeX/mihomo/releases 手动下 `mihomo-windows-amd64.exe`，重命名为 `mihomo.exe` 放到 `v2rayN/bin/mihomo/` 目录。
+- ❌ **Windows Defender 报 mihomo.exe 是病毒**：误报。添加信任即可。
+- ❌ **Codex / ChatGPT 还是 403**：这不是分流问题（你已经走美国节点了）。是机场节点是 DC IP 被 OpenAI 风控。换住宅 IP 节点或套 Cloudflare WARP。
+- ❌ **我能直接加载 `Clash Smart内核覆写脚本.js` 吗**：**不能**。v2rayN 没实现 JS 覆写执行器。要 LightGBM 请换 Clash Verge Rev / Mihomo Party，见 FAQ Q3。
+
+---
+
+## 🔌 协议支持（按 v2rayN 核心切换）
+
+v2rayN 自己不实现协议，它调度三个下层内核，协议支持 = 你选的核支持的协议：
+
+| 协议 | Xray 核（默认） | mihomo 核 | sing-box 核 |
+|---|:-:|:-:|:-:|
+| **Shadowsocks (SS) + 2022** | ✅ | ✅ | ✅ |
+| **ShadowsocksR (SSR)** | ❌ | ✅ | ❌ |
+| **VMess** | ✅（原产地）| ✅ | ✅ |
+| **VLESS + REALITY + XTLS-Vision** | ✅（原产地）| ✅ | ✅ |
+| **Trojan** | ✅ | ✅ | ✅ |
+| **Hysteria v1** | ❌ | ✅ | ✅ |
+| **Hysteria 2** | ❌ | ✅ | ✅ |
+| **TUIC v5** | ❌ | ✅ | ✅ |
+| **WireGuard** | ⚠️ 实验 | ✅ | ✅ |
+| **AnyTLS / ShadowTLS** | ❌ | ✅ | ✅ |
+| **Snell / Mieru** | ❌ | ✅ | ❌ |
+| **SOCKS5 / HTTP(S)** | ✅ | ✅ | ✅ |
+
+**选核一句话建议**：
+- 机场给 **VLESS + REALITY** → Xray 核（原产地，性能最好）
+- 机场给 **Hysteria 2 / TUIC** → mihomo 核 或 sing-box 核
+- 想要**所有协议都能跑** → mihomo 核（本仓库路径 A 推荐）
+- 想要**SSR 兼容** → 只有 mihomo 核支持
+
+### 切核心的方法
+v2rayN → 菜单 **设置 → 参数设置 → 核心基础设置** → 勾选要用的那个。首次切换时 v2rayN 会提示下载对应二进制（mihomo.exe / sing-box.exe），若自动下载失败到官方 release 页面手动下。
+
+---
+
 ## 🎯 三条路径总览
 
 | 路径 | 核心 | 使用文件 | 业务组 | 区域组 | LightGBM 自动择优 | 推荐度 |

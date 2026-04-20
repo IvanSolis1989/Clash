@@ -188,6 +188,43 @@ flowchart LR
 
 ---
 
+## 🔌 科学上网协议支持对比矩阵
+
+一份速查表，帮你根据机场给的协议类型挑客户端。每个子目录 README 里还有更详细的单端协议说明。
+
+| 协议 \ 客户端 | Clash Party / Verge / Mihomo Party | CMFA / FlClash | OpenClash | Shadowrocket | Surge 5 | Loon | Quantumult X | SingBox / Hiddify / SFA | v2rayN (Xray) | v2rayN (mihomo/sing-box) |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| **Shadowsocks (SS + 2022)** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **ShadowsocksR (SSR)** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ | ✅（仅 mihomo）|
+| **VMess** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **VLESS** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ⚠️ | ✅ | ✅ | ✅ |
+| **REALITY + XTLS-Vision** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ⚠️ | ✅ | ✅ | ✅ |
+| **Trojan (+Trojan-Go)** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **Hysteria v1** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |
+| **Hysteria 2** | ✅ | ✅ | ✅ | ✅ | ⚠️ 5.9+ | ✅ | ❌ | ✅ | ❌ | ✅ |
+| **TUIC v5** | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ❌ | ✅ | ❌ | ✅ |
+| **WireGuard** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | ✅ | ⚠️ 实验 | ✅ |
+| **AnyTLS** | ✅ | ✅ | ✅ | ✅ | ❌ | ⚠️ | ❌ | ✅ | ❌ | ✅ |
+| **ShadowTLS v1/v2/v3** | ✅ | ✅ | ✅ | ✅ | ❌ | ⚠️ | ❌ | ✅ | ❌ | ✅ |
+| **Snell v4** | ✅ | ✅ | ✅ | ✅ | ✅（自家协议）| ✅ | ❌ | ❌ | ❌ | ✅（仅 mihomo）|
+| **Mieru** | ✅ | ✅ | ✅ | ⚠️ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅（仅 mihomo）|
+| **SSH 出站** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| **HTTP/HTTPS/SOCKS5** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **LightGBM 自动择优**（区域组）| ✅（Smart Alpha 内核 + JS 覆写）| ❌（静态 YAML）| ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+
+> ✅ 原生支持 · ⚠️ 部分 / 新版本才有 / 需 External Proxy 桥接 · ❌ 不支持
+
+### 一句话决策树
+- 机场只给 **SS / VMess / Trojan**：任何客户端都行，**按设备+预算挑**
+- 机场主推 **VLESS + REALITY**：Mihomo / sing-box / Shadowrocket / Loon / v2rayN 任选
+- 机场主推 **Hysteria 2 / TUIC**：避开 **Surge (旧版) / QX / Xray**；其它都行
+- 机场是 **Snell 专用**（Surge 机场）：Shadowrocket / Surge / Loon / Mihomo 系
+- 想要 **WireGuard**：除 QX 都行
+- 想要 **LightGBM 自动择优**：**只能走 Clash Party / OpenClash** + Mihomo Smart Alpha 内核 + JS 覆写
+- 协议 + 价格性价比：**iOS 上 Shadowrocket (¥20)** / **Android 上 CMFA (免费)** / **桌面上 Mihomo Party (免费)** / **软路由上 OpenClash (免费)**
+
+---
+
 ## 🧪 平台使用路径（简版）
 
 ### 🖥️ Clash Party

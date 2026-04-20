@@ -7,6 +7,76 @@
 
 ---
 
+## 🚀 零基础快速开始
+
+### 这是什么？
+**Surge 是 iOS / macOS 上最专业、最贵的付费代理客户端**。它的强项是稳定 + 脚本化 + MITM。本仓库提供一份 Surge `.conf`，让你无需手配 900+ 条规则就能享用 9 区域 + 28 业务分流。
+
+### 我要准备什么？
+1. **iPhone/iPad（iOS 15+）或 Mac**
+2. **非中国区 Apple ID**（Surge 在大陆区下架）
+3. **💸 Surge 5 付费**：iOS 约 **¥648**（约 $90，贵！），macOS 约 $89.99。**许可证一次买 5 台设备共用**。
+4. **一个机场订阅 URL**
+5. **本仓库的 `surge-smart.conf`**，托管到 URL
+
+### Surge 值不值这个价？
+- **值**：稳定到离谱（2 年不重启不崩）、脚本生态最强、MITM 最好用、Mac/iOS 配置同步。
+- **不值**：如果你只是临时用代理、不做自动化/MITM，选便宜的 **Shadowrocket（¥20）** 或 **Loon（¥198）** 就够用。
+
+### 术语速查
+- **Surge 配置 `.conf`**：`[General]` / `[Proxy Group]` / `[Rule]` / `[MITM]` 等段落的文本文件
+- **RULE-SET**：外部规则列表的 URL，Surge 启动时从网上拉
+- **MMDB**：GeoIP 数据库。Surge 独有的 `geoip-maxmind-url` 字段已启用，**开机自动下载** Loyalsoldier 加强版，不用手动配
+- **MITM**：中间人解密，用于签到脚本 / 去广告。本配置默认关闭
+
+### 3 步走完
+1. **App Store 搜 "Surge 5" → 购买 → 安装 → 允许 VPN 权限**。
+2. **把 `surge-smart.conf` 托管到 URL**（最简单：GitHub Raw：`https://raw.githubusercontent.com/你用户名/仓库/main/Surge/surge-smart.conf`）
+3. **导入**：Surge → 配置 → 安装配置 → 粘贴 URL → 下载 → 启用。节点来源：机场订阅作为子配置添加（配置 → 本配置 → 子配置 / External Subscription）。
+
+### 跑起来验证？
+- 浏览器打开 `https://www.google.com` 能打开
+- Surge「策略组」面板应看到 **37 组**（9 区域 + 28 业务）
+- Surge「活动」面板可看每条请求命中的规则和节点
+
+### 最常见踩坑
+- ❌ **App Store 提示无法购买**：Apple ID 是中国区，换非中国区。
+- ❌ **规则集下载失败 `rule-set unavailable`**：首次安装**必须先开代理**。用一个简单节点连上再导本配置。
+- ❌ **MMDB 没下载**：Surge 需能访问 GitHub 才能拉 Loyalsoldier 版；失败时回退到内置 GeoIP（规则仍能跑，只是精度稍差）。
+- ❌ **支付宝/银行登不上**：本配置已排除 5 大国行 + 支付宝/微信支付；没覆盖的 App 自行加 `skip-proxy`（`[General]` 段）。
+- ❌ **想要 LightGBM 自动择优**：Surge 不是 mihomo 内核，做不到。要就用桌面端 Clash Verge Rev / Mihomo Party。
+
+---
+
+## 🔌 协议支持（Surge 5 自家引擎）
+
+Surge 不用开源内核，自己实现协议栈。**追求稳定不追求新**——协议覆盖面偏窄但成熟度极高：
+
+| 协议 | 支持 | 说明 |
+|---|:-:|---|
+| **Shadowsocks (SS)** | ✅ | AEAD + SS 2022 |
+| **ShadowsocksR (SSR)** | ❌ | Surge 不支持 |
+| **VMess** | ✅ | ws/h2 |
+| **VLESS** | ❌ | 原生不支持；可用 External Proxy 桥接 |
+| **REALITY / XTLS-Vision** | ❌ | 必须 External Proxy 调用 Xray/sing-box |
+| **Trojan** | ✅ | |
+| **Hysteria v1** | ❌ | Surge 5.9- 不支持 |
+| **Hysteria 2** | ⚠️ | Surge 5.9+ 开始支持（**近期更新**）|
+| **TUIC v5** | ❌ | 不支持 |
+| **WireGuard** | ✅ | 作为二级代理（完整支持）|
+| **Snell v4** | ✅（**Surge 自家协议的主场**）| Surge 团队设计的协议 |
+| **HTTP/2 / HTTPS / SOCKS5 / HTTP** | ✅ | |
+| **External Proxy（外部代理桥接）** | ✅ | 可调用 sing-box / v2ray / xray 二进制执行不支持的协议，再注入 Surge 策略组 |
+
+**Surge 的定位**：iOS/macOS 上最稳定、脚本生态最强、MITM 最好用；协议覆盖面输给 Shadowrocket（便宜 30 倍）。如果你机场主推 VLESS REALITY / Hysteria 2 / TUIC，Surge 可能需要 External Proxy 绕过去，不如直接用 SR 或 Loon。
+
+### 什么时候选 Surge（不是协议原因）？
+- 家里有很多自动化需求（签到脚本、Telegram Bot、HomeKit 联动）
+- 需要 Mac + iPhone 同步配置（Surge 有 iCloud 同步 + Surge Mac）
+- 长期稳定运行（Surge 的稳定性换 ¥648）
+
+---
+
 ## 一、下载 Surge
 
 Surge 是付费软件，无免费版：
