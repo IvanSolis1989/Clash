@@ -4,57 +4,12 @@
 # ============================================================================
 # Clash Smart v5.3.4-oc-slim — OpenClash 覆写脚本（R4S 4GB 内存优化版）
 # ============================================================================
-# 更新日志（新在前）：
-#   v5.3.4-align-dns-baseline (2026-04-20)
-#     ★ 对齐 Clash Party 基线 DNS（使用方法.md 第 99-132 行）：
-#         • use-hosts: true → false（基线要求）
-#         • default-nameserver 从纯海外（1.1.1.1/8.8.8.8/9.9.9.9…）改为
-#           基线顺序：223.5.5.5 / 119.29.29.29 / 1.1.1.1 / 8.8.8.8
-#         • nameserver: 223.5.5.5 DoH + doh.pub DoH（国内域名走国内解析）
-#         • direct-nameserver: 同 nameserver（走国内 DoH）
-#         • proxy-server-nameserver: 1.1.1.1 + 8.8.8.8 + 223.5.5.5 + doh.pub（4 项）
-#         • fallback: 仅 1.1.1.1 + 8.8.8.8（基线只列两个）
-#         • 删除非基线的 direct-nameserver-follow-policy: false
-#         • 移除"救援模式"注释（原救援模式已由 nameserver-policy 的 jsdelivr/github 直连策略覆盖）
-#   v5.3.3-align-rp-proxy-gfw (2026-04-20)
-#     ★ rule-providers `proxy: DIRECT` → `proxy: 🚫 受限网站`（136 处），对齐 FIX#17-P0
-#   v5.3.2-dns-rescue-no-rules (之前)
-#     ★ 基础版本，含 DNS 冷启动救援 + 内存优化
-# ============================================================================
-# 原 v5.3.1 性能基线说明：
-# ============================================================================
-# 基于 v5.2.4-oc 针对 OOM 问题重构
-#
-# 核心优化（目标：启动 RSS 从 ~3.5GB → ~1.8-2.3GB，省出 ~1.2-1.7GB）:
-#
-#   [优化 #1] geodata-loader: standard → memconservative
-#       节省 ~400-600MB。geosite.dat/geoip.dat 改为 mmap 按需读取，
-#       不再一次性解压全部域名 trie 到内存。
-#       代价：首次规则命中延迟 +几ms（路由器场景无感）
-#
-#   [优化 #2] rule-providers: 387 → 136 (砍 65%)
-#       节省 ~800-1,100MB。保留高价值 providers，删除低频/冗余项：
-#       - 合并 Google 家族（GoogleSearch/Drive/Earth/FCM/Voice → google 单项）
-#       - 合并 Apple 细分（AppleTV/News/Dev/Proxy/Siri/TestFlight/Firmware/FindMy → apple + icloud）
-#       - 删除区域化通讯分片（TelegramNL/SG/US、KakaoTalk、Zalo、GoogleVoice、iTalkBB）
-#       - 删除低频冷门（多数国内小众流媒体、欧洲/日本分区、非洲/南美 GeoRouting）
-#       - 删除冗余广告拦截（10+ 个功能重叠的 blackmatrix7 广告集）
-#
-# 保留不变（用户核心架构）：
-#   [✓] 9 个 Smart 组全部保留，全部 uselightgbm: true + include-all-proxies: true
-#   [✓] 动态节点分类逻辑 (HK/TW/JP/KR/SG/US/EU/AM/AF/APAC_OTHER)
-#   [✓] DNS 多层架构 (respect-rules + DoH 冗余 + default-nameserver bootstrap)
-#   [✓] sniffer 配置（HTTP/TLS/QUIC + binance/apple skip）
-#   [✓] TLS 指纹注入逻辑（vless/vmess/trojan 自动哈希分配）
-#   [✓] 节点过滤（移除信息节点+倍率节点）
-#   [✓] TCP 并发 / keep-alive / unified-delay
-#
-# 风险提示：
-#   若 Docker/FreqTrade 内存用量显著变化，或启动期 GC 尖刺仍触发 OOM，
-#   进一步降内存路径（按激进程度排序）：
-#     a) 继续精简 rule-providers（比如砍东南亚/香港/台湾流媒体板块）
-#     b) 关掉单个不常用地区的 Smart 组
-#     c) 最后才动 uselightgbm
+# 定位：Slim（轻量版），面向 1–4GB 路由器 / 低 OOM 风险。
+#       136 rule-providers（由 387 精简），9 Smart 组 + 28 业务组保持不变。
+# 架构：fake-ip + 嗅探（HTTP/TLS/QUIC）+ DNS 多层 + nameserver-policy 救援 +
+#       TLS 指纹注入 + 动态节点分类（HK/TW/JP/KR/SG/US/EU/AM/AF/APAC_OTHER）
+# 基线：跟随 Clash Party v5.2.4 主线。
+# 变更历史：见 `OpenClash/CHANGELOG.md`（Slim 部分）。
 # ============================================================================
 
 VERSION_TAG="v5.3.4-align-dns-baseline"

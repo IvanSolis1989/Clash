@@ -73,43 +73,72 @@
    - 每个产物的同步位置（行号或 commit diff 摘要）
    - 手动跳过同步的产物及原因
 
-### 1.3 强制的「头部注释 + 更新日志 + 版本号」规范 ⚠️
+### 1.3 强制的「版本号 + 子目录 CHANGELOG」规范 ⚠️
 
-每个产物文件开头都有一段**简介 + 更新日志 + 版本号**注释块。**每次改动必须同步更新此注释块**——这是本仓库追踪历史的唯一权威来源，PR 描述仅作辅助。
+**设计原则（自 v5.2.4 起）：**
+- 产物文件**头部**只保留轻量元信息——名称 / 版本号 / Build 日期 / 架构一句话 / 基线声明 / **指向 CHANGELOG.md**。
+- 详细变更历史**全部**集中在 `<子目录>/CHANGELOG.md` 里；不再埋在配置文件头部。
+- 这样做的好处：
+  1. 用户打开 GitHub 子目录时，README.md 自动渲染在下方（使用说明）；CHANGELOG.md 独立成文（历史），配置文件不被大段注释淹没。
+  2. 工具改动时不用同时 diff 配置文件头 + 任何其它文件，只需在 CHANGELOG.md 顶部追加一节。
 
-**必须包含的字段（按顺序）：**
+**每次改动必须同步的两处：**
 
-1. **产物名称 + 版本号**（与 Clash Party 主版本对齐，加平台后缀）
-2. **Build 日期**（YYYY-MM-DD）
-3. **基线对齐声明**（写明「对齐 Clash Party vX.Y.Z」或「独立平台修复，不影响基线」）
-4. **本次变更列表**（至少 1 条，用 ★ / FIX#N 等前缀做编号）
-5. **保持不变的核心架构**（可选，但建议每次重写一遍，方便用户快速确认什么没被动）
-6. **若有风险或代价，必须标注**（例如 OOM 风险、首次命中延迟、iOS 平台限制）
+1. **产物文件头**（简短）：bump 版本号尾段、更新 Build 日期
+2. **`<子目录>/CHANGELOG.md`** 顶部：新增一节记录本次改动
 
-**对应到各产物文件的位置：**
+**产物文件头的最小内容（按顺序）：**
 
-| 文件 | 头部注释位置 | 版本变量/字段 |
-|------|--------------|----------------|
-| `Clash Party/Clash Smart内核覆写脚本.js` | 顶部 `/* ... */` 块 | JS 内 `VERSION` / `const VERSION_TAG` |
-| `Clash Meta For Android/clash-smart-cmfa.yaml` | 顶部 `# ... ` 注释块 | 第一行 `# Clash Smart vX.Y.Z - CMFA` |
-| `OpenClash/openclash_custom_overwrite.sh` | `#!/bin/bash` 下方 `# ==` 块 | `VERSION_TAG="vX.Y.Z-oc-slim"` |
-| `OpenClash/openclash_custom_overwrite_full.sh` | `#!/bin/bash` 下方 `# ==` 块 | `VERSION_TAG="vX.Y.Z-oc-full"` |
-| `Shadowrocket/shadowrocket-smart.conf` | 顶部 `# ══…` 双线框注释 | 第 2 行 `# Shadowrocket Smart vX.Y.Z-SR.N` |
-| `SingBox/singbox-smart.json` | JSON 无原生注释，改在 `log.tag` 或 `experimental._meta` 里标记 | — |
-| `SingBox/singbox-smart-full.json` | 由 `SingBox/generate-singbox-full.js` 自动注入 `_meta.version` + `_meta.clash_party_sync` | 生成脚本版本 |
-| `SingBox/generate-singbox-full.js` | 顶部 `// ==` 注释块 | JS 内常量 |
-| `v2rayN/v2rayn-smart-xray-routing.json` | 顶层 `_meta` 对象（`name` / `version` / `build` / `baseline` / `changelog`） | `_meta.version` |
-| `Surge/surge-smart.conf` | 顶部 `# ══…` 双线框注释 | 第 2 行 `# Surge Smart vX.Y.Z-Surge.N` |
-| `Loon/loon-smart.conf` | 顶部 `# ══…` 双线框注释 | 第 2 行 `# Loon Smart vX.Y.Z-Loon.N` |
-| `Quantumult X/qx-smart.conf` | 顶部 `# ══…` 双线框注释 | 第 2 行 `# Quantumult X Smart vX.Y.Z-QX.N` |
+1. 产物名称 + 版本号（与 Clash Party 主版本对齐，加平台后缀）
+2. Build 日期（YYYY-MM-DD）
+3. 架构一句话（例如「9 区域 + 28 业务 + 250+ RULE-SET」）
+4. 基线声明（「基线：Clash Party vX.Y.Z（唯一主线）」）
+5. 指向 CHANGELOG：「变更历史：见 `<子目录>/CHANGELOG.md`」
+6. 若有风险或代价，一行标注（OOM / 首次延迟 / iOS 限制）
+
+**对应到各产物文件：**
+
+| 文件 | 头部位置 | 版本变量/字段 | CHANGELOG.md |
+|------|----------|---------------|--------------|
+| `Clash Party/Clash Smart内核覆写脚本.js` | 顶部 `//` 注释 | JS 内 `const VERSION` | `Clash Party/CHANGELOG.md` |
+| `Clash Meta For Android/clash-smart-cmfa.yaml` | 顶部 `#` 注释块 | 第一行 `# Clash Smart vX.Y.Z - CMFA` | `Clash Meta For Android/CHANGELOG.md` |
+| `OpenClash/openclash_custom_overwrite.sh` | `#!/bin/bash` 下方 `# ==` 块 | `VERSION_TAG="vX.Y.Z-oc-slim"` | `OpenClash/CHANGELOG.md` (Slim 段) |
+| `OpenClash/openclash_custom_overwrite_full.sh` | `#!/bin/bash` 下方 `# ==` 块 | `VERSION_TAG="vX.Y.Z-oc-full"` + Ruby 脚本里 `VERSION` | `OpenClash/CHANGELOG.md` (Full 段) |
+| `Shadowrocket/shadowrocket-smart.conf` | 顶部 `# ══…` 双线框 | 第 2 行 `# Shadowrocket Smart vX.Y.Z-SR.N` | `Shadowrocket/CHANGELOG.md` |
+| `SingBox/singbox-smart.json` | JSON 无注释，版本可选写入 `experimental._meta` | — | `SingBox/CHANGELOG.md` |
+| `SingBox/singbox-smart-full.json` | 由 `SingBox/generate-singbox-full.js` 自动注入 `_meta.version` | 生成脚本版本 | `SingBox/CHANGELOG.md` |
+| `v2rayN/v2rayn-smart-xray-routing.json` | 顶层 `_meta`（`version` / `build` / `baseline` / `changelog:"见 CHANGELOG.md"`）| `_meta.version` | `v2rayN/CHANGELOG.md` |
+| `Surge/surge-smart.conf` | 顶部 `# ══…` 双线框 | 第 2 行 `# Surge Smart vX.Y.Z-Surge.N` | `Surge/CHANGELOG.md` |
+| `Loon/loon-smart.conf` | 顶部 `# ══…` 双线框 | 第 2 行 `# Loon Smart vX.Y.Z-Loon.N` | `Loon/CHANGELOG.md` |
+| `Quantumult X/qx-smart.conf` | 顶部 `# ══…` 双线框 | 第 2 行 `# Quantumult X Smart vX.Y.Z-QX.N` | `Quantumult X/CHANGELOG.md` |
+
+**CHANGELOG.md 的推荐格式：**
+
+```markdown
+# <工具名> — 变更日志
+
+> <一行定位说明 + 跟随基线说明>
+
+---
+
+## vX.Y.Z-tag (YYYY-MM-DD)
+
+- ★ FIX#NN-PN：<一行摘要>
+  - <细节 1>
+  - <细节 2>
+
+## vX.Y.Z-前一版 (YYYY-MM-DD)
+
+...
+```
 
 **触发更新的最小粒度：**
 
-- **任何**代码/规则/注释以外的变更 → 必须 bump 版本号尾段（例如 `v5.2.2-SR.1` → `v5.2.2-SR.2`）
-- **任何** Clash Party 主线版本号 bump → 全部产物主版本号必须同步 bump
-- **任何**一次提交，头部 "本次变更" 至少新增 1 行说明做了什么；不允许只改代码不改注释
+- 任何代码 / 规则改动 → bump 版本号尾段 + CHANGELOG 加一节（哪怕只有 1 行）
+- Clash Party 主版本 bump → 所有产物主版本同步 bump，各自 CHANGELOG 都加节
+- **禁止**：只改代码不动版本号和 CHANGELOG；只改 CHANGELOG 不动代码；把详细变更塞回配置文件头（会被退回重做）
 
-**若发现某文件的头部注释版本号与实际代码状态不符（或缺少变更日志）：** 当前 PR 必须顺手修正，不得留作后续 TODO。
+**若发现配置文件头版本号与 CHANGELOG.md 不一致：** 当前 PR 必须顺手修正，不得留作 TODO。
 
 ---
 

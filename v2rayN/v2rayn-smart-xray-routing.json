@@ -3,11 +3,9 @@
     "name": "Smart-Config-Kit v2rayN Xray Routing",
     "version": "v5.2.3-v2n.1",
     "build": "2026-04-20",
-    "baseline": "Clash Party v5.2.3 (Clash Party/Clash Smart内核覆写脚本.js)",
+    "baseline": "Clash Party v5.2.4 (Clash Party/Clash Smart内核覆写脚本.js)",
     "note": "v2rayN + Xray-core 只支持 3 个出站 (proxy / direct / block)，无法还原 Clash Party 的 28 业务组 + 9 区域组。若要完整体验请在 v2rayN 里切到 mihomo 核心并导入 Clash Meta For Android/clash-smart-cmfa.yaml。",
-    "changelog": [
-      "v5.2.3-v2n.1 (2026-04-20): 初版，基于 Clash Party v5.2.3 提取关键业务域名→Xray routing rule"
-    ]
+    "changelog": "见 v2rayN/CHANGELOG.md"
   },
   "remarks": "Smart-Config-Kit v5.2.3 (v2rayN + Xray)",
   "url": "",

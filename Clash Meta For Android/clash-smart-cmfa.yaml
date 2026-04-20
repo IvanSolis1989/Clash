@@ -1,15 +1,15 @@
 # ================================================================
 # Clash Smart v5.2.2 - CMFA (Clash Meta for Android) 配置
-# 基于 Clash Party v5.2.2（主线）对齐
 # 架构：proxy-providers 订阅 + 9 url-test 区域组 + 28 业务策略组 + 375+ rule-providers
+# 基线：Clash Party v5.2.4（唯一主线）
+# 变更历史：见 `Clash Meta For Android/CHANGELOG.md`
 # ================================================================
-# ★ 使用说明：
+# ★ 快速上手：
 #   1. 将 proxy-providers → Subscribe → url 替换为你的机场订阅链接
 #   2. 导入 CMFA 即可使用
-#   3. 首次导入后，CMFA 会自动下载 Loyalsoldier 增强版 GeoIP/GeoSite 数据库
-#   4. 所有 GEOSITE/GEOIP 高级标签已用等效 RULE-SET 替代，无需等 dat 下载
-#   5. 对齐 Clash Party FIX#17-P0：rule-providers 统一 proxy: '🚫 受限网站'
-# ================================================================mixed-port: 7890
+#   3. 首次导入后 CMFA 会自动下载 Loyalsoldier 增强版 GeoIP / GeoSite 数据库
+# ================================================================
+mixed-port: 7890
 allow-lan: true
 bind-address: '*'
 mode: rule

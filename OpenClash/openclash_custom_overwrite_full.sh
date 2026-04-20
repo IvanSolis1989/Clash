@@ -4,54 +4,22 @@
 # ============================================================================
 # Clash Smart v5.2.4-oc-full.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
 # ============================================================================
-# 定位：
-#   对齐 Clash Party v5.2.3 JS 主线的 OpenClash 全量版本。
-#   与同目录的 openclash_custom_overwrite.sh（slim，136 providers）互补：
-#     - slim 面向 1–4GB 路由器 / 低 OOM 风险
-#     - full 面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
-#
+# 定位：对齐 Clash Party v5.2.4 JS 主线的 OpenClash 全量版本。
+#       与同目录 openclash_custom_overwrite.sh（slim, 136 providers）互补：
+#         - slim  面向 1–4GB 路由器 / 低 OOM 风险
+#         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
 # 架构：
 #   • 9 Smart 区域组（uselightgbm: true + include-all-proxies: true）
 #   • 28 业务策略组
-#   • 387 rule-providers（全部 proxy: "🚫 受限网站"，与 Clash Party FIX#17-P0 一致）
+#   • 387 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
 #   • ~977 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
-#
-# 更新日志：
-#   v5.2.4-oc-full.1  (2026-04-20)
-#     ★ 同步 Clash Party v5.2.4 FIX#22-P0：snapchat rule-provider 拉取 403 修复
-#         • MetaCubeX meta-rules-dat 上游文件名是 `snap.mrs` 不是 `snapchat.mrs`
-#         • URL 改为 `.../geosite/snap.mrs`；path 改为 `./ruleset/meta-snap.mrs`
-#         • provider ID 保持 `snapchat`（[Rule] 段引用不变）
-#   v5.2.3-oc-full.2  (2026-04-20)
-#     ★ 对齐 Clash Party 基线 DNS（使用方法.md 第 99-132 行）：
-#         • use-hosts: true → false
-#         • default-nameserver: 223.5.5.5 / 119.29.29.29 / 1.1.1.1 / 8.8.8.8（基线顺序）
-#         • nameserver / direct-nameserver: 223.5.5.5 DoH + doh.pub DoH（国内 DoH）
-#         • proxy-server-nameserver: 1.1.1.1 + 8.8.8.8 + 223.5.5.5 + doh.pub
-#         • fallback: 1.1.1.1 + 8.8.8.8（基线两项）
-#         • 删除非基线字段 direct-nameserver-follow-policy
-#         • 移除"救援模式"注释（功能仍在，靠 nameserver-policy 覆盖）
-#   v5.2.3-oc-full.1  (2026-04-20)
-#     ★ 同步 Clash Party v5.2.3 FIX#21-P1：BBC / Snapchat(Snap) 规则从
-#       blackmatrix7 classical yaml 切换到 MetaCubeX meta-rules-dat 的
-#       `.mrs` geosite（domain + mrs），消除 mihomo 对 USER-AGENT,BBCiPlayer*
-#       与 USER-AGENT,TikTok* 的解析警告。
-#     ★ CRITICAL FIX：删除被意外追加在末尾的 slim rule-providers(136) + rules(678)
-#       块（原文件 6115 行→4285 行）。Ruby 的 Psych YAML 解析器对重复顶层键遵循
-#       "last-wins" 规则，之前这两个追加块会静默覆盖前面的 full 块，导致
-#       openclash_custom_overwrite_full.sh 实际运行时跑的是 slim 内容，
-#       并且 slim 块里 ad-block providers 还错用了 proxy: DIRECT。
-#       修复后 OC full 真正实现了与 Clash Party 主线的规则数量对齐。
-#     ★ 头部注释按 CLAUDE.md §1.3 扩展（介绍/架构/变更日志/基线对齐声明）
-#   v5.2.2-oc-full    (初版)
-#     ★ 从 Clash Party v5.2.2 JS 主线转换为 OpenClash heredoc YAML + Ruby 处理器
-#
-# 基线对齐：
-#   Clash Party v5.2.3（唯一主线） ── 本文件跟随此版本；任何规则/组/DNS 改动
-#   都必须先改 Clash Party JS，再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
+# 基线：Clash Party v5.2.4（唯一主线）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+#       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
+# 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
+
 
 
 VERSION_TAG="v5.2.4-oc-full.1"
