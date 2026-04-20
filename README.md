@@ -136,6 +136,43 @@ flowchart LR
 2. `🤖 AI / 🎬 流媒体`（最常见“可用性”问题）；
 3. 区域组（如 `🇭🇰 HK` / `🇯🇵 JP`，直接影响延迟与稳定性）。
 
+### 🗂️ 代理组与主要 Rule-Providers 对照（Clash Party 28 组）
+
+> 说明：下表列的是“主要/高频命中”的 rule-provider，便于快速理解结构；并非穷举全部规则。
+
+| 代理组 | 主要 rule-providers（示例） |
+|---|---|
+| 🚀 节点选择 | 无（入口总控组，手动/策略选择） |
+| 🎯 全球直连 | 无（直连控制组） |
+| 🤖 AI | `openai` `claude` `gemini` `copilot` `szkane-ai` `acc-copilot` |
+| 🎬 流媒体（美区） | `youtube` `netflix` `spotify` `disney` `hulu` `primevideo` |
+| 📺 YouTube（归并到美区流媒体） | `youtube`（及前置 YouTube 域名精准规则） |
+| 🎵 Spotify（归并到美区流媒体） | `spotify` |
+| 💬 Telegram（归并到即时通讯） | `telegram` `telegram-ip` `telegramnl` `telegramsg` `telegramus` |
+| 📱 TikTok（归并到社交媒体） | `tiktok` |
+| 🧰 GitHub（归并到开发者服务） | `github` `gitlab` `docker` `szkane-developer` |
+| 🧪 测速 | 无（通常走手动测速/节点策略，不绑定 provider） |
+| 📰 国外媒体（归并到国外网站） | `cnn` `nytimes` `bloomberg` |
+| 🛒 电商（归并到国外网站） | `ebay` `nike` |
+| 🇭🇰 HK | 无（区域节点池，不直接命中 rule-provider） |
+| 🇹🇼 TW | 无（区域节点池，不直接命中 rule-provider） |
+| 🇯🇵 JP | 无（区域节点池，不直接命中 rule-provider） |
+| 🇸🇬 SG | 无（区域节点池，不直接命中 rule-provider） |
+| 🇺🇸 US | 无（区域节点池，不直接命中 rule-provider） |
+| 🇪🇺 EU | 无（区域节点池，不直接命中 rule-provider） |
+| 🌐 其他地区 | 无（区域节点池，不直接命中 rule-provider） |
+| ♻️ 自动选优 | 无（自动策略组，不直接命中 rule-provider） |
+| 🧱 漏网之鱼 | 主要承接上游未命中流量（无固定单一 provider） |
+| 📦 CDN | `cloudflare` `cloudflare-ip` `cloudfront-ip` `fastly-ip` `akamai` |
+| 🛡️ 广告拦截 | `anti-ad` `sukka-phishing` `hagezi-tif` `advertising` `privacy` |
+| 🔒 隐私（归并到广告拦截/安全） | `acc-prerepaireasyprivacy` `acc-unsupportvpn` |
+| 🧭 DNS相关（归并到 CDN/安全） | `acc-blockhttpdnsplus` `blockhttpdns` |
+| DIRECT | 无（系统内置动作） |
+| REJECT | 无（系统内置动作） |
+| FINAL（🐟 漏网之鱼） | `loyalsoldier-gfw` `loyalsoldier-greatfire` `szkane-proxygfw` + GEO 兜底 |
+
+> 如果你想看“严格按脚本分组名（如 `📧 邮件服务`、`🎮 国外游戏`、`🍎 苹果服务`）的完整 provider 清单”，我也可以再补一版完整矩阵。
+
 ---
 
 ## 🧪 平台使用路径（简版）
