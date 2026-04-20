@@ -1,4 +1,4 @@
-# 🚀 科学上网智能分流配置中心（AI 全仓维护版）
+# 🚀 科学上网智能分流配置中心
 
 > 一套以 **Clash Party（Mihomo Smart 内核）JS 覆写脚本** 为基线，同步产出多核心 / 多客户端等价配置的科学上网分流体系。  
 > 覆盖核心：**Mihomo (Clash.Meta / Smart)** · **sing-box** · **Xray** · **Shadowrocket 自带引擎**  
