@@ -1,3 +1,5 @@
+<img width="823" height="1032" alt="image" src="https://github.com/user-attachments/assets/51c8d844-3f66-4996-a271-6167db99f66a" />
+
 geox-url:
   geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
   mmdb: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb
@@ -5,6 +7,8 @@ geox-url:
   geosite: https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
 geo-auto-update: true
 
+<img width="823" height="1032" alt="image" src="https://github.com/user-attachments/assets/e096c03c-5add-41ae-82bb-17494590bb9e" />
+<img width="823" height="1032" alt="image" src="https://github.com/user-attachments/assets/e3bf7ea9-e89a-4989-9caa-12e7887eca81" />
 
 use-hosts: false
   use-system-hosts: false
@@ -38,6 +42,9 @@ use-hosts: false
       - 10.0.0.0/8
       - 192.168.0.0/16
     domain: []
+
+
+    
 sniffer:
   enable: true
   parse-pure-ip: true
