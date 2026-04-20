@@ -1,7 +1,12 @@
 // Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.2.2 (2026-04-10)
+// 版本：v5.2.3 (2026-04-20)
 // 架构：SUB-STORE 多机场融合 + 9 Smart 区域组 + 28 业务策略组 + 373+ rule-providers 100%+ 服务覆盖
 // 完整变更历史：见 CHANGELOG.md（v4.5.5 ~ v5.2.0）
+// v5.2.3 变更摘要（2026-04-20）：
+//   ★ FIX#21-P1：替换 bm7 BBC/Snap 规则源，消除 USER-AGENT 解析警告
+//     - bm7 BBC.yaml 含 USER-AGENT,BBCiPlayer*；bm7 Snap.yaml 含 USER-AGENT,TikTok*
+//     - Clash Party / mihomo 不支持 USER-AGENT 规则类型，reload 时产生 warning
+//     - 改为 Meta geosite provider：metaDomain('bbc') + metaDomain('snapchat')，保持规则覆盖并兼容解析
 // v5.2.2 变更摘要（2026-04-13）：
 //   ★ FIX#20-P2：PI.ai（inflection.ai / pi.ai）从 🤖 AI 服务 移至 🚫 受限网站（GFW）
 //     - PI.ai 在中国被 GFW 封锁，应归入受限网站组统一管理
@@ -16,10 +21,6 @@
 //   ★ FIX#18-P1：删除已死的 ckrvxr 规则源（持续 404 Not Found）
 //     - 移除 ckrvxr-antipcdn（AntiPCDN）和 ckrvxr-antifraud（AntiAntiFraud）
 //     - provider 定义 + rules 数组引用同步清理，修复前累计 221 次 404 错误
-//   ★ NOTE#2：BBC.yaml / Snap.yaml USER-AGENT 警告保留不修
-//     - bm7 仓库无 Snap_Domain.yaml / BBC_Domain.yaml（403 Forbidden）
-//     - classical 版本的 USER-AGENT 规则被 mihomo 跳过（无害 warning），其余规则正常生效
-//     - TikTok 域名已由 metaDomain('tiktok') 独立覆盖，不受 Snap.yaml 影响
 //   ★ FIX#19-P1：DST-PORT,7680,REJECT 规则顺序修复
 //     - 原位置在 GEOIP,private,DIRECT 之后，私有 IP（10.x.x.x）先匹配走 DIRECT
 //     - 修复：提前到 GEOIP,private 之前，确保 Delivery Optimization 流量被 REJECT
@@ -31,7 +32,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.2.2'
+const VERSION = 'v5.2.3'
 
 // ================================================================
 //  模块 A：节点过滤（沿用 v3.1）
@@ -294,9 +295,9 @@ function injectRuleProviders(config) {
   bm7('reddit', 'Reddit')
   bm7('facebook', 'Facebook')
   bm7('instagram', 'Instagram')
-  // v5.1.8 NOTE#1: bm7 Snap.yaml 含 USER-AGENT,TikTok* 规则，mihomo 不支持（Surge 语法残留）
+  // v5.2.3 FIX: Snap 规则改用 Meta geosite（兼容 mihomo，不再触发 USER-AGENT,TikTok* 解析警告）
   // bm7 Apple 相关 provider 含格式错误 IP-CIDR（多余空格），每次 reload 产生 warning，不影响功能
-  bm7('snapchat', 'Snap')
+  metaDomain('snapchat', 'snapchat')
   bm7('pinterest', 'Pinterest')
   bm7('linkedin', 'LinkedIn')
   metaIpCidr('facebook-ip', 'facebook')
@@ -335,9 +336,8 @@ function injectRuleProviders(config) {
   bm7('dazn', 'DAZN')
 
   // ============ #46 欧洲流媒体 ============
-  // v5.1.8 NOTE#1: bm7 BBC.yaml 含 USER-AGENT,BBCiPlayer* 规则，mihomo 不支持 USER-AGENT（Surge 语法残留）
-  // 每次 config reload 产生 1 条 warning，不影响功能，等待上游修复
-  bm7('bbc', 'BBC')
+  // v5.2.3 FIX: BBC 规则改用 Meta geosite（兼容 mihomo，不再触发 USER-AGENT,BBCiPlayer* 解析警告）
+  metaDomain('bbc', 'bbc')
 
   // ============ #47~53 国外游戏 ============
   bm7('steam', 'Steam')
