@@ -213,6 +213,13 @@ flowchart LR
 2. 在 SR 中下载配置并启用；
 3. 初始化时完成规则拉取并按需微调策略组。
 
+### 🪟 v2rayN（Windows 桌面）
+v2rayN 本身是多核调度器，支持 mihomo / sing-box / Xray 三种核心，按完整度从高到低：
+1. **路径 A（推荐）**：v2rayN 切 **mihomo** 核心 → 直接加载 `Clash Meta For Android/clash-smart-cmfa.yaml`，功能 100% 对齐 Clash Party 主线（28 业务组 + 9 区域 Smart 组 + LightGBM）；
+2. **路径 B**：v2rayN 切 **sing-box** 核心 → 加载 `SingBox/singbox-smart-full.json`，28 业务 + 9 区域但无 LightGBM；
+3. **路径 C**：v2rayN 保持 **Xray** 核心 → 导入 `v2rayN/v2rayn-smart-xray-routing.json`，功能裁剪（只有 proxy/direct/block 三出站）。
+详见 `v2rayN/使用教程.md`。
+
 ---
 
 ## 📌 适用人群
