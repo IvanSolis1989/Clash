@@ -77,6 +77,34 @@ OpenClash 底层调用 **Mihomo 二进制**，所以协议支持和桌面端 Mih
 
 ---
 
+## 🔁 从 Passwall / Passwall2 / SSR+ 迁移过来？
+
+这些插件本身没有问题，但**不能跑本仓库的 28 业务组 × 9 区域组架构**——它们的路由模型只有"主代理节点 / 直连 / 黑名单"三出站，没有 `proxy-groups` / `rule-providers` / `url-test` / Smart + LightGBM 的概念。
+
+### 迁移步骤（~10 分钟）
+
+1. **备份你现在的机场订阅 URL**（Passwall / SSR+ 的"订阅管理"里复制出来）。
+2. **安装 OpenClash**：`opkg install luci-app-openclash`（没装过的话）；已装就跳过。
+3. **关掉原插件的自启**：
+   ```sh
+   /etc/init.d/passwall2 stop; /etc/init.d/passwall2 disable
+   # 或 SSR+：
+   /etc/init.d/shadowsocksr stop; /etc/init.d/shadowsocksr disable
+   ```
+   **不要卸载**，保留配置以便回滚。
+4. **按本页下方的「一、前置准备」开始走 OpenClash 部署流程**（Smart 内核切换、上传本仓库覆写脚本、导入订阅）。
+5. 确认 OpenClash 稳定工作后再考虑卸载原插件。
+
+### 替代方案：保留 Passwall2 + 在「自定义内核」里跑 mihomo
+
+理论上 Passwall2 支持把 mihomo 作为自定义 Xray 核替代品装进去，但这相当于**用 Passwall2 模拟 OpenClash**，复杂度远高于直接换 OpenClash。**不推荐**。
+
+### 同台路由器装多个代理插件会冲突吗？
+
+会。它们都会修改 iptables / nftables / dnsmasq 规则，同时开启会互相覆盖导致**全部都不工作**。**永远只启用一个**。
+
+---
+
 ## 一、前置准备
 
 ## 版本选择建议（先看这个）
