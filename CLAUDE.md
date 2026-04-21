@@ -29,6 +29,12 @@
 >
 > **关于 Hiddify：** Hiddify 内核即 sing-box（修改版 `hiddify-sing-box`），直接消费 `SingBox/singbox-smart*.json`，**不需要**独立产物；`SingBox/README.md §2a` 提供 Hiddify 专用导入说明。
 >
+> **关于 ShellClash（`juewuy/ShellCrash`）：** 内核是 mihomo，直接复用 `Clash Meta For Android/clash-smart-cmfa.yaml` 或 `OpenClash/openclash_custom_overwrite.sh` 里的 heredoc YAML 块，**不需要**独立产物。
+>
+> **关于 HomeProxy（OpenWrt 官方 sing-box LuCI 插件）：** 内核就是 sing-box，直接导入 `SingBox/singbox-smart-full.json`，**不需要**独立产物；`SingBox/README.md §2b` 提供 HomeProxy 专用导入说明。
+>
+> **关于 Passwall / Passwall2 / SSR Plus+：** 这三个 OpenWrt 插件的路由模型只有 proxy/direct/block 三出站，**无法**表达本仓库的 28 业务组 × 9 区域组。**不提供产物**，建议用户迁移到 OpenClash（本仓库 `OpenClash/` 目录）；`OpenClash/README.md` 顶部有迁移步骤。
+>
 > **关于 Surge / Loon / Quantumult X：** 这三款 iOS/macOS 付费客户端各自使用私有 `.conf` 语法，与 Shadowrocket 部分兼容但不完全一致，因此每个都是独立产物。其中：
 > - Surge 与 Shadowrocket 语法最接近（~90% 兼容），从 Shadowrocket 迁移改动最小
 > - Loon 兼容 Surge 的 `[Rule] RULE-SET` 语法，但 [General] DNS 字段和 MMDB 配置方式不同

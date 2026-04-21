@@ -248,6 +248,20 @@ flowchart LR
 2. 按 `clash-smart-openclash.conf` 填写插件关键参数；
 3. 应用配置并观察内存占用与规则更新状态。
 
+### 🛜 其它 OpenWrt / 软路由代理插件用户看这里
+
+路由器上除了 OpenClash，还有几个流行的代理插件。本仓库的 28 业务组 × 9 区域组 + 387 rule-providers 架构**依赖 mihomo / sing-box 的 `proxy-groups` + `rule-providers` 能力**，所以不同插件能享用的程度差异很大：
+
+| 你现在用什么 | 建议做法 | 原因 |
+|---|---|---|
+| **Passwall** | 👉 **迁移到 OpenClash**（本仓库 `OpenClash/` 目录） | Passwall 路由架构只有 "主代理/直连/黑名单" 三出站，**表达不了**本仓库的 28+9 结构 |
+| **Passwall2** | 👉 **迁移到 OpenClash** | 同上；Passwall2 的多核调度是 per-node 单出站，没有 proxy-groups / rule-providers 概念 |
+| **SSR Plus+** | 👉 **迁移到 OpenClash** | SSR+ 架构受限 + 已停止维护，建议直接换 OpenClash |
+| **ShellClash**（`juewuy/ShellCrash`） | ✅ 复用本仓库产物。推荐**直接导入 `Clash Meta For Android/clash-smart-cmfa.yaml`**；进阶用户可从 `OpenClash/openclash_custom_overwrite.sh` 里提取 heredoc YAML 块作为 Clash 配置 | ShellClash 内核就是 **mihomo**，完全兼容本仓库的 Clash YAML 格式 |
+| **HomeProxy**（sing-box 官方 LuCI） | ✅ 复用本仓库产物。**直接导入 `SingBox/singbox-smart-full.json`** | HomeProxy 内核就是 **sing-box**，原生兼容，开箱即用 |
+
+> 💡 **底线**：本仓库目前**只给 Passwall / Passwall2 / SSR+ 用户一个建议——切到 OpenClash**。原因不是懒，而是这三者的路由模型表达不了 28+9 架构，哪怕做了单独的产物，功能也只能给到 10% 左右（约等于 v2rayN Xray 模式）。把精力集中在 OpenClash 上对所有软路由用户反而是最佳选择。
+
 ### 🍎 Shadowrocket
 1. 托管 `shadowrocket-smart.conf` 至可访问 URL；
 2. 在 SR 中下载配置并启用；

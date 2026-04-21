@@ -172,6 +172,24 @@ node SingBox/generate-singbox-full.js
 
 ---
 
+## 2b. HomeProxy（OpenWrt 软路由）用户看这里
+
+**HomeProxy（`immortalwrt/homeproxy`）是 sing-box 团队官方推荐的 OpenWrt LuCI 插件**，内核就是 sing-box。本仓库的 JSON 原生可用，**不需要任何转换**。
+
+### 在 HomeProxy 里导入
+
+1. LuCI → 服务 → HomeProxy → **订阅** 面板（或 Subscriptions 标签）。
+2. 选择 **本地文件导入** 或 **URL 订阅**，指向 `SingBox/singbox-smart-full.json`。
+3. HomeProxy 会自动读取 JSON 里的 `outbounds`、`route`、`dns`、`rule_set`，然后把 9 区域 + 28 业务组全部展示在"出站组"面板里。
+
+### 小提示
+
+- **TUN 由 HomeProxy 接管**：和 Hiddify 一样，HomeProxy 会用自己的 `tun` inbound 配置覆盖 JSON 里的 `inbounds.tun` 段，保留或删除都能跑。
+- **节点替换**：HomeProxy 支持直接订阅机场 URL，让机场节点自动填充本 JSON 里的占位出站（`proxy-hk-1` / `proxy-us-1` 等）——省去手工改 JSON。
+- **与 Passwall / Passwall2 / SSR+ 的对比**：这三个插件**不能**消费本仓库的 JSON（它们没有 sing-box 核）。HomeProxy 是软路由用户想跑"官方 sing-box + 完整 28+9 架构"的最佳选择；另一个选择是本仓库 `OpenClash/`（mihomo 核 + 功能更全，但内存占用更高）。
+
+---
+
 ## 3. 关键兼容性（按 sing-box 官方文档）
 
 为了兼容新版本 sing-box，配置做了以下处理：
