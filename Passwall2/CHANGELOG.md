@@ -9,6 +9,10 @@
 ## v5.2.5-pw2.1 (2026-04-20) — 初版
 
 - ★ 初版：从 Clash Party v5.2.5 基线手工展平为 Passwall2 shunt rule 格式
+- ★ **三种格式交付**（按用户需求选一种）：
+  - `shunt-rules/01-ai-service.list` ~ `28-ads.list`（28 个独立文件，每个含域名列表 + IP 列表注释；方便 LuCI UI 单条复制粘贴）
+  - `passwall2-smart-shunt.conf`（单文件合并版，28 条规则全貌参考）
+  - `apply-shunt-rules.sh`（UCI 批量脚本；`scp` 到路由器 + `sh apply-shunt-rules.sh` 一次性创建 28 条空节点规则，再到 LuCI 逐条指定目标节点）
 - ★ 28 条 shunt rule 覆盖 28 业务分类，每条包含：
   - 推荐节点区域（对应 Clash Party 9 区域组，用户在 Passwall2 里创建负载均衡组时参照）
   - 域名列表（`geosite:xxx` 为主 + `domain-suffix:xxx` 补充）

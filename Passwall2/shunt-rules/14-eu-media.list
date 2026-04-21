@@ -1,0 +1,14 @@
+# 🇪🇺 欧洲流媒体
+# 推荐出站: 🇪🇺 欧洲
+# 建议目标策略: proxy
+# ───────────────────────────────
+# 在 Passwall2 LuCI 分流规则的「域名列表」字段里粘贴下面的所有非注释行。
+
+# [Domain List]
+geosite:bbc
+domain-suffix:itv.com
+domain-suffix:channel4.com
+domain-suffix:my5.tv
+domain-suffix:sky.com
+domain-suffix:skygo.com
+domain-suffix:britbox.co.uk
