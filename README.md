@@ -86,6 +86,164 @@ DNS/嗅探层（Resolver + Sniffer Layer）
 
 ---
 
+## 🎯 差异化价值：为什么不只是 `geosite.dat` + `geoip.dat`
+
+> **一个常见误区**：既然 MetaCubeX `geosite.dat`（500+ 域名分类）+ Loyalsoldier `geoip.dat`（50+ 国家 + 15 服务 IP 标签）这两份数据库已经够全，直接用 `GEOSITE,openai,PROXY` / `GEOIP,CN,DIRECT` 不就够了吗？为什么还需要本仓库的 300+ rule-providers + 37 代理组？
+>
+> **答案**：分流不是"**域名 → 代理 or 直连**"的二元决策，而是"**域名 → 什么地区的节点 → 该地区内选最优节点**"的**三层决策**。`geosite.dat` / `geoip.dat` 提供"**原料**"，本仓库提供"**加工 + 策略**"。
+
+### 裸用 geosite/geoip 能做什么？能做到什么程度？
+
+| 能力 | 裸用 `geosite.dat` + `geoip.dat` | 本仓库 |
+|---|---|---|
+| **域名分类** | ~500 个扁平分类（`openai` / `netflix` / `github` / `cn` / `gfw`...）| ~500 分类 **+ 300+ 补充 rule-provider** 覆盖新兴服务（cursor / v0.dev / pi.ai / szkane-ai / acc-appleai / 新 AI / 新 Web3）|
+| **IP 分类** | 50+ 国家码 + `cloudflare` / `telegram` / `netflix` / `google` / `facebook` / `twitter` 等 15 个服务 IP 标签 | 完整继承 + 针对 `GEOIP,private` / `GEOIP,CN` 做了正确顺序 + `DST-PORT,7680,REJECT` 拦截 Windows Delivery Optimization 等**运行时规则**|
+| **出站策略** | ❌ **没有**——两份数据库都是"匹配器"，不告诉你匹配到之后应该走哪个节点 | ✅ **37 个策略组** 把匹配到的流量路由到**有语义**的组（不是单纯"proxy"）|
+| **区域选路** | ❌ **没有**——你没有办法说"访问 Netflix 走美国节点、访问 myTV SUPER 走香港节点" | ✅ **9 区域组** 把节点按地区聚合，业务组**链式**指向区域组 |
+| **自动择优** | ❌ **没有**——GEOSITE 规则是静态匹配，不挑节点 | ✅ **url-test / Smart + LightGBM** 在区域组内持续测延迟 + 机器学习选最优节点 |
+| **节点动态归类** | ❌ **没有** | ✅ **JS 覆写运行时** 按节点名正则（旗帜 emoji / 中文国名 / IATA 机场代码 / ISO 国家码）自动把机场节点归入 9 区域组，覆盖率 95%+ |
+| **新机场即插即用** | ❌ 每换机场要重写分流 | ✅ 换机场订阅后区域组自动填充，28 业务组无感 |
+
+**一句话**：`geosite.dat` + `geoip.dat` 是**砖头**，本仓库是**楼盘**——砖头本身不住人。
+
+### 4 个典型场景对比（让差异具体到肉眼可见）
+
+#### 场景 1：ChatGPT 访问
+
+```yaml
+# ❌ 裸用 geosite 方案（3 行）：
+rules:
+  - GEOSITE,openai,proxy       # 命中 openai 域名就走 proxy 出站
+  - GEOIP,CN,direct
+  - MATCH,proxy
+
+# ✅ 本仓库方案（4 层决策）：
+rules:
+  - RULE-SET,openai,🤖 AI 服务                # 命中 openai 相关域名（+ cursor/v0/pi.ai/szkane-ai 补充）
+                                              ↓
+proxy-groups:
+  - name: 🤖 AI 服务                           # 业务组（语义层）
+    type: select
+    proxies: [🇺🇸 美国节点, 🌍 全球节点, …, DIRECT]  # 默认 🇺🇸 美国（因为 AI 对 IP 敏感）
+                                              ↓
+  - name: 🇺🇸 美国节点                         # 区域组（地理层）
+    type: smart                                # Smart + LightGBM 自动择优
+    uselightgbm: true
+    include-all-proxies: true                  # 自动纳入所有 US 节点
+                                              ↓
+  - proxy-us-la-01 / proxy-us-sjc-02 / proxy-us-nyc-03 / ...  # 具体节点
+```
+
+**差异**：
+- ❌ 裸用：`proxy` 是一个节点（任意一个机场节点）→ 命中就走那个节点，**可能是 HK / SG 节点** → ChatGPT 检测到 HK/SG 地区 IP 就 403
+- ✅ 本仓库：访问 ChatGPT → 自动进"🤖 AI 服务"组 → 自动选美国区域组 → Smart 组在美国节点里挑延迟最低的 → 访问成功率 > 95%
+- **每换一个节点都无感切换**；机场多了自动扩容
+
+#### 场景 2：Apple 家族细粒度（geosite 做不到）
+
+`geosite:apple` 是一个**总类**，里面所有 Apple 子服务共享同一策略。
+
+```yaml
+# ❌ 裸用 geosite：
+rules:
+  - GEOSITE,apple,direct   # 全 Apple 直连？AppleMusic/AppleTV 境外订阅看不了
+  # 或
+  - GEOSITE,apple,proxy    # 全 Apple 代理？AppStore 下载几 GB 走代理浪费流量
+```
+
+```yaml
+# ✅ 本仓库：拆成独立 rule-provider，**每个子服务独立决策**
+rule-providers:
+  apple:          # 走 metaDomain，geosite:apple 主类直连
+  icloud:         # metaDomain，iCloud 主类直连
+  applemusic:     # bm7 独立 Apple Music 列表 → 代理（国区订阅境外访问）
+  appstore:       # bm7 独立 AppStore 列表 → 直连（省带宽）
+  appletv:        # bm7 独立 Apple TV → 代理（国区订阅境外解锁）
+  testflight:     # bm7 TestFlight → 代理（有些 beta 需要境外）
+  applenews:      # Apple News → 代理
+  siri:           # Siri → 代理（国区被阉割）
+  appledev:       # Apple Developer → 代理
+  appleproxy:     # iCloud Private Relay → 跟随代理
+  applefirmware:  # 固件 → 直连（省带宽）
+  findmy:         # Find My → 代理
+```
+
+**差异**：`geosite:apple` 做不到这种精细度。bm7 的 Apple 家族 12 个子 provider 不是"重复加码"，是**填满了 geosite:apple 总类覆盖不了的语义差异**。
+
+#### 场景 3：bilibili 大陆版 vs 国际版
+
+```yaml
+# ❌ 裸用 geosite：`geosite:bilibili` 只有一个总类 → 全部同一策略
+# 实际情况：
+#   - bilibili.com（大陆版）：直连才快（不然跨境反而慢）
+#   - bilibili.tv（国际版 biliintl）：必须代理（国区 IP 会被拒播）
+#   → 一个 geosite:bilibili 无法区分
+
+# ✅ 本仓库：两个独立 rule-provider，分别路由
+metaDomain('bilibili', 'bilibili')   → 📺 国内流媒体 → DIRECT
+metaDomain('biliintl', 'biliintl')   → 📺 东南亚流媒体 → 🌏 亚太节点
+```
+
+#### 场景 4：广告拦截纵深防御 vs 单一 geosite
+
+```yaml
+# ❌ 裸用 geosite：一个分类兜底
+rules:
+  - GEOSITE,category-ads-all,REJECT
+
+# ✅ 本仓库：6 源互补（不是重复，每源覆盖不同威胁类型）
+rules:
+  - RULE-SET,anti-ad,🛑 广告拦截                 # 主力：5 万+ 广告域名（国内外广告联盟）
+  - RULE-SET,sukka-phishing,🛑 广告拦截          # 钓鱼独家：13 万假冒银行/加密登录页
+  - RULE-SET,hagezi-tif,🛑 广告拦截              # 威胁情报独家：malware/C2/cryptojacking/scam
+  - RULE-SET,acc-hijackingplus,🛑 广告拦截       # DNS 劫持独家：运营商 302 + HTTP 注入广告
+  - RULE-SET,acc-blockhttpdnsplus,🛑 广告拦截    # HTTP DNS 独家：App SDK 绕系统 DNS
+  - RULE-SET,acc-prerepaireasyprivacy,🛑 广告拦截 # 隐私追踪：Facebook Pixel/GA/Mixpanel/埋点
+  - RULE-SET,miuiprivacy,🛑 广告拦截             # 国内独家：小米 MIUI 上报位置/通讯录
+  - RULE-SET,jiguangtuisong,🛑 广告拦截          # 极光推送 SDK
+  - GEOSITE,category-ads-all,🛑 广告拦截         # 兜底
+```
+
+每源覆盖**不同威胁类型**（广告 / 钓鱼 / 威胁情报 / DNS 劫持 / 隐私追踪 / SDK 埋点），不是同一类型重复加码——**纵深防御，不是冗余**。
+
+### 本仓库的加法原则：每加一条 rule-provider，它必须**回答"我比前面多解决了什么"**
+
+这是和"无脑狂加规则集"的根本区别。具体原则（CLAUDE.md / AGENTS.md 强制）：
+
+| 加法场景 | 判定 | 理由 |
+|---|:-:|---|
+| 和 `geosite.dat` 某分类 **> 95% 重叠** 的 rule-provider | ❌ **拒绝** | 纯冗余；浪费内存 + 冷启动时间（v5.2.5 FIX#23-P1 已删 `acc-geositecn` / `acc-china`）|
+| 和已有 rule-provider **逐条重复** 但无新条目 | ❌ **拒绝** | 同上 |
+| 填补 **geosite 未收录的新兴服务**（cursor.com / v0.dev / character.ai / pi.ai / 新 Web3）| ✅ 通过 | 独立新价值 |
+| 拆分 **geosite 总类**的子域名（Apple 家族 / Google 子服务）| ✅ 通过 | 精细化，独立决策 |
+| 多源**互补**覆盖同一威胁（广告多源：不同提供商录入不同域名）| ✅ 通过 | 纵深防御，提升命中率 |
+| 提供 **geosite 里叫法不同** 的同一服务（snap vs snapchat）| ⚠️ 条件通过 | 别名映射，不加新条目但修 bug |
+
+### 验证：把本仓库的规则集贴到 grep
+
+在现有 300+ rule-providers 里，**每一条**都能回答"我为什么存在"：
+
+- `metaDomain('openai', 'openai')` → 因为 mihomo 的 .mrs 格式比 .yaml 解析快 3-5 倍
+- `bm7('claude', 'Claude')` → 因为 geosite 里 `claude` 分类字段名不统一，bm7 的列表更完整
+- `szkane-ai` → 因为覆盖 geosite 未收录的 CiciAI / 新 AI 平台
+- `acc-prerepaireasyprivacy` → 因为 `category-ads-all` 不含隐私追踪类（Facebook Pixel / GA）
+- `acc-aqara-cn` → 因为 Aqara 国内 IoT 端点特殊，需单独直连
+- `szkane-bilihmt` → 因为 B 站 HMT 地区（港澳台）列表 geosite 没有
+
+**反例**（已在 v5.2.5 删除）：
+- ~~`acc-geositecn`~~ → 和 `metaDomain('cn', 'cn')` 100% 重复，删
+- ~~`acc-china`~~ → 95% 和 `acc-chinamax` 重叠，删
+
+### 最后一句
+
+> **本仓库的核心价值不是"规则集数量"，是"规则集组织方式"**：把 `geosite.dat` + `geoip.dat` 提供的原材料，按 **"语义业务组 → 地理区域组 → 最优节点"** 三层架构组装成**用户真正能用**的分流策略。
+>
+> 这个架构是 `.dat` 数据库**无法提供**的——数据库只懂域名和 IP，不懂你"访问 ChatGPT 想要美国节点里延迟最低的那个"、"访问苹果商店想直连但访问 TestFlight 想代理"、"换机场后 9 区域组自动重新装载"。
+>
+> 加规则集的标准：**填补前面没覆盖的能力**，不是数量游戏。
+
+---
+
 ## 🛡️ DNS 净化：科学上网的第一道防线
 
 > 分流规则配得再好，**DNS 漏了照样白搭**。这一节解释为什么 DNS 在科学上网里是"基石"，并给出本仓库的推荐配置（完整 YAML 见 `Clash Party/README.md` 第四章 DNS 段）。
