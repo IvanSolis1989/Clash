@@ -1,9 +1,9 @@
 # Loon 使用教程（对齐 Clash Party v5.2.4）
 
 > 配置文件：`Loon/loon-smart.conf`
-> 版本：**v5.2.4-Loon.3**（Build 2026-04-22，anti-AD 规则源换 jsDelivr 镜像 + v5.2.4-Loon.2 原生语法大修，见 `Loon/CHANGELOG.md`）
+> 版本：**v5.2.4-Loon.4**（Build 2026-04-22，288 条 RULE-SET 迁移至 [Remote Rule] 段；此前累计修 v5.2.4-Loon.2/.3，见 `Loon/CHANGELOG.md`）
 > 目标：**Loon iOS（App Store 付费正版）**
-> 架构：9 区域 url-test 组（[Remote Filter] NameRegex）+ 28 业务策略组 + 250+ RULE-SET
+> 架构：9 区域 url-test 组（[Remote Filter] NameRegex）+ 28 业务策略组 + 288 [Remote Rule] 订阅规则集
 
 ---
 
@@ -186,10 +186,18 @@ Loon 启动时会自动下载这份 Loyalsoldier 加强版 MMDB（含 cloudflare
 | 在配置里设置 MMDB URL | ❌ 只能 UI 下载 | ✅ `geoip-maxmind-url` |
 | macOS 版本 | ❌ 仅 iOS | ✅ Surge Mac |
 
-**本配置里 RULE-SET 放在 `[Rule]` 段内**（Surge 兼容语法，Loon 原生支持），没有拆到 `[Remote Rule]` 面板——这样做的好处是和 Surge 版保持 1:1 可 diff，减少维护成本；代价是在 Loon 的「规则源」UI 里不会出现独立条目，要管理订阅更新仍可以，但无法逐个 RULE-SET 启用/禁用。如果你偏好 Loon 原生面板，可以自行把 `[Rule]` 段的 `RULE-SET,<URL>,<policy>` 行迁移到 `[Remote Rule]` 段，格式：
+**本配置从 v5.2.4-Loon.4 起把 288 条 RULE-SET 全部放在 `[Remote Rule]` 段内**（Loon 原生语法）：
+
 ```
-https://example.com/rule.list, policy=POLICY, tag=some-tag, enabled=true
+[Remote Rule]
+https://example.com/rule.list, policy=POLICY, tag=rule.list, enabled=true
 ```
+
+> **为什么不能用 Surge 风格的 `[Rule] RULE-SET,URL,policy`？**
+> Loon 的 `[Rule]` 段只接受内联规则（DOMAIN / IP-CIDR / GEOIP / FINAL 等），写了 Surge 风格的远程 RULE-SET
+> 会导致 Loon 在每一行都报"语法错误"弹窗。v5.2.3-Loon.1 → v5.2.4-Loon.3 都犯了这个错，直到 v5.2.4-Loon.4 才修。
+
+好处：在 Loon「规则」面板可以看到 288 条独立的订阅规则集条目，每条都能单独启用/禁用/查看命中数。
 
 ---
 
@@ -226,7 +234,7 @@ Parsec / Zoom / Pornhub / Wayback）：
 
 ## 九、验证
 
-1. Loon → **首页** → 应显示 `Loon Smart v5.2.4-Loon.2`，协议已启用。
+1. Loon → **首页** → 应显示 `Loon Smart v5.2.4-Loon.4`，协议已启用。
 2. **策略组** 面板应出现 37 组（9 区域 + 28 业务）。
 3. **过滤器** 面板应出现 9 个 Filter（GLOBAL_Filter / HK_Filter / TW_Filter / JPKR_Filter / APAC_Filter / US_Filter / EU_Filter / AM_Filter / AF_Filter）。
 4. 测试分流：

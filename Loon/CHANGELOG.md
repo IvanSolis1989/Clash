@@ -4,6 +4,64 @@
 
 ---
 
+## v5.2.4-Loon.4 (2026-04-22) — 根治"第 229 行语法错误"：288 条 RULE-SET 迁移到 [Remote Rule]
+
+用户反馈 v5.2.4-Loon.3 仍然弹"第 229 行出现语法错误"（anti-ad-surge.txt）；同一天朋友指出 Loon
+的订阅规则集正确写法是：
+
+    URL, policy=<策略组>, tag=<显示名>, enabled=true
+
+放在 `[Remote Rule]` 段，而不是 `[Rule]` 段里的 Surge 风格 `RULE-SET,URL,policy`。
+
+复核 fmz200/wool_scripts Loon.conf（与 YueChan/Loon 权威示例）后确认：
+
+- Loon 的 `[Rule]` 段只接受**内联规则**（`DOMAIN-SUFFIX,x,p` / `IP-CIDR,x,p` / `GEOIP,CN,p` / `FINAL,p`）
+- **远程订阅 RULE-SET 必须放 `[Remote Rule]` 段**，用 URL 开头的 key=value 语法；写成 Surge 风格的
+  `RULE-SET,URL,policy` Loon 会从第一行开始就报语法错
+
+我们从 v5.2.3-Loon.1 初版起就用错了段，v5.2.4-Loon.2 大修时也没发现（官方文档在这一点上说得不清楚，
+三份示例参考里也只有 YueChan 的 `[Rule]` 是干净的，fmz200 的 `[Remote Rule]` 才给出了完整语法）。
+
+### 本次改动（一次性彻底修）
+
+- ★ FIX#Loon-15-P0：**新增 `[Remote Rule]` 段**，位置在 `[Proxy Group]` 与 `[Rule]` 之间
+- ★ FIX#Loon-16-P0：**288 条 RULE-SET 全量迁移**到 `[Remote Rule]`：
+  - `RULE-SET,<URL>,<policy>` → `<URL>, policy=<policy>, tag=<file_basename>, enabled=true`
+  - tag 自动取 URL 路径最后一段（例如 `Advertising.list` / `anti-ad-surge.txt`），Loon UI 里看规则源面板更直观
+  - 288 条 tag 全部唯一，无重复（脚本 `uniq -c` 验证）
+- ★ `[Rule]` 段现在只剩**内联规则**（DOMAIN / DOMAIN-SUFFIX / IP-CIDR / DST-PORT / HOST / GEOIP / FINAL），
+  614 行，和 fmz200 / YueChan 的 Loon 配置结构一致
+- ★ 头部架构一句话：`... + 250+ RULE-SET` → `... + 288 [Remote Rule] 订阅规则集`
+
+### 迁移自动化
+
+本次迁移用 Python 脚本 `tmp/migrate_loon.py` 批量完成（288 条手工 Edit 太易错）：
+
+1. 正则扫描 `^RULE-SET,(https?://[^,]+),(.+)$` 提取 URL + policy
+2. 从 URL 末段生成 `tag=` 值
+3. 按阶段注释分组插入 `[Remote Rule]` 段，保留原有注释上下文
+4. `[Rule]` 段只保留非 RULE-SET 行
+
+### 自检
+
+- 代理组 37 个 ✓
+- 9 区域 Filter × 9 url-test 引用一一匹配 ✓
+- `[Remote Rule]` 288 条 ✓
+- `[Rule]` 段内残留 `RULE-SET,` 0 条 ✓
+- `IP-CIDR6` / `FINAL,...,dns-failed` / `bypass-system` / `ipv6-enabled` / `tun-excluded-routes` /
+  `hijack-dns` / `udp-policy-not-supported` 全部 0 次出现 ✓
+- 288 条 tag 全部唯一 ✓
+
+### 官方文档证据
+
+- `[Remote Rule]` 语法：[fmz200/wool_scripts Loon.conf](https://raw.githubusercontent.com/fmz200/wool_scripts/main/Loon/config/Loon.conf)
+- 用户朋友的原版示例：
+  ```
+  https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Loon/Duckduckgo/Duckduckgo.list, policy=美国节点-兔子, tag=Duckduckgo.list, enabled=true
+  ```
+
+---
+
 ## v5.2.4-Loon.3 (2026-04-22) — anti-AD 规则源改用 jsDelivr 镜像
 
 - ★ FIX#Loon-14-P0：`RULE-SET,https://anti-ad.net/surge.txt,🛑 广告拦截`
