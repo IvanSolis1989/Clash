@@ -479,9 +479,9 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 
 ---
 
-## 🔌 科学上网协议支持对比矩阵
+## 🔌 各端协议支持 + 快速导入速查
 
-一份速查表，帮你根据机场给的协议类型挑客户端。每个子目录 README 里还有更详细的单端协议说明。
+一张表搞定："**机场给什么协议 → 选哪个端 → 用哪份文件 → 去哪看教程**"。每个子目录 README 里有更详细的单端说明。
 
 | 协议 \ 客户端 | Clash Party / Verge / Mihomo Party | CMFA / FlClash | OpenClash | Shadowrocket | Surge 5 | Loon | Quantumult X | SingBox / Hiddify / SFA | v2rayN (Xray) | v2rayN (mihomo/sing-box) |
 |---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
@@ -501,7 +501,9 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 | **Mieru** | ✅ | ✅ | ✅ | ⚠️ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅（仅 mihomo）|
 | **SSH 出站** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
 | **HTTP/HTTPS/SOCKS5** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **LightGBM 自动择优**（区域组）| ✅（Smart Alpha 内核 + JS 覆写）| ❌（静态 YAML）| ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **LightGBM 自动择优**（区域组）| ✅（Smart Alpha + JS 覆写）| ❌（静态 YAML）| ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **📁 用这个配置文件** | `Clash Party/Clash Smart内核覆写脚本.js` | `Clash Meta For Android/clash-smart-cmfa.yaml` | `OpenClash/openclash_custom_overwrite{,_full}.sh` + `clash-smart-openclash.conf` | `Shadowrocket/shadowrocket-smart.conf` | `Surge/surge-smart.conf` | `Loon/loon-smart.conf` | `Quantumult X/qx-smart.conf` | `SingBox/singbox-smart-full.json` | `v2rayN/v2rayn-smart-xray-routing.json` | 复用 CMFA YAML 或 SingBox JSON |
+| **🚀 详细教程** | [Clash Party/README](Clash%20Party/README.md) | [CMFA/README](Clash%20Meta%20For%20Android/README.md) | [OpenClash/README](OpenClash/README.md) | [Shadowrocket/README](Shadowrocket/README.md) | [Surge/README](Surge/README.md) | [Loon/README](Loon/README.md) | [Quantumult X/README](Quantumult%20X/README.md) | [SingBox/README](SingBox/README.md) | [v2rayN/README](v2rayN/README.md) | [v2rayN/README](v2rayN/README.md) |
 
 > ✅ 原生支持 · ⚠️ 部分 / 新版本才有 / 需 External Proxy 桥接 · ❌ 不支持
 
@@ -513,31 +515,6 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 - 想要 **WireGuard**：除 QX 都行
 - 想要 **LightGBM 自动择优**：**只能走 Clash Party / OpenClash** + Mihomo Smart Alpha 内核 + JS 覆写
 - 协议 + 价格性价比：**iOS 上 Shadowrocket (¥20)** / **Android 上 CMFA (免费)** / **桌面上 Mihomo Party (免费)** / **软路由上 OpenClash (免费)**
-
----
-
-## 🧪 平台使用路径（简版）
-
-### 🖥️ Clash Party
-1. 导入订阅；
-2. 新建 JS 覆写并粘贴 `Clash Smart内核覆写脚本.js`；
-3. 将 `其他配置在UI里面填写` 内容填入客户端对应设置；
-4. 应用并重启内核。
-
-### 🤳 Clash Meta For Android
-1. 修改 `clash-smart-cmfa.yaml` 中订阅 URL；
-2. 在 CMFA 导入配置；
-3. 首次拉取相关规则与地理数据库资源。
-
-### 📦 SingBox
-1. 按需选择 `singbox-smart.json`（常规版）或 `singbox-smart-full.json`（完整规则版）；
-2. 将文件导入支持 sing-box 的客户端（如 SFA 等）并绑定你的节点来源；
-3. 首次启动后等待规则集与远程资源完成拉取，再按需微调策略组。
-
-### 🛜 OpenClash
-1. 上传 OpenClash 覆写脚本（`openclash_custom_overwrite.sh` 轻量版 / `openclash_custom_overwrite_full.sh` 完整版）并启用自定义覆写；
-2. 按 `clash-smart-openclash.conf` 填写插件关键参数；
-3. 应用配置并观察内存占用与规则更新状态。
 
 ### 🛜 其它 OpenWrt / 软路由代理插件用户看这里
 
@@ -556,38 +533,6 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 > - 但**没有** mihomo 的 **proxy-groups 嵌套选择器**（两级 `select`/`url-test` 串联 + Smart + LightGBM）
 > - 想要 **28 业务组 → 9 区域组 → 自动 url-test 选最低延迟节点 → 机场换节点自动归位** 这套体验，只有 mihomo 架构（OpenClash / CMFA / ShellClash）能原生给
 > - 详细差异对照见 `Passwall2/README.md` §3「能和不能」
-
-### 🍎 Shadowrocket
-1. 托管 `shadowrocket-smart.conf` 至可访问 URL；
-2. 在 SR 中下载配置并启用；
-3. 初始化时完成规则拉取并按需微调策略组。
-
-### 💎 Surge（iOS / macOS，付费正版）
-1. 托管 `Surge/surge-smart.conf` 至可访问 URL；
-2. Surge → 配置 → 安装配置 → 粘贴 URL → 下载；
-3. Surge 独有：已在配置里启用 `geoip-maxmind-url`（Loyalsoldier 加强版 MMDB 自动下载）、`encrypted-dns-server`（DoH 专用通道）。
-4. 详见 `Surge/README.md`。
-
-### 🌙 Loon（iOS，付费正版）
-1. 托管 `Loon/loon-smart.conf` 至可访问 URL；
-2. Loon → 配置 → ⊕ → 从 URL 下载 → 启用；
-3. ⚠️ MMDB 需在 Loon UI **设置 → GeoLite2** 手动填 `https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb`（Loon 不支持配置文件里指定）。
-4. 详见 `Loon/README.md`。
-
-### ⚛️ Quantumult X（iOS，付费正版）
-1. 托管 `Quantumult X/qx-smart.conf` 至可访问 URL；
-2. QX → 设置 → 配置 → 下载配置 → 粘贴 URL；
-3. ⚠️ QX 不会自动识别 `[Proxy]` 节点；必须在配置的 `[server_remote]` 段填入机场订阅 URL 或在 `[server_local]` 粘贴节点；
-4. QX 独有 `resource_parser_url` + `rewrite_remote`（签到/去广告生态）默认未启用，可按需追加。
-5. 详见 `Quantumult X/README.md`。
-
-### 🪟 v2rayN（Windows 桌面）
-v2rayN 本身是多核调度器，支持 mihomo / sing-box / Xray 三种核心，按完整度从高到低：
-1. **路径 A（推荐）**：v2rayN 切 **mihomo** 核心 → 直接加载 `Clash Meta For Android/clash-smart-cmfa.yaml`，得到 28 业务组 + 9 个 `url-test` 区域组；规则层和 Clash Party 主线 1:1 对齐；**但不含 `type: smart` 组 / LightGBM**（CMFA YAML 是静态的）；
-2. **路径 B**：v2rayN 切 **sing-box** 核心 → 加载 `SingBox/singbox-smart-full.json`，28 业务 + 9 区域（selector/urltest）；sing-box 核心本身不支持 LightGBM；
-3. **路径 C**：v2rayN 保持 **Xray** 核心 → 导入 `v2rayN/v2rayn-smart-xray-routing.json`，功能裁剪（只有 proxy/direct/block 三出站）；
-> 要完整启用 **Smart 组 + LightGBM 自动择优**，请用 **Clash Party / Clash Verge Rev / Mihomo Party** 直接加载 `Clash Party/Clash Smart内核覆写脚本.js`（JS 覆写运行时才会把区域组注入为 `type: smart`）。
-详见 `v2rayN/README.md`。
 
 ---
 
