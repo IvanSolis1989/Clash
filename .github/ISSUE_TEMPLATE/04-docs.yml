@@ -1,0 +1,34 @@
+name: 📝 文档 / 教程问题
+description: README、CHANGELOG、子目录使用教程有错字、信息过时、步骤讲不清、链接 404……
+title: "[文档] "
+labels: ["documentation"]
+
+body:
+  - type: input
+    id: location
+    attributes:
+      label: 出问题的文档位置
+      description: 哪个文件？哪一段？可以贴链接（带行号更好）
+      placeholder: "例：README.md#dns-净化 / Shadowrocket/README.md §3"
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: 问题描述
+      description: 哪里错了 / 不清楚 / 过时了？
+      placeholder: |
+        例：
+        Shadowrocket/README.md 第 3 节说"导入后第一条规则应为 DOMAIN,captive.apple.com,DIRECT"，
+        但实际 v5.2.5 里第一条是广告拦截 rule-set，和文档对不上。
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggest
+    attributes:
+      label: 建议的修改（可选）
+      description: 你觉得应该改成什么样？
+    validations:
+      required: false

@@ -1,0 +1,92 @@
+name: 🐛 Bug 报告（配置本身有问题）
+description: 确认是本仓库配置/脚本的 bug，不是使用问题。bug 类 issue **不会**自动 AI 回复，直接等维护者人工处理。
+title: "[Bug] "
+labels: ["bug"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        > ⚠️ **重要：先分清楚 bug vs 使用问题**
+        >
+        > - ❓ 不知道怎么导入 / 某个 App 节点不通 / DNS 不解析 → 请用 **「❓ 使用问题 / 求助」** 模板（会触发 AI 初步回复）
+        > - 🐛 配置文件语法错误 / 某产物版本号漂移 / rule-provider URL 404 / 跨客户端不一致 → 用本模板（直接等人工）
+
+  - type: dropdown
+    id: product
+    attributes:
+      label: 出问题的产物
+      description: 是哪一份配置文件出了 bug？
+      options:
+        - Clash Party/Clash Smart内核覆写脚本.js（基线）
+        - Clash Meta For Android/clash-smart-cmfa.yaml
+        - OpenClash/openclash_custom_overwrite.sh (slim)
+        - OpenClash/openclash_custom_overwrite_full.sh (full)
+        - Shadowrocket/shadowrocket-smart.conf
+        - SingBox/singbox-smart.json (slim)
+        - SingBox/singbox-smart-full.json (full)
+        - Surge/surge-smart.conf
+        - Loon/loon-smart.conf
+        - Quantumult X/qx-smart.conf
+        - v2rayN/v2rayn-smart-xray-routing.json
+        - Passwall2/*.conf
+        - 多个产物都有（跨客户端不一致）
+        - 文档 / CHANGELOG / CLAUDE.md / AGENTS.md
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 产物版本号
+      description: 从配置文件头部或对应 CHANGELOG.md 读出
+      placeholder: "例：v5.2.5-oc-full / v5.2.5-cmfa.1"
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug
+    attributes:
+      label: Bug 现象
+      description: 出了什么问题？期望行为是什么？实际行为是什么？
+      placeholder: |
+        例：
+        OpenClash full 版本启动时 Ruby 报错 undefined method xxx，日志见下。
+        期望：覆写成功，代理组正常加载。
+        实际：启动失败，回退到原始配置。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 从空白环境开始，怎么一步步复现？
+      placeholder: |
+        1. 在 OpenWrt 23.05 上装 OpenClash v0.46.094
+        2. 下载 openclash_custom_overwrite_full.sh 到 /etc/openclash/custom/
+        3. OpenClash → 覆写设置 → 选 full 脚本
+        4. 启动 → 报错
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 完整错误日志
+      description: 贴报错的完整堆栈，用代码块包起来
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: precheck
+    attributes:
+      label: 提交前自检 ✅
+      options:
+        - label: 我确认这是配置/脚本的 bug，不是我使用姿势的问题
+          required: true
+        - label: 我用的是本仓库**最新**版本（不是半年前的旧 commit）
+          required: true
+        - label: 我已经在现有 issue 列表里搜过，确认没有重复
+          required: true
