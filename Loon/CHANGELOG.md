@@ -4,6 +4,21 @@
 
 ---
 
+## v5.2.4-Loon.3 (2026-04-22) — anti-AD 规则源改用 jsDelivr 镜像
+
+- ★ FIX#Loon-14-P0：`RULE-SET,https://anti-ad.net/surge.txt,🛑 广告拦截`
+  → `RULE-SET,https://fastly.jsdelivr.net/gh/privacy-protection-tools/anti-AD@master/anti-ad-surge.txt,🛑 广告拦截`
+  - 现象：Loon 启用配置时弹窗 "第 229 行出现语法错误"（用户截图反馈）
+  - 原因：`anti-ad.net` 是项目自建的裸域名（非 CDN），部分国内 ISP / DNS 劫持会返回 HTML
+    captive 页或 403，Loon 把 HTML 当规则解析就报语法错；而仓库里其他 287 条 RULE-SET 全部
+    走 `fastly.jsdelivr.net` 或 `ruleset.skk.moe` CDN，从未出现此类问题
+  - 修复：改指 anti-AD 官方 GitHub 仓库 `privacy-protection-tools/anti-AD` 的
+    `anti-ad-surge.txt`（与 `surge.txt` 语义一致，但走 jsDelivr CDN 镜像）
+- ★ 附带扫描：除 anti-ad.net 外，[Rule] 段内所有 288 条 RULE-SET 全部走
+  `fastly.jsdelivr.net` / `ruleset.skk.moe`，无同类隐患
+
+---
+
 ## v5.2.4-Loon.2 (2026-04-22) — Loon 原生语法兼容性大修
 
 用户反馈"Loon 用不了好像 好多和配置文件冲突" — 复核后确认 v5.2.3-Loon.1 把
