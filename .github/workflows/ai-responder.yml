@@ -14,10 +14,13 @@ name: AI Issue Auto-Responder (DeepSeek)
 #     绝对不能提议改代码
 #   • timeout 5 分钟硬上限防止超支
 #
-# 成本估算（DeepSeek V3.2）：
-#   • 每次调用 ≈ $0.003
-#   • 100 issues/月 ≈ $0.30
+# 成本估算（DeepSeek-Reasoner / V3.2 推理模型）：
+#   • 每次调用 ≈ $0.008–0.015（含思考 token；比 deepseek-chat 贵 ~5x，但命中率显著更高）
+#   • 100 issues/月 ≈ $1–1.5
 #   • GitHub Actions：public repo 无限免费
+#   • 为什么选 reasoner：对分流 / DNS / 规则优先级这类多层推理问题，
+#     普通 chat 模型容易漏掉关键前提（如 DNS 抢跑导致节点选择错误），
+#     reasoner 的思维链能降低"乍一看对其实错"的概率
 #
 # 需要配置的 secret：
 #   Settings → Secrets and variables → Actions → New repository secret
@@ -48,7 +51,7 @@ jobs:
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/ai-help'))
 
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8   # reasoner 思考 + curl 240s 上限，留足余量避免误杀
 
     steps:
       - name: Checkout repo (read-only usage)
@@ -127,24 +130,28 @@ jobs:
           )
 
           # 拼 body JSON
+          # 注意：deepseek-reasoner 会先输出思维链（reasoning_content 字段），再输出最终答案（content 字段）。
+          #   - 我们只取 content（下方 jq '.choices[0].message.content'），不暴露推理过程给用户。
+          #   - reasoner 忽略 temperature 参数（官方说明），保留 0.3 不影响结果。
+          #   - max_tokens 控制的是"最终答案"上限，不含推理 token。
           REQ_BODY=$(jq -n \
             --arg sys "$SYSTEM_PROMPT" \
             --arg title "$ISSUE_TITLE" \
             --arg body "$ISSUE_BODY" \
             --argjson ctx ${{ steps.ctx.outputs.context }} \
             '{
-              model: "deepseek-chat",
+              model: "deepseek-reasoner",
               messages: [
                 { role: "system", content: $sys },
                 { role: "user",   content: ("# 仓库文档上下文\n\n" + $ctx + "\n\n---\n\n# Issue 内容\n\n## 标题\n" + $title + "\n\n## 正文\n" + $body) }
               ],
               max_tokens: 1500,
-              temperature: 0.3,
               stream: false
             }')
 
           # DeepSeek 的 API endpoint，兼容 OpenAI ChatCompletion 格式
-          RESPONSE=$(curl -s --max-time 120 https://api.deepseek.com/chat/completions \
+          # reasoner 要"思考"后再回答，单次调用常见 30–90s，所以 max-time 从 120s 提到 240s
+          RESPONSE=$(curl -s --max-time 240 https://api.deepseek.com/chat/completions \
             -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$REQ_BODY")
@@ -175,7 +182,7 @@ jobs:
               aiReply,
               '',
               '---',
-              '<sub>Model: `deepseek-chat` · Workflow: `.github/workflows/ai-responder.yml` · 触发：issue label `question`/`faq`/`help wanted` 或评论 `/ai-help` · 有疑问等维护者人工回复</sub>'
+              '<sub>Model: `deepseek-reasoner`（带思维链的推理模型）· Workflow: `.github/workflows/ai-responder.yml` · 触发：issue label `question`/`faq`/`help wanted` 或评论 `/ai-help` · 有疑问等维护者人工回复</sub>'
             ].join('\n');
 
             await github.rest.issues.createComment({
