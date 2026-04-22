@@ -252,20 +252,20 @@ Clash Party / CMFA / OpenClash 都采用同一套分层方案（详见 `Clash Pa
 │  ② nameserver（国内域名主通道，DoH）                              │
 │     https://223.5.5.5/dns-query     (AliDNS)                    │
 │     https://doh.pub/dns-query        (DNSPod / Tencent)         │
-│     作用：大陆站点 / 国内 CDN 用国内权威 DoH → 不被 ISP 记录     │
+│     作用：大陆站点 / 国内 CDN 用国内权威 DoH → 不被 ISP 记录       │
 ├─────────────────────────────────────────────────────────────────┤
 │  ③ proxy-server-nameserver（机场节点域名解析，DoH）               │
 │     https://1.1.1.1/dns-query       (Cloudflare)                │
 │     https://8.8.8.8/dns-query       (Google)                    │
 │     https://223.5.5.5/dns-query     (AliDNS)                    │
 │     https://doh.pub/dns-query       (DNSPod)                    │
-│     作用：解析 node.xxx-airport.com 时走海外 DoH → 机场节点      │
-│           域名和 IP 都不暴露给 ISP，也不被 DNS 污染              │
+│     作用：解析 node.xxx-airport.com 时走海外 DoH → 机场节点       │
+│           域名和 IP 都不暴露给 ISP，也不被 DNS 污染               │
 ├─────────────────────────────────────────────────────────────────┤
 │  ④ fallback（海外域名回退通道，DoH + GeoIP 解毒）                 │
 │     https://1.1.1.1/dns-query + https://8.8.8.8/dns-query       │
 │     fallback-filter.geoip-code: CN                              │
-│     作用：国外域名若查出 CN 段 IP（说明被污染），自动用 fallback │
+│     作用：国外域名若查出 CN 段 IP（说明被污染），自动用 fallback     │
 │           重查 → 避开 GFW 注入的假 IP                            │
 └─────────────────────────────────────────────────────────────────┘
 ```
