@@ -1,13 +1,13 @@
 {
   "_meta": {
     "name": "Smart-Config-Kit v2rayN Xray Routing",
-    "version": "v5.2.3-v2n.1",
-    "build": "2026-04-20",
-    "baseline": "Clash Party v5.2.4 (Clash Party/Clash Smart内核覆写脚本.js)",
+    "version": "v5.2.5-v2n.2",
+    "build": "2026-04-22",
+    "baseline": "Clash Party v5.2.5 (Clash Party/Clash Smart内核覆写脚本.js)",
     "note": "v2rayN + Xray-core 只支持 3 个出站 (proxy / direct / block)，无法还原 Clash Party 的 28 业务组 + 9 区域组。若要完整体验请在 v2rayN 里切到 mihomo 核心并导入 Clash Meta For Android/clash-smart-cmfa.yaml。",
     "changelog": "见 v2rayN/CHANGELOG.md"
   },
-  "remarks": "Smart-Config-Kit v5.2.3 (v2rayN + Xray)",
+  "remarks": "Smart-Config-Kit v5.2.5 (v2rayN + Xray)",
   "url": "",
   "customIcon": "",
   "sort": 0,
@@ -185,7 +185,10 @@
         "geosite:whatsapp",
         "geosite:line",
         "geosite:signal",
-        "geosite:kakaotalk"
+        "geosite:kakao",
+        "domain:kakao.com",
+        "domain:kakaocorp.com",
+        "domain:kakaotalk.com"
       ],
       "ip": [
         "geoip:telegram"

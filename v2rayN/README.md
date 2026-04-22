@@ -1,4 +1,6 @@
-# v2rayN 使用教程（对齐 Clash Party v5.2.3）
+# v2rayN 使用教程（对齐 Clash Party v5.2.5）
+
+> 路径 C（Xray 核）产物：`v2rayN/v2rayn-smart-xray-routing.json` v5.2.5-v2n.2（详见 `v2rayN/CHANGELOG.md`）。
 
 > 本目录提供 Windows 客户端 **v2rayN** 的接入说明。
 > v2rayN 本身不是内核，它是一个「多核心调度器」——可以切换到 **mihomo（推荐）/ sing-box / Xray** 三种核心。
