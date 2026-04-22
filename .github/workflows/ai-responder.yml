@@ -20,13 +20,16 @@ name: AI Issue Auto-Responder (DeepSeek)
 #     绝对不能提议改代码
 #   • timeout 5 分钟硬上限防止超支
 #
-# 成本估算（DeepSeek-Reasoner / V3.2 推理模型）：
-#   • 每次调用 ≈ $0.008–0.015（含思考 token；比 deepseek-chat 贵 ~5x，但命中率显著更高）
-#   • 100 issues/月 ≈ $1–1.5
+# 分层调用策略（v2）：
+#   首轮（issues opened/labeled） → deepseek-chat      快速 / 便宜 / 覆盖 80% 常见问题
+#   追问（issue_comment /ai-help）→ deepseek-reasoner  思维链 / 深度分析 / 适合复杂排障
+#   理由：首次提问大多是"导入 / 语法 / FAQ"类，chat 足够；用户看完首轮还在
+#        追问，说明问题复杂需要深度推理，这时才升级 reasoner 值回票价。
+#
+# 成本估算：
+#   • 首轮 chat   ≈ $0.003/次；追问 reasoner ≈ $0.01/次
+#   • 典型场景：100 issues/月 + 20% 追问率 → ≈ $0.30 + $0.20 ≈ $0.5/月
 #   • GitHub Actions：public repo 无限免费
-#   • 为什么选 reasoner：对分流 / DNS / 规则优先级这类多层推理问题，
-#     普通 chat 模型容易漏掉关键前提（如 DNS 抢跑导致节点选择错误），
-#     reasoner 的思维链能降低"乍一看对其实错"的概率
 #
 # 需要配置的 secret：
 #   Settings → Secrets and variables → Actions → New repository secret
@@ -108,6 +111,24 @@ jobs:
             exit 0
           fi
 
+          # ── 分层模型选择 ───────────────────────────────────────────
+          # issues 事件 = 首次触发 → 用便宜快的 chat
+          # issue_comment 事件 = 用户 /ai-help 追问 → 升级到 reasoner
+          if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+            MODEL="deepseek-reasoner"
+            CURL_TIMEOUT=240        # reasoner 思考 30–90s，给足余量
+            TIER_MARK="FOLLOWUP"    # 在 user 消息里打标签给 AI
+            TIER_LABEL="追问 · 深度分析"
+          else
+            MODEL="deepseek-chat"
+            CURL_TIMEOUT=60         # chat 典型 2–5s，60s 足够
+            TIER_MARK="FIRST"
+            TIER_LABEL="首轮 · 快速回复"
+          fi
+          echo "🎯 Tier: ${TIER_LABEL} / Model: ${MODEL}"
+          echo "model=${MODEL}"           >> "$GITHUB_OUTPUT"
+          echo "tier_label=${TIER_LABEL}" >> "$GITHUB_OUTPUT"
+
           SYSTEM_PROMPT=$(cat <<'PROMPT'
           你是 Smart-Config-Kit（科学上网分流配置仓库）的 issue 初筛助手。
 
@@ -166,12 +187,17 @@ jobs:
           - ❌ 不泄露或讨论 API key / secrets / CI 配置细节。
           - ❌ 不说"你好我是 AI"这种套话；中文回复，直奔主题。
 
+          【调用分层 — 用户消息会带标签】
+          用户消息顶部会出现 `[TIER: FIRST]` 或 `[TIER: FOLLOWUP]`：
+          - `FIRST`  → 首次触发（issue 刚打标签），你用 deepseek-chat 速度优先
+             → 第一行用「🤖 AI 初步分析（<类型>）」
+          - `FOLLOWUP` → 用户看过首轮后 `/ai-help` 追问，你用 deepseek-reasoner 深度推理
+             → 第一行用「🤖 AI 深度分析（<类型> · 追问）」，并**正面回应评论里的追问焦点**，
+               别重复首轮讲过的内容
+
           【回复结构】
-          - **第一行**必须是 issue 类型标签，让用户一眼知道你怎么定位的，例如：
-             「🤖 AI 初步分析（使用问题）」
-             「🤖 AI 初步分析（疑似 bug → 需维护者确认）」
-             「🤖 AI 初步分析（功能建议 → 4 类加法原则评估）」
-             「🤖 AI 初步分析（文档反馈）」
+          - **第一行**按上面分层规则写类型标签（使用问题 / 疑似 bug → 需维护者确认 /
+            功能建议 → 4 类加法原则评估 / 文档反馈）
           - 中间：分析内容（短问题 1-3 段；复杂问题用小标题 / 表格 / 代码块）
           - **倒数第二段**必须包含这句硬提示（原文复制，不要改措辞）：
              > ⚠️ **我只做初步分析，没有代码修改 / PR 合并 / 关闭 issue 的权限**。
@@ -181,28 +207,39 @@ jobs:
           )
 
           # 拼 body JSON
+          # 追问（issue_comment）时，把评论正文带进去让 AI 知道用户问了什么
+          COMMENT_BODY="${{ github.event.comment.body }}"
+
           # 注意：deepseek-reasoner 会先输出思维链（reasoning_content 字段），再输出最终答案（content 字段）。
           #   - 我们只取 content（下方 jq '.choices[0].message.content'），不暴露推理过程给用户。
-          #   - reasoner 忽略 temperature 参数（官方说明），保留 0.3 不影响结果。
-          #   - max_tokens 控制的是"最终答案"上限，不含推理 token。
+          #   - reasoner 忽略 temperature 参数（官方说明），chat 使用 0.3 保持稳定。
+          #   - max_tokens 控制"最终答案"上限，不含推理 token。
           REQ_BODY=$(jq -n \
+            --arg model "$MODEL" \
             --arg sys "$SYSTEM_PROMPT" \
+            --arg tier "$TIER_MARK" \
             --arg title "$ISSUE_TITLE" \
             --arg body "$ISSUE_BODY" \
+            --arg comment "$COMMENT_BODY" \
             --argjson ctx ${{ steps.ctx.outputs.context }} \
             '{
-              model: "deepseek-reasoner",
+              model: $model,
               messages: [
                 { role: "system", content: $sys },
-                { role: "user",   content: ("# 仓库文档上下文\n\n" + $ctx + "\n\n---\n\n# Issue 内容\n\n## 标题\n" + $title + "\n\n## 正文\n" + $body) }
+                { role: "user",   content: (
+                    "[TIER: " + $tier + "]\n\n"
+                  + "# 仓库文档上下文\n\n" + $ctx
+                  + "\n\n---\n\n# Issue 内容\n\n## 标题\n" + $title + "\n\n## 正文\n" + $body
+                  + ( if $comment != "" then "\n\n---\n\n# 用户追问评论\n\n" + $comment else "" end )
+                ) }
               ],
               max_tokens: 1500,
               stream: false
             }')
 
           # DeepSeek 的 API endpoint，兼容 OpenAI ChatCompletion 格式
-          # reasoner 要"思考"后再回答，单次调用常见 30–90s，所以 max-time 从 120s 提到 240s
-          RESPONSE=$(curl -s --max-time 240 https://api.deepseek.com/chat/completions \
+          # CURL_TIMEOUT 根据模型动态：chat 60s / reasoner 240s
+          RESPONSE=$(curl -s --max-time "$CURL_TIMEOUT" https://api.deepseek.com/chat/completions \
             -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$REQ_BODY")
@@ -227,13 +264,15 @@ jobs:
         with:
           script: |
             const aiReply = `${{ steps.llm.outputs.reply }}`;
+            const model = `${{ steps.llm.outputs.model }}` || 'deepseek-chat';
+            const tier  = `${{ steps.llm.outputs.tier_label }}` || '首轮 · 快速回复';
             const commentBody = [
-              '> 🤖 **AI 初步分析**（DeepSeek-Reasoner 自动生成，仅供参考）',
+              `> 🤖 **AI 自动回复**（${tier}，仅供参考）`,
               '',
               aiReply,
               '',
               '---',
-              '<sub>Model: `deepseek-reasoner`（带思维链的推理模型）· Workflow: `.github/workflows/ai-responder.yml` · 触发：issue 模板标签 `question`/`bug`/`enhancement`/`documentation` 或评论 `/ai-help` · AI 无代码修改权限，最终处理请等维护者 @ivansolis1989</sub>'
+              `<sub>Model: \`${model}\` · Tier: ${tier}（首轮 chat / 追问 reasoner 分层）· Workflow: \`.github/workflows/ai-responder.yml\` · 想要更深度分析请在评论里 \`/ai-help\` · AI 无代码修改权限，最终处理请等维护者 @ivansolis1989</sub>`
             ].join('\n');
 
             await github.rest.issues.createComment({

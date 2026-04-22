@@ -14,6 +14,7 @@
 - 🧩 **精细分流**：按业务语义拆分策略组，避免“大一统代理”带来的误伤与浪费。
 - ⚡ **性能可控**：OpenClash 提供轻量化方案，兼顾命中率与内存占用。
 - 🤖 **AI 原生仓库**：**本仓库全部脚本与配置由 AI 编写，并由 AI 持续维护与迭代**。
+- 💬 **Issue 自动初筛**：[开 issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 会触发 AI 初步分析（首轮 DeepSeek-Chat 快回 / `/ai-help` 追问升级 Reasoner 深度推理），维护者人工兜底，**AI 无代码修改权限**。
 
 ---
 
@@ -394,46 +395,6 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 - 想“一套配置跑多端”的用户；
 - 不想手工维护大量策略组但又追求精细分流的用户；
 - 希望借助 AI 持续优化配置工程质量的用户。
-
----
-
-## 💬 Issue 支持：AI 机器人先答，人工兜底
-
-> 本仓库接了 **DeepSeek-Reasoner（带思维链的推理模型）**作 issue 初筛助手——**4 种 issue 类型全部会先得到 AI 初步分析**，维护者再人工跟进。常见问题 1 分钟内就有参考答案，不用干等。
-
-### 触发方式
-
-| 方式 | 操作 |
-|---|---|
-| 🆕 **新建 Issue** | [新建 Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) → 选任一模板（❓ 使用问题 / 🐛 Bug / ✨ 建议 / 📝 文档）→ 填表提交。模板会**自动打对应标签触发 AI**。 |
-| 💬 **已有 Issue 追问** | 任何 issue 评论区输入 `/ai-help`，AI 会在该 issue 追加一条针对评论上下文的回复。 |
-
-### AI 在 4 种 issue 里各做什么
-
-| 模板 | 自动标签 | AI 做的事 |
-|---|---|---|
-| ❓ 使用问题 | `question` | 正面回答：导入 / 语法 / DNS / 规则命中 / 协议兼容性 / 平台差异 / FAQ |
-| 🐛 Bug 报告 | `bug` | 先判断"**到底是不是 bug**"——对照 CLAUDE.md + README + CHANGELOG + 同组其他产物，给 4 类结论之一：明显不是 bug / 可能是 bug+指方向 / 信息不足 / 明显是 bug |
-| ✨ 功能建议 | `enhancement` | 按 README "🎯 差异化价值" 的 **4 类加法原则**评估可行性（新兴服务 / 拆总类 / 广告多源 / 地区长尾 ASN）；和 geosite 某类 > 95% 重叠的会先指出"可能被拒绝" |
-| 📝 文档反馈 | `documentation` | 核对文档当前内容：确实过时/错字/404 说明哪里错；描述其实正确但读起来有歧义则解释真实含义 |
-
-### AI 的硬规则（故意的）
-
-- 🚫 **永远不提议具体代码修改 / diff / patch**——就算已判断出 bug 根因，也只说"可能在哪一层"，不说"把 X 改成 Y"
-- 🚫 **不承诺采纳 / 不关闭 issue / 不合并 PR**——AI 没有任何仓库写入权限
-- 🚫 **不推荐具体机场 / VPN 服务商**——避免广告嫌疑
-- 🚫 **不编造**——不确定的事直接说"请等维护者人工确认"
-- 🚫 **安全漏洞**只提醒走 [GitHub Security Advisory](https://github.com/ivansolis1989/Smart-Config-Kit/security/advisories/new) 私报，不公开讨论利用细节
-
-> 每条 AI 回复**倒数第二段都会强调**："我只做初步分析，没有代码修改 / PR 合并 / 关闭 issue 的权限，最终处理请等维护者人工确认。"
-
-### 体验完全中文
-
-- 4 个 issue 模板全中文 + 首页选择界面中文 → [.github/ISSUE_TEMPLATE/](.github/ISSUE_TEMPLATE/)
-- AI 中文回复，直接切主题，开头明确分析类型（例：「🤖 AI 初步分析（疑似 bug → 需维护者确认）」）
-- 每条 AI 回复末尾标注 `Model: deepseek-reasoner`，透明可追溯
-
-> 🔧 技术细节（带完整中文注释的 workflow）：[.github/workflows/ai-responder.yml](.github/workflows/ai-responder.yml) · 成本 ≈ $0.01/次，100 issues/月 ≈ $1。
 
 ---
 
