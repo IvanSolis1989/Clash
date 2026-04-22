@@ -74,7 +74,6 @@ jobs:
           fetch-depth: 1
 
       - name: Build AI context from repo docs
-        id: ctx
         run: |
           # 把最关键的文档喂给 AI 作为上下文。DeepSeek V3.2 context 64K，绰绰有余。
           # 想追加更多文档，在这里 cat 进去即可。
@@ -88,22 +87,20 @@ jobs:
             echo "===== 根 README.md 节选（前 150 行）====="
             head -150 README.md 2>/dev/null || echo "(README.md not found)"
           } > /tmp/context.txt
-
-          # jq -Rs 把文本整个转成合法 JSON 字符串（含转义换行 / 引号 / 反斜杠）
-          CONTEXT=$(jq -Rs . < /tmp/context.txt)
-          {
-            echo "context<<CTXEOF"
-            echo "$CONTEXT"
-            echo "CTXEOF"
-          } >> "$GITHUB_OUTPUT"
+          # 不再走 GITHUB_OUTPUT 回传 + jq -Rs 编码——下一步直接 jq --rawfile 读 /tmp/context.txt，
+          # 既绕开了 ${{ }} 文本替换破坏 JSON 引号的坑，又少 30 行代码。
+          echo "✅ context built: $(wc -l < /tmp/context.txt) lines, $(wc -c < /tmp/context.txt) bytes"
 
       - name: Call DeepSeek API
         id: llm
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # 全部走 env 把不可信用户输入隔离到环境变量，bash 不会再次解释——
+          # 直接 ${{ }} 拼到 run: 里会被 GitHub Actions 文本替换，留下引号注入风险。
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
+          COMMENT_BODY: ${{ github.event.comment.body }}    # issues 事件下为空字符串，安全
         run: |
           if [ -z "${DEEPSEEK_API_KEY}" ]; then
             echo "⚠️  DEEPSEEK_API_KEY secret 未配置，跳过 AI 调用" >&2
@@ -207,21 +204,21 @@ jobs:
           )
 
           # 拼 body JSON
-          # 追问（issue_comment）时，把评论正文带进去让 AI 知道用户问了什么
-          COMMENT_BODY="${{ github.event.comment.body }}"
-
+          # 关键设计：所有用户输入（标题/正文/评论/上下文）都通过 jq 的 --arg / --rawfile 传入，
+          # 由 jq 自己负责 JSON 转义。绝对不在 bash 里手工拼 JSON 字符串。
+          #
           # 注意：deepseek-reasoner 会先输出思维链（reasoning_content 字段），再输出最终答案（content 字段）。
           #   - 我们只取 content（下方 jq '.choices[0].message.content'），不暴露推理过程给用户。
           #   - reasoner 忽略 temperature 参数（官方说明），chat 使用 0.3 保持稳定。
           #   - max_tokens 控制"最终答案"上限，不含推理 token。
           REQ_BODY=$(jq -n \
-            --arg model "$MODEL" \
-            --arg sys "$SYSTEM_PROMPT" \
-            --arg tier "$TIER_MARK" \
-            --arg title "$ISSUE_TITLE" \
-            --arg body "$ISSUE_BODY" \
+            --arg model   "$MODEL" \
+            --arg sys     "$SYSTEM_PROMPT" \
+            --arg tier    "$TIER_MARK" \
+            --arg title   "$ISSUE_TITLE" \
+            --arg body    "$ISSUE_BODY" \
             --arg comment "$COMMENT_BODY" \
-            --argjson ctx ${{ steps.ctx.outputs.context }} \
+            --rawfile ctx /tmp/context.txt \
             '{
               model: $model,
               messages: [
@@ -261,11 +258,17 @@ jobs:
       - name: Post reply to issue
         if: steps.llm.outputs.skipped != 'true'
         uses: actions/github-script@v7
+        env:
+          # 走 env 而不是直接 ${{ }} 拼到 script 里——AI 回复必含反引号（markdown 代码块），
+          # 直接拼进 JS 模板字符串会破坏语法。env 走 process.env 安全。
+          AI_REPLY: ${{ steps.llm.outputs.reply }}
+          AI_MODEL: ${{ steps.llm.outputs.model }}
+          AI_TIER:  ${{ steps.llm.outputs.tier_label }}
         with:
           script: |
-            const aiReply = `${{ steps.llm.outputs.reply }}`;
-            const model = `${{ steps.llm.outputs.model }}` || 'deepseek-chat';
-            const tier  = `${{ steps.llm.outputs.tier_label }}` || '首轮 · 快速回复';
+            const aiReply = process.env.AI_REPLY || '(AI 回复为空，请等维护者人工回复)';
+            const model   = process.env.AI_MODEL || 'deepseek-chat';
+            const tier    = process.env.AI_TIER  || '首轮 · 快速回复';
             const commentBody = [
               `> 🤖 **AI 自动回复**（${tier}，仅供参考）`,
               '',
