@@ -5,6 +5,27 @@
 
 ---
 
+## v5.2.6-sing.3 (2026-04-23) — `singbox-smart.json` 补 `route.final` + 注入 `_meta` 块
+
+跨产物审计（PR #65）发现 CLAUDE.md §3.3 硬约束违反：
+
+- ★ **FIX#sing-01-P1**：`singbox-smart.json` 的 `route` 对象缺 `final` 字段
+  - 当前：`"route": { "auto_detect_interface": true, "rules": [] }`
+  - 修复：`"route": { "auto_detect_interface": true, "final": "🐟 漏网之鱼", "rules": [] }`
+  - 原因：sing-box 规范要求 `route.final` 指定兜底 outbound。缺字段时若 `rules` 为空（本文件就是最小模板），**流量无归属**会走到 outbounds 第一个（通常是 🚀 节点选择），和基线语义不符。
+  - 权威：CLAUDE.md §3.3 明文 `route.final: "🐟 漏网之鱼"`；sing-box 官方 [route 配置](https://sing-box.sagernet.org/configuration/route/)。
+
+- ★ **FIX#sing-02-P2**（顺手修）：`experimental._meta` 注入完整版本信息
+  - 原 `_meta.name` 是 `"SingBox Smart Full"`（与文件定位"精简基础模板"不符）——保留 name 字段但本次 bump 到 `v5.2.6-sing.3` 时顺手补齐 `version` / `build` / `baseline` / `changelog` 四个字段，与 `singbox-smart-full.json` 的 _meta 块对齐。
+  - `singbox-smart-full.json` 由 `generate-singbox-full.js` 生成，其 _meta 下次生成时会自动 bump；本次未手工动它。
+
+### 未动的相关事项（审计提及但不改）
+
+- `singbox-smart.json` 的 `route.rules` 仍为 `[]`、`rule_set` 仍为 `[]` —— 按 `SingBox/README.md:23` 声明，本文件本就是"基础模板 / 快速体验 / 学习结构"，完整规则在 `singbox-smart-full.json`。**非 bug**。
+- 未来可把 README L23 的"4 rule-sets + 28 条内联规则"描述与现状对齐（另起小 PR）。
+
+头部版本号 v5.2.5-sing.2 → v5.2.6-sing.3（对齐主线 v5.2.6）。
+
 ## v5.2.5-sing.2 (2026-04-22) — 修复 sing-box 1.13 起起不来 + 重建基础模板
 
 用户升级 sing-box 到 1.13+ 会直接 FATAL 起不来：遗留配置里有 `type: "block"` 特殊 outbound，
