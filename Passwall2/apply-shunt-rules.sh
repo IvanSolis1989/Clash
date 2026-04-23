@@ -6,7 +6,7 @@
 # 用途：一次性在 Passwall2 中创建 28 条 shunt rule（含域名列表 + IP 列表），
 #       每条目标节点留空（NEED_CONFIG），用户之后到 LuCI 里手工选节点。
 #
-# 备注：Passwall 和 Passwall2 是 xiaorouji 并行维护的两款插件，UCI key 不同
+# 备注：Passwall 和 Passwall2 是 Openwrt-Passwall 组织（原 xiaorouji 个人仓库迁入）并行维护的两款插件，UCI key 不同
 #       （passwall vs passwall2）。本脚本默认操作 Passwall2；若你用 Passwall，
 #       把 CONFIG_NAME 从 "passwall2" 改为 "passwall" 即可——规则语法完全相同。
 #

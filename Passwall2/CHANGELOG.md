@@ -25,7 +25,7 @@
 ### FIX#P2-02：定位关系说反
 
 - **问题**：初版 README 称 Passwall 为"旧版"、Passwall2 为"新版/降级版"，暗示线性继承。错。
-- **官方事实**（均为 2025-2026 年持续发版）：Passwall 与 Passwall2 是作者 `xiaorouji`（现 `Openwrt-Passwall` org）**并行维护**的两款独立插件。Passwall 最新 `26.4.15-1`（2026-04-15）、Passwall2 最新 `26.4.20-1`（2026-04-19），相差 4 天。社区解读（[Discussion #555](https://github.com/Openwrt-Passwall/openwrt-passwall2/discussions/555)）：**Passwall2 像是 Xray/Sing-box 的 UI，抛弃了直连/屏蔽/GFW 列表，只保留 keyword/domain/geosite/geoip 分流**。
+- **官方事实**（均为 2025-2026 年持续发版）：Passwall 与 Passwall2 现在由 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织**并行维护**（原 `xiaorouji` 个人仓库已于 2025 年前后迁入该组织，旧 URL `github.com/xiaorouji/openwrt-passwall*` 会自动 301 跳转到新地址）。Passwall 最新 `26.4.15-1`（2026-04-15）、Passwall2 最新 `26.4.20-1`（2026-04-19），相差 4 天。社区解读（[Discussion #555](https://github.com/Openwrt-Passwall/openwrt-passwall2/discussions/555)）：**Passwall2 像是 Xray/Sing-box 的 UI，抛弃了直连/屏蔽/GFW 列表，只保留 keyword/domain/geosite/geoip 分流**。
 - **修复**：
   - README 头部目标行重写为"Passwall（全功能）+ Passwall2（精简分流），并行维护，规则语法同源"
   - 踩坑段"Passwall 旧版语法稍不同"重写为"混淆 Passwall / Passwall2"
@@ -34,7 +34,10 @@
 
 ### 附带修正
 
-- 注释"iceeeder / xiaorouter 等社区分支"措辞去掉（`xiaorouji` 本人已迁 `Openwrt-Passwall` org 维护，官方即主流）
+- **所有权澄清**（用户二次指出）：Passwall/Passwall2 早已从 `xiaorouji` 个人账号迁入 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织名下（访问旧 URL 会 301）。本次补全了两处遗漏：
+  - 根 `README.md:407` 致谢段的 `github.com/xiaorouji/openwrt-passwall2` 链接 → `github.com/Openwrt-Passwall/openwrt-passwall2`
+  - README / CHANGELOG / CLAUDE.md / apply-shunt-rules.sh 里"xiaorouji 维护"的措辞统一改为"`Openwrt-Passwall` 组织维护（原 `xiaorouji` 个人仓库迁入）"
+- 注释"iceeeder / xiaorouter 等社区分支"措辞去掉（项目已由 `Openwrt-Passwall` 组织接管维护，个人分叉早已非主流）
 - `apply-shunt-rules.sh` 加注释：Passwall 用户把 `CONFIG_NAME` 改为 `passwall` 即可复用
 - 头部版本号：`v5.2.5-pw2.1` → `v5.2.6-pw2.2`（对齐 Clash Party 主线 v5.2.6）
 

@@ -2,7 +2,7 @@
 
 > 配置参考：`Passwall2/` 目录  
 > 版本：**v5.2.6-pw2.2**（Build 2026-04-23）  
-> 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）+ **[Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)**（精简分流版）—— `xiaorouji` 并行维护的两款 OpenWrt 插件，**规则语法同源**（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
+> 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）+ **[Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)**（精简分流版）—— [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已迁入）并行维护的两款 OpenWrt 插件，**规则语法同源**（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
 > 架构：28 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
 
 ---
@@ -55,7 +55,7 @@
 - ❌ **规则多了顺序错乱**：Passwall2 按列表顺序匹配，**把"国内网站"/"广告拦截"放最前或最后**，业务规则放中间
 - ❌ **geosite 关键字不识别**：确认 Passwall2 的 xray/sing-box 核已下载 `geosite.dat`（LuCI → 全局设置 → 规则资源设置里有个"更新 geosite.dat / geoip.dat"按钮）
 - ❌ **节点换了规则都白写**：这是 Passwall 的固有限制，没办法。想避开就换 OpenClash
-- ❌ **混淆 Passwall 和 Passwall2**：这两款是同作者 `xiaorouji` **并行维护**的两款插件（**不是**新旧关系；最新发版仅差 4 天）。Passwall = 全功能（有直连/屏蔽/GFW/代理 4 列表 + 分流），Passwall2 = 精简分流（只有 keyword/domain/geosite/geoip 匹配）。**规则语法两者完全相同**（共用 `shunt_rules.lua` 解析器），本目录的 28 个 `.list` 同时适用。
+- ❌ **混淆 Passwall 和 Passwall2**：这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库迁入）**并行维护**的两款插件（**不是**新旧关系；最新发版仅差 4 天）。Passwall = 全功能（有直连/屏蔽/GFW/代理 4 列表 + 分流），Passwall2 = 精简分流（只有 keyword/domain/geosite/geoip 匹配）。**规则语法两者完全相同**（共用 `shunt_rules.lua` 解析器），本目录的 28 个 `.list` 同时适用。
 
 ---
 
