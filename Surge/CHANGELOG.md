@@ -1,6 +1,6 @@
 # Surge — 变更日志
 
-> `Surge/surge-smart.conf` 的变更日志。主版本号跟随 Clash Party 主线；尾段 `-Surge.N` 独立递增。
+> `Surge/Surge.conf` 的变更日志。主版本号跟随 Clash Party 主线；尾段 `-Surge.N` 独立递增。
 
 ---
 

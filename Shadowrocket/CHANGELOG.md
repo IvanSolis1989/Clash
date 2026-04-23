@@ -1,6 +1,6 @@
 # Shadowrocket — 变更日志
 
-> `Shadowrocket/shadowrocket-smart.conf` 的变更日志。
+> `Shadowrocket/Shadowrocket.conf` 的变更日志。
 > 主版本号跟随 Clash Party 主线；尾段（`-SR.N`）独立递增。
 
 ---
@@ -10,9 +10,9 @@
 跨产物审计（PR #65）发现 CLAUDE.md §3.3 硬约束违反：
 
 - ★ **FIX#SR-03-P1**：`FINAL,🐟 漏网之鱼` → `FINAL,🐟 漏网之鱼,dns-failed`
-  - 文件：`Shadowrocket/shadowrocket-smart.conf:1340`
+  - 文件：`Shadowrocket/Shadowrocket.conf:1340`
   - 原因：Shadowrocket 的 FINAL 规则默认只在**规则表走完**后兜底；DNS 超时/解析失败**不会**自动落入 FINAL，会直接报错。带上 `dns-failed` 标志后 DNS 失败也会走兜底节点。
-  - 权威：CLAUDE.md §3.3 明文规定 `FINAL,🐟 漏网之鱼,dns-failed`；同仓库 `Surge/surge-smart.conf:1321` 已对齐。
+  - 权威：CLAUDE.md §3.3 明文规定 `FINAL,🐟 漏网之鱼,dns-failed`；同仓库 `Surge/Surge.conf:1321` 已对齐。
   - 同期审计确认：Loon / Quantumult X 官方文档**未记载** `dns-failed` 标志——Loon `final_rule` 页无说明、QX `sample.conf` 只有 `final, <policy>` 形态，按 CLAUDE.md §2.3 保守原则**不添加**。
 
 头部版本号 v5.2.5-SR.3 → v5.2.6-SR.4（对齐主线 v5.2.6）。

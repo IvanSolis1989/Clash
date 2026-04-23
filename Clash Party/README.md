@@ -1,8 +1,8 @@
 # Clash Party / Clash Verge / Mihomo Party 使用教程
 
 > 覆写脚本：**两份二选一**，规则 100% 等价，仅 9 个区域组的内核选路算法不同
-> - `Clash Smart内核覆写脚本.js`（**v5.2.5**，2026-04-20）— Smart 内核 + LightGBM ML 评估
-> - `Clash 普通内核覆写脚本.js`（**v5.2.5-normal.1**，2026-04-22）— 普通内核 url-test 延迟选路
+> - `ClashParty(mihomo-smart).js`（**v5.2.5**，2026-04-20）— Smart 内核 + LightGBM ML 评估
+> - `ClashParty(mihomo).js`（**v5.2.5-normal.1**，2026-04-22）— 普通内核 url-test 延迟选路
 >
 > UI 补充配置：已整合到本文「四、粘贴 UI 补充配置」章节
 > 架构：**SUB-STORE 多机场融合** + 9 区域组 + 28 业务策略组 + **373+ rule-providers**
@@ -18,7 +18,7 @@
 
 同目录下两个脚本**规则、策略组、rule-providers、DNS/嗅探完全一致**，唯一区别在 9 个区域组内部如何从候选节点里挑一个具体出站：
 
-| 维度 | `Clash Smart内核覆写脚本.js`（Smart 版） | `Clash 普通内核覆写脚本.js`（普通版） |
+| 维度 | `ClashParty(mihomo-smart).js`（Smart 版） | `ClashParty(mihomo).js`（普通版） |
 |------|---------------------------------------|-------------------------------------|
 | 区域组 `type` | `smart` | `url-test` |
 | 选路算法 | **LightGBM ML 模型**（历史延迟 + 丢包 + 抖动 + 粘性会话综合评分） | 纯 **URL 延迟探测**（最低延迟胜出） |
@@ -48,7 +48,7 @@
 
 ### 我要准备什么？
 1. **一个机场订阅 URL**。机场 = 代理服务商，你花几十块一个月订阅一家，他给你一个长长的 URL（`https://xxx.com/subscribe?token=yyy` 这种）。本仓库**不提供订阅**，只提供配置模板。
-2. **本仓库里的 `Clash Smart内核覆写脚本.js`**（或 `Clash 普通内核覆写脚本.js`，二选一，见本文开头的对比表）。
+2. **本仓库里的 `ClashParty(mihomo-smart).js`**（或 `ClashParty(mihomo).js`，二选一，见本文开头的对比表）。
 3. **三选一的客户端**：Mihomo Party / Clash Verge Rev / Clash Nyanpasu。**推荐 Mihomo Party**（不用你自己下载 mihomo 内核，开箱即用）。
 
 ### 术语速查（遇到不懂就回来翻）
@@ -153,7 +153,7 @@ Clash Party 系列（Mihomo Party / Clash Verge Rev / Clash Nyanpasu）底层都
 1. 左侧菜单 → **覆写（Override）** → 右上角 ➕。
 2. 类型选择 **JavaScript（.js）**。
 3. 名称：`Clash Smart v5.2.5` 或 `Clash Normal v5.2.5`（根据你粘贴的那份）。
-4. 内容：复制 `Clash Party/Clash Smart内核覆写脚本.js` **或** `Clash Party/Clash 普通内核覆写脚本.js` 的**全文**粘贴进去（两份脚本都在 2200+ 行左右）。
+4. 内容：复制 `Clash Party/ClashParty(mihomo-smart).js` **或** `Clash Party/ClashParty(mihomo).js` 的**全文**粘贴进去（两份脚本都在 2200+ 行左右）。
 5. 保存。
 6. 返回「订阅」页面，右键你的订阅 → **编辑** → **启用覆写** → 勾选刚才的脚本 → 保存（**只勾一份**，不要同时启用）。
 7. 切换到该订阅，点击「**连接**」。
@@ -348,7 +348,7 @@ sniffer:
   ```
   https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin
   ```
-- 或直接改用 **`Clash 普通内核覆写脚本.js`**，它用的是 url-test，不需要 LightGBM 模型。
+- 或直接改用 **`ClashParty(mihomo).js`**，它用的是 url-test，不需要 LightGBM 模型。
 
 ### Q6：Smart 版与普通版可以切换吗？切换后订阅要不要重新导入？
 - **可以任意切换**，两份脚本输出的 `proxy-groups / rules / rule-providers` 完全等价，客户端下次刷新订阅时自动重新生成。
@@ -360,8 +360,8 @@ sniffer:
 
 | 文件 | 用途 |
 |------|------|
-| `Clash Smart内核覆写脚本.js` | **Smart 版**覆写脚本（区域组 `type: smart` + LightGBM），粘贴到客户端 JS 覆写区 |
-| `Clash 普通内核覆写脚本.js` | **普通版**覆写脚本（区域组 `type: url-test`，不依赖 Alpha 内核），规则与 Smart 版等价 |
+| `ClashParty(mihomo-smart).js` | **Smart 版**覆写脚本（区域组 `type: smart` + LightGBM），粘贴到客户端 JS 覆写区 |
+| `ClashParty(mihomo).js` | **普通版**覆写脚本（区域组 `type: url-test`，不依赖 Alpha 内核），规则与 Smart 版等价 |
 | `README.md`（本文第四章） | DNS / Sniffer / GeoX URL，粘贴到客户端 Mixin 区 |
 | `CHANGELOG.md` | 变更历史（两份脚本共用，以 Clash Party 主版本号为准） |
 

@@ -16,8 +16,8 @@
 - **修复**：全局 `domain-suffix:` → `domain:`（子域名匹配，等价 Clash `DOMAIN-SUFFIX` 语义）：
   - 28 个 `shunt-rules/*.list`：~94 行
   - `README.md`：96 处
-  - `passwall2-smart-shunt.conf`：94 处
-  - `apply-shunt-rules.sh`：94 处
+  - `Passwall2(xray+sing-box).conf`：94 处
+  - `Passwall2(xray+sing-box)-apply.sh`：94 处
   - **合计 ~378 处**
 - **README 新增完整语法表**（8 种前缀），并加 ⚠️ 警告"不要用 Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` / `DOMAIN,` / `IP-CIDR,` 前缀"。
 - **权威源**：https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua
@@ -36,9 +36,9 @@
 
 - **所有权澄清**（用户二次指出）：Passwall/Passwall2 早已从 `xiaorouji` 个人账号迁入 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织名下（访问旧 URL 会 301）。本次补全了两处遗漏：
   - 根 `README.md:407` 致谢段的 `github.com/xiaorouji/openwrt-passwall2` 链接 → `github.com/Openwrt-Passwall/openwrt-passwall2`
-  - README / CHANGELOG / CLAUDE.md / apply-shunt-rules.sh 里"xiaorouji 维护"的措辞统一改为"`Openwrt-Passwall` 组织维护（原 `xiaorouji` 个人仓库迁入）"
+  - README / CHANGELOG / CLAUDE.md / Passwall2(xray+sing-box)-apply.sh 里"xiaorouji 维护"的措辞统一改为"`Openwrt-Passwall` 组织维护（原 `xiaorouji` 个人仓库迁入）"
 - 注释"iceeeder / xiaorouter 等社区分支"措辞去掉（项目已由 `Openwrt-Passwall` 组织接管维护，个人分叉早已非主流）
-- `apply-shunt-rules.sh` 加注释：Passwall 用户把 `CONFIG_NAME` 改为 `passwall` 即可复用
+- `Passwall2(xray+sing-box)-apply.sh` 加注释：Passwall 用户把 `CONFIG_NAME` 改为 `passwall` 即可复用
 - 头部版本号：`v5.2.5-pw2.1` → `v5.2.6-pw2.2`（对齐 Clash Party 主线 v5.2.6）
 
 ### 对其他产物的联动评估（按 CLAUDE.md §1.5 同构审计）
@@ -57,8 +57,8 @@
 - ★ 初版：从 Clash Party v5.2.5 基线手工展平为 Passwall2 shunt rule 格式
 - ★ **三种格式交付**（按用户需求选一种）：
   - `shunt-rules/01-ai-service.list` ~ `28-ads.list`（28 个独立文件，每个含域名列表 + IP 列表注释；方便 LuCI UI 单条复制粘贴）
-  - `passwall2-smart-shunt.conf`（单文件合并版，28 条规则全貌参考）
-  - `apply-shunt-rules.sh`（UCI 批量脚本；`scp` 到路由器 + `sh apply-shunt-rules.sh` 一次性创建 28 条空节点规则，再到 LuCI 逐条指定目标节点）
+  - `Passwall2(xray+sing-box).conf`（单文件合并版，28 条规则全貌参考）
+  - `Passwall2(xray+sing-box)-apply.sh`（UCI 批量脚本；`scp` 到路由器 + `sh Passwall2(xray+sing-box)-apply.sh` 一次性创建 28 条空节点规则，再到 LuCI 逐条指定目标节点）
 - ★ 28 条 shunt rule 覆盖 28 业务分类，每条包含：
   - 推荐节点区域（对应 Clash Party 9 区域组，用户在 Passwall2 里创建负载均衡组时参照）
   - 域名列表（`geosite:xxx` 为主 + `domain-suffix:xxx` 补充）

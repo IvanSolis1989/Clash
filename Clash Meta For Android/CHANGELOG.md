@@ -1,6 +1,6 @@
 # Clash Meta For Android (CMFA) — 变更日志
 
-> `Clash Meta For Android/clash-smart-cmfa.yaml` 的变更日志。
+> `Clash Meta For Android/CMFA(mihomo).yaml` 的变更日志。
 > 主版本号跟随 Clash Party 主线。
 
 ---
@@ -19,7 +19,7 @@
   - iOS VPN Extension 50 MB 内存硬顶 → 本 YAML 使用 `.mrs` 二进制 + 懒加载，不触发 OOM。
   - iOS 端 IP-ASN 不可用 → 本 YAML 未使用 ASN 规则。
   - `tun:` 由 App UI 托管 → 本 YAML 未写 `tun:` 段，天然兼容。
-- **版本号策略**：本次仅改 `README.md` / `CHANGELOG.md` / 根 `README.md` / `CLAUDE.md`，**未触及** `clash-smart-cmfa.yaml`，故不 bump YAML 版本号。
+- **版本号策略**：本次仅改 `README.md` / `CHANGELOG.md` / 根 `README.md` / `CLAUDE.md`，**未触及** `CMFA(mihomo).yaml`，故不 bump YAML 版本号。
 
 ## v5.2.6 (2026-04-22)
 

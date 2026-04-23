@@ -1,13 +1,13 @@
 # OpenClash — 变更日志
 
-> 覆盖 `OpenClash/openclash_custom_overwrite.sh`（Slim，轻量版）+
-> `OpenClash/openclash_custom_overwrite_full.sh`（Full，完整版）。
+> 覆盖 `OpenClash/OpenClash(mihomo).sh`（Slim，轻量版）+
+> `OpenClash/OpenClash(mihomo-smart).sh`（Full，完整版）。
 >
 > 两份脚本版本号各自独立递增，但主版本号跟随 Clash Party 主线。
 
 ---
 
-## Normal（`openclash_custom_overwrite_normal.sh`，非 Smart 内核 / url-test 版）
+## Normal（`OpenClash(mihomo).sh`，非 Smart 内核 / url-test 版）
 
 ### v5.2.6-oc-normal.1 (2026-04-22)
 
@@ -20,7 +20,7 @@
     `/SG/i` 子串命中 `SGP`，这三个本次无需改（Ruby 正则无 word boundary，与 JS 行为不同）
   - 同步 Clash Party v5.2.6 FIX#24
 
-## Slim（`openclash_custom_overwrite.sh`）
+## Slim（`OpenClash(mihomo).sh`）
 
 ### v5.3.5-dedup-acc-china (2026-04-20)
 
@@ -63,7 +63,7 @@
 
 ---
 
-## Full（`openclash_custom_overwrite_full.sh`）
+## Full（`OpenClash(mihomo-smart).sh`）
 
 ### v5.2.6-oc-full.1 (2026-04-22)
 
@@ -98,7 +98,7 @@
 ### v5.2.3-oc-full.1 (2026-04-20)
 
 - ★ 同步 Clash Party v5.2.3 FIX#21-P1：BBC / Snapchat(Snap) 规则从 blackmatrix7 classical yaml 切换到 MetaCubeX meta-rules-dat 的 `.mrs` geosite（domain + mrs），消除 mihomo 对 `USER-AGENT,BBCiPlayer*` 与 `USER-AGENT,TikTok*` 的解析警告。
-- ★ **CRITICAL FIX**：删除被意外追加在末尾的 slim `rule-providers`(136) + `rules`(678) 块（原文件 6115 行 → 4285 行）。Ruby 的 Psych YAML 解析器对重复顶层键遵循 "last-wins" 规则，之前这两个追加块会静默覆盖前面的 full 块，导致 `openclash_custom_overwrite_full.sh` 实际运行时跑的是 slim 内容，并且 slim 块里 ad-block providers 还错用了 `proxy: DIRECT`。修复后 OC full 真正实现了与 Clash Party 主线的规则数量对齐。
+- ★ **CRITICAL FIX**：删除被意外追加在末尾的 slim `rule-providers`(136) + `rules`(678) 块（原文件 6115 行 → 4285 行）。Ruby 的 Psych YAML 解析器对重复顶层键遵循 "last-wins" 规则，之前这两个追加块会静默覆盖前面的 full 块，导致 `OpenClash(mihomo-smart).sh` 实际运行时跑的是 slim 内容，并且 slim 块里 ad-block providers 还错用了 `proxy: DIRECT`。修复后 OC full 真正实现了与 Clash Party 主线的规则数量对齐。
 - ★ 头部注释按 `CLAUDE.md §1.3` 扩展（介绍 / 架构 / 变更日志 / 基线对齐声明）。
 
 ### v5.2.2-oc-full (初版)

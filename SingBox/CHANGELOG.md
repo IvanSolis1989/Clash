@@ -1,27 +1,27 @@
 # SingBox — 变更日志
 
-> `SingBox/singbox-smart.json`（精简）+ `SingBox/singbox-smart-full.json`（完整，由脚本生成）的变更日志。
+> `SingBox/SingBox(sing-box).json`（精简）+ `SingBox/SingBox(sing-box)-full.json`（完整，由脚本生成）的变更日志。
 > 主版本号跟随 Clash Party 主线。
 
 ---
 
-## v5.2.6-sing.3 (2026-04-23) — `singbox-smart.json` 补 `route.final` + 注入 `_meta` 块
+## v5.2.6-sing.3 (2026-04-23) — `SingBox(sing-box).json` 补 `route.final` + 注入 `_meta` 块
 
 跨产物审计（PR #65）发现 CLAUDE.md §3.3 硬约束违反：
 
-- ★ **FIX#sing-01-P1**：`singbox-smart.json` 的 `route` 对象缺 `final` 字段
+- ★ **FIX#sing-01-P1**：`SingBox(sing-box).json` 的 `route` 对象缺 `final` 字段
   - 当前：`"route": { "auto_detect_interface": true, "rules": [] }`
   - 修复：`"route": { "auto_detect_interface": true, "final": "🐟 漏网之鱼", "rules": [] }`
   - 原因：sing-box 规范要求 `route.final` 指定兜底 outbound。缺字段时若 `rules` 为空（本文件就是最小模板），**流量无归属**会走到 outbounds 第一个（通常是 🚀 节点选择），和基线语义不符。
   - 权威：CLAUDE.md §3.3 明文 `route.final: "🐟 漏网之鱼"`；sing-box 官方 [route 配置](https://sing-box.sagernet.org/configuration/route/)。
 
 - ★ **FIX#sing-02-P2**（顺手修）：`experimental._meta` 注入完整版本信息
-  - 原 `_meta.name` 是 `"SingBox Smart Full"`（与文件定位"精简基础模板"不符）——保留 name 字段但本次 bump 到 `v5.2.6-sing.3` 时顺手补齐 `version` / `build` / `baseline` / `changelog` 四个字段，与 `singbox-smart-full.json` 的 _meta 块对齐。
-  - `singbox-smart-full.json` 由 `generate-singbox-full.js` 生成，其 _meta 下次生成时会自动 bump；本次未手工动它。
+  - 原 `_meta.name` 是 `"SingBox Smart Full"`（与文件定位"精简基础模板"不符）——保留 name 字段但本次 bump 到 `v5.2.6-sing.3` 时顺手补齐 `version` / `build` / `baseline` / `changelog` 四个字段，与 `SingBox(sing-box)-full.json` 的 _meta 块对齐。
+  - `SingBox(sing-box)-full.json` 由 `SingBox(sing-box)-generator.js` 生成，其 _meta 下次生成时会自动 bump；本次未手工动它。
 
 ### 未动的相关事项（审计提及但不改）
 
-- `singbox-smart.json` 的 `route.rules` 仍为 `[]`、`rule_set` 仍为 `[]` —— 按 `SingBox/README.md:23` 声明，本文件本就是"基础模板 / 快速体验 / 学习结构"，完整规则在 `singbox-smart-full.json`。**非 bug**。
+- `SingBox(sing-box).json` 的 `route.rules` 仍为 `[]`、`rule_set` 仍为 `[]` —— 按 `SingBox/README.md:23` 声明，本文件本就是"基础模板 / 快速体验 / 学习结构"，完整规则在 `SingBox(sing-box)-full.json`。**非 bug**。
 - 未来可把 README L23 的"4 rule-sets + 28 条内联规则"描述与现状对齐（另起小 PR）。
 
 头部版本号 v5.2.5-sing.2 → v5.2.6-sing.3（对齐主线 v5.2.6）。
@@ -33,8 +33,8 @@
 同时 `dns.servers[*]` 用了 legacy `"address": "https://..."` 字段，1.12 起废弃、1.14 移除
 （[dns server legacy](https://sing-box.sagernet.org/configuration/dns/server/legacy/)）。
 
-复核还发现基础模板 `SingBox/singbox-smart.json` 在 commit `da56387` 被误删（只剩生成产物
-`singbox-smart-full.json`），`generate-singbox-full.js` 实际一直跑不起来。
+复核还发现基础模板 `SingBox/SingBox(sing-box).json` 在 commit `da56387` 被误删（只剩生成产物
+`SingBox(sing-box)-full.json`），`SingBox(sing-box)-generator.js` 实际一直跑不起来。
 
 ### 本次改动
 
@@ -45,15 +45,15 @@
   - `dns_direct`: `address: "https://223.5.5.5/dns-query"` → `type: "https", server: "223.5.5.5"`
   - `dns_proxy`:  `address: "https://1.1.1.1/dns-query"`   → `type: "https", server: "1.1.1.1"`
   - `dns_block` (`rcode://success`)：整条删除，referring DNS rule 改用 `action: "reject"`（广告 geosite 规则）
-- ★ FIX#sing-03-P1：**重建 `SingBox/singbox-smart.json` 基础模板**
+- ★ FIX#sing-03-P1：**重建 `SingBox/SingBox(sing-box).json` 基础模板**
   - 从 v5.2.5-sing.1 的 full.json 反推，剥掉 generator 会填的 `route.rule_set` / `route.rules` / `route.final`
-  - 注入所有 sing-box 1.12+ 修复到基础模板，后续 `node SingBox/generate-singbox-full.js` 跑起来就能产出正确的 full.json
+  - 注入所有 sing-box 1.12+ 修复到基础模板，后续 `node SingBox/SingBox(sing-box)-generator.js` 跑起来就能产出正确的 full.json
 - ★ 注入 `experimental._meta`（`version=v5.2.5-sing.2`、`build=2026-04-22`、`baseline=Clash Party v5.2.5`、`changelog=见 SingBox/CHANGELOG.md`）
-- 重新生成 `singbox-smart-full.json`（51 outbounds + 975 rules + 391 rule_set）
+- 重新生成 `SingBox(sing-box)-full.json`（51 outbounds + 975 rules + 391 rule_set）
 
 ### 自检
 
-- `sing-box check -c singbox-smart-full.json` 期望通过（1.12 / 1.13 / 1.14 均可）
+- `sing-box check -c SingBox(sing-box)-full.json` 期望通过（1.12 / 1.13 / 1.14 均可）
 - `outbounds[*].type == "block"` 出现次数：0 ✓
 - `dns.servers[*].address`（legacy）出现次数：0 ✓
 - 任意 selector.outbounds 列表引用 `🚫 拦截`：0 ✓
@@ -64,9 +64,10 @@
 ### 生成工作流
 
 ```
-node SingBox/generate-singbox-full.js
-# 读 SingBox/singbox-smart.json（本次重建好的 base）+ Clash Party 主线 JS
-# 产出 SingBox/singbox-smart-full.json
+# 路径里的 ( ) 是 shell 语法 token，必须加引号
+node 'SingBox/SingBox(sing-box)-generator.js'
+# 读 SingBox/SingBox(sing-box).json（本次重建好的 base）+ Clash Party 主线 JS
+# 产出 SingBox/SingBox(sing-box)-full.json
 ```
 
 ### 官方文档证据
@@ -80,13 +81,13 @@ node SingBox/generate-singbox-full.js
 
 ## v5.2.5-sing.1 (2026-04-20)
 
-- ★ 跟随 Clash Party v5.2.5 FIX#23-P1 重新生成：`acc-geositecn` + `acc-china` 两个 rule_set 从 `singbox-smart-full.json` 消失
-- 重新生成命令：`node SingBox/generate-singbox-full.js`
+- ★ 跟随 Clash Party v5.2.5 FIX#23-P1 重新生成：`acc-geositecn` + `acc-china` 两个 rule_set 从 `SingBox(sing-box)-full.json` 消失
+- 重新生成命令：`node SingBox/SingBox(sing-box)-generator.js`
 - 结果：`route.rules` 977 → 975；`route.rule_set` 对应减 2 项
 
 ## v5.2.3-sing.1 (2026-04-20)
 
-- ★ Full 版本由 `SingBox/generate-singbox-full.js` 从 Clash Party v5.2.3 JS 主线自动提取：
+- ★ Full 版本由 `SingBox/SingBox(sing-box)-generator.js` 从 Clash Party v5.2.3 JS 主线自动提取：
   - 387 rule_set 入口
   - 977 条路由规则
 - ★ DNS / Sniffer / GEO 增强：

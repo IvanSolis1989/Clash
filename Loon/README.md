@@ -1,6 +1,6 @@
 # Loon 使用教程（对齐 Clash Party v5.2.4）
 
-> 配置文件：`Loon/loon-smart.conf`
+> 配置文件：`Loon/Loon.conf`
 > 版本：**v5.2.4-Loon.4**（Build 2026-04-22，288 条 RULE-SET 迁移至 [Remote Rule] 段；此前累计修 v5.2.4-Loon.2/.3，见 `Loon/CHANGELOG.md`）
 > 目标：**Loon iOS（App Store 付费正版）**
 > 架构：9 区域 url-test 组（[Remote Filter] NameRegex）+ 28 业务策略组 + 288 [Remote Rule] 订阅规则集
@@ -17,7 +17,7 @@
 2. **非中国区 Apple ID**
 3. **💸 Loon 付费**：约 **¥198 / 区**（~$28）
 4. **一个机场订阅 URL**
-5. **本仓库的 `loon-smart.conf`**，托管到 URL
+5. **本仓库的 `Loon.conf`**，托管到 URL
 
 ### Loon 值不值这个价？替代品对比
 | | Shadowrocket | **Loon** | Surge | QX |
@@ -36,7 +36,7 @@
 
 ### 3 步走完
 1. **App Store 搜 "Loon" → 购买 → 安装 → 允许 VPN 权限**。
-2. **导入配置**：把 `loon-smart.conf` 托管到 URL → Loon → 配置 → ⊕ → 从 URL 下载 → 启用。配置里 `geoip-url` 已指向 Loyalsoldier 加强版 MMDB，首次启用会自动下载，**无需**再去 UI 手动填。
+2. **导入配置**：把 `Loon.conf` 托管到 URL → Loon → 配置 → ⊕ → 从 URL 下载 → 启用。配置里 `geoip-url` 已指向 Loyalsoldier 加强版 MMDB，首次启用会自动下载，**无需**再去 UI 手动填。
 3. **加机场订阅**：底部「节点」→ ⊕ → 粘贴机场订阅 URL → 下载。Loon 会按配置里 `[Remote Filter]` 的 9 条 NameRegex 自动把节点分到 🌍 / 🇭🇰 / 🇹🇼 / 🇯🇵日韩 / 🌏亚太 / 🇺🇸 / 🇪🇺 / 🌎美洲 / 🌍非洲 九个区域组。
 
 ### 跑起来验证？
@@ -48,7 +48,7 @@
 ### 最常见踩坑
 - ❌ **规则集下载失败**：首次安装**必须先开代理**（没代理则 GitHub/jsDelivr 访问不稳定）；Loon → 设置 → 自动更新配置 调频率。
 - ❌ **区域组里没有节点**：检查 Loon 是否识别了 `[Remote Filter]` 段；如果机场节点命名奇葩（例如纯英文代号），可能没匹配到 FilterKey，打开 Loon → 过滤器 → 手动 Edit 调 regex。
-- ❌ **我把 Surge 的 `surge-smart.conf` 直接给 Loon 行不行**：**不行**。`bypass-system` / `tun-excluded-routes` / `ipv6-enabled` / `udp-policy-not-supported-behaviour` / `hijack-dns` / `encrypted-dns-server` / url-test 的 `policy-regex-filter=` 这些 Loon 全都不识别，配置会大面积沉默失效。**用本目录的 `loon-smart.conf`**（v5.2.4-Loon.2 已完整对齐 Loon 官方语法）。
+- ❌ **我把 Surge 的 `Surge.conf` 直接给 Loon 行不行**：**不行**。`bypass-system` / `tun-excluded-routes` / `ipv6-enabled` / `udp-policy-not-supported-behaviour` / `hijack-dns` / `encrypted-dns-server` / url-test 的 `policy-regex-filter=` 这些 Loon 全都不识别，配置会大面积沉默失效。**用本目录的 `Loon.conf`**（v5.2.4-Loon.2 已完整对齐 Loon 官方语法）。
 - ❌ **想要 LightGBM**：Loon 不是 mihomo 内核，不支持。要就用桌面端 Clash Verge Rev / Mihomo Party。
 
 ---
@@ -104,9 +104,9 @@ Loon 在 iOS 上的协议覆盖面仅次于 Shadowrocket，**比 Surge 多了 VL
 
 Loon 必须从 URL 安装配置（和 Surge 一样）：
 
-1. 把 `loon-smart.conf` 托管到可访问 URL：
-   - GitHub Raw：`https://raw.githubusercontent.com/<user>/<repo>/main/Loon/loon-smart.conf`
-   - jsDelivr：`https://cdn.jsdelivr.net/gh/<user>/<repo>@main/Loon/loon-smart.conf`
+1. 把 `Loon.conf` 托管到可访问 URL：
+   - GitHub Raw：`https://raw.githubusercontent.com/<user>/<repo>/main/Loon/Loon.conf`
+   - jsDelivr：`https://cdn.jsdelivr.net/gh/<user>/<repo>@main/Loon/Loon.conf`
    - 自建 HTTPS
 2. 打开 Loon → 底部 **配置（Config）** 标签。
 3. 右上角 **⊕** → 粘贴 URL → **下载**。
@@ -247,8 +247,8 @@ Parsec / Zoom / Pornhub / Wayback）：
 
 ## 十、常见问题
 
-### Q1：我能直接导入 Surge 的 `surge-smart.conf` 到 Loon 吗？
-- **不能**。Surge 的 `bypass-system` / `tun-excluded-routes` / `ipv6-enabled` / `udp-policy-not-supported-behaviour` / `hijack-dns` / `encrypted-dns-server` / `geoip-maxmind-url` 都不是 Loon 字段；url-test 内联 `policy-regex-filter=` / `select=0` / `timeout=5` Loon 也不认；Clash classical `.yaml` RULE-SET Loon 解析不了。本目录的 `loon-smart.conf` 已经完整对齐 Loon 官方语法。
+### Q1：我能直接导入 Surge 的 `Surge.conf` 到 Loon 吗？
+- **不能**。Surge 的 `bypass-system` / `tun-excluded-routes` / `ipv6-enabled` / `udp-policy-not-supported-behaviour` / `hijack-dns` / `encrypted-dns-server` / `geoip-maxmind-url` 都不是 Loon 字段；url-test 内联 `policy-regex-filter=` / `select=0` / `timeout=5` Loon 也不认；Clash classical `.yaml` RULE-SET Loon 解析不了。本目录的 `Loon.conf` 已经完整对齐 Loon 官方语法。
 
 ### Q2：想要 Mihomo Smart + LightGBM 怎么办？
 - Loon 做不到，需换客户端。iOS 上目前没有支持 JS 覆写 + LightGBM 的客户端；桌面端用 Clash Verge Rev / Mihomo Party。
@@ -260,7 +260,7 @@ Parsec / Zoom / Pornhub / Wayback）：
 - Loon → **设置** → **自动更新配置**。默认每次启动都会轮询。
 
 ### Q5：我想用 Loon 的插件（Plugin）生态？
-- 本仓库的 `loon-smart.conf` 不依赖任何插件即可工作。你可以在 Loon 的「插件」面板额外叠加（例如去广告增强、签到脚本），不会冲突。
+- 本仓库的 `Loon.conf` 不依赖任何插件即可工作。你可以在 Loon 的「插件」面板额外叠加（例如去广告增强、签到脚本），不会冲突。
 
 ---
 

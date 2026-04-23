@@ -36,14 +36,14 @@
 | 文件 | 适合谁 | 用法 |
 |---|---|---|
 | **`shunt-rules/*.list`**（28 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall2 LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
-| **`passwall2-smart-shunt.conf`**（单文件合并版）| 想一眼看完 28 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
-| **`apply-shunt-rules.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh apply-shunt-rules.sh` → 一次性创建 28 条空节点规则 → 再到 LuCI 逐条指定节点 |
+| **`Passwall2(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 28 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
+| **`Passwall2(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh Passwall2(xray+sing-box)-apply.sh` → 一次性创建 28 条空节点规则 → 再到 LuCI 逐条指定节点 |
 
 ### 3 步走完
 1. **Passwall2 LuCI → 节点列表 → 添加订阅**：粘贴机场订阅 URL → 下载节点 → 分地区手动创建负载均衡组（如"🇺🇸 美国负载"把所有 US 节点加进来）
 2. **选一种方式导入 shunt rule**（见上表）：
    - 方式 A（手工）：为每个业务类别点「新增」→ 粘贴对应 `.list` 文件的内容 → 选择目标节点
-   - 方式 B（脚本）：`sh apply-shunt-rules.sh` 一次性创建 28 条空节点规则 → 在 LuCI 里给每条指定节点
+   - 方式 B（脚本）：`sh Passwall2(xray+sing-box)-apply.sh` 一次性创建 28 条空节点规则 → 在 LuCI 里给每条指定节点
 3. **回首页启用 Passwall2**，流量就按 28 条规则分流了
 
 ### 跑起来怎么验证？
@@ -79,9 +79,9 @@ Passwall2 根据你选的核提供不同协议，与 v2rayN 同理：
 
 ---
 
-## 📋 28 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `passwall2-smart-shunt.conf` 内容一致）
+## 📋 28 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall2(xray+sing-box).conf` 内容一致）
 
-> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall2/shunt-rules/`（如 `01-ai-service.list` / `06-social.list`），方便逐条复制。想一次性看全部 28 条的单文件版本：`Passwall2/passwall2-smart-shunt.conf`。
+> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall2/shunt-rules/`（如 `01-ai-service.list` / `06-social.list`），方便逐条复制。想一次性看全部 28 条的单文件版本：`Passwall2/Passwall2(xray+sing-box).conf`。
 
 每一条 = Passwall / Passwall2「分流控制」面板里点一次「新增」。按顺序添加。**第 24-28 条（国内/受限/国外/FINAL/广告）顺序很关键**。
 

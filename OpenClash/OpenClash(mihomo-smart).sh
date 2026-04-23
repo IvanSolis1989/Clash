@@ -2,40 +2,38 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash v5.2.6-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Clash Smart v5.2.6-oc-full.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
 # ============================================================================
-# 定位：与同目录 openclash_custom_overwrite_full.sh 规则 100% 等价的「非 Smart 内核」版本。
-#       两者唯一区别：9 个区域组从 type: smart（uselightgbm）换成 type: url-test。
-#       适用场景：
-#         - OpenClash 内核选的是 Meta(mihomo 稳定版) 而非 Meta Alpha，不支持 smart + LightGBM
-#         - 或者明确想关闭 LightGBM ML 评估、只靠经典 url-test 延迟选路
-#       需要 LightGBM 智能评估请改用 openclash_custom_overwrite_full.sh（Smart 版）。
+# 定位：对齐 Clash Party v5.2.4 JS 主线的 OpenClash 全量版本。
+#       与同目录 OpenClash(mihomo).sh（slim, 136 providers）互补：
+#         - slim  面向 1–4GB 路由器 / 低 OOM 风险
+#         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
 # 架构：
-#   • 9 url-test 区域组（interval 600s / tolerance 150ms / lazy：与 Smart 版同步延迟参数）
+#   • 9 Smart 区域组（uselightgbm: true + include-all-proxies: true）
 #   • 28 业务策略组
 #   • 387 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
 #   • ~977 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
-#   • Ruby 阶段做：节点过滤 / 区域分类 / url-test 组生成 / TLS 指纹注入
-# 基线：Clash Party v5.2.5（唯一主线）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+#   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
+# 基线：Clash Party v5.2.4（唯一主线）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
-# 变更历史：见 `OpenClash/CHANGELOG.md`（Normal 部分）。
+# 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v5.2.6-oc-normal.1"
+VERSION_TAG="v5.2.6-oc-full.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
-LOG_OUT "Info" "[Clash-Normal] $VERSION_TAG overwrite starting..."
-LOG_OUT "Info" "[Clash-Normal] Processing: $CONFIG_FILE"
-LOG_OUT "Info" "[Clash-Normal] Full-rule build (Clash Party parity, non-Smart kernel)"
+LOG_OUT "Info" "[Clash-Smart] $VERSION_TAG overwrite starting..."
+LOG_OUT "Info" "[Clash-Smart] Processing: $CONFIG_FILE"
+LOG_OUT "Info" "[Clash-Smart] Full-rule build (Clash Party parity)"
 
 # ============================================================================
 # OVERRIDE YAML
 # ============================================================================
-OVERRIDE_YAML="/tmp/clash_normal_override.yaml"
+OVERRIDE_YAML="/tmp/clash_smart_override.yaml"
 cat > "$OVERRIDE_YAML" << 'OVERRIDE_EOF'
 hosts:
   one.one.one.one:
@@ -309,8 +307,8 @@ OVERRIDE_EOF
 # 策略：
 #   ✓ 与 Clash Party 主线（BIZ.GFW = '🚫 受限网站'）一致：所有 provider 都走 GFW 组
 #     下载，在中国走代理、在印尼走 DIRECT，规避 jsdelivr/GitHub 冷启动死锁。
-#   ✓ 9 url-test 区域组 + 28 业务组 + 387 rule-providers + ~977 条规则
-#   ✓ 区域组统一 type: url-test + include-all-proxies / explicit proxies 分流
+#   ✓ 9 Smart 区域组 + 28 业务组 + 387 rule-providers + ~977 条规则
+#   ✓ Smart 组统一 uselightgbm: true + include-all-proxies: true
 #   ✓ TLS 指纹注入（Ruby 阶段 _simple_hash 分配）
 # ============================================================================
 cat >> "$OVERRIDE_YAML" << 'OVERRIDE_EOF'
@@ -4036,19 +4034,19 @@ OVERRIDE_EOF
 
 
 # ============================================================================
-# Ruby Script — 节点过滤、区域分类、url-test 组生成、TLS 指纹注入
-# ★ 核心架构：9 个区域组 type: url-test + include-all-proxies/explicit proxies ★
+# Ruby Script — 节点过滤、区域分类、Smart 组生成、TLS 指纹注入
+# ★ 核心架构不变：9 个 Smart 组全部 uselightgbm: true + include-all-proxies: true ★
 # ============================================================================
-RUBY_SCRIPT="/tmp/clash_normal_ruby.rb"
+RUBY_SCRIPT="/tmp/clash_smart_ruby.rb"
 cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 #!/usr/bin/env ruby
 # encoding: utf-8
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.2.6-oc-normal.1"
+VERSION = "v5.2.6-oc-full.1"
 
-STATUS_LOG = "/tmp/clash_normal_status.log"
+STATUS_LOG = "/tmp/clash_smart_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
 def status(msg); File.open(STATUS_LOG, 'a') { |f| f.puts(msg) }; end
 
@@ -4085,8 +4083,8 @@ REGIONS = {
   "HK"  => /香港|HK|Hong\s?Kong|🇭🇰/i,
   "TW"  => /台湾|台灣|TW|Taiwan|🇹🇼/i,
   "JP"  => /日本|JP|Japan|🇯🇵|Tokyo|Osaka/i,
-  # v5.2.6-oc-normal.1 FIX#24-P0: 补 KOR（TW/JP/SG 已能通过子串匹配命中 TWN/JPN/SGP，
-  #   但 KOR 不是 KR 的子串，原始 /KR/ 无法匹配 "KOR 01" 这类节点）
+  # v5.2.6-oc-full FIX#24-P0: 补 KOR（TW/JP/SG 子串匹配能命中 TWN/JPN/SGP，
+  #   但 KOR 不是 KR 的子串，原始 /KR/ 无法匹配 "KOR 01"）
   "KR"  => /韩国|韓國|KR|KOR|Korea|Korean|🇰🇷|Seoul/i,
   "SG"  => /新加坡|SG|Singapore|🇸🇬/i,
   "US"  => /美国|美國|US\b|USA|United\s?States|America|🇺🇸|Los\s?Angeles|New\s?York|Seattle|Silicon|San\s?Jose/i,
@@ -4156,14 +4154,15 @@ end
 buckets.each { |k, v| status "[region] #{GROUP_NAMES[k]}: #{v.size} nodes" }
 
 # ---------------------------------------------------------------
-# Phase 1c: 构建 9 个区域组（非 Smart 内核，使用 type: url-test）
-# 与 full 版唯一区别：type/uselightgbm/strategy/collectdata 替换为经典 url-test 字段集
-# 其余字段（url/interval/tolerance/lazy）完全保持一致，确保行为可比
+# Phase 1c: 构建 9 个 Smart 组（全部 uselightgbm: true）
 # ---------------------------------------------------------------
 def make_smart_group(name, proxies_filter_mode:, explicit_proxies: nil)
   g = {
     "name"               => name,
-    "type"               => "url-test",
+    "type"               => "smart",
+    "uselightgbm"        => true,
+    "collectdata"        => false,
+    "strategy"           => "sticky-sessions",
     "url"                => "https://cp.cloudflare.com/generate_204",
     "interval"           => 600,
     "tolerance"          => 150,
@@ -4182,10 +4181,10 @@ def make_smart_group(name, proxies_filter_mode:, explicit_proxies: nil)
 end
 
 smart_groups = []
-# 🌍 全球节点：包含所有节点，url-test 自动选路
+# 🌍 全球节点：全部节点参与 LightGBM 评估
 smart_groups << make_smart_group("🌍 全球节点", proxies_filter_mode: :include_all)
 
-# 8 个区域组：仅该区域节点参与 url-test
+# 8 个区域组：仅该区域节点参与
 %w[HK TW JP_KR US EU AM AF APAC].each do |gkey|
   gname = GROUP_NAMES[gkey]
   members = buckets[gkey].uniq
@@ -4219,7 +4218,7 @@ config["proxies"] = filtered_proxies
   config[key] = override[key] if override.key?(key)
 end
 
-# 清空并重建 proxy-groups：9 个 url-test 区域组在前，业务组在后
+# 清空并重建 proxy-groups：9 个 Smart 组在前，业务组在后
 override_biz_groups = override["proxy-groups"] || []
 config["proxy-groups"] = smart_groups + override_biz_groups
 
@@ -4241,30 +4240,30 @@ RUBY_EOF
 # ============================================================================
 # 执行 Ruby 脚本，读取状态日志，输出到 openclash 日志
 # ============================================================================
-LOG_OUT "Info" "[Clash-Normal] Executing Ruby processor..."
+LOG_OUT "Info" "[Clash-Smart] Executing Ruby processor..."
 
 # 清理状态日志，准备接收 Ruby 输出
-rm -f /tmp/clash_normal_status.log
+rm -f /tmp/clash_smart_status.log
 
 # 执行 Ruby 处理脚本
 ruby "$RUBY_SCRIPT" "$CONFIG_FILE" "$OVERRIDE_YAML" 2>> "$LOG_FILE"
 RC=$?
 
 # 将 Ruby 的状态日志逐行回显到 OpenClash 日志
-if [ -f /tmp/clash_normal_status.log ]; then
+if [ -f /tmp/clash_smart_status.log ]; then
   while IFS= read -r line; do
-    LOG_OUT "Info" "[Clash-Normal] $line"
-  done < /tmp/clash_normal_status.log
+    LOG_OUT "Info" "[Clash-Smart] $line"
+  done < /tmp/clash_smart_status.log
 fi
 
 if [ $RC -eq 0 ]; then
-  LOG_OUT "Info" "[Clash-Normal] $VERSION_TAG overwrite completed successfully."
+  LOG_OUT "Info" "[Clash-Smart] $VERSION_TAG overwrite completed successfully."
 else
-  LOG_OUT "Error" "[Clash-Normal] $VERSION_TAG overwrite FAILED with exit code $RC."
-  LOG_OUT "Error" "[Clash-Normal] Check $LOG_FILE for Ruby traceback."
+  LOG_OUT "Error" "[Clash-Smart] $VERSION_TAG overwrite FAILED with exit code $RC."
+  LOG_OUT "Error" "[Clash-Smart] Check $LOG_FILE for Ruby traceback."
 fi
 
 # 清理临时文件
-rm -f "$OVERRIDE_YAML" "$RUBY_SCRIPT" /tmp/clash_normal_status.log
+rm -f "$OVERRIDE_YAML" "$RUBY_SCRIPT" /tmp/clash_smart_status.log
 
 exit $RC

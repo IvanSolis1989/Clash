@@ -1,6 +1,6 @@
 # Quantumult X — 变更日志
 
-> `Quantumult X/qx-smart.conf` 的变更日志。主版本号跟随 Clash Party 主线；尾段 `-QX.N` 独立递增。
+> `Quantumult X/QuantumultX.conf` 的变更日志。主版本号跟随 Clash Party 主线；尾段 `-QX.N` 独立递增。
 >
 > 本文件**由 `tools/srk_to_qx.py`（或等价脚本）从 Shadowrocket 自动转换**生成。重新同步时请运行该脚本而不是手工改 `.conf`。
 

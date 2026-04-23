@@ -12,9 +12,9 @@
     },
     "_meta": {
       "name": "SingBox Smart Full",
-      "version": "v5.2.5-sing.2",
-      "build": "2026-04-22",
-      "baseline": "Clash Party v5.2.5",
+      "version": "v5.2.6-sing.3",
+      "build": "2026-04-23",
+      "baseline": "Clash Party v5.2.6",
       "changelog": "见 SingBox/CHANGELOG.md"
     }
   },
@@ -566,6 +566,7 @@
   ],
   "route": {
     "auto_detect_interface": true,
+    "final": "🐟 漏网之鱼",
     "rules": [
       {
         "rule_set": [
@@ -10516,7 +10517,6 @@
         "download_detour": "🌍 全球节点",
         "update_interval": "1d"
       }
-    ],
-    "final": "🐟 漏网之鱼"
+    ]
   }
 }

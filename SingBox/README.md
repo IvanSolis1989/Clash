@@ -1,14 +1,14 @@
 # SingBox 使用教程（对齐 Clash Party v5.2.5 Full 语义）
 
-> 配置文件（推荐）：`SingBox/singbox-smart-full.json`（v5.2.5-sing.2）
-> 基础模板：`SingBox/singbox-smart.json`（重建于 v5.2.5-sing.2，兼容 sing-box 1.12+）
-> 生成脚本：`SingBox/generate-singbox-full.js`
+> 配置文件（推荐）：`SingBox/SingBox(sing-box)-full.json`（v5.2.5-sing.2）
+> 基础模板：`SingBox/SingBox(sing-box).json`（重建于 v5.2.5-sing.2，兼容 sing-box 1.12+）
+> 生成脚本：`SingBox/SingBox(sing-box)-generator.js`
 > 目标：在 **sing-box** 上复刻 Clash Party 的「9 个区域组 + 28 个业务组 + 391 rule-providers + 975 规则」语义，并保持 sing-box 1.12/1.13/1.14 官方配置兼容。
 
 > **v5.2.5-sing.2（2026-04-22）兼容性重要变更**：
 > - 删除已废弃的 `type: "block"` 特殊 outbound（sing-box 1.11 deprecated, 1.13 removed），避免用户升到 1.13+ 后 FATAL 起不来
 > - DNS server 迁移到新 schema（`{type:"https",server:"..."}` 取代 legacy `{address:"https://..."}`），避免 1.14 起被移除
-> - 重建基础模板 `singbox-smart.json`（之前被误删），生成脚本重新可用
+> - 重建基础模板 `SingBox(sing-box).json`（之前被误删），生成脚本重新可用
 
 ---
 
@@ -20,8 +20,8 @@
 ### 选哪份文件？
 | 文件 | 规则数 | 适合 |
 |---|---:|---|
-| `singbox-smart.json` | 4 rule-sets + 28 条内联规则 | 快速体验 / 学习结构 |
-| `singbox-smart-full.json` | 387 rule-sets + 977 规则 | **推荐**，对齐 Clash Party 全量 |
+| `SingBox(sing-box).json` | 4 rule-sets + 28 条内联规则 | 快速体验 / 学习结构 |
+| `SingBox(sing-box)-full.json` | 387 rule-sets + 977 规则 | **推荐**，对齐 Clash Party 全量 |
 
 ### 术语速查
 - **sing-box**：一个代理内核（类比 mihomo/Xray）。**不是**一个具体的客户端 App，它是核心引擎，由各种 GUI 客户端调用。
@@ -30,7 +30,7 @@
 
 ### 3 步走完（以 Hiddify 为例，最简单）
 1. **下载 Hiddify**：https://hiddify.com（Windows / Mac / Linux / Android / iOS 都有）。
-2. **替换节点**：用文本编辑器打开 `singbox-smart-full.json`，`outbounds` 数组里找 `"type": "trojan"` / `"vless"` / `"vmess"` / `"hysteria2"` 的占位节点（`proxy-hk-1`、`proxy-us-1`…），换成你机场给的真实节点参数。保存。
+2. **替换节点**：用文本编辑器打开 `SingBox(sing-box)-full.json`，`outbounds` 数组里找 `"type": "trojan"` / `"vless"` / `"vmess"` / `"hysteria2"` 的占位节点（`proxy-hk-1`、`proxy-us-1`…），换成你机场给的真实节点参数。保存。
 3. **导入**：Hiddify → 添加配置 → 从文件导入 → 选这个 JSON → 启用。
 
 ### 其它客户端也一样？
@@ -46,7 +46,7 @@
 - 首次启动后等 387 个 rule-set 下载完（约 1–3 分钟），日志不报 404 即可
 
 ### 最常见踩坑
-- ❌ **客户端说 "config invalid"**：你改节点时漏了逗号/引号。用 `python3 -c 'import json; json.load(open("singbox-smart-full.json"))'` 校验 JSON 合法性。
+- ❌ **客户端说 "config invalid"**：你改节点时漏了逗号/引号。用 `python3 -c 'import json; json.load(open("SingBox(sing-box)-full.json"))'` 校验 JSON 合法性。
 - ❌ **rule_set 下载失败**：jsdelivr 被墙。先用任意一个能通的节点连上，再重新启用本配置，让 sing-box 把 387 个 .srs 拉下来缓存。
 - ❌ **Hiddify 提示 TUN 冲突**：Hiddify 会自己管 TUN。把本 JSON 里的 `inbounds.tun` 段删掉就好。
 - ❌ **配置里的节点占位跑不通**：那是示例节点（`proxy-hk-1` 等），需要你替换成真实节点。**不替换直接导入是跑不通的**。
@@ -121,28 +121,28 @@ sing-box 由 SagerNet 团队开发，是目前**新协议实现最前沿**的代
   - AI、支付、加密货币、流媒体、即时通讯、开发者服务等关键域名前置匹配。
   - 国内/国外流量使用 `geosite-cn` + `geoip-cn` 与 `geosite-geolocation-!cn` 收口。
   - 广告使用 `category-ads-all` 统一拦截。
-  - 通过生成脚本从 `Clash Party/Clash Smart内核覆写脚本.js` 自动提取 rule-providers 与 rules，确保顺序和策略定义持续跟随 Clash Party 主线。
+  - 通过生成脚本从 `Clash Party/ClashParty(mihomo-smart).js` 自动提取 rule-providers 与 rules，确保顺序和策略定义持续跟随 Clash Party 主线。
 
 ---
 
 ## 2. 准备工作
 
 1. 安装 sing-box 或图形客户端（如 sing-box for Android / macOS 图形端等）。
-2. 将 `SingBox/singbox-smart-full.json` 导入客户端。
+2. 将 `SingBox/SingBox(sing-box)-full.json` 导入客户端。
 3. 将文件内 `proxy-xxx` 示例节点替换成你自己的真实节点（trojan/vless/vmess/hysteria2 都可以）。
 
-> 说明：`singbox-smart-full.json` 已内置 387 个 rule_set 入口与 977 条路由规则；你只需要替换节点出站即可。
+> 说明：`SingBox(sing-box)-full.json` 已内置 387 个 rule_set 入口与 977 条路由规则；你只需要替换节点出站即可。
 
 ---
 
 ## 2a. Hiddify 用户看这里
 
-**Hiddify 的内核就是 sing-box**（实际打包的是 `hiddify-sing-box` 二进制，在官方 sing-box 基础上加了 WARP+、Hiddify Profile Format 等自家扩展）。所以本目录的配置 **不需要单独开一份 Hiddify 版本**——直接把 `SingBox/singbox-smart-full.json` 或 `SingBox/singbox-smart.json` 喂给 Hiddify 即可。
+**Hiddify 的内核就是 sing-box**（实际打包的是 `hiddify-sing-box` 二进制，在官方 sing-box 基础上加了 WARP+、Hiddify Profile Format 等自家扩展）。所以本目录的配置 **不需要单独开一份 Hiddify 版本**——直接把 `SingBox/SingBox(sing-box)-full.json` 或 `SingBox/SingBox(sing-box).json` 喂给 Hiddify 即可。
 
 ### 在 Hiddify 里导入
 
 1. 打开 Hiddify → 右上角 **配置 / Profile** → **添加新的配置** → **从剪贴板 / 从文件导入**。
-2. 选择本仓库的 `SingBox/singbox-smart-full.json`（推荐）或 `SingBox/singbox-smart.json`（精简）。
+2. 选择本仓库的 `SingBox/SingBox(sing-box)-full.json`（推荐）或 `SingBox/SingBox(sing-box).json`（精简）。
 3. Hiddify 会读取文件里的 `outbounds`、`route`、`dns`、`rule_set`，9 区域 + 28 业务组会全部出现在 Hiddify 的「策略」面板。
 
 ### 两个小提示
@@ -159,10 +159,11 @@ sing-box 由 SagerNet 团队开发，是目前**新协议实现最前沿**的代
 
 ## 2.1 重新生成 Full 规则（跟随 Clash Party 升级）
 
-当 `Clash Party/Clash Smart内核覆写脚本.js` 更新后，执行：
+当 `Clash Party/ClashParty(mihomo-smart).js` 更新后，执行：
 
 ```bash
-node SingBox/generate-singbox-full.js
+# 路径里的 ( ) 是 shell 语法 token，必须加引号
+node 'SingBox/SingBox(sing-box)-generator.js'
 ```
 
 脚本会自动：
@@ -170,7 +171,7 @@ node SingBox/generate-singbox-full.js
 - 调用 Clash Party 的 `main(config)` 构建完整规则；
 - 同步导出 sing-box `route.rule_set`（387 项）；
 - 同步导出 sing-box `route.rules`（977 条）。
-2. 将 `SingBox/singbox-smart.json` 导入客户端。
+2. 将 `SingBox/SingBox(sing-box).json` 导入客户端。
 3. 将文件内 `proxy-xxx` 示例节点替换成你自己的真实节点（trojan/vless/vmess/hysteria2 都可以）。
 
 > 说明：我在模板中提供了可运行结构和占位节点，便于你快速迁移 Clash Party 的组策略；实际连接能力由你替换后的节点决定。
@@ -184,7 +185,7 @@ node SingBox/generate-singbox-full.js
 ### 在 HomeProxy 里导入
 
 1. LuCI → 服务 → HomeProxy → **订阅** 面板（或 Subscriptions 标签）。
-2. 选择 **本地文件导入** 或 **URL 订阅**，指向 `SingBox/singbox-smart-full.json`。
+2. 选择 **本地文件导入** 或 **URL 订阅**，指向 `SingBox/SingBox(sing-box)-full.json`。
 3. HomeProxy 会自动读取 JSON 里的 `outbounds`、`route`、`dns`、`rule_set`，然后把 9 区域 + 28 业务组全部展示在"出站组"面板里。
 
 ### 小提示
@@ -208,7 +209,7 @@ node SingBox/generate-singbox-full.js
 
 ## 3.1 DNS / 嗅探 / GEO 增强版配置（已并入 Full 配置）
 
-为贴近 Clash Party 使用教程中的「DNS + Sniffer + GeoX URL」补充项，`singbox-smart-full.json` 已对应实现：
+为贴近 Clash Party 使用教程中的「DNS + Sniffer + GeoX URL」补充项，`SingBox(sing-box)-full.json` 已对应实现：
 
 - **DNS 增强**：
   - `dns_direct`（223.5.5.5 DoH）用于国内规则集；
@@ -271,7 +272,7 @@ Clash Party 当前使用 JS 覆写引擎做节点名称分类；sing-box 原生 
 
 ### Q3：如何保证和 Clash Party 规则保持完全一致？
 
-使用 `generate-singbox-full.js` 从 Clash Party 脚本自动提取是最稳妥方式。只要上游 `Clash Smart内核覆写脚本.js` 更新，你重新执行脚本即可同步。
+使用 `SingBox(sing-box)-generator.js` 从 Clash Party 脚本自动提取是最稳妥方式。只要上游 `ClashParty(mihomo-smart).js` 更新，你重新执行脚本即可同步。
 ### Q3：想继续贴近 Clash Party 规则量（300+ provider）怎么办？
 
 可以继续扩展 `route.rule_set` 与 `route.rules`，将更多服务拆分成独立 rule-set。当前版本先保证“结构一致 + 主功能一致 + sing-box 官方格式兼容”。

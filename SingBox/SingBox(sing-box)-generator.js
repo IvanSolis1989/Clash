@@ -1,8 +1,8 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const clashScript = fs.readFileSync('Clash Party/Clash Smart内核覆写脚本.js', 'utf8');
-const baseConfig = JSON.parse(fs.readFileSync('SingBox/singbox-smart.json', 'utf8'));
+const clashScript = fs.readFileSync('Clash Party/ClashParty(mihomo-smart).js', 'utf8');
+const baseConfig = JSON.parse(fs.readFileSync('SingBox/SingBox(sing-box).json', 'utf8'));
 
 const sandbox = { console };
 vm.createContext(sandbox);
@@ -111,6 +111,6 @@ baseConfig.route.rule_set = [...ruleSet, ...extraGeoSiteTags];
 baseConfig.route.rules = convertedRules;
 baseConfig.route.final = '🐟 漏网之鱼';
 
-fs.writeFileSync('SingBox/singbox-smart-full.json', JSON.stringify(baseConfig, null, 2) + '\n');
+fs.writeFileSync('SingBox/SingBox(sing-box)-full.json', JSON.stringify(baseConfig, null, 2) + '\n');
 
 console.log(`providers=${ruleSet.length} rules=${convertedRules.length}`);

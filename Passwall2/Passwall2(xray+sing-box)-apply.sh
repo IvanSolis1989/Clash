@@ -10,10 +10,10 @@
 #       （passwall vs passwall2）。本脚本默认操作 Passwall2；若你用 Passwall，
 #       把 CONFIG_NAME 从 "passwall2" 改为 "passwall" 即可——规则语法完全相同。
 #
-# 用法：
-#   1. scp apply-shunt-rules.sh root@192.168.1.1:/tmp/
+# 用法（路径里的 ( ) 是 shell 语法 token，必须加引号）：
+#   1. scp 'Passwall2(xray+sing-box)-apply.sh' root@192.168.1.1:/tmp/
 #   2. ssh root@192.168.1.1
-#   3. sh /tmp/apply-shunt-rules.sh
+#   3. sh '/tmp/Passwall2(xray+sing-box)-apply.sh'
 #   4. LuCI → Passwall2 → 分流控制 → 逐条给每个 shunt rule 指定目标节点
 #
 # ⚠️  警告：

@@ -1,6 +1,6 @@
 # Loon — 变更日志
 
-> `Loon/loon-smart.conf` 的变更日志。主版本号跟随 Clash Party 主线；尾段 `-Loon.N` 独立递增。
+> `Loon/Loon.conf` 的变更日志。主版本号跟随 Clash Party 主线；尾段 `-Loon.N` 独立递增。
 
 ---
 
