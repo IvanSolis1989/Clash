@@ -137,7 +137,7 @@ sniffer:
 proxy-providers:
   Subscribe:
     type: http
-    url: 'https://my.ssonenetwork.com/ssone/3835aa5b11c1d62a2b18e39471475b25'
+    url: 'https://my.example.com/your-subscription-url'
     interval: 86400
     path: ./proxy_providers/subscribe.yaml
     health-check:
