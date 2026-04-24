@@ -7,6 +7,44 @@
 
 ---
 
+## v5.2.8-pw.4 (2026-04-24) — ★ 广告拦截规则置顶 + `apply.sh` 路径加引号
+
+审查 Codex 针对 `Passwall/` 的两条建议，两条均确认为真实问题，本次一并修复：
+
+- ★ **FIX#CODEX-1（P1，命中 CLAUDE.md §3.4 契约违反）**：把 🛑 广告拦截从规则链末尾（`#28`）前移到规则链首位（`#01`），其余 27 条规则顺序整体下移一位。
+  - 背景：CLAUDE.md §3.4 明确约束"第一条规则必须是广告拦截前置"；本目录先前的 `[01] 🤖 AI 服务 … [28] 🛑 广告拦截` 顺序与该契约直接冲突。
+  - 运行时影响：Passwall shunt_rules 解析器（`shunt_rules.lua`）按 UCI list 顺序自上而下匹配；在 `🐟 漏网之鱼 FINAL`（本目录实现为 `domain_list` 留空 + 网络 tcp/udp）之前先命中其他任意规则才会走到 `广告拦截`。虽然本目录的 FINAL 块没有 domain_list（严格说不会 catch-all），但为对齐 CLAUDE.md §3.4 + 避免任何未来 FINAL 实现形式的歧义，把广告拦截置顶。
+  - 同步修复的文件：
+    - `Passwall(xray+sing-box)-apply.sh` — 28 个 `# [NN]` 块整体重编号，`uci commit` 之前的 echo 提示从"#24-#28 保持末尾"改为"#01 广告拦截在最前；#25-#28（国内/受限/国外/FINAL）保持末尾"
+    - `Passwall(xray+sing-box).conf` — 28 个 banner 块重编号，`slug    : NN-xxx` 字段同步更新
+    - `shunt-rules/*.list` — 28 个 `.list` 文件名整体重编号（`28-ads.list` → `01-ads.list`，`01-ai-service.list` → `02-ai-service.list`，…，`27-final.list` → `28-final.list`）
+    - `README.md` — `### 1️⃣ … 2️⃣8️⃣` 的 28 个小节表头同步重编号；参考文件名示例从 `01-ai-service.list / 06-social.list` 改为 `02-ai-service.list / 07-social.list`；开篇的"第 24-28 条顺序很关键"改写为"第 1 条必须是 🛑 广告拦截，否则会被后续规则吞掉；第 25-28 条保持末尾"
+- ★ **FIX#CODEX-2（P2，shell 元字符逃逸）**：`README.md` 中 `sh Passwall(xray+sing-box)-apply.sh` 的调用示例全部改为 `sh 'Passwall(xray+sing-box)-apply.sh'`（加单引号）。`(` 和 `)` 是 shell 保留字符，原写法用户复制粘贴后会报 `syntax error near unexpected token '('` 无法执行。脚本头部 20-23 行的使用说明早已是正确的加引号写法，本次只是把 README 的快速上手段落对齐到同一形式。
+
+### 同构审计（按 CLAUDE.md §1.5）
+
+本次修复涉及的运行时逻辑类型：**规则优先级 / 规则顺序**（不在 §1.5 列出的 5 类节点分类 / fallback / 订阅合并之内），但仍按触发条件 2「修改**规则条目的目标组**」+ 触发条件 3「修改**规则顺序**中影响命中优先级的段（特别是广告拦截、GFW、FINAL 前置关系）」联动审查：
+
+| 产物 | 广告拦截规则位置 | 是否需要本次联动同步？ |
+|------|------------------|--------------------------|
+| Clash Party JS（基线） | `rules:` 段最前置（`RULE-SET, … , 🛑 广告拦截` 在第 3315 行附近，所有业务规则之前） | ✅ 已满足（基线正确） |
+| CMFA YAML | 同上（与 JS 基线对齐） | ✅ 已满足 |
+| OpenClash Normal / Smart | 同上（Ruby 生成的 rules 数组首段为 ad-block） | ✅ 已满足 |
+| Shadowrocket / Surge / Loon / Quantumult X | `[Rule]` 段首条为 `RULE-SET, … , 🛑 广告拦截 / REJECT` | ✅ 已满足 |
+| SingBox Full | `route.rules` 首条 `rule_set: [advertising, …]` | ✅ 已满足 |
+| v2rayN Xray | `routing.rules` 首条指向 `block` outbound | ✅ 已满足 |
+| **Passwall（本目录）** | 原 `#28`（末尾）— **违反 §3.4** | ✅ **本次修复 → `#01`** |
+| **Passwall2** | 原 `#28`（末尾）— **同构漏洞** | ✅ **同步修复 → `#01`**（见 `Passwall2/CHANGELOG.md`） |
+
+结论：这是 Passwall + Passwall2 的同构漏洞（§1.5 第 5 类 — 节点过滤/规则顺序），两者本 PR 同时修复。
+
+### 主动放弃的 Codex 建议
+
+- Codex 同时针对 `Clash Meta For Android/CMFA(mihomo).yaml` 提出"把 `https://1.12.12.12/dns-query` 改回 `https://doh.pub/dns-query`"的 P1 建议，本次**未采纳**。原因：
+  - `1.12.12.12` 是全仓库 7 个产物（CMFA / OpenClash Normal / OpenClash Smart / Shadowrocket / Surge / Loon / Quantumult X）的一致 DNS 基线，不是 CMFA 单产物的回归
+  - 单独修改 CMFA 会造成 7:1 不一致，违反 §1 全版本联动约束
+  - 修改应在独立 PR 里整仓库同步讨论，不混入"修复 Passwall 广告拦截顺序"这一范畴内
+
 ## v5.2.8-pw.3 (2026-04-24) — ★ 版本号对齐 v5.2.8 基线
 
 跟随 Clash Party v5.2.8 基线版本号对齐。本产物无功能性变更，因为：

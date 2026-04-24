@@ -37,19 +37,19 @@
 |---|---|---|
 | **`shunt-rules/*.list`**（28 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall2 LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
 | **`Passwall2(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 28 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
-| **`Passwall2(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh Passwall2(xray+sing-box)-apply.sh` → 一次性创建 28 条空节点规则 → 再到 LuCI 逐条指定节点 |
+| **`Passwall2(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall2(xray+sing-box)-apply.sh'` → 一次性创建 28 条空节点规则 → 再到 LuCI 逐条指定节点 |
 
 ### 3 步走完
 1. **Passwall2 LuCI → 节点列表 → 添加订阅**：粘贴机场订阅 URL → 下载节点 → 分地区手动创建负载均衡组（如"🇺🇸 美国负载"把所有 US 节点加进来）
 2. **选一种方式导入 shunt rule**（见上表）：
    - 方式 A（手工）：为每个业务类别点「新增」→ 粘贴对应 `.list` 文件的内容 → 选择目标节点
-   - 方式 B（脚本）：`sh Passwall2(xray+sing-box)-apply.sh` 一次性创建 28 条空节点规则 → 在 LuCI 里给每条指定节点
+   - 方式 B（脚本）：`sh 'Passwall2(xray+sing-box)-apply.sh'` 一次性创建 28 条空节点规则 → 在 LuCI 里给每条指定节点
 3. **回首页启用 Passwall2**，流量就按 28 条规则分流了
 
 ### 跑起来怎么验证？
 - 浏览器打开 `https://www.google.com` 能打开 = 代理通了
 - Passwall2 → 分流控制 → 每条规则后的"命中次数"应开始累加
-- 访问 `chat.openai.com` → 应命中你第 1 条（🤖 AI 服务）规则
+- 访问 `chat.openai.com` → 应命中第 2 条（🤖 AI 服务）规则（第 1 条是 🛑 广告拦截，正常访问不会命中）
 
 ### 最常见踩坑
 - ❌ **规则多了顺序错乱**：Passwall2 按列表顺序匹配，**把"国内网站"/"广告拦截"放最前或最后**，业务规则放中间
@@ -81,9 +81,9 @@ Passwall2 根据你选的核提供不同协议，与 v2rayN 同理：
 
 ## 📋 28 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall2(xray+sing-box).conf` 内容一致）
 
-> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall2/shunt-rules/`（如 `01-ai-service.list` / `06-social.list`），方便逐条复制。想一次性看全部 28 条的单文件版本：`Passwall2/Passwall2(xray+sing-box).conf`。
+> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall2/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 28 条的单文件版本：`Passwall2/Passwall2(xray+sing-box).conf`。
 
-每一条 = Passwall / Passwall2「分流控制」面板里点一次「新增」。按顺序添加。**第 24-28 条（国内/受限/国外/FINAL/广告）顺序很关键**。
+每一条 = Passwall / Passwall2「分流控制」面板里点一次「新增」。按顺序添加。**第 1 条必须是 🛑 广告拦截**（否则会被后续规则吞掉），**第 25-28 条（国内/受限/国外/FINAL）保持末尾**。
 
 > **Passwall / Passwall2 分流规则语法**（两者共用同一套 xray/sing-box 域名匹配语法，`shunt_rules.lua` 权威源见文末参考）：
 >
@@ -105,7 +105,17 @@ Passwall2 根据你选的核提供不同协议，与 v2rayN 同理：
 
 ---
 
-### 1️⃣ 🤖 AI 服务
+### 1️⃣ 🛑 广告拦截
+**推荐**：**block（拒绝）**
+
+**域名列表**：
+```
+geosite:category-ads-all
+```
+
+Passwall2 有个单独的"黑名单"或"广告拦截"切换开关，直接开即可；或者本条规则的"目标节点"选 `reject` / `block`。
+
+### 2️⃣ 🤖 AI 服务
 **推荐节点**：🇺🇸 美国（避开 HK/CN）
 
 **域名列表**：
@@ -134,7 +144,7 @@ domain:pi.ai
 domain:inflection.ai
 ```
 
-### 2️⃣ 💰 加密货币
+### 3️⃣ 💰 加密货币
 **推荐节点**：🇭🇰 香港 / 🇯🇵 日韩（合规性）
 
 **域名列表**：
@@ -147,7 +157,7 @@ domain:coinmarketcap.com
 domain:coingecko.com
 ```
 
-### 3️⃣ 🏦 金融支付
+### 4️⃣ 🏦 金融支付
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -161,7 +171,7 @@ domain:mastercard.com
 domain:amex.com
 ```
 
-### 4️⃣ 📧 邮件服务
+### 5️⃣ 📧 邮件服务
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -174,7 +184,7 @@ domain:tuta.com
 domain:mail.ru
 ```
 
-### 5️⃣ 💬 即时通讯
+### 6️⃣ 💬 即时通讯
 **推荐节点**：🇭🇰 香港 / 🇯🇵 日韩
 
 **域名列表**：
@@ -192,7 +202,7 @@ geosite:kakaotalk
 geoip:telegram
 ```
 
-### 6️⃣ 📱 社交媒体
+### 7️⃣ 📱 社交媒体
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -213,7 +223,7 @@ geoip:twitter
 geoip:facebook
 ```
 
-### 7️⃣ 🧑‍💼 会议协作
+### 8️⃣ 🧑‍💼 会议协作
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -226,7 +236,7 @@ geosite:atlassian
 domain:meet.google.com
 ```
 
-### 8️⃣ 📺 国内流媒体
+### 9️⃣ 📺 国内流媒体
 **推荐**：**direct**（境内）或 🇭🇰 香港（境外）
 
 **域名列表**：
@@ -241,7 +251,7 @@ geosite:netease-music
 geosite:qqmusic
 ```
 
-### 9️⃣ 📺 东南亚流媒体
+### 🔟 📺 东南亚流媒体
 **推荐节点**：🌏 亚太（SG/ID）
 
 **域名列表**：
@@ -253,7 +263,7 @@ domain:vidio.com
 domain:iqiyiintl.com
 ```
 
-### 🔟 🇺🇸 美国流媒体
+### 1️⃣1️⃣ 🇺🇸 美国流媒体
 **推荐节点**：🇺🇸 美国
 
 **域名列表**：
@@ -275,7 +285,7 @@ domain:twitch.tv
 geoip:netflix
 ```
 
-### 1️⃣1️⃣ 🇭🇰 香港流媒体
+### 1️⃣2️⃣ 🇭🇰 香港流媒体
 **推荐节点**：🇭🇰 香港
 
 **域名列表**：
@@ -288,7 +298,7 @@ domain:encoretvb.com
 domain:rthk.hk
 ```
 
-### 1️⃣2️⃣ 🇹🇼 台湾流媒体
+### 1️⃣3️⃣ 🇹🇼 台湾流媒体
 **推荐节点**：🇹🇼 台湾
 
 **域名列表**：
@@ -302,7 +312,7 @@ domain:hamivideo.hinet.net
 domain:friday.tw
 ```
 
-### 1️⃣3️⃣ 🇯🇵 日韩流媒体
+### 1️⃣4️⃣ 🇯🇵 日韩流媒体
 **推荐节点**：🇯🇵 日韩
 
 **域名列表**：
@@ -316,7 +326,7 @@ domain:tver.jp
 domain:rakuten.tv
 ```
 
-### 1️⃣4️⃣ 🇪🇺 欧洲流媒体
+### 1️⃣5️⃣ 🇪🇺 欧洲流媒体
 **推荐节点**：🇪🇺 欧洲
 
 **域名列表**：
@@ -330,7 +340,7 @@ domain:skygo.com
 domain:britbox.co.uk
 ```
 
-### 1️⃣5️⃣ 🕹️ 国内游戏
+### 1️⃣6️⃣ 🕹️ 国内游戏
 **推荐**：**direct**
 
 **域名列表**：
@@ -341,7 +351,7 @@ domain:majsoul.com
 domain:battlenet.com.cn
 ```
 
-### 1️⃣6️⃣ 🎮 国外游戏
+### 1️⃣7️⃣ 🎮 国外游戏
 **推荐节点**：🇯🇵 日韩 / 🇭🇰 香港
 
 **域名列表**：
@@ -358,7 +368,7 @@ domain:hoyoverse.com
 domain:mihoyo.com
 ```
 
-### 1️⃣7️⃣ 🔍 搜索引擎
+### 1️⃣8️⃣ 🔍 搜索引擎
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -375,7 +385,7 @@ domain:scholar.google.com
 geoip:google
 ```
 
-### 1️⃣8️⃣ 📟 开发者服务
+### 1️⃣9️⃣ 📟 开发者服务
 **推荐节点**：🇺🇸 美国 / 🌍 全球
 
 **域名列表**：
@@ -391,7 +401,7 @@ domain:stackoverflow.com
 domain:stackexchange.com
 ```
 
-### 1️⃣9️⃣ Ⓜ️ 微软服务
+### 2️⃣0️⃣ Ⓜ️ 微软服务
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -403,7 +413,7 @@ domain:live.com
 domain:microsoftedge.com
 ```
 
-### 2️⃣0️⃣ 🍎 苹果服务
+### 2️⃣1️⃣ 🍎 苹果服务
 **推荐**：**direct**（境内）或 🌍 全球（境外）
 
 **域名列表**：
@@ -417,7 +427,7 @@ domain:applemusic.com
 domain:apple-dns.net
 ```
 
-### 2️⃣1️⃣ 📥 下载更新
+### 2️⃣2️⃣ 📥 下载更新
 **推荐**：**direct**
 
 **域名列表**：
@@ -432,7 +442,7 @@ domain:mozilla.org
 domain:apkpure.com
 ```
 
-### 2️⃣2️⃣ ☁️ 云与CDN
+### 2️⃣3️⃣ ☁️ 云与CDN
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -450,7 +460,7 @@ geoip:cloudflare
 geoip:fastly
 ```
 
-### 2️⃣3️⃣ 🛰️ BT/PT Tracker
+### 2️⃣4️⃣ 🛰️ BT/PT Tracker
 **推荐**：**direct** 或 **block**
 
 **域名列表**：
@@ -461,7 +471,7 @@ domain:openbittorrent.com
 domain:nyaa.si
 ```
 
-### 2️⃣4️⃣ 🏠 国内网站（倒数第 5 条 — 位置重要）
+### 2️⃣5️⃣ 🏠 国内网站
 **推荐**：**direct**
 
 **域名列表**：
@@ -475,7 +485,7 @@ geoip:cn
 geoip:private
 ```
 
-### 2️⃣5️⃣ 🚫 受限网站（倒数第 4 条）
+### 2️⃣6️⃣ 🚫 受限网站
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -484,7 +494,7 @@ geosite:gfw
 geosite:greatfire
 ```
 
-### 2️⃣6️⃣ 🌐 国外网站（倒数第 3 条）
+### 2️⃣7️⃣ 🌐 国外网站
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -496,23 +506,13 @@ domain:bloomberg.com
 domain:wikipedia.org
 ```
 
-### 2️⃣7️⃣ 🐟 漏网之鱼 FINAL（倒数第 2 条）
+### 2️⃣8️⃣ 🐟 漏网之鱼 FINAL
 **推荐节点**：🌍 全球
 
 **域名列表**：留空（兜底规则不用显式写域名；Passwall / Passwall2 的 FINAL 走"全局设置 → 基本设置"里的**默认代理节点**开关，不是作为 shunt rule 的一条）
 **IP 列表**：留空
 **网络**：tcp,udp
 **匹配**：Passwall2 把这条设置为**兜底规则**（通常是「其余流量默认走代理主节点」开关）
-
-### 2️⃣8️⃣ 🛑 广告拦截（最后 1 条，但要**优先级最高**）
-**推荐**：**block（拒绝）**
-
-**域名列表**：
-```
-geosite:category-ads-all
-```
-
-Passwall2 有个单独的"黑名单"或"广告拦截"切换开关，直接开即可；或者本条规则的"目标节点"选 `reject` / `block`。
 
 ---
 
