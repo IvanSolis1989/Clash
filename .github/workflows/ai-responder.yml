@@ -9,29 +9,33 @@ name: AI Issue Auto-Responder (DeepSeek)
 #      —— 对应 .github/ISSUE_TEMPLATE 里 4 个模板各自的 labels 字段
 #   2. 任何人在 issue 评论区写 "/ai-help"
 #
-# AI 的角色边界：
-#   • 对所有类型 issue 都先给"初步分析"（包括 bug：先帮用户判断是不是 bug）
-#   • 但 AI 没有代码修改 / 合并 PR / 打 label / 关闭 issue 的权限
-#   • 所以所有回复末尾都会强调"等维护者人工处理"
+# 分层调用策略（v4 — DeepSeek V4 双模型 + 代码修改权限）：
+#   ┌──────────────────────┬───────────────┬──────────┬──────────┬──────────┐
+#   │ Issue 类别            │ 触发场景       │ 模型     │ Thinking │ 代码修改 │
+#   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
+#   │ question/faq/        │ 首次（labeled）│ v4-flash │ disabled │ ❌       │
+#   │   help wanted        │ 第1次 /ai-help │ v4-flash │ enabled  │ ❌       │
+#   │                      │ 第2次+ /ai-help│ v4-pro   │ enabled  │ ✅       │
+#   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
+#   │ bug                  │ 首次（labeled）│ v4-pro   │ enabled  │ ✅       │
+#   │                      │ /ai-help 追问  │ v4-pro   │ enabled  │ ✅       │
+#   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
+#   │ enhancement          │ 首次（labeled）│ v4-pro   │ enabled  │ ✅       │
+#   │                      │ /ai-help 追问  │ v4-pro   │ enabled  │ ✅       │
+#   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
+#   │ documentation        │ 首次（labeled）│ v4-flash │ enabled  │ ✅ (文档) │
+#   │                      │ /ai-help 追问  │ v4-flash │ enabled  │ ✅ (文档) │
+#   └──────────────────────┴───────────────┴──────────┴──────────┴──────────┘
+#
+#   代码修改模式：AI 输出结构化响应（<!-- AI_REPLY --> + <!-- AI_PATCH --> +
+#   <!-- AI_PR -->），workflow 自动提取补丁、创建分支、提交并开 PR。
+#   不按格式输出 → fallback 只发评论，不创建 PR。
 #
 # 安全护栏：
-#   • permissions 只给 issues:write + contents:read（看不了 PR、改不了代码）
-#   • system prompt 明确要求：bug 根因分析 / 架构 / 安全漏洞 → 转人工，
-#     绝对不能提议改代码
-#   • timeout 5 分钟硬上限防止超支
-#
-# 分层调用策略（v3 — DeepSeek V4 API）：
-#   首轮（issues opened/labeled） → deepseek-v4-flash 非思考模式  快速 / 便宜 / 覆盖 80% 常见问题
-#   追问（issue_comment /ai-help）→ deepseek-v4-flash 思考模式    思维链 / 深度分析 / 适合复杂排障
-#   理由：首次提问大多是"导入 / 语法 / FAQ"类，非思考模式足够；用户看完首轮还在
-#        追问，说明问题复杂需要深度推理，这时才升级思考模式值回票价。
-#   注：deepseek-chat / deepseek-reasoner 两个旧模型名 V4 起将弃用，官方映射到
-#       deepseek-v4-flash 的非思考 / 思考模式（价格一致，无需切 v4-pro）。
-#
-# 成本估算（V4 定价：flash 1 元/M 输入 + 2 元/M 输出，缓存命中 0.2 元/M 输入）：
-#   • 首轮非思考 ≈ 0.02 元/次；追问思考 ≈ 0.03 元/次（多出 reasoning tokens 计入输出）
-#   • 典型场景：100 issues/月 + 20% 追问率 → ≈ 2 元 + 0.6 元 ≈ 3 元/月（不到 $0.5）
-#   • GitHub Actions：public repo 无限免费
+#   • permissions 给 issues:write + contents:write + pull-requests:write
+#   • system prompt 区分「只分析」和「可改代码」两种模式
+#   • 不改代码的模式下仍禁止 diff/patch
+#   • timeout 15 分钟硬上限
 #
 # 需要配置的 secret：
 #   Settings → Secrets and variables → Actions → New repository secret
@@ -41,34 +45,21 @@ name: AI Issue Auto-Responder (DeepSeek)
 
 on:
   issues:
-    # 只监听 labeled，不监听 opened——否则用模板建 issue 会触发两次：
-    #   ① issues.opened 事件（此时 issue 已带着模板自动打的标签）
-    #   ② issues.labeled 事件（模板标签被应用时）
-    # 两次都会过 if: 白名单 → 两次 AI 回复 → 双倍费用 + 用户体验差。
-    # labeled 单监听 + 检查 github.event.label.name 就能覆盖所有场景：
-    #   - 用模板创建 issue（模板自动打标签）→ labeled 触发一次 ✅
-    #   - 裸 issue 后手工打标签 → labeled 触发一次 ✅
     types: [labeled]
   issue_comment:
     types: [created]
 
 permissions:
-  issues: write        # 可写 issue 评论
-  contents: read       # 可读仓库文件（喂给 AI 做上下文），不能改
-  pull-requests: read  # 不能创建 PR
+  issues: write
+  contents: write
+  pull-requests: write
 
-# 并发组：同一 issue 的多次触发排队执行（不并行），避免用户连续改标签导致多条 AI 回复
 concurrency:
   group: ai-responder-issue-${{ github.event.issue.number }}
   cancel-in-progress: false
 
 jobs:
   respond:
-    # 低风险触发门槛：**本次刚打上的** label 命中白名单，或评论里显式 /ai-help
-    # 关键修复：用 github.event.label.name（本次打的那个），而不是 github.event.issue.labels.*.name
-    # （所有 label 集合）——否则 issue 已有 question 再打 wontfix 会再触发一次 AI 回复。
-    # 对应 4 个 issue 模板：question / bug / enhancement / documentation
-    # 额外兼容维护者手打的 faq / help wanted
     if: |
       (github.event_name == 'issues' && (
         github.event.label.name == 'question' ||
@@ -81,18 +72,16 @@ jobs:
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/ai-help'))
 
     runs-on: ubuntu-latest
-    timeout-minutes: 8   # 思考模式 + curl 240s 上限，留足余量避免误杀
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout repo (read-only usage)
+      - name: Checkout repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Build AI context from repo docs
+      - name: Build AI context
         run: |
-          # 把最关键的文档喂给 AI 作为上下文。DeepSeek V4 context 1M，绰绰有余。
-          # 想追加更多文档，在这里 cat 进去即可。
           {
             echo "===== CLAUDE.md（仓库维护契约）====="
             head -150 CLAUDE.md 2>/dev/null || echo "(CLAUDE.md not found)"
@@ -103,21 +92,140 @@ jobs:
             echo "===== 根 README.md 节选（前 150 行）====="
             head -150 README.md 2>/dev/null || echo "(README.md not found)"
           } > /tmp/context.txt
-          # 不再走 GITHUB_OUTPUT 回传 + jq -Rs 编码——下一步直接 jq --rawfile 读 /tmp/context.txt，
-          # 既绕开了 GitHub Actions 模板替换破坏 JSON 引号的坑，又少 30 行代码。
           echo "✅ context built: $(wc -l < /tmp/context.txt) lines, $(wc -c < /tmp/context.txt) bytes"
 
+      # ── 步骤 1：判定 issue 类别 + 选择模型 / thinking / 代码修改权限 ─
+      - name: Determine category & model
+        id: tier
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          LABEL_NAME: ${{ github.event.label.name }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          REPO: ${{ github.repository }}
+        run: |
+          # ── 1. 判定 issue 类别 ─────────────────────────────────
+          if [ "$GITHUB_EVENT_NAME" = "issues" ]; then
+            CATEGORY="$LABEL_NAME"
+            # 把 faq / help wanted 归入 question 类
+            case "$CATEGORY" in
+              faq|"help wanted") CATEGORY="question" ;;
+            esac
+          else
+            # issue_comment 事件：查 issue 的 labels
+            ISSUE_LABELS=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER" --jq '.labels[].name' 2>/dev/null || echo "")
+            if echo "$ISSUE_LABELS" | grep -qx 'bug'; then
+              CATEGORY="bug"
+            elif echo "$ISSUE_LABELS" | grep -qx 'enhancement'; then
+              CATEGORY="enhancement"
+            elif echo "$ISSUE_LABELS" | grep -qx 'documentation'; then
+              CATEGORY="documentation"
+            else
+              CATEGORY="question"  # question / faq / help wanted / 无标签默认
+            fi
+          fi
+
+          # ── 2. 计数 /ai-help 次数 ─────────────────────────────
+          AI_HELP_COUNT=0
+          if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+            AI_HELP_COUNT=$(gh api "repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+              --jq '[.[] | select(.body | contains("/ai-help"))] | length' 2>/dev/null || echo "1")
+          fi
+
+          # ── 3. 查表决策 ──────────────────────────────────────
+          case "$CATEGORY" in
+            question)
+              MODEL="deepseek-v4-flash"
+              if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+                THINKING_TYPE="enabled"
+                if [ "$AI_HELP_COUNT" -ge 2 ]; then
+                  # 第 2 次+ /ai-help → 升级 v4-pro + 代码修改权限
+                  MODEL="deepseek-v4-pro"
+                  CODE_MOD="true"
+                  TIER_MARK="FOLLOWUP2"
+                  TIER_LABEL="问题追问（第${AI_HELP_COUNT}次 · v4-pro 思考 · 可改代码）"
+                else
+                  CODE_MOD="false"
+                  TIER_MARK="FOLLOWUP"
+                  TIER_LABEL="问题追问（v4-flash 思考 · 只分析）"
+                fi
+              else
+                THINKING_TYPE="disabled"
+                CODE_MOD="false"
+                TIER_MARK="FIRST"
+                TIER_LABEL="问题/求助（首轮 · v4-flash 非思考）"
+              fi
+              ;;
+            bug)
+              MODEL="deepseek-v4-pro"
+              THINKING_TYPE="enabled"
+              CODE_MOD="true"
+              if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+                TIER_MARK="FOLLOWUP"
+                TIER_LABEL="Bug 追问（v4-pro 思考 · 可改代码）"
+              else
+                TIER_MARK="FIRST"
+                TIER_LABEL="Bug 分析（首轮 · v4-pro 思考 · 可改代码）"
+              fi
+              ;;
+            enhancement)
+              MODEL="deepseek-v4-pro"
+              THINKING_TYPE="enabled"
+              CODE_MOD="true"
+              if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+                TIER_MARK="FOLLOWUP"
+                TIER_LABEL="功能建议追问（v4-pro 思考 · 可改代码）"
+              else
+                TIER_MARK="FIRST"
+                TIER_LABEL="功能建议（首轮 · v4-pro 思考 · 可改代码）"
+              fi
+              ;;
+            documentation)
+              MODEL="deepseek-v4-flash"
+              THINKING_TYPE="enabled"
+              CODE_MOD="true"
+              if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+                TIER_MARK="FOLLOWUP"
+                TIER_LABEL="文档追问（v4-flash 思考 · 可改文档）"
+              else
+                TIER_MARK="FIRST"
+                TIER_LABEL="文档反馈（首轮 · v4-flash 思考 · 可改文档）"
+              fi
+              ;;
+          esac
+
+          CURL_TIMEOUT=240  # 思考模式统一 240s；非思考 60s
+          if [ "$THINKING_TYPE" = "disabled" ]; then
+            CURL_TIMEOUT=60
+          fi
+
+          echo "🎯 Category: ${CATEGORY} / Tier: ${TIER_LABEL} / Model: ${MODEL} / Thinking: ${THINKING_TYPE} / CodeMod: ${CODE_MOD}"
+          echo "category=${CATEGORY}"           >> "$GITHUB_OUTPUT"
+          echo "model=${MODEL}"                 >> "$GITHUB_OUTPUT"
+          echo "thinking=${THINKING_TYPE}"      >> "$GITHUB_OUTPUT"
+          echo "code_mod=${CODE_MOD}"           >> "$GITHUB_OUTPUT"
+          echo "tier_mark=${TIER_MARK}"         >> "$GITHUB_OUTPUT"
+          echo "tier_label=${TIER_LABEL}"       >> "$GITHUB_OUTPUT"
+          echo "curl_timeout=${CURL_TIMEOUT}"   >> "$GITHUB_OUTPUT"
+          echo "ai_help_count=${AI_HELP_COUNT}" >> "$GITHUB_OUTPUT"
+
+      # ── 步骤 2：调用 DeepSeek API ────────────────────────────
       - name: Call DeepSeek API
         id: llm
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          # 全部走 env 把不可信用户输入隔离到环境变量，bash 不会再次解释——
-          # 如果把 GitHub Actions 表达式直接拼到 run: 里，会在 YAML 阶段做纯文本替换，
-          # 留下引号注入风险（评论含 " 或反引号就炸）。
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
-          COMMENT_BODY: ${{ github.event.comment.body }}    # issues 事件下为空字符串，安全
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          MODEL: ${{ steps.tier.outputs.model }}
+          THINKING: ${{ steps.tier.outputs.thinking }}
+          CODE_MOD: ${{ steps.tier.outputs.code_mod }}
+          TIER_MARK: ${{ steps.tier.outputs.tier_mark }}
+          CURL_TIMEOUT: ${{ steps.tier.outputs.curl_timeout }}
+          CATEGORY: ${{ steps.tier.outputs.category }}
+          AI_HELP_COUNT: ${{ steps.tier.outputs.ai_help_count }}
         run: |
           if [ -z "${DEEPSEEK_API_KEY}" ]; then
             echo "⚠️  DEEPSEEK_API_KEY secret 未配置，跳过 AI 调用" >&2
@@ -125,27 +233,10 @@ jobs:
             exit 0
           fi
 
-          # ── 分层模型选择（DeepSeek V4 API）────────────────────────
-          # 统一用 deepseek-v4-flash，通过 thinking 开关切换非思考 / 思考模式：
-          # issues 事件 = 首次触发 → flash 非思考模式（等价旧 deepseek-chat）
-          # issue_comment 事件 = 用户 /ai-help 追问 → flash 思考模式（等价旧 deepseek-reasoner）
-          MODEL="deepseek-v4-flash"
-          if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
-            THINKING_TYPE="enabled"
-            CURL_TIMEOUT=240        # 思考模式 30–90s，给足余量
-            TIER_MARK="FOLLOWUP"    # 在 user 消息里打标签给 AI
-            TIER_LABEL="追问 · 深度分析"
-          else
-            THINKING_TYPE="disabled"
-            CURL_TIMEOUT=60         # 非思考模式典型 2–5s，60s 足够
-            TIER_MARK="FIRST"
-            TIER_LABEL="首轮 · 快速回复"
-          fi
-          echo "🎯 Tier: ${TIER_LABEL} / Model: ${MODEL} / Thinking: ${THINKING_TYPE}"
-          echo "model=${MODEL}"           >> "$GITHUB_OUTPUT"
-          echo "tier_label=${TIER_LABEL}" >> "$GITHUB_OUTPUT"
+          echo "🎯 Model: ${MODEL} / Thinking: ${THINKING} / CodeMod: ${CODE_MOD} / Timeout: ${CURL_TIMEOUT}s"
 
-          SYSTEM_PROMPT=$(cat <<'PROMPT'
+          # ── 构建 system prompt ────────────────────────────────
+          SYSTEM_PROMPT=$(cat <<'PROMPT_BASE'
           你是 Smart-Config-Kit（科学上网分流配置仓库）的 issue 初筛助手。
 
           【仓库定位】
@@ -153,6 +244,7 @@ jobs:
           CMFA YAML / OpenClash Normal+Smart / Shadowrocket / SingBox Full /
           Surge / Loon / Quantumult X / v2rayN / Passwall2。
           架构核心：28 业务组 × 9 区域组 + 多源 rule-providers + LightGBM 智能选路。
+          仓库维护契约见 CLAUDE.md（每次改动必须全版本联动）。
 
           【你的角色】
           维护者人工处理前的**初步分析**层。4 种 issue 类型都会路由到你：
@@ -169,32 +261,29 @@ jobs:
                B. 可能是 bug，有已知线索 → 说出可能的根因方向（例如 rule-provider
                   URL 变更、某字段在新版内核 deprecated、跨产物不一致）供维护者验证
                C. 可能是 bug 但信息不足 → 列出还需要用户补充的信息
-               D. 明显是 bug → 确认现象，等维护者修
-               **不要**给具体代码修改 diff，只说"可能在哪一层 / 哪个文件附近"。
+               D. 明显是 bug → 确认现象，定位到具体文件/行号，**给出代码修改**（见下方代码修改模式）。
 
           3. ✨ enhancement（功能/规则建议）
              → 对照 README "🎯 差异化价值" 的 4 类加法原则做初步可行性评估：
                 ① 新兴服务（geosite 未收录） / ② 拆 geosite 总类 /
                 ③ 广告多源互补 / ④ 地区长尾 ASN
                如果建议和 geosite 某分类 > 95% 重叠 → 指出"可能被拒绝"并解释原因。
-               如果落在 4 类之一 → 给出肯定评估，但强调最终采纳权在维护者。
+               如果落在 4 类之一 → 给出肯定评估，**可直接实现**（见下方代码修改模式）。
 
           4. 📝 documentation（文档反馈）
              → 定位对应文件（根 README.md / CLAUDE.md / AGENTS.md / 各子目录 README.md
                或 CHANGELOG.md），判断描述与现状是否一致：
-                - 确实过时 / 错字 / 链接 404 → 说明哪里错、应该是什么
+                - 确实过时 / 错字 / 链接 404 → 说明哪里错、应该是什么，**直接修改**
                 - 描述其实正确但用户读懂有歧义 → 解释正确含义
 
           5. 💬 /ai-help 评论召唤 → 针对评论上下文答，不要重复整个 issue 分析
 
           【引用文档】
           精确路径，别泛指："CLAUDE.md" / "AGENTS.md" /
-          "Clash Party/Clash Smart内核覆写脚本.js" / "OpenClash/CHANGELOG.md" /
+          "Clash Party/ClashParty(mihomo-smart).js" / "OpenClash/CHANGELOG.md" /
           "SingBox/README.md §2a" 之类。
 
           【硬规则 — 必须遵守】
-          - ❌ **永远不要给具体代码修改 / diff / patch**——就算你已判断出根因，
-             也只说"可能在哪一层"，不提"把 X 改成 Y"。代码决策 100% 留给维护者。
           - ❌ 不承诺 "下个版本会加 / 会被采纳 / 会修"——你没有任何决策权。
           - ❌ 安全漏洞 → 只提醒 "请用 GitHub Security Advisory 私下报告，不要公开"；
              不讨论利用细节。
@@ -205,41 +294,106 @@ jobs:
 
           【调用分层 — 用户消息会带标签】
           用户消息顶部会出现 `[TIER: FIRST]` 或 `[TIER: FOLLOWUP]`：
-          - `FIRST`  → 首次触发（issue 刚打标签），你用 deepseek-v4-flash 非思考模式速度优先
+          - `FIRST`  → 首次触发（issue 刚打标签）
              → 第一行用「🤖 AI 初步分析（<类型>）」
-          - `FOLLOWUP` → 用户看过首轮后 `/ai-help` 追问，你用 deepseek-v4-flash 思考模式深度推理
+          - `FOLLOWUP` → 用户 `/ai-help` 追问
              → 第一行用「🤖 AI 深度分析（<类型> · 追问）」，并**正面回应评论里的追问焦点**，
                别重复首轮讲过的内容
+          PROMPT_BASE
+          )
+
+          # ── 代码修改模式追加指令 ──────────────────────────
+          if [ "${CODE_MOD}" = "true" ]; then
+            CODE_MOD_INSTR=$(cat <<'PROMPT_CODE_MOD'
+
+          【代码修改模式 — 已激活】
+          你有代码修改权限。当你判断需要修改代码时，按以下格式输出响应：
+
+          <!-- AI_REPLY -->
+          （你的文本回复——分析、解释、方案说明。和普通回复一样，中文 markdown。）
+          <!-- /AI_REPLY -->
+
+          <!-- AI_PATCH:relative/path/to/file.ext -->
+          （文件的完整新内容——不是 diff，是整个文件重写后的内容）
+          <!-- /AI_PATCH -->
+
+          （可重复多个 AI_PATCH 块，每个文件一个块）
+
+          <!-- AI_PR -->
+          （PR 标题，一行，简短）
+          |
+          （PR 正文，可以多行，markdown 格式。说明改动内容、原因、影响面。）
+          <!-- /AI_PR -->
+
+          **重要规则：**
+          - 如果你判断**不需要修改代码**（例如 bug 其实不是 bug、功能建议不可行），
+            **只输出 <!-- AI_REPLY --> 块**，不要输出 AI_PATCH 和 AI_PR 块。
+          - **只有在你确认需要改代码时才输出完整的三段结构。**
+          - AI_PATCH 里的路径必须是仓库内真实路径，内容必须是完整的文件内容（不是 diff）。
+          - 修 bug / 加功能时，**必须遵循 CLAUDE.md §1 全版本联动规则**——
+            先改 Clash Party JS 基线，再同步所有受影响的产物文件。
+            **所有需要改动的文件都要各自一个 AI_PATCH 块。**
+          - 修文档时只改对应的 README.md / CHANGELOG.md。
+          - AI_PR 标题和正文用中文，PR 正文列出影响面和每个修改的文件。
+          - 文本回复（AI_REPLY）里**不要**重复贴代码块——代码修改全部放到 AI_PATCH 里，
+            workflow 会自动提取并创建 PR。回复里只需说明分析结论 + 引用 PR 链接占位符。
+          PROMPT_CODE_MOD
+          )
+            SYSTEM_PROMPT="${SYSTEM_PROMPT}${CODE_MOD_INSTR}"
+          fi
+
+          # ── 无代码修改模式追加指令 ──────────────────────────
+          if [ "${CODE_MOD}" != "true" ]; then
+            NO_CODE_INSTR=$(cat <<'PROMPT_NO_CODE'
+
+          【无代码修改权限】
+          - ❌ **不要给具体代码修改 / diff / patch**——就算你已判断出根因，
+             也只说"可能在哪一层"，不提"把 X 改成 Y"。代码决策 100% 留给维护者。
+          - 回复里不要出现 AI_PATCH 或 AI_PR 标记。
+          PROMPT_NO_CODE
+          )
+            SYSTEM_PROMPT="${SYSTEM_PROMPT}${NO_CODE_INSTR}"
+          fi
+
+          # ── 回复结构（按代码修改权限区分）─────────────────
+          if [ "${CODE_MOD}" = "true" ]; then
+            REPLY_STRUCTURE=$(cat <<'PROMPT_STRUCTURE_CODE'
 
           【回复结构】
-          - **第一行**按上面分层规则写类型标签（使用问题 / 疑似 bug → 需维护者确认 /
+          - **第一行**按分层规则写类型标签（使用问题 / 疑似 bug → 需维护者确认 /
+            功能建议 → 4 类加法原则评估 / 文档反馈）
+          - 中间：分析内容（短问题 1-3 段；复杂问题用小标题 / 表格 / 代码块）
+          - **倒数第二段**必须包含这句硬提示（原文复制，不要改措辞）：
+             > ⚠️ **我有代码分析和 PR 创建权限，但最终合并 / 采纳决定权在维护者**。
+             > 以上分析和代码修改仅供参考，**最终合并 / 关闭请等维护者人工处理**。
+          - 末尾**不要**再自己签名——workflow 会自动补 Model / Workflow / PR 链接元信息。
+          PROMPT_STRUCTURE_CODE
+          )
+          else
+            REPLY_STRUCTURE=$(cat <<'PROMPT_STRUCTURE_NOCODE'
+
+          【回复结构】
+          - **第一行**按分层规则写类型标签（使用问题 / 疑似 bug → 需维护者确认 /
             功能建议 → 4 类加法原则评估 / 文档反馈）
           - 中间：分析内容（短问题 1-3 段；复杂问题用小标题 / 表格 / 代码块）
           - **倒数第二段**必须包含这句硬提示（原文复制，不要改措辞）：
              > ⚠️ **我只做初步分析，没有代码修改 / PR 合并 / 关闭 issue 的权限**。
              > 以上分析仅供参考，**最终修复 / 采纳 / 关闭请等维护者人工处理**。
           - 末尾**不要**再自己签名——workflow 会自动补 Model / Workflow 元信息。
-          PROMPT
+          PROMPT_STRUCTURE_NOCODE
           )
+          fi
+          SYSTEM_PROMPT="${SYSTEM_PROMPT}${REPLY_STRUCTURE}"
 
-          # 拼 body JSON
-          # 关键设计：所有用户输入（标题/正文/评论/上下文）都通过 jq 的 --arg / --rawfile 传入，
-          # 由 jq 自己负责 JSON 转义。绝对不在 bash 里手工拼 JSON 字符串。
-          #
-          # 注意（DeepSeek V4）：thinking={type:"enabled"} 时模型会先输出思维链
-          # （reasoning_content 字段），再输出最终答案（content 字段）。
-          #   - 我们只取 content（下方 jq '.choices[0].message.content'），不暴露推理过程给用户。
-          #   - 思考模式忽略 temperature 参数（官方说明）；非思考模式不单独调 temperature 走默认。
-          #   - max_tokens 控制"最终答案"上限，不含推理 token。
-          #   - thinking 参数按 V4 官方格式：{"type": "enabled" | "disabled"}。
+          # ── 拼 API 请求 JSON ─────────────────────────────────
           REQ_BODY=$(jq -n \
-            --arg model    "$MODEL" \
-            --arg sys      "$SYSTEM_PROMPT" \
-            --arg tier     "$TIER_MARK" \
-            --arg title    "$ISSUE_TITLE" \
-            --arg body     "$ISSUE_BODY" \
-            --arg comment  "$COMMENT_BODY" \
-            --arg thinking "$THINKING_TYPE" \
+            --arg model   "$MODEL" \
+            --arg sys     "$SYSTEM_PROMPT" \
+            --arg tier    "$TIER_MARK" \
+            --arg title   "$ISSUE_TITLE" \
+            --arg body    "$ISSUE_BODY" \
+            --arg comment "$COMMENT_BODY" \
+            --arg thinking "$THINKING" \
             --rawfile ctx /tmp/context.txt \
             '{
               model: $model,
@@ -253,52 +407,219 @@ jobs:
                 ) }
               ],
               thinking: { type: $thinking },
-              max_tokens: 1500,
+              max_tokens: (if $thinking == "enabled" then 4096 else 1500 end),
               stream: false
             }')
 
-          # DeepSeek 的 API endpoint，兼容 OpenAI ChatCompletion 格式
-          # CURL_TIMEOUT 根据模式动态：非思考 60s / 思考 240s
           RESPONSE=$(curl -s --max-time "$CURL_TIMEOUT" https://api.deepseek.com/chat/completions \
             -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$REQ_BODY")
 
-          # 抽 choices[0].message.content；失败时给 fallback
-          REPLY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
-          if [ -z "$REPLY" ]; then
+          RAW_REPLY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
+          if [ -z "$RAW_REPLY" ]; then
             ERR=$(echo "$RESPONSE" | jq -r '.error.message // "未知错误"')
-            REPLY="⚠️ AI 调用失败：${ERR}（请等维护者人工回复）"
+            RAW_REPLY="⚠️ AI 调用失败：${ERR}（请等维护者人工回复）"
+            echo "has_patch=false" >> "$GITHUB_OUTPUT"
           fi
 
-          # 写回 GITHUB_OUTPUT（heredoc 格式，允许多行）
+          # ── 提取 AI_REPLY 文本（去掉 AI_PATCH / AI_PR 标记）─
+          # 先检测是否有 AI_REPLY 标记；如果有就只取标记内内容，否则全文当回复
+          if echo "$RAW_REPLY" | grep -q '<!-- AI_REPLY -->'; then
+            CLEAN_REPLY=$(echo "$RAW_REPLY" | sed -n '/<!-- AI_REPLY -->/,/<!-- \/AI_REPLY -->/p' | sed '1d;$d')
+          else
+            # 无标记 → 全文作为回复，清理可能残留的结构标记行
+            CLEAN_REPLY=$(echo "$RAW_REPLY" | sed '/<!-- AI_PATCH:/,/<!-- \/AI_PATCH -->/d' | sed '/<!-- AI_PR -->/,/<!-- \/AI_PR -->/d')
+          fi
+          if [ -z "$CLEAN_REPLY" ]; then
+            CLEAN_REPLY="$RAW_REPLY"
+          fi
+
+          # ── 检测是否有补丁 ─────────────────────────────────
+          if echo "$RAW_REPLY" | grep -q '<!-- AI_PATCH:'; then
+            echo "has_patch=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_patch=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          # ── 写回 GITHUB_OUTPUT ──────────────────────────────
           {
             echo "reply<<REPLYEOF"
-            echo "$REPLY"
+            echo "$CLEAN_REPLY"
             echo "REPLYEOF"
           } >> "$GITHUB_OUTPUT"
+          {
+            echo "raw_response<<RAWEOF"
+            echo "$RAW_REPLY"
+            echo "RAWEOF"
+          } >> "$GITHUB_OUTPUT"
 
+      # ── 步骤 3：提取代码修改 + 创建 PR ─────────────────────
+      - name: Apply code changes & create PR
+        id: pr
+        if: steps.tier.outputs.code_mod == 'true' && steps.llm.outputs.has_patch == 'true'
+        env:
+          RAW_RESPONSE: ${{ steps.llm.outputs.raw_response }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "🔧 代码修改模式已激活，提取补丁..."
+
+          # ── 配置 git 身份 ────────────────────────────────
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # ── 生成分支名 ────────────────────────────────────
+          BRANCH="ai-fix/issue-${ISSUE_NUMBER}-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$BRANCH"
+
+          # ── 提取并应用 AI_PATCH 块 ────────────────────────
+          # 格式：<!-- AI_PATCH:path/to/file --> ... <!-- /AI_PATCH -->
+          PATCH_COUNT=0
+          echo "$RAW_RESPONSE" > /tmp/ai_response.txt
+
+          # 用 awk 提取每个 patch 块（兼容 mawk / gawk）
+          awk '
+            /<!-- AI_PATCH:/ {
+              line = $0
+              sub(/.*<!-- AI_PATCH:/, "", line)
+              sub(/ -->.*/, "", line)
+              gsub(/^[[:space:]]+|[[:space:]]+$/, "", line)
+              in_patch = 1
+              patch_path = line
+              next
+            }
+            /<!-- \/AI_PATCH -->/ {
+              if (in_patch) {
+                print "FILE:" patch_path >> "/tmp/patch_files.txt"
+                close("/tmp/patch_files.txt")
+                in_patch = 0
+                patch_path = ""
+                next
+              }
+            }
+            in_patch {
+              outfile = "/tmp/patch_content_" patch_path
+              print >> outfile
+              close(outfile)
+            }
+          ' /tmp/ai_response.txt 2>/dev/null || true
+
+          if [ ! -f /tmp/patch_files.txt ]; then
+            echo "⚠️ 未能解析任何 AI_PATCH 块，跳过 PR 创建"
+            git checkout - 2>/dev/null || true
+            echo "pr_url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # ── 逐个写入文件 ──────────────────────────────────
+          while IFS=: read -r _ filepath; do
+            content_file="/tmp/patch_content_${filepath}"
+            if [ -f "$content_file" ]; then
+              # 确保父目录存在
+              mkdir -p "$(dirname "$filepath")"
+              cp "$content_file" "$filepath"
+              echo "  ✅ Wrote: $filepath ($(wc -l < "$filepath") lines)"
+              PATCH_COUNT=$((PATCH_COUNT + 1))
+            fi
+          done < /tmp/patch_files.txt
+
+          if [ "$PATCH_COUNT" -eq 0 ]; then
+            echo "⚠️ 没有有效的补丁文件，跳过 PR 创建"
+            git checkout - 2>/dev/null || true
+            echo "pr_url=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "📦 共 $PATCH_COUNT 个文件已修改"
+
+          # ── 提取 PR 标题和正文 ────────────────────────────
+          # <!-- AI_PR --> 内部格式：第一行是标题，| 之后是正文
+          awk '
+            /<!-- AI_PR -->/ { in_pr=1; next }
+            /<!-- \/AI_PR -->/ { in_pr=0; next }
+            in_pr { print }
+          ' /tmp/ai_response.txt > /tmp/pr_raw.txt
+
+          if [ -s /tmp/pr_raw.txt ]; then
+            PR_TITLE=$(head -1 /tmp/pr_raw.txt | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+            # 去掉标题行首的 | 分隔符（如果有）
+            PR_TITLE=$(echo "$PR_TITLE" | sed 's/^|\s*//')
+            # 正文从第 2 行开始（跳过 | 行如果有的话）
+            PR_BODY=$(tail -n +2 /tmp/pr_raw.txt | sed 's/^|\s*//')
+            # 追加自动标记
+            PR_BODY="${PR_BODY}
+
+          ---
+          <sub>🤖 此 PR 由 AI 自动生成（issue #${ISSUE_NUMBER}）· Workflow: \`.github/workflows/ai-responder.yml\` · 请维护者审查后合并</sub>"
+          else
+            PR_TITLE="ai-fix: issue #${ISSUE_NUMBER} 自动修复"
+            PR_BODY="🤖 此 PR 由 AI 基于 issue #${ISSUE_NUMBER} 自动生成，请审查后合并。"
+          fi
+
+          # 清理标题（去特殊字符，限长）
+          PR_TITLE=$(echo "$PR_TITLE" | head -1 | cut -c1-72)
+          echo "📝 PR 标题: $PR_TITLE"
+
+          # ── 提交并推送 ────────────────────────────────────
+          git add -A
+          git commit -m "$PR_TITLE" || { echo "⚠️ 没有变更需要提交"; git checkout - 2>/dev/null || true; echo "pr_url=" >> "$GITHUB_OUTPUT"; exit 0; }
+          git push origin "$BRANCH" 2>&1 || { echo "⚠️ Push 失败"; git checkout - 2>/dev/null || true; echo "pr_url=" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          # ── 创建 PR ────────────────────────────────────────
+          PR_URL=$(gh pr create \
+            --title "$PR_TITLE" \
+            --body "$PR_BODY" \
+            --base main \
+            --head "$BRANCH" \
+            2>&1) || { echo "⚠️ PR 创建失败: $PR_URL"; echo "pr_url=" >> "$GITHUB_OUTPUT"; exit 0; }
+
+          echo "🔗 PR created: $PR_URL"
+          echo "pr_url=${PR_URL}" >> "$GITHUB_OUTPUT"
+          echo "branch=${BRANCH}" >> "$GITHUB_OUTPUT"
+          echo "patch_count=${PATCH_COUNT}" >> "$GITHUB_OUTPUT"
+
+      # ── 步骤 4：发布回复评论 ──────────────────────────────
       - name: Post reply to issue
         if: steps.llm.outputs.skipped != 'true'
         uses: actions/github-script@v7
         env:
-          # 走 env 而不是直接把 GitHub Actions 表达式拼到 script 里——AI 回复必含反引号
-          # （markdown 代码块），直接拼进 JS 模板字符串会破坏语法。env 走 process.env 安全。
           AI_REPLY: ${{ steps.llm.outputs.reply }}
-          AI_MODEL: ${{ steps.llm.outputs.model }}
-          AI_TIER:  ${{ steps.llm.outputs.tier_label }}
+          AI_MODEL: ${{ steps.tier.outputs.model }}
+          AI_TIER: ${{ steps.tier.outputs.tier_label }}
+          CODE_MOD: ${{ steps.tier.outputs.code_mod }}
+          PR_URL: ${{ steps.pr.outputs.pr_url }}
         with:
           script: |
             const aiReply = process.env.AI_REPLY || '(AI 回复为空，请等维护者人工回复)';
             const model   = process.env.AI_MODEL || 'deepseek-v4-flash';
-            const tier    = process.env.AI_TIER  || '首轮 · 快速回复';
+            const tier    = process.env.AI_TIER  || 'AI 自动回复';
+            const codeMod = process.env.CODE_MOD || 'false';
+            const prUrl   = process.env.PR_URL   || '';
+
+            // ── 构建 footer ──────────────────────────────────
+            const footerLines = [
+              '---',
+            ];
+            if (prUrl) {
+              footerLines.push(
+                `<sub>Model: \`${model}\` · Tier: ${tier} · 🔗 PR: ${prUrl} · Workflow: \`.github/workflows/ai-responder.yml\` · 想要更深度分析请在评论里 \`/ai-help\` · AI 自动生成，最终处理请等维护者 @ivansolis1989</sub>`
+              );
+            } else if (codeMod === 'true') {
+              footerLines.push(
+                `<sub>Model: \`${model}\` · Tier: ${tier}（含代码修改权限，但本次未触发修改） · Workflow: \`.github/workflows/ai-responder.yml\` · 想要更深度分析请在评论里 \`/ai-help\` · AI 自动生成，最终处理请等维护者 @ivansolis1989</sub>`
+              );
+            } else {
+              footerLines.push(
+                `<sub>Model: \`${model}\` · Tier: ${tier} · Workflow: \`.github/workflows/ai-responder.yml\` · 想要更深度分析请在评论里 \`/ai-help\` · AI 无代码修改权限，最终处理请等维护者 @ivansolis1989</sub>`
+              );
+            }
+
             const commentBody = [
               `> 🤖 **AI 自动回复**（${tier}，仅供参考）`,
               '',
               aiReply,
-              '',
-              '---',
-              `<sub>Model: \`${model}\` · Tier: ${tier}（首轮非思考 / 追问思考模式 分层）· Workflow: \`.github/workflows/ai-responder.yml\` · 想要更深度分析请在评论里 \`/ai-help\` · AI 无代码修改权限，最终处理请等维护者 @ivansolis1989</sub>`
+              ...footerLines,
             ].join('\n');
 
             await github.rest.issues.createComment({
