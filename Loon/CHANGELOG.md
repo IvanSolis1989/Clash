@@ -4,6 +4,12 @@
 
 ---
 
+## v5.2.8-Loon.6 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
+
+- ★ `doh-server` 里的 `https://doh.pub/dns-query` 替换为 `https://1.12.12.12/dns-query`
+  - DNSPod 纯 IP 形式 DoH 端点，**无需 bootstrap 解析 `doh.pub` 域名**，iOS 冷启动更稳
+- 版本号 `v5.2.8-Loon.5` → `v5.2.8-Loon.6`
+
 ## v5.2.8-Loon.5 (2026-04-23) — 基线对齐 Clash Party v5.2.8（无代码改动）
 
 - 跟随基线 bump：`v5.2.4-Loon.4` → `v5.2.8-Loon.5`

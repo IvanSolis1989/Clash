@@ -5,6 +5,14 @@
 
 ---
 
+## v5.2.8-SR.6 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
+
+- ★ `dns-server` / `proxy-dns-server` 里的 `https://doh.pub/dns-query` 全部替换为
+  `https://1.12.12.12/dns-query`
+  - DNSPod 纯 IP 形式 DoH 端点，**无需 bootstrap 解析 `doh.pub` 域名**，iOS 冷启动
+    或低信号环境下更稳
+- 版本号 `v5.2.8-SR.5` → `v5.2.8-SR.6`
+
 ## v5.2.8-SR.5 (2026-04-23) — 基线对齐 Clash Party v5.2.8（无代码改动）
 
 - 跟随基线 bump：`v5.2.6-SR.4` → `v5.2.8-SR.5`

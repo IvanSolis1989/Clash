@@ -1,5 +1,5 @@
 # ================================================================
-# Clash Smart v5.2.8-cmfa.4 - CMFA (Clash Meta for Android) 配置
+# Clash Smart v5.2.8-cmfa.5 - CMFA (Clash Meta for Android) 配置
 # Build: 2026-04-24
 # 架构：proxy-providers 订阅 + 18 url-test 区域组（9 全部 + 9 家宽）+ 28 业务策略组 + 384 rule-providers
 # 基线：Clash Party v5.2.8（唯一主线）
@@ -72,15 +72,15 @@ dns:
   - 8.8.8.8
   nameserver:
   - 'https://dns.alidns.com/dns-query'
-  - 'https://doh.pub/dns-query'
+  - 'https://1.12.12.12/dns-query'
   proxy-server-nameserver:
   - 'https://dns.cloudflare.com/dns-query'
   - 'https://dns.google/dns-query'
   - 'https://dns.alidns.com/dns-query'
-  - 'https://doh.pub/dns-query'
+  - 'https://1.12.12.12/dns-query'
   direct-nameserver:
   - 'https://dns.alidns.com/dns-query'
-  - 'https://doh.pub/dns-query'
+  - 'https://1.12.12.12/dns-query'
   fallback:
   - 'https://dns.google/dns-query'
   - 'https://dns.cloudflare.com/dns-query'

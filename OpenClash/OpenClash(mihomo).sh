@@ -2,7 +2,7 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash v5.2.8-oc-normal.3 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Clash v5.2.8-oc-normal.4 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
 # ============================================================================
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：18 个区域组（9 全部 + 9 家宽）从 type: smart（uselightgbm）换成 type: url-test。
@@ -24,7 +24,7 @@
 
 
 
-VERSION_TAG="v5.2.8-oc-normal.3"
+VERSION_TAG="v5.2.8-oc-normal.4"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -102,15 +102,15 @@ dns:
     - https://8.8.8.8/dns-query
   nameserver:
   - https://223.5.5.5/dns-query
-  - https://doh.pub/dns-query
+  - https://1.12.12.12/dns-query
   proxy-server-nameserver:
   - https://1.1.1.1/dns-query
   - https://8.8.8.8/dns-query
   - https://223.5.5.5/dns-query
-  - https://doh.pub/dns-query
+  - https://1.12.12.12/dns-query
   direct-nameserver:
   - https://223.5.5.5/dns-query
-  - https://doh.pub/dns-query
+  - https://1.12.12.12/dns-query
   fallback:
   - https://1.1.1.1/dns-query
   - https://8.8.8.8/dns-query

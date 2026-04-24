@@ -208,15 +208,15 @@ dns:
     - 8.8.8.8
   nameserver:
     - https://223.5.5.5/dns-query
-    - https://doh.pub/dns-query
+    - https://1.12.12.12/dns-query
   proxy-server-nameserver:
     - https://1.1.1.1/dns-query
     - https://8.8.8.8/dns-query
     - https://223.5.5.5/dns-query
-    - https://doh.pub/dns-query
+    - https://1.12.12.12/dns-query
   direct-nameserver:
     - https://223.5.5.5/dns-query
-    - https://doh.pub/dns-query
+    - https://1.12.12.12/dns-query
   fallback:
     - https://1.1.1.1/dns-query
     - https://8.8.8.8/dns-query

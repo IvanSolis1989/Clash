@@ -166,7 +166,7 @@ QX 的 DNS 配置用多行 `server=` 声明：
 ```
 server=223.5.5.5
 server=119.29.29.29
-server=https://doh.pub/dns-query
+server=https://1.12.12.12/dns-query
 server=https://dns.alidns.com/dns-query
 server=https://1.1.1.1/dns-query
 server=https://8.8.8.8/dns-query

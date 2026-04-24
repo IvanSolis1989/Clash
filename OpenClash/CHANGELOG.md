@@ -9,6 +9,14 @@
 
 ## Normal（`OpenClash(mihomo).sh`，非 Smart 内核 / url-test 版）
 
+### v5.2.8-oc-normal.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
+
+- ★ `nameserver` / `proxy-server-nameserver` / `direct-nameserver` 三段里的
+  `https://doh.pub/dns-query` 全部替换为 `https://1.12.12.12/dns-query`
+  - DNSPod 纯 IP 形式 DoH 端点，**无需 bootstrap 解析 `doh.pub` 域名**，消除冷启动时
+    DoH 自依赖的潜在死锁
+- 版本号 `v5.2.8-oc-normal.3` → `v5.2.8-oc-normal.4`
+
 ### v5.2.8-oc-normal.3 (2026-04-23)
 
 - ★ **FIX#28-P0**（节点分类多归属）：🌏 亚太节点组缺 HK/TW/JP/KR、🌎 美洲节点组缺 US
@@ -86,6 +94,14 @@
 ---
 
 ## Full（`OpenClash(mihomo-smart).sh`）
+
+### v5.2.8-oc-full.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
+
+- ★ `nameserver` / `proxy-server-nameserver` / `direct-nameserver` 三段里的
+  `https://doh.pub/dns-query` 全部替换为 `https://1.12.12.12/dns-query`（与 Normal 同步）
+  - DNSPod 纯 IP 形式 DoH 端点，**无需 bootstrap 解析 `doh.pub` 域名**，消除冷启动时
+    DoH 自依赖的潜在死锁
+- 版本号 `v5.2.8-oc-full.3` → `v5.2.8-oc-full.4`（shell + Ruby 两处 VERSION 同步 bump）
 
 ### v5.2.8-oc-full.3 (2026-04-23)
 

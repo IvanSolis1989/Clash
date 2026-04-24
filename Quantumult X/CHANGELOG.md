@@ -6,6 +6,13 @@
 
 ---
 
+## v5.2.8-QX.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
+
+- ★ `[dns]` 段里的 `server=https://doh.pub/dns-query` 替换为
+  `server=https://1.12.12.12/dns-query`
+  - DNSPod 纯 IP 形式 DoH 端点，**无需 bootstrap 解析 `doh.pub` 域名**，iOS 冷启动更稳
+- 版本号 `v5.2.8-QX.3` → `v5.2.8-QX.4`
+
 ## v5.2.8-QX.3 (2026-04-23) — 基线对齐 Clash Party v5.2.8（无代码改动）
 
 - 跟随基线 bump：`v5.2.5-QX.2` → `v5.2.8-QX.3`

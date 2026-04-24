@@ -2,7 +2,7 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.2.8-oc-full.3 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Clash Smart v5.2.8-oc-full.4 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
 # ============================================================================
 # 定位：对齐 Clash Party v5.2.8 JS 主线的 OpenClash 全量版本。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
@@ -22,7 +22,7 @@
 
 
 
-VERSION_TAG="v5.2.8-oc-full.3"
+VERSION_TAG="v5.2.8-oc-full.4"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -100,15 +100,15 @@ dns:
     - https://8.8.8.8/dns-query
   nameserver:
   - https://223.5.5.5/dns-query
-  - https://doh.pub/dns-query
+  - https://1.12.12.12/dns-query
   proxy-server-nameserver:
   - https://1.1.1.1/dns-query
   - https://8.8.8.8/dns-query
   - https://223.5.5.5/dns-query
-  - https://doh.pub/dns-query
+  - https://1.12.12.12/dns-query
   direct-nameserver:
   - https://223.5.5.5/dns-query
-  - https://doh.pub/dns-query
+  - https://1.12.12.12/dns-query
   fallback:
   - https://1.1.1.1/dns-query
   - https://8.8.8.8/dns-query
@@ -4193,7 +4193,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.2.8-oc-full.3"
+VERSION = "v5.2.8-oc-full.4"
 
 STATUS_LOG = "/tmp/clash_smart_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

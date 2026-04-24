@@ -5,6 +5,16 @@
 
 ---
 
+## v5.2.8-cmfa.5 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
+
+- ★ `nameserver` / `proxy-server-nameserver` / `direct-nameserver` 三段里的
+  `https://doh.pub/dns-query` 全部替换为 `https://1.12.12.12/dns-query`
+  - DNSPod 同时提供 `doh.pub` 域名形式与 `1.12.12.12` 纯 IP 形式两种 DoH 端点
+  - 纯 IP 形式**无需 bootstrap DNS 解析 `doh.pub`**，消除"冷启动时 DoH 自依赖"的
+    潜在死锁（bootstrap 阶段 `default-nameserver` 只需解析 `dns.alidns.com` 和
+    `dns.cloudflare.com`，不再需要解析 `doh.pub`）
+- 版本号 `v5.2.8-cmfa.4` → `v5.2.8-cmfa.5`
+
 ## v5.2.8-cmfa.4 (2026-04-24)
 
 - ★ **删除 2 个离线 rule-provider**（与 Clash Party v5.2.1 对齐）
