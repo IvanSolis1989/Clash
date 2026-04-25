@@ -61,7 +61,7 @@ LuCI → **服务 → OpenClash → 覆写设置（Overwrite Settings）**。
 
 > `.conf` 是 OpenClash 的设置快照（UCI 格式），不是常驻在路由器文件系统里的文件 —— 上传一次就完事。
 
-<img width="1280" height="678" alt="② .conf 上传位置（在覆写设置页面里）" src="https://github.com/user-attachments/assets/e03460ea-606c-4e1b-b45b-a76bc8158abf" />
+<img width="1280" height="678" alt="② .conf 上传位置（在覆写设置页面里）" src="https://github.com/user-attachments/assets/3a204b9e-ccc8-4b1f-8ed9-3dd1c1e66e7b" />
 
 ### 3.4 上传 `.sh` 到路由器，然后在 UI 里引用它
 
@@ -83,7 +83,7 @@ ssh root@192.168.1.1 "chmod +x '/etc/openclash/OpenClash(mihomo-smart).sh' '/etc
 2. 勾选 **启用自定义覆写**
 3. 点击 **保存并应用**
 
-<img width="1280" height="678" alt="③ .sh 脚本路径填写位置" src="https://github.com/user-attachments/assets/3a204b9e-ccc8-4b1f-8ed9-3dd1c1e66e7b" />
+<img width="1280" height="678" alt="③ .sh 脚本路径填写位置" src="https://github.com/user-attachments/assets/e03460ea-606c-4e1b-b45b-a76bc8158abf" />
 
 ### 3.5 导入订阅并启动
 
