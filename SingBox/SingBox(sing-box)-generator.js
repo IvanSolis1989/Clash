@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.2.8-sing.2';
-const BUILD = '2026-04-23';
-const BASELINE = 'Clash Party v5.2.8';
+const VERSION = 'v5.2.9-sing.3';
+const BUILD = '2026-04-25';
+const BASELINE = 'Clash Party v5.2.9';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -437,7 +437,7 @@ const extraGeoSiteTags = Array.from(new Set(
   tag,
   format: 'binary',
   url: `https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/${tag.replace('geosite-', '')}.srs`,
-  download_detour: SMART.GLOBAL,
+  http_client: { detour: SMART.GLOBAL },
   update_interval: '1d'
 }));
 
@@ -449,7 +449,7 @@ const ruleSet = Object.entries(providers).map(([tag, info]) => {
     tag,
     format: 'binary',
     url,
-    download_detour: SMART.GLOBAL,
+    http_client: { detour: SMART.GLOBAL },
     update_interval: '1d'
   };
 }).filter(Boolean);
@@ -469,9 +469,22 @@ baseConfig.experimental._meta = {
 };
 
 if (baseConfig.dns && Array.isArray(baseConfig.dns.servers)) {
-  baseConfig.dns.servers = baseConfig.dns.servers.map((server) => {
+  // 添加 bootstrap DNS（用 IP 直连，避免域名解析循环依赖）
+  const hasBootstrap = baseConfig.dns.servers.some(function(s) { return s.tag === 'dns_bootstrap'; });
+  if (!hasBootstrap) {
+    baseConfig.dns.servers.unshift({
+      tag: 'dns_bootstrap',
+      type: 'udp',
+      server: '223.5.5.5',
+      server_port: 53
+    });
+  }
+  baseConfig.dns.servers = baseConfig.dns.servers.map(function(server) {
     if (server && server.tag === 'dns_proxy') {
-      return { ...server, detour: '🚀 节点选择' };
+      return { ...server, detour: '🚀 节点选择', domain_resolver: 'dns_bootstrap' };
+    }
+    if (server && server.tag === 'dns_direct') {
+      return { ...server, domain_resolver: 'dns_bootstrap' };
     }
     return server;
   });

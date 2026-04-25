@@ -5,6 +5,20 @@
 
 ---
 
+---
+
+## v5.2.9-sing.3 (2026-04-25) — 兼容性审计修复
+
+- ★ FIX-Sing-01：DNS 服务器添加 `domain_resolver` 避免域名解析循环依赖
+  - 新增 `dns_bootstrap`（UDP 53 → 223.5.5.5）作为 bootstrap
+  - `dns_direct` / `dns_proxy` 添加 `domain_resolver: "dns_bootstrap"`
+  - 官方文档要求：HTTPS DNS 使用域名时必须设置 `domain_resolver`
+- ★ FIX-Sing-02：`download_detour` → `http_client` 迁移（sing-box v1.14.0+ 弃用）
+  - 全部 ~50+ rule_set 条目替换为 `http_client: { detour: "🌍 全球节点" }`
+  - 同步更新生成器 `SingBox(sing-box)-generator.js`
+- ★ FIX-Sing-03：移除已弃用的 `cache_file.store_rdrc`（v1.14.0 弃用，v1.16.0 移除）
+- Bump: `v5.2.8-sing.2` → `v5.2.9-sing.3`, build 2026-04-25
+
 ## v5.2.8-sing.2 (2026-04-23) — 修复港澳台 B 站（szkane-bilihmt）缺失
 
 - ★ FIX：Full 配置之前**静默丢失**了 `szkane-bilihmt`（港澳台哔哩哔哩）。

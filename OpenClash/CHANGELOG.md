@@ -9,6 +9,15 @@
 
 ## Normal（`OpenClash(mihomo).sh`，非 Smart 内核 / url-test 版）
 
+### v5.2.9-oc-normal.5 (2026-04-25) — 兼容性审计修复
+
+- ★ FIX-OC-01：REGIONS 正则补齐 HK/TW/JP/SG/US 的 `\b` word boundary
+  - `HK` → `\bHK\b`（防命中 HKG/HKUST）、`TW` → `\bTW\b`（防命中 TWN/TWICE）
+  - `JP` → `\bJP\b`（防命中 JPG/JPMorgan）、`SG` → `\bSG\b`（防命中 SGP）
+  - `US\b` → `\bUS\b`（补起始 boundary，防 FOCUS 等内含 US 的词误匹配）
+  - 同步 OpenClash Full
+- Bump: `v5.2.8-oc-normal.4` → `v5.2.9-oc-normal.5`
+
 ### v5.2.8-oc-normal.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
 
 - ★ `nameserver` / `proxy-server-nameserver` / `direct-nameserver` 三段里的
@@ -94,6 +103,11 @@
 ---
 
 ## Full（`OpenClash(mihomo-smart).sh`）
+
+### v5.2.9-oc-full.5 (2026-04-25) — 兼容性审计修复
+
+- ★ FIX-OC-01：REGIONS 正则补齐 HK/TW/JP/SG/US 的 `\b` word boundary（与 Normal 同步）
+- Bump: `v5.2.8-oc-full.4` → `v5.2.9-oc-full.5`
 
 ### v5.2.8-oc-full.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
 

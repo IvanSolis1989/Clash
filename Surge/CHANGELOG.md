@@ -4,6 +4,22 @@
 
 ---
 
+## v5.2.9-Surge.2 (2026-04-25) — 移除 url-test 组非法参数 `select=0`
+
+- ★ **FIX-Surge-07-P1**：18 个 url-test 区域组包含不支持的 `select=0` 参数
+  - Surge 官方文档中 url-test 类型组不支持 `select` 参数（仅 select 类型组支持），
+    该参数会被 Surge 忽略或导致组行为异常
+  - 影响范围：全部 18 个区域组（9 全部 + 9 家宽）
+  - 修复：移除 `select=0,` 参数
+- ★ 同步修复头部注释 `select=0` 描述
+- 版本号 `v5.2.9-Surge.1` → `v5.2.9-Surge.2`
+
+### 官方文档证据
+
+- Surge url-test 组语法仅支持 `url` / `interval` / `timeout` / `tolerance` / `include-all-proxies` / `policy-regex-filter`，不支持 `select` 参数
+
+---
+
 ## v5.2.8-Surge.6 (2026-04-25) — 欧洲节点 filter 补全 GR/RO/HU/CZ 及多国关键词扩充
 
 - ★ **FIX#29-P2**（同构 bug）：🇪🇺 欧洲节点 + 🏡 欧洲家宽 group filter 补全缺失欧洲国家
@@ -12,8 +28,7 @@
     （Greece/Athens/Romania/Bucharest/Hungary/Budapest/Czech/Prague + 中文 + 旗帜 emoji）
   - 同时扩充 PT/BE/IE/DK/NO 的关键词（城市名 + 中文名 + 🇵🇹/🇧🇪/🇮🇪/🇩🇰/🇳🇴）
   - 同构审计：Clash Party JS / OpenClash 已覆盖；CMFA 用 include-all-proxies 兜底全球组（N/A）；SingBox/v2rayN 无运行时节点分类（N/A）
-- 版本号 `v5.2.8-Surge.5` → `v5.2.8-Surge.6` 
-
+- 版本号 `v5.2.8-Surge.5` → `v5.2.8-Surge.6`
 
 
 ## v5.2.8-Surge.5 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式

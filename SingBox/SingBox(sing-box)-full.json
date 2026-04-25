@@ -7,29 +7,36 @@
     "cache_file": {
       "enabled": true,
       "path": "cache.db",
-      "store_fakeip": true,
-      "store_rdrc": true
+      "store_fakeip": true
     },
     "_meta": {
       "name": "SingBox Smart Full",
-      "version": "v5.2.8-sing.2",
-      "build": "2026-04-23",
-      "baseline": "Clash Party v5.2.8",
+      "version": "v5.2.9-sing.3",
+      "build": "2026-04-25",
+      "baseline": "Clash Party v5.2.9",
       "changelog": "见 SingBox/CHANGELOG.md"
     }
   },
   "dns": {
     "servers": [
       {
+        "tag": "dns_bootstrap",
+        "type": "udp",
+        "server": "223.5.5.5",
+        "server_port": 53
+      },
+      {
         "tag": "dns_direct",
         "type": "https",
         "server": "dns.alidns.com",
+        "domain_resolver": "dns_bootstrap",
         "detour": "DIRECT"
       },
       {
         "tag": "dns_proxy",
         "type": "https",
         "server": "cloudflare-dns.com",
+        "domain_resolver": "dns_bootstrap",
         "detour": "🚀 节点选择"
       }
     ],
@@ -1206,7 +1213,9 @@
         "tag": "anti-ad",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/ads.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1214,7 +1223,9 @@
         "tag": "openai",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/openai.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1222,7 +1233,9 @@
         "tag": "telegram",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1230,7 +1243,9 @@
         "tag": "telegram-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/telegram.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1238,7 +1253,9 @@
         "tag": "twitter",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/twitter.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1246,7 +1263,9 @@
         "tag": "twitter-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/twitter.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1254,7 +1273,9 @@
         "tag": "tiktok",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/tiktok.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1262,7 +1283,9 @@
         "tag": "snapchat",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/snap.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1270,7 +1293,9 @@
         "tag": "facebook-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/facebook.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1278,7 +1303,9 @@
         "tag": "google",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1286,7 +1313,9 @@
         "tag": "google-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/google.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1294,7 +1323,9 @@
         "tag": "youtube",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1302,7 +1333,9 @@
         "tag": "netflix",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/netflix.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1310,7 +1343,9 @@
         "tag": "netflix-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/netflix.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1318,7 +1353,9 @@
         "tag": "spotify",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/spotify.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1326,7 +1363,9 @@
         "tag": "bahamut",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bahamut.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1334,7 +1373,9 @@
         "tag": "abema",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/abema.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1342,7 +1383,9 @@
         "tag": "bbc",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bbc.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1350,7 +1393,9 @@
         "tag": "microsoft",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/microsoft.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1358,7 +1403,9 @@
         "tag": "onedrive",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/onedrive.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1366,7 +1413,9 @@
         "tag": "apple",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/apple.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1374,7 +1423,9 @@
         "tag": "icloud",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/icloud.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1382,7 +1433,9 @@
         "tag": "github",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/github.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1390,7 +1443,9 @@
         "tag": "cloudflare-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cloudflare.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1398,7 +1453,9 @@
         "tag": "cloudfront-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cloudfront.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1406,7 +1463,9 @@
         "tag": "fastly-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/fastly.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1414,7 +1473,9 @@
         "tag": "bilibili",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bilibili.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1422,7 +1483,9 @@
         "tag": "biliintl",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/biliintl.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1430,7 +1493,9 @@
         "tag": "cn",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1438,7 +1503,9 @@
         "tag": "cn-ip",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1446,7 +1513,9 @@
         "tag": "proxy",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1454,7 +1523,9 @@
         "tag": "loyalsoldier-gfw",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/gfw.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1462,7 +1533,9 @@
         "tag": "loyalsoldier-greatfire",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/greatfire.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1470,7 +1543,9 @@
         "tag": "geosite-category-ads-all",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1478,7 +1553,9 @@
         "tag": "geosite-private",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1486,7 +1563,9 @@
         "tag": "geosite-category-games",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-games.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1494,7 +1573,9 @@
         "tag": "geosite-category-dev",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-dev.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1502,7 +1583,9 @@
         "tag": "geosite-tracker",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/tracker.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       },
       {
@@ -1510,7 +1593,9 @@
         "tag": "geosite-gfw",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/gfw.srs",
-        "download_detour": "🌍 全球节点",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
         "update_interval": "1d"
       }
     ],

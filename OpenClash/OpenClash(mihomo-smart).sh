@@ -2,7 +2,7 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.2.9-oc-full.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Clash Smart v5.2.9-oc-full.5 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
 # ============================================================================
 # 定位：对齐 Clash Party v5.2.9 JS 主线的 OpenClash 全量版本。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
@@ -22,7 +22,7 @@
 
 
 
-VERSION_TAG="v5.2.9-oc-full.1"
+VERSION_TAG="v5.2.9-oc-full.5"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -4193,7 +4193,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.2.9-oc-full.1"
+VERSION = "v5.2.9-oc-full.5"
 
 STATUS_LOG = "/tmp/clash_smart_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
@@ -4237,14 +4237,14 @@ status "[filter] raw=#{raw_proxies.size} filtered=#{filtered_proxies.size} remov
 # Phase 1b: 区域分类
 # ---------------------------------------------------------------
 REGIONS = {
-  "HK"  => /香港|HK|Hong\s?Kong|🇭🇰/i,
-  "TW"  => /台湾|台灣|TW|Taiwan|🇹🇼/i,
-  "JP"  => /日本|JP|Japan|🇯🇵|Tokyo|Osaka/i,
+  "HK"  => /香港|\bHK\b|Hong\s?Kong|🇭🇰/i,
+  "TW"  => /台湾|台灣|\bTW\b|Taiwan|🇹🇼/i,
+  "JP"  => /日本|\bJP\b|Japan|🇯🇵|Tokyo|Osaka/i,
   # v5.2.6-oc-full FIX#24-P0: 补 KOR（TW/JP/SG 子串匹配能命中 TWN/JPN/SGP，
   #   但 KOR 不是 KR 的子串，原始 /KR/ 无法匹配 "KOR 01"）
   "KR"  => /韩国|韓國|KR|KOR|Korea|Korean|🇰🇷|Seoul/i,
-  "SG"  => /新加坡|SG|Singapore|🇸🇬/i,
-  "US"  => /美国|美國|US\b|USA|United\s?States|America|🇺🇸|Los\s?Angeles|New\s?York|Seattle|Silicon|San\s?Jose/i,
+  "SG"  => /新加坡|\bSG\b|Singapore|🇸🇬/i,
+  "US"  => /美国|美國|\bUS\b|USA|United\s?States|America|🇺🇸|Los\s?Angeles|New\s?York|Seattle|Silicon|San\s?Jose/i,
   "UK"  => /英国|英國|UK\b|GB\b|Britain|London|🇬🇧/i,
   "DE"  => /德国|德國|DE\b|Germany|Frankfurt|🇩🇪/i,
   "FR"  => /法国|法國|FR\b|France|Paris|🇫🇷/i,
