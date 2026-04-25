@@ -16,6 +16,7 @@
   - `JP` → `\bJP\b`（防命中 JPG/JPMorgan）、`SG` → `\bSG\b`（防命中 SGP）
   - `US\b` → `\bUS\b`（补起始 boundary，防 FOCUS 等内含 US 的词误匹配）
   - 同步 OpenClash Full
+- ★ FIX-OC-01α：显式补齐 alpha-3 码 `HKG`/`TWN`/`JPN`/`SGP`（`\b` 丢失子串匹配能力后需显式声明，与 FIX#24 的 `KOR` 做法一致）
 - Bump: `v5.2.8-oc-normal.4` → `v5.2.9-oc-normal.5`
 
 ### v5.2.8-oc-normal.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式
@@ -107,6 +108,7 @@
 ### v5.2.9-oc-full.5 (2026-04-25) — 兼容性审计修复
 
 - ★ FIX-OC-01：REGIONS 正则补齐 HK/TW/JP/SG/US 的 `\b` word boundary（与 Normal 同步）
+- ★ FIX-OC-01α：显式补齐 alpha-3 码 `HKG`/`TWN`/`JPN`/`SGP`（与 Normal 同步）
 - Bump: `v5.2.8-oc-full.4` → `v5.2.9-oc-full.5`
 
 ### v5.2.8-oc-full.4 (2026-04-24) — DNSPod DoH 端点切换为纯 IP 形式

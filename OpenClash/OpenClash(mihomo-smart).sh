@@ -4237,13 +4237,13 @@ status "[filter] raw=#{raw_proxies.size} filtered=#{filtered_proxies.size} remov
 # Phase 1b: 区域分类
 # ---------------------------------------------------------------
 REGIONS = {
-  "HK"  => /香港|\bHK\b|Hong\s?Kong|🇭🇰/i,
-  "TW"  => /台湾|台灣|\bTW\b|Taiwan|🇹🇼/i,
-  "JP"  => /日本|\bJP\b|Japan|🇯🇵|Tokyo|Osaka/i,
-  # v5.2.6-oc-full FIX#24-P0: 补 KOR（TW/JP/SG 子串匹配能命中 TWN/JPN/SGP，
-  #   但 KOR 不是 KR 的子串，原始 /KR/ 无法匹配 "KOR 01"）
+  "HK"  => /香港|\bHK\b|HKG|Hong\s?Kong|🇭🇰/i,
+  "TW"  => /台湾|台灣|\bTW\b|TWN|Taiwan|🇹🇼/i,
+  "JP"  => /日本|\bJP\b|JPN|Japan|🇯🇵|Tokyo|Osaka/i,
+  # v5.2.6-oc-full FIX#24-P0: 补 KOR（KOR 不是 KR 的子串，原始 /KR/ 无法匹配 "KOR 01"）
+  #   HK/TW/JP/SG 使用 \b 防误匹配，显式补充 alpha-3 码 HKG/TWN/JPN/SGP
   "KR"  => /韩国|韓國|KR|KOR|Korea|Korean|🇰🇷|Seoul/i,
-  "SG"  => /新加坡|\bSG\b|Singapore|🇸🇬/i,
+  "SG"  => /新加坡|\bSG\b|SGP|Singapore|🇸🇬/i,
   "US"  => /美国|美國|\bUS\b|USA|United\s?States|America|🇺🇸|Los\s?Angeles|New\s?York|Seattle|Silicon|San\s?Jose/i,
   "UK"  => /英国|英國|UK\b|GB\b|Britain|London|🇬🇧/i,
   "DE"  => /德国|德國|DE\b|Germany|Frankfurt|🇩🇪/i,
