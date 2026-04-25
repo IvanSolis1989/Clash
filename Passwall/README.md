@@ -38,7 +38,7 @@
 | 基础分流（AI / 流媒体 / 支付 / GFW） | ✅ | ✅ |
 | 25 业务分类 | ✅（手工配置）| ✅（自动）|
 | 9 区域组自动 url-test 选最低延迟 | ⚠️ 用负载均衡组近似 | ✅ 原生 |
-| 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 28 条规则的目标** | ✅ 自动 |
+| 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 25 条规则的目标** | ✅ 自动 |
 | Smart + LightGBM 机器学习择优 | ❌ | ✅ 原生 |
 | JS 覆写 / 订阅预处理 | ❌ | ✅ |
 | 广告拦截（纵深多源）| ⚠️ 只能导 1-2 个 list | ✅ 20+ 源 |
@@ -106,11 +106,11 @@ Passwall 根据你选的核提供不同协议：
 
 ---
 
-## 📋 28 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall(xray+sing-box).conf` 内容一致）
+## 📋 25 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall(xray+sing-box).conf` 内容一致）
 
-> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 28 条的单文件版本：`Passwall/Passwall(xray+sing-box).conf`。
+> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 25 条的单文件版本：`Passwall/Passwall(xray+sing-box).conf`。
 
-每一条 = Passwall「分流控制」面板里点一次「新增」。按顺序添加。**第 1 条必须是 🛑 广告拦截**（否则会被后续规则吞掉），**第 25-28 条（国内/受限/国外/FINAL）保持末尾**。
+每一条 = Passwall「分流控制」面板里点一次「新增」。按顺序添加。**第 1 条必须是 🛑 广告拦截**（否则会被后续规则吞掉），**第 22-25 条（国内/受限/国外/FINAL）保持末尾**。
 
 > **Passwall / Passwall2 分流规则语法**（两者共用同一套 xray/sing-box 域名匹配语法，`shunt_rules.lua` 权威源见文末参考）：
 >
@@ -543,7 +543,7 @@ Passwall 在「代理」标签页提供四列表开关：
 
 **推荐使用方式**：
 - 四列表放"粗粒度"规则（如 `geosite:cn` 直连、`geosite:gfw` 代理）
-- shunt rule 放"细粒度"业务规则（28 条业务分类）
+- shunt rule 放"细粒度"业务规则（25 条业务分类）
 - 两者互补，减少手工维护量
 
 ### TCP/UDP 节点分选
@@ -577,7 +577,7 @@ Passwall 允许 TCP 和 UDP 流量走**不同节点**：
 # 停 Passwall2，换 Passwall
 /etc/init.d/passwall2 stop
 /etc/init.d/passwall2 disable
-# 导入配置到 Passwall（28 条 shunt rule 可用本目录 apply.sh 重建）
+# 导入配置到 Passwall（25 条 shunt rule 可用本目录 apply.sh 重建）
 /etc/init.d/passwall enable
 /etc/init.d/passwall start
 ```
@@ -592,7 +592,7 @@ Passwall 允许 TCP 和 UDP 流量走**不同节点**：
 
 想换回另一个反过来就行。配置互相独立保留，切换无数据丢失。
 
-**想要 mihomo 的 proxy-groups 嵌套（业务组 → 区域组）+ Smart/LightGBM 自动择优？请改用 OpenClash**（本仓库 `OpenClash/`）。Passwall / Passwall2 架构上都**没有**嵌套选择器（Lua CBI 表单式 UI，无 YAML 嵌套组语义），也**都不打包** mihomo（只有 xray + sing-box 双栈）——本目录的 28 条 shunt rule 是**把两层结构手工展平**的降级方案，适合坚持用 Passwall 系的用户。
+**想要 mihomo 的 proxy-groups 嵌套（业务组 → 区域组）+ Smart/LightGBM 自动择优？请改用 OpenClash**（本仓库 `OpenClash/`）。Passwall / Passwall2 架构上都**没有**嵌套选择器（Lua CBI 表单式 UI，无 YAML 嵌套组语义），也**都不打包** mihomo（只有 xray + sing-box 双栈）——本目录的 25 条 shunt rule 是**把两层结构手工展平**的降级方案，适合坚持用 Passwall 系的用户。
 
 ---
 

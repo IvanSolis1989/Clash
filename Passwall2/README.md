@@ -3,20 +3,20 @@
 > 配置参考：`Passwall2/` 目录  
 > 版本：**v5.2.6-pw2.2**（Build 2026-04-23）  
 > 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）+ **[Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)**（精简分流版）—— [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已迁入）并行维护的两款 OpenWrt 插件，**规则语法同源**（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
-> 架构：28 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
+> 架构：25 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
 
 ---
 
 ## 🚀 零基础 5 分钟快速开始
 
 ### 这是什么？
-一份面向 **Passwall2 / Passwall** 的 **shunt rule（分流规则）参考清单**。**不是** Clash Party 那种自动生成的 YAML——Passwall 没有 proxy-groups 嵌套层级，所以这里把基线的"28 业务组 → 9 区域组"两层结构**手工展平成 28 条 shunt rule**，每条对应一个业务类别，用户手动指定目标节点或负载均衡组。
+一份面向 **Passwall2 / Passwall** 的 **shunt rule（分流规则）参考清单**。**不是** Clash Party 那种自动生成的 YAML——Passwall 没有 proxy-groups 嵌套层级，所以这里把基线的"25 业务组 → 9 区域组"两层结构**手工展平成 25 条 shunt rule**，每条对应一个业务类别，用户手动指定目标节点或负载均衡组。
 
 ### 能和不能（诚实对比）
 | 能力 | Passwall2（用本参考） | OpenClash（本仓库完整支持） |
 |---|:-:|:-:|
 | 基础分流（AI / 流媒体 / 支付 / GFW） | ✅ | ✅ |
-| 28 业务分类 | ✅（手工配置）| ✅（自动）|
+| 25 业务分类 | ✅（手工配置）| ✅（自动）|
 | 9 区域组自动 url-test 选最低延迟 | ⚠️ 用负载均衡组近似 | ✅ 原生 |
 | 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 28 条规则的目标** | ✅ 自动 |
 | Smart + LightGBM 机器学习择优 | ❌ | ✅ 原生 |
@@ -29,22 +29,22 @@
 1. **OpenWrt / iStoreOS / ImmortalWrt** 路由器已刷好
 2. **已安装 Passwall 或 Passwall2 插件**（iceeeder / xiaorouter 社区分支都行）
 3. **一个机场订阅 URL**
-4. **本文档的 28 条 shunt rule 参考**（往下看）
+4. **本文档的 25 条 shunt rule 参考**（往下看）
 
 ### 本目录交付的 3 种配置文件（按你的偏好选一种）
 
 | 文件 | 适合谁 | 用法 |
 |---|---|---|
-| **`shunt-rules/*.list`**（28 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall2 LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
-| **`Passwall2(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 28 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
-| **`Passwall2(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall2(xray+sing-box)-apply.sh'` → 一次性创建 28 条空节点规则 → 再到 LuCI 逐条指定节点 |
+| **`shunt-rules/*.list`**（25 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall2 LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
+| **`Passwall2(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 25 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
+| **`Passwall2(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall2(xray+sing-box)-apply.sh'` → 一次性创建 25 条空节点规则 → 再到 LuCI 逐条指定节点 |
 
 ### 3 步走完
 1. **Passwall2 LuCI → 节点列表 → 添加订阅**：粘贴机场订阅 URL → 下载节点 → 分地区手动创建负载均衡组（如"🇺🇸 美国负载"把所有 US 节点加进来）
 2. **选一种方式导入 shunt rule**（见上表）：
    - 方式 A（手工）：为每个业务类别点「新增」→ 粘贴对应 `.list` 文件的内容 → 选择目标节点
-   - 方式 B（脚本）：`sh 'Passwall2(xray+sing-box)-apply.sh'` 一次性创建 28 条空节点规则 → 在 LuCI 里给每条指定节点
-3. **回首页启用 Passwall2**，流量就按 28 条规则分流了
+   - 方式 B（脚本）：`sh 'Passwall2(xray+sing-box)-apply.sh'` 一次性创建 25 条空节点规则 → 在 LuCI 里给每条指定节点
+3. **回首页启用 Passwall2**，流量就按 25 条规则分流了
 
 ### 跑起来怎么验证？
 - 浏览器打开 `https://www.google.com` 能打开 = 代理通了
@@ -79,11 +79,11 @@ Passwall2 根据你选的核提供不同协议，与 v2rayN 同理：
 
 ---
 
-## 📋 28 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall2(xray+sing-box).conf` 内容一致）
+## 📋 25 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall2(xray+sing-box).conf` 内容一致）
 
-> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall2/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 28 条的单文件版本：`Passwall2/Passwall2(xray+sing-box).conf`。
+> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall2/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 25 条的单文件版本：`Passwall2/Passwall2(xray+sing-box).conf`。
 
-每一条 = Passwall / Passwall2「分流控制」面板里点一次「新增」。按顺序添加。**第 1 条必须是 🛑 广告拦截**（否则会被后续规则吞掉），**第 25-28 条（国内/受限/国外/FINAL）保持末尾**。
+每一条 = Passwall / Passwall2「分流控制」面板里点一次「新增」。按顺序添加。**第 1 条必须是 🛑 广告拦截**（否则会被后续规则吞掉），**第 22-25 条（国内/受限/国外/FINAL）保持末尾**。
 
 > **Passwall / Passwall2 分流规则语法**（两者共用同一套 xray/sing-box 域名匹配语法，`shunt_rules.lua` 权威源见文末参考）：
 >

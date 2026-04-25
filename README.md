@@ -45,9 +45,9 @@ flowchart TB
 
 ---
 
-## 🧩 Smart 分流规则：28 代理组速览
+## 🧩 Smart 分流规则：25 代理组速览
 
-为了让结构更清晰，下面用“**分层卡片 + 关系图**”展示 28 个代理组，而不是单一大表。
+为了让结构更清晰，下面用”**分层卡片 + 关系图**”展示 25 个代理组，而不是单一大表。
 
 ```mermaid
 flowchart LR
@@ -63,7 +63,7 @@ flowchart LR
     style E fill:#FFEFF0,stroke:#E74C3C,stroke-width:1px
 ```
 
-### 🗂️ 代理组与主要 Rule-Providers 对照（Clash Party 实际 28 业务组）
+### 🗂️ 代理组与主要 Rule-Providers 对照（Clash Party 实际 25 业务组）
 
 > 只列“主要/高频命中”项，并标明规则来源仓库；不再混入节点组（HK/US/全球节点等）。
 
@@ -72,7 +72,6 @@ flowchart LR
 | 🤖 AI 服务 | `openai` `claude` `gemini` `copilot` `szkane-ai` `acc-copilot` | MetaCubeX / blackmatrix7 / szkane / Accademia |
 | 💰 加密货币 | `cryptocurrency` `binance` `szkane-web3` | blackmatrix7 / szkane |
 | 🏦 金融支付 | `paypal` `stripe` `visa` `tigerfintech` `acc-bank-*` `acc-vf-*` | blackmatrix7 / Accademia |
-| 📧 邮件服务 | `mail` `mailru` `protonmail` `spark` | blackmatrix7 |
 | 💬 即时通讯 | `telegram` `telegram-ip` `discord` `whatsapp` `line` `kakaotalk` `acc-signal` | MetaCubeX / blackmatrix7 / Accademia |
 | 📱 社交媒体 | `twitter` `twitter-ip` `tiktok` `facebook` `instagram` `snapchat` `reddit` | MetaCubeX / blackmatrix7 |
 | 🧑‍💼 会议协作 | `zoom` `slack` `teams` `atlassian` `notion` `remotedesktop` `acc-rustdesk` | ACL4SSR / blackmatrix7 / Accademia |
@@ -85,16 +84,14 @@ flowchart LR
 | 🇪🇺 欧洲流媒体 | `bbc` `itv` `all4` `my5` `skygo` `britboxuk` `szkane-uk` | MetaCubeX / blackmatrix7 / szkane |
 | 🕹️ 国内游戏 | `steamcn` `wanmeishijie` `wankahuanju` `majsoul` | blackmatrix7 |
 | 🎮 国外游戏 | `steam` `epic` `playstation` `xbox` `riot` `ea` `hoyoverse` | blackmatrix7 |
-| 🔍 搜索引擎 | `google` `google-ip` `googlesearch` `bing` `scholar` `yandex` | MetaCubeX / blackmatrix7 |
-| 📟 开发者服务 | `github` `docker` `gitlab` `python` `developer` `szkane-developer` | blackmatrix7 / szkane |
+| 🔧 工具与服务 | `google` `google-ip` `googlesearch` `bing` `scholar` `yandex` `github` `docker` `gitlab` `python` `developer` `szkane-developer` | MetaCubeX / blackmatrix7 / szkane |
 | Ⓜ️ 微软服务 | `onedrive` `microsoft` `microsoftedge` `acc-microsoftapps` | blackmatrix7 / Accademia |
 | 🍎 苹果服务 | `apple` `icloud` `appstore` `appletv` `applemusic` `acc-apple` `acc-applenews` | blackmatrix7 / Accademia |
 | 📥 下载更新 | `googlefcm` `systemota` `download` `ubuntu` `mozilla` `android` `acc-macappupgrade` | blackmatrix7 / Accademia |
-| ☁️ 云与CDN | `cloudflare` `cloudflare-ip` `cloudfront-ip` `fastly-ip` `akamai` `acc-fastly` | MetaCubeX / blackmatrix7 / Accademia |
 | 🛰️ BT/PT Tracker | `privatetracker` `acc-emuleserver` | blackmatrix7 / Accademia |
 | 🏠 国内网站 | `cn` `cn-ip` `acc-geositecn` `acc-chinamax` `acc-china` `acc-geo-d-asia-china` | MetaCubeX / blackmatrix7 / Accademia |
 | 🚫 受限网站 | `loyalsoldier-gfw` `loyalsoldier-greatfire` `szkane-proxygfw` | Loyalsoldier / szkane |
-| 🌐 国外网站 | `proxy` `cnn` `nytimes` `bloomberg` `ebay` `wikipedia` `acc-waybackmachine` | blackmatrix7 / Accademia / szkane |
+| 🌐 国外网站 | `proxy` `cnn` `nytimes` `bloomberg` `ebay` `wikipedia` `acc-waybackmachine` `mail` `protonmail` `cloudflare` `fastly` `akamai` | blackmatrix7 / Accademia / szkane / MetaCubeX |
 | 🐟 漏网之鱼 | 以 GEOSITE/GEOIP/FINAL 兜底为主（非单一固定 provider） | MetaCubeX（geo 规则） |
 | 🛑 广告拦截 | `anti-ad` `sukka-phishing` `hagezi-tif` `advertising` `privacy` `acc-unsupportvpn` | DustinWin / SukkaW / Hagezi / blackmatrix7 / Accademia |
 
@@ -387,10 +384,10 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 
 - **ShellClash**（`juewuy/ShellCrash`，mihomo 核）→ 用 **CMFA 列** 的 `CMFA(mihomo).yaml`
 - **HomeProxy**（sing-box 官方 LuCI 插件，sing-box 核）→ 用 **sing-box 列** 的 `SingBox(sing-box)-full.json`
-- **Passwall / Passwall2**（[`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织并行维护的两款插件——原 `xiaorouji` 个人仓库已迁入该组织，xray + sing-box 双栈，都**不打包** mihomo，都**没有 proxy-groups 嵌套**）→ 首选**迁移到 OpenClash** 拿完整能力；或保留插件用本仓库 `Passwall2/` 目录的 **28 条 shunt rule 展平参考**（同一份 `.list` Passwall 与 Passwall2 通用，规则语法共用 `shunt_rules.lua`）
+- **Passwall / Passwall2**（[`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织并行维护的两款插件——原 `xiaorouji` 个人仓库已迁入该组织，xray + sing-box 双栈，都**不打包** mihomo，都**没有 proxy-groups 嵌套**）→ 首选**迁移到 OpenClash** 拿完整能力；或保留插件用本仓库 `Passwall2/` 目录的 **25 条 shunt rule 展平参考**（同一份 `.list` Passwall 与 Passwall2 通用，规则语法共用 `shunt_rules.lua`）
 - **SSR Plus+**（已停更 + 无 geosite / rule_set 层）→ 直接换 **OpenClash**
 
-> 💡 Passwall 系**能**做 `geosite` / `geoip` / `rule_set` 的规则匹配，**不能**做 mihomo 的「业务组 → 区域组 → 节点」两级 `select` + `url-test` 嵌套。**注意**：Passwall / Passwall2 的 shunt rule **不识别** Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` 前缀，要用 xray/sing-box 原生语法（`domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote|local:`）。想要完整的 28+18 架构（9 全部 + 9 家宽）+ LightGBM + 机场换节点自动归位，只有 mihomo 系（OpenClash / CMFA / ShellClash）能原生给。详细差异见 `Passwall2/README.md`。
+> 💡 Passwall 系**能**做 `geosite` / `geoip` / `rule_set` 的规则匹配，**不能**做 mihomo 的「业务组 → 区域组 → 节点」两级 `select` + `url-test` 嵌套。**注意**：Passwall / Passwall2 的 shunt rule **不识别** Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` 前缀，要用 xray/sing-box 原生语法（`domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote|local:`）。想要完整的 25+18 架构（9 全部 + 9 家宽）+ LightGBM + 机场换节点自动归位，只有 mihomo 系（OpenClash / CMFA / ShellClash）能原生给。详细差异见 `Passwall2/README.md`。
 
 ---
 
