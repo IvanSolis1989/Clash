@@ -6,6 +6,12 @@
 
 ---
 
+## v5.2.10-QX.2 (2026-04-25) — Bugfix: running_mode_trigger 语法错误
+
+- ★ **FIX#QX-07-P0**（#114）：`running_mode_trigger=filter, filter, auto` → `auto, auto, auto`
+  - `filter` 不是 QX `running_mode_trigger` 的有效值（合法值：`direct`/`proxy`/`auto`/`follower`/`none`），导致导入时 line 13 语法错误。line 22 的 DNS 报错是此错误的级联效应，无需修改。
+- Bump: `v5.2.10-QX.1` → `v5.2.10-QX.2`
+
 ## v5.2.10-QX.1 (2026-04-25) — 境外 DoH 端点改路由到 🚫 受限网站
 
 - ★ **FIX#39**（同构联动）：跟随 Clash Party v5.2.10 基线
