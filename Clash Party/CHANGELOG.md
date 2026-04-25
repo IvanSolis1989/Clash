@@ -7,6 +7,17 @@
 
 ---
 
+## v5.2.11 (2026-04-26)
+
+- ★ **REFACTOR#1**：业务组合并精简 28→25（降低用户认知负担）
+  - 合并 `🔍 搜索引擎` + `📟 开发者服务` → 新增 `🔧 工具与服务`（standardProxies）
+  - 合并 `📧 邮件服务` → `🌐 国外网站`（standardProxies，无特殊延迟需求）
+  - 合并 `☁️ 云与CDN` → `🌐 国外网站`（CDN anycast 虽有其特殊性，但低流量独立组维护成本过高）
+  - `📥 下载更新` 策略从 directFirst 改为 standardProxies（proxy 优先），大流量下载走代理更合理
+  - `🛰️ BT/PT Tracker` 保留独立（MetaCubeX 有独立 tracker 分类，用户需对其 REJECT→DIRECT→PROXY 三层策略可单独操控）
+  - 业务组 28→25，总组 46→43（含 18 区域组）
+- ★ **全版本联动**：§1 强制同步 Clash Party Normal JS / CMFA YAML / OpenClash Normal+Smart / Shadowrocket / SingBox / Surge / Loon / Quantumult X / v2rayN / Passwall / Passwall2
+
 ## v5.2.10 (2026-04-25)
 
 - ★ **FIX#39**：境外 DoH 端点改路由到 `🚫 受限网站`（防 `☁️ 云与CDN` 被设直连导致 DoH 失败）

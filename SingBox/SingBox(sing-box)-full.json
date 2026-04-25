@@ -11,8 +11,8 @@
     },
     "_meta": {
       "name": "SingBox Smart Full",
-      "version": "v5.2.10-sing.1",
-      "build": "2026-04-25",
+      "version": "v5.2.10-sing.2",
+      "build": "2026-04-26",
       "baseline": "Clash Party v5.2.10",
       "changelog": "见 SingBox/CHANGELOG.md"
     }
@@ -352,32 +352,6 @@
     },
     {
       "type": "selector",
-      "tag": "📧 邮件服务",
-      "outbounds": [
-        "🌍 全球节点",
-        "🏡 全球家宽",
-        "🇭🇰 香港节点",
-        "🏡 香港家宽",
-        "🇹🇼 台湾节点",
-        "🏡 台湾家宽",
-        "🇯🇵 日韩节点",
-        "🏡 日韩家宽",
-        "🌏 亚太节点",
-        "🏡 亚太家宽",
-        "🇺🇸 美国节点",
-        "🏡 美国家宽",
-        "🇪🇺 欧洲节点",
-        "🏡 欧洲家宽",
-        "🌎 美洲节点",
-        "🏡 美洲家宽",
-        "🌍 非洲节点",
-        "🏡 非洲家宽",
-        "DIRECT"
-      ],
-      "default": "🌍 全球节点"
-    },
-    {
-      "type": "selector",
       "tag": "💬 即时通讯",
       "outbounds": [
         "🌍 全球节点",
@@ -682,33 +656,7 @@
     },
     {
       "type": "selector",
-      "tag": "🔍 搜索引擎",
-      "outbounds": [
-        "🌍 全球节点",
-        "🏡 全球家宽",
-        "🇭🇰 香港节点",
-        "🏡 香港家宽",
-        "🇹🇼 台湾节点",
-        "🏡 台湾家宽",
-        "🇯🇵 日韩节点",
-        "🏡 日韩家宽",
-        "🌏 亚太节点",
-        "🏡 亚太家宽",
-        "🇺🇸 美国节点",
-        "🏡 美国家宽",
-        "🇪🇺 欧洲节点",
-        "🏡 欧洲家宽",
-        "🌎 美洲节点",
-        "🏡 美洲家宽",
-        "🌍 非洲节点",
-        "🏡 非洲家宽",
-        "DIRECT"
-      ],
-      "default": "🌍 全球节点"
-    },
-    {
-      "type": "selector",
-      "tag": "📟 开发者服务",
+      "tag": "🔧 工具与服务",
       "outbounds": [
         "🌍 全球节点",
         "🏡 全球家宽",
@@ -787,32 +735,6 @@
     {
       "type": "selector",
       "tag": "📥 下载更新",
-      "outbounds": [
-        "DIRECT",
-        "🌍 全球节点",
-        "🏡 全球家宽",
-        "🇭🇰 香港节点",
-        "🏡 香港家宽",
-        "🇹🇼 台湾节点",
-        "🏡 台湾家宽",
-        "🇯🇵 日韩节点",
-        "🏡 日韩家宽",
-        "🌏 亚太节点",
-        "🏡 亚太家宽",
-        "🇺🇸 美国节点",
-        "🏡 美国家宽",
-        "🇪🇺 欧洲节点",
-        "🏡 欧洲家宽",
-        "🌎 美洲节点",
-        "🏡 美洲家宽",
-        "🌍 非洲节点",
-        "🏡 非洲家宽"
-      ],
-      "default": "DIRECT"
-    },
-    {
-      "type": "selector",
-      "tag": "☁️ 云与CDN",
       "outbounds": [
         "🌍 全球节点",
         "🏡 全球家宽",
@@ -2132,28 +2054,28 @@
           "gmail.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "googlemail.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.google.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "inbox.google.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
@@ -2195,14 +2117,14 @@
           "google"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "rule_set": [
           "google-ip"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
@@ -2468,147 +2390,147 @@
           "outlook.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "outlook.live.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "hotmail.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.live.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "outlook.office365.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "outlook.office.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.yahoo.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "ymail.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "protonmail.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "proton.me"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "pm.me"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "tutanota.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "tuta.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.zoho.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.zoho.eu"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.zoho.in"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.zoho.com.au"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.zoho.jp"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain": [
           "mail.me.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "fastmail.com"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "fastmail.fm"
         ],
         "action": "route",
-        "outbound": "📧 邮件服务"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
@@ -3507,28 +3429,28 @@
           "amazonaws.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "awsstatic.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "aws.amazon.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "elasticbeanstalk.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
@@ -4536,84 +4458,84 @@
           "yahoo.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "yahoo.co.jp"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "duckduckgo.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "ddg.co"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "brave.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "yandex.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "yandex.ru"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "ecosia.org"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "startpage.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "you.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "search.naver.com"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "rule_set": [
           "github"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "rule_set": [
@@ -4648,315 +4570,315 @@
           "geosite-category-dev"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "npmjs.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "npmjs.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "yarnpkg.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "pypi.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "pythonhosted.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "crates.io"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "rubygems.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "packagist.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "maven.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "nuget.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "cocoapods.org"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "stackoverflow.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "stackexchange.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "sstatic.net"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "vercel.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "vercel.app"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "netlify.app"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "netlify.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "pages.dev"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "workers.dev"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain": [
           "dash.cloudflare.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain": [
           "api.cloudflare.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain": [
           "developers.cloudflare.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain": [
           "www.cloudflare.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "heroku.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "herokuapp.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "fly.io"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "railway.app"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "render.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "supabase.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "supabase.co"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "planetscale.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "neon.tech"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "digitalocean.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "vultr.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "linode.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "sentry.io"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "datadog.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "grafana.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "postman.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "jetbrains.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "hashicorp.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "terraform.io"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
           "vagrantup.com"
         ],
         "action": "route",
-        "outbound": "📟 开发者服务"
+        "outbound": "🔧 工具与服务"
       },
       {
         "domain_suffix": [
@@ -5138,161 +5060,161 @@
           "cloudflare-ip"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
           "cloudfront-ip"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
           "fastly-ip"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "akamai.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "akamaized.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "akamaihd.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "akamaiedge.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "akamaitechnologies.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "edgekey.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "edgesuite.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "cloudfront.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "fastly.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "fastlylb.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "kxcdn.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "stackpathdns.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "stackpathcdn.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "b-cdn.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "bunny.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "bunnycdn.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "cdn77.org"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "azureedge.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "azurefd.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "msecnd.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
@@ -5306,7 +5228,7 @@
           "unpkg.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
@@ -5320,49 +5242,49 @@
           "cloudflarestorage.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "r2.dev"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "ziffstatic.com"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "ucoz.ru"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "ucoz.net"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "letsencrypt.org"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "domain_suffix": [
           "lencr.org"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
@@ -5936,7 +5858,7 @@
           "cloudflare"
         ],
         "action": "route",
-        "outbound": "☁️ 云与CDN"
+        "outbound": "🌐 国外网站"
       },
       {
         "geoip": [
@@ -5971,7 +5893,7 @@
           "google"
         ],
         "action": "route",
-        "outbound": "🔍 搜索引擎"
+        "outbound": "🔧 工具与服务"
       },
       {
         "geoip": [

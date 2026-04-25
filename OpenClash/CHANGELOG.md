@@ -9,6 +9,16 @@
 
 ## Normal（`OpenClash(mihomo).sh`，非 Smart 内核 / url-test 版）
 
+### v5.2.11-oc-normal.1 (2026-04-26) — 业务组合并：4 个冗余组 → 保留组 + 新增「🔧 工具与服务」
+
+- ★ **合并业务策略组（28 → 25）：** 跟随 Clash Party v5.2.11 基线清理
+  - 删除 `📧 邮件服务`：规则全部改路由到 `🌐 国外网站`
+  - 删除 `🔍 搜索引擎` + `📟 开发者服务`：合并为 `🔧 工具与服务`
+  - 删除 `☁️ 云与CDN`：规则全部改路由到 `🌐 国外网站`
+  - `📥 下载更新`：`*id003` → `*id002`（默认代理优先级提高）
+- Bump: `v5.2.10-oc-normal.2` → `v5.2.11-oc-normal.1`
+- 同步 OpenClash Full（相同改动）
+
 ### v5.2.10-oc-normal.2 (2026-04-25) — FIX: sniffer.skip-domain 误含币安域名导致 TLS 流量按 IP 路由
 
 - ★ **FIX：OpenClash sniffer.skip-domain 误含 3 条币安域名，导致 TLS SNI 改写被跳过**
@@ -126,6 +136,15 @@
 ---
 
 ## Full（`OpenClash(mihomo-smart).sh`）
+
+### v5.2.11-oc-full.1 (2026-04-26) — 业务组合并：28 → 25（与 Normal 同步）
+
+- ★ **业务组合并（28 → 25）：** 与 Normal 同步
+  - 删除 `📧 邮件服务`（规则路由到 `🌐 国外网站`）
+  - 删除 `🔍 搜索引擎` + `📟 开发者服务`（合并为 `🔧 工具与服务`）
+  - 删除 `☁️ 云与CDN`（规则路由到 `🌐 国外网站`）
+  - `📥 下载更新` 默认代理从 DIRECT 优先改为代理优先
+- Bump: `v5.2.10-oc-full.2` → `v5.2.11-oc-full.1`
 
 ### v5.2.10-oc-full.2 (2026-04-25) — FIX: sniffer.skip-domain 误含币安域名导致 TLS 流量按 IP 路由
 

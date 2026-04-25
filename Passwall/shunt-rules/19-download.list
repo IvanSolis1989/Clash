@@ -1,8 +1,8 @@
 # 📥 下载更新
-# 推荐出站: direct
-# 建议目标策略: direct
+# 推荐出站: 🌍 全球（策略已从 direct 调整为 proxy）
+# 建议目标策略: proxy
 # ───────────────────────────────
-# 在 Passwall2 LuCI 分流规则的「域名列表」字段里粘贴下面的所有非注释行。
+# 在 Passwall LuCI 分流规则的「域名列表」字段里粘贴下面的所有非注释行。
 
 # [Domain List]
 domain:dl.google.com

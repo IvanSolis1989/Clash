@@ -7,6 +7,19 @@
 
 ---
 
+## v5.2.10-pw.2 (2026-04-26) — ★ 跟随基线合并 4 组为 2 组
+
+- ★ **代理组合并（基线同步）**：28 条 shunt rule 精简为 25 条
+  - `📧 邮件服务` + `☁️ 云与CDN` → 合并到 `🌐 国外网站`（域名字段并入 `23-intl-site.list`）
+  - `🔍 搜索引擎` + `📟 开发者服务` → 合并为 `🔧 工具与服务`（新设 `24-tools.list`）
+  - `📥 下载更新`：推荐策略从 `direct` 调整为 `proxy`
+- 文件变更：
+  - `Passwall(xray+sing-box)-apply.sh`：移除 4 个旧组块，新增 1 个组，重新编号 28→25，版本 `v5.2.10-pw.2`
+  - `Passwall(xray+sing-box).conf`：移除旧组节，新增 `[24] 工具与服务`，全部重编号
+  - `shunt-rules/*.list`：删除 `05-email.list` / `18-search.list` / `19-dev.list` / `23-cloud-cdn.list`；剩余 20 个文件按新编号重命名；`27-intl-site.list` → `23-intl-site.list`（合并内容）；`22-download.list` → `19-download.list`（策略更新）；新建 `24-tools.list`
+- README.md 已同步更新：移除 4 个旧组小节，新增 `🔧 工具与服务` 节，全部重编号，下载更新策略说明改为 proxy
+- CHANGELOG 更新（本条）
+
 ## v5.2.10-pw.1 (2026-04-25) — 主版本追平（FIX#39 平台例外）
 
 - ★ **FIX#39 同构审计 — 平台例外（CLAUDE.md §1.4）**：本轮主线把 `dns.google` /
