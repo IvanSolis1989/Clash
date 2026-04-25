@@ -1,7 +1,7 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.2.10-sing.1';
+const VERSION = 'v5.2.10-sing.2';
 const BUILD = '2026-04-25';
 const BASELINE = 'Clash Party v5.2.10';
 
@@ -30,7 +30,6 @@ const BIZ = {
   AI: '🤖 AI 服务',
   CRYPTO: '💰 加密货币',
   PAYMENTS: '🏦 金融支付',
-  EMAIL: '📧 邮件服务',
   IM: '💬 即时通讯',
   SOCIAL: '📱 社交媒体',
   WORK: '🧑‍💼 会议协作',
@@ -43,12 +42,10 @@ const BIZ = {
   STREAM_EU: '🇪🇺 欧洲流媒体',
   GAME_CN: '🕹️ 国内游戏',
   GAME_INTL: '🎮 国外游戏',
-  SEARCH: '🔍 搜索引擎',
-  DEV: '📟 开发者服务',
+  TOOLS: '🔧 工具与服务',
   MS: 'Ⓜ️ 微软服务',
   APPLE: '🍎 苹果服务',
   DOWNLOAD: '📥 下载更新',
-  CLOUD_CDN: '☁️ 云与CDN',
   TRACKER: '🛰️ BT/PT Tracker',
   CN_SITE: '🏠 国内网站',
   GFW: '🚫 受限网站',
@@ -236,7 +233,6 @@ function buildOutbounds() {
     selector(BIZ.AI, buildHomeFirstProxies(REGION_ORDER)),
     selector(BIZ.CRYPTO, buildStandardProxies()),
     selector(BIZ.PAYMENTS, buildStandardProxies()),
-    selector(BIZ.EMAIL, buildStandardProxies()),
     selector(BIZ.IM, buildStandardProxies()),
     selector(BIZ.SOCIAL, buildStandardProxies()),
     selector(BIZ.WORK, buildStandardProxies()),
@@ -249,12 +245,10 @@ function buildOutbounds() {
     selector(BIZ.STREAM_EU, buildRegionPreferredProxies('EU')),
     selector(BIZ.GAME_CN, buildDirectFirstProxies()),
     selector(BIZ.GAME_INTL, buildStandardProxies()),
-    selector(BIZ.SEARCH, buildStandardProxies()),
-    selector(BIZ.DEV, buildStandardProxies()),
+    selector(BIZ.TOOLS, buildStandardProxies()),
     selector(BIZ.MS, buildStandardProxies()),
     selector(BIZ.APPLE, buildDirectFirstProxies()),
-    selector(BIZ.DOWNLOAD, buildDirectFirstProxies()),
-    selector(BIZ.CLOUD_CDN, buildStandardProxies()),
+    selector(BIZ.DOWNLOAD, buildStandardProxies()),
     selector(BIZ.TRACKER, buildTrackerProxies()),
     selector(BIZ.CN_SITE, buildDirectFirstProxies()),
     selector(BIZ.GFW, buildStandardProxies()),

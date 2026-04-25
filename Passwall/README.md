@@ -3,7 +3,7 @@
 > 配置参考：`Passwall/` 目录  
 > 版本：**v5.2.6-pw.2**（Build 2026-04-24）  
 > 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）—— [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已迁入）维护。与 [Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)（精简分流版）**并行维护**（非新旧关系），规则语法同源（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
-> 架构：28 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
+> 架构：25 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
 
 ---
 
@@ -11,7 +11,7 @@
 
 | 能力 | Passwall（全功能版，本文档目标） | Passwall2（精简分流版） |
 |---|:-:|:-:|
-| shunt rule 分流 | ✅ 28 条 | ✅ 28 条 |
+| shunt rule 分流 | ✅ 25 条 | ✅ 25 条 |
 | 四列表（直连/屏蔽/GFW/代理） | ✅ 内置 | ❌ 无 |
 | TCP/UDP 节点分开选 | ✅ `tcp_node` + `udp_node` | ❌ 统一 `node` |
 | ACL（按客户端/MAC） | ✅ `acl_rule` | ❌ 无 |
@@ -30,13 +30,13 @@
 ## 🚀 零基础 5 分钟快速开始
 
 ### 这是什么？
-一份面向 **Passwall（全功能版）** 的 **shunt rule（分流规则）参考清单**。**不是** Clash Party 那种自动生成的 YAML——Passwall 没有 proxy-groups 嵌套层级，所以这里把基线的"28 业务组 → 9 区域组"两层结构**手工展平成 28 条 shunt rule**，每条对应一个业务类别，用户手动指定目标 TCP 节点或负载均衡组。
+一份面向 **Passwall（全功能版）** 的 **shunt rule（分流规则）参考清单**。**不是** Clash Party 那种自动生成的 YAML——Passwall 没有 proxy-groups 嵌套层级，所以这里把基线的"25 业务组 → 9 区域组"两层结构**手工展平成 25 条 shunt rule**，每条对应一个业务类别，用户手动指定目标 TCP 节点或负载均衡组。
 
 ### 能和不能（诚实对比）
 | 能力 | Passwall（用本参考） | OpenClash（本仓库完整支持） |
 |---|:-:|:-:|
 | 基础分流（AI / 流媒体 / 支付 / GFW） | ✅ | ✅ |
-| 28 业务分类 | ✅（手工配置）| ✅（自动）|
+| 25 业务分类 | ✅（手工配置）| ✅（自动）|
 | 9 区域组自动 url-test 选最低延迟 | ⚠️ 用负载均衡组近似 | ✅ 原生 |
 | 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 28 条规则的目标** | ✅ 自动 |
 | Smart + LightGBM 机器学习择优 | ❌ | ✅ 原生 |
@@ -52,21 +52,21 @@
 1. **OpenWrt / iStoreOS / ImmortalWrt** 路由器已刷好
 2. **已安装 Passwall 插件**（LuCI → 系统 → 软件包 → 搜索 `luci-app-passwall`）
 3. **一个机场订阅 URL**
-4. **本文档的 28 条 shunt rule 参考**（往下看）
+4. **本文档的 25 条 shunt rule 参考**（往下看）
 
 ### 本目录交付的 3 种配置文件（按你的偏好选一种）
 
 | 文件 | 适合谁 | 用法 |
 |---|---|---|
-| **`shunt-rules/*.list`**（28 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
-| **`Passwall(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 28 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
-| **`Passwall(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall(xray+sing-box)-apply.sh'` → 一次性创建 28 条空节点规则 → 再到 LuCI 逐条指定 `tcp_node` |
+| **`shunt-rules/*.list`**（25 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
+| **`Passwall(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 25 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
+| **`Passwall(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall(xray+sing-box)-apply.sh'` → 一次性创建 25 条空节点规则 → 再到 LuCI 逐条指定 `tcp_node` |
 
 ### 3 步走完
 1. **Passwall LuCI → 节点列表 → 添加订阅**：粘贴机场订阅 URL → 下载节点 → **按地区手动创建 TCP 负载均衡组**（如"🇺🇸 美国-LB"把所有 US 节点加进来）
 2. **选一种方式导入 shunt rule**（见上表）：
    - 方式 A（手工）：为每个业务类别点「新增」→ 粘贴对应 `.list` 文件的内容 → 选择目标 `tcp_node`
-   - 方式 B（脚本）：`sh 'Passwall(xray+sing-box)-apply.sh'` 一次性创建 28 条空节点规则 → 在 LuCI 里给每条指定 `tcp_node`
+   - 方式 B（脚本）：`sh 'Passwall(xray+sing-box)-apply.sh'` 一次性创建 25 条空节点规则 → 在 LuCI 里给每条指定 `tcp_node`
 3. **回首页 → 基本设置**：
    - 确认 `tcp_node` 指向你创建的负载均衡组
    - `udp_node` 根据需要选择（国内游戏 / BT 场景可指 direct）
@@ -81,7 +81,7 @@
 - ❌ **规则多了顺序错乱**：Passwall 按列表顺序匹配，**把"国内网站"/"广告拦截"放最前或最后**，业务规则放中间
 - ❌ **geosite 关键字不识别**：确认 Passwall 的 xray/sing-box 核已下载 `geosite.dat`（LuCI → 全局设置 → 规则资源设置里有个"更新 geosite.dat / geoip.dat"按钮）
 - ❌ **节点换了规则都白写**：这是 Passwall 的固有限制，没办法。想避开就换 OpenClash
-- ❌ **混淆 Passwall 和 Passwall2**：这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织**并行维护**的两款插件（**不是**新旧关系；最新发版仅差 4 天）。Passwall = 全功能（有直连/屏蔽/GFW/代理 4 列表 + 分流 + ACL），Passwall2 = 精简分流（只有 keyword/domain/geosite/geoip 匹配）。**规则语法两者完全相同**（共用 `shunt_rules.lua` 解析器），本目录的 28 个 `.list` 同时适用。
+- ❌ **混淆 Passwall 和 Passwall2**：这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织**并行维护**的两款插件（**不是**新旧关系；最新发版仅差 4 天）。Passwall = 全功能（有直连/屏蔽/GFW/代理 4 列表 + 分流 + ACL），Passwall2 = 精简分流（只有 keyword/domain/geosite/geoip 匹配）。**规则语法两者完全相同**（共用 `shunt_rules.lua` 解析器），本目录的 25 个 `.list` 同时适用。
 - ❌ **tcp_node / udp_node 混用**：Passwall 的 TCP 和 UDP 节点是分开选的。如果你的机场不支持 UDP（如某些 VMess 节点），`udp_node` 要指 direct 或专门的 UDP 节点。
 
 ---
@@ -198,20 +198,7 @@ domain:mastercard.com
 domain:amex.com
 ```
 
-### 5️⃣ 📧 邮件服务
-**推荐节点**：🇯🇵 日韩 / 🌍 全球
-
-**域名列表**：
-```
-geosite:gmail
-geosite:outlook
-geosite:protonmail
-domain:fastmail.com
-domain:tuta.com
-domain:mail.ru
-```
-
-### 6️⃣ 💬 即时通讯
+### 5️⃣ 💬 即时通讯
 **推荐节点**：🇭🇰 香港 / 🇯🇵 日韩
 
 **域名列表**：
@@ -229,7 +216,7 @@ geosite:kakaotalk
 geoip:telegram
 ```
 
-### 7️⃣ 📱 社交媒体
+### 6️⃣ 📱 社交媒体
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -250,7 +237,7 @@ geoip:twitter
 geoip:facebook
 ```
 
-### 8️⃣ 🧑‍💼 会议协作
+### 7️⃣ 🧑‍💼 会议协作
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -263,7 +250,7 @@ geosite:atlassian
 domain:meet.google.com
 ```
 
-### 9️⃣ 📺 国内流媒体
+### 8️⃣ 📺 国内流媒体
 **推荐**：**direct**（境内）或 🇭🇰 香港（境外）
 
 **域名列表**：
@@ -278,7 +265,7 @@ geosite:netease-music
 geosite:qqmusic
 ```
 
-### 🔟 📺 东南亚流媒体
+### 9️⃣ 📺 东南亚流媒体
 **推荐节点**：🌏 亚太（SG/ID）
 
 **域名列表**：
@@ -290,7 +277,7 @@ domain:vidio.com
 domain:iqiyiintl.com
 ```
 
-### 1️⃣1️⃣ 🇺🇸 美国流媒体
+### 🔟 🇺🇸 美国流媒体
 **推荐节点**：🇺🇸 美国
 
 **域名列表**：
@@ -312,7 +299,7 @@ domain:twitch.tv
 geoip:netflix
 ```
 
-### 1️⃣2️⃣ 🇭🇰 香港流媒体
+### 1️⃣1️⃣ 🇭🇰 香港流媒体
 **推荐节点**：🇭🇰 香港
 
 **域名列表**：
@@ -325,7 +312,7 @@ domain:encoretvb.com
 domain:rthk.hk
 ```
 
-### 1️⃣3️⃣ 🇹🇼 台湾流媒体
+### 1️⃣2️⃣ 🇹🇼 台湾流媒体
 **推荐节点**：🇹🇼 台湾
 
 **域名列表**：
@@ -339,7 +326,7 @@ domain:hamivideo.hinet.net
 domain:friday.tw
 ```
 
-### 1️⃣4️⃣ 🇯🇵 日韩流媒体
+### 1️⃣3️⃣ 🇯🇵 日韩流媒体
 **推荐节点**：🇯🇵 日韩
 
 **域名列表**：
@@ -353,7 +340,7 @@ domain:tver.jp
 domain:rakuten.tv
 ```
 
-### 1️⃣5️⃣ 🇪🇺 欧洲流媒体
+### 1️⃣4️⃣ 🇪🇺 欧洲流媒体
 **推荐节点**：🇪🇺 欧洲
 
 **域名列表**：
@@ -367,7 +354,7 @@ domain:skygo.com
 domain:britbox.co.uk
 ```
 
-### 1️⃣6️⃣ 🕹️ 国内游戏
+### 1️⃣5️⃣ 🕹️ 国内游戏
 **推荐**：**direct**
 
 **域名列表**：
@@ -378,7 +365,7 @@ domain:majsoul.com
 domain:battlenet.com.cn
 ```
 
-### 1️⃣7️⃣ 🎮 国外游戏
+### 1️⃣6️⃣ 🎮 国外游戏
 **推荐节点**：🇯🇵 日韩 / 🇭🇰 香港
 
 **域名列表**：
@@ -395,40 +382,7 @@ domain:hoyoverse.com
 domain:mihoyo.com
 ```
 
-### 1️⃣8️⃣ 🔍 搜索引擎
-**推荐节点**：🌍 全球
-
-**域名列表**：
-```
-geosite:google
-geosite:bing
-geosite:duckduckgo
-geosite:yandex
-domain:scholar.google.com
-```
-
-**IP 列表**：
-```
-geoip:google
-```
-
-### 1️⃣9️⃣ 📟 开发者服务
-**推荐节点**：🇺🇸 美国 / 🌍 全球
-
-**域名列表**：
-```
-geosite:github
-geosite:gitlab
-geosite:docker
-geosite:npmjs
-geosite:pypi
-geosite:python
-domain:jetbrains.com
-domain:stackoverflow.com
-domain:stackexchange.com
-```
-
-### 2️⃣0️⃣ Ⓜ️ 微软服务
+### 1️⃣7️⃣ Ⓜ️ 微软服务
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -440,7 +394,7 @@ domain:live.com
 domain:microsoftedge.com
 ```
 
-### 2️⃣1️⃣ 🍎 苹果服务
+### 1️⃣8️⃣ 🍎 苹果服务
 **推荐**：**direct**（境内）或 🌍 全球（境外）
 
 **域名列表**：
@@ -454,8 +408,8 @@ domain:applemusic.com
 domain:apple-dns.net
 ```
 
-### 2️⃣2️⃣ 📥 下载更新
-**推荐**：**direct**
+### 1️⃣9️⃣ 📥 下载更新
+**推荐**：**proxy**（策略已从 direct 调整为 proxy）
 
 **域名列表**：
 ```
@@ -469,25 +423,7 @@ domain:mozilla.org
 domain:apkpure.com
 ```
 
-### 2️⃣3️⃣ ☁️ 云与CDN
-**推荐节点**：🌍 全球
-
-**域名列表**：
-```
-geosite:cloudflare
-geosite:fastly
-geosite:akamai
-domain:jsdelivr.net
-domain:cloudfront.net
-```
-
-**IP 列表**：
-```
-geoip:cloudflare
-geoip:fastly
-```
-
-### 2️⃣4️⃣ 🛰️ BT/PT Tracker
+### 2️⃣0️⃣ 🛰️ BT/PT Tracker
 **推荐**：**direct** 或 **block**
 
 **域名列表**：
@@ -498,7 +434,7 @@ domain:openbittorrent.com
 domain:nyaa.si
 ```
 
-### 2️⃣5️⃣ 🏠 国内网站
+### 2️⃣1️⃣ 🏠 国内网站
 **推荐**：**direct**
 
 **域名列表**：
@@ -512,7 +448,7 @@ geoip:cn
 geoip:private
 ```
 
-### 2️⃣6️⃣ 🚫 受限网站
+### 2️⃣2️⃣ 🚫 受限网站
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -521,7 +457,7 @@ geosite:gfw
 geosite:greatfire
 ```
 
-### 2️⃣7️⃣ 🌐 国外网站
+### 2️⃣3️⃣ 🌐 国外网站（合并自原邮件服务 + 云与CDN）
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -531,9 +467,56 @@ domain:cnn.com
 domain:nytimes.com
 domain:bloomberg.com
 domain:wikipedia.org
+# 合并自原 📧 邮件服务
+geosite:gmail
+geosite:outlook
+geosite:protonmail
+domain:fastmail.com
+domain:tuta.com
+domain:mail.ru
+# 合并自原 ☁️ 云与CDN
+geosite:cloudflare
+geosite:fastly
+geosite:akamai
+domain:jsdelivr.net
+domain:cloudfront.net
 ```
 
-### 2️⃣8️⃣ 🐟 漏网之鱼 FINAL
+**IP 列表**：
+```
+geoip:cloudflare
+geoip:fastly
+```
+
+### 2️⃣4️⃣ 🔧 工具与服务（新设，合并自原搜索引擎 + 开发者服务）
+**推荐节点**：🌍 全球
+
+**域名列表**：
+```
+# 原 🔍 搜索引擎
+geosite:google
+geosite:bing
+geosite:duckduckgo
+geosite:yandex
+domain:scholar.google.com
+# 原 📟 开发者服务
+geosite:github
+geosite:gitlab
+geosite:docker
+geosite:npmjs
+geosite:pypi
+geosite:python
+domain:jetbrains.com
+domain:stackoverflow.com
+domain:stackexchange.com
+```
+
+**IP 列表**：
+```
+geoip:google
+```
+
+### 2️⃣5️⃣ 🐟 漏网之鱼 FINAL
 **推荐节点**：🌍 全球
 
 **域名列表**：留空（兜底规则不用显式写域名；Passwall 的 FINAL 走"基本设置"里的 `tcp_node` 默认值，或作为 shunt rule 最后一条）

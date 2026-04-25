@@ -2,7 +2,7 @@
     {
       "id": "scki-000-meta",
       "enabled": false,
-      "remarks": "Smart-Config-Kit v5.2.10-v2n.1 | Build 2026-04-25 | Baseline Clash Party v5.2.10 | changelog: v2rayN/CHANGELOG.md",
+      "remarks": "Smart-Config-Kit v5.2.10-v2n.2 | Build 2026-04-26 | Baseline Clash Party v5.2.10 (25 biz groups) | changelog: v2rayN/CHANGELOG.md",
       "outboundTag": "direct",
       "domain": [
         "domain:smart-config-kit.invalid"
@@ -157,7 +157,7 @@
     {
       "id": "scki-014-email",
       "enabled": true,
-      "remarks": "邮件服务 (Gmail / Outlook / ProtonMail) → 代理",
+      "remarks": "国外网站 - 邮件服务 (Gmail / Outlook / ProtonMail) → 代理",
       "outboundTag": "proxy",
       "domain": [
         "geosite:gmail",
@@ -444,7 +444,7 @@
     {
       "id": "scki-027-search",
       "enabled": true,
-      "remarks": "搜索引擎 (Google / Bing / DDG / Yandex) → 代理",
+      "remarks": "工具与服务 - 搜索引擎 (Google / Bing / DDG / Yandex) → 代理",
       "outboundTag": "proxy",
       "domain": [
         "geosite:google",
@@ -464,7 +464,7 @@
     {
       "id": "scki-028-dev",
       "enabled": true,
-      "remarks": "开发者服务 (GitHub / Docker / GitLab / npm / pypi) → 代理",
+      "remarks": "工具与服务 - 开发者服务 (GitHub / Docker / GitLab / npm / pypi) → 代理",
       "outboundTag": "proxy",
       "domain": [
         "geosite:github",
@@ -520,7 +520,7 @@
     {
       "id": "scki-031-cloud-cdn",
       "enabled": true,
-      "remarks": "云与 CDN (Cloudflare / Fastly / Akamai) → 代理",
+      "remarks": "国外网站 - CDN (Cloudflare / Fastly / Akamai) → 代理",
       "outboundTag": "proxy",
       "domain": [
         "geosite:cloudflare",

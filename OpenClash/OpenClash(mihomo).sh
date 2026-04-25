@@ -2,7 +2,7 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash v5.2.10-oc-normal.2 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Clash v5.2.11-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
 # ============================================================================
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：18 个区域组（9 全部 + 9 家宽）从 type: smart（uselightgbm）换成 type: url-test。
@@ -13,7 +13,7 @@
 #       需要 LightGBM 智能评估请改用 OpenClash(mihomo-smart).sh（Smart 版）。
 # 架构：
 #   • 18 url-test 区域组（9 全部 + 9 家宽；interval 600s / tolerance 150ms / lazy：与 Smart 版同步延迟参数）
-#   • 28 业务策略组
+#   • 25 业务策略组
 #   • 384 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
 #   • ~975 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
@@ -25,7 +25,7 @@
 
 
 
-VERSION_TAG="v5.2.10-oc-normal.2"
+VERSION_TAG="v5.2.11-oc-normal.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -230,9 +230,6 @@ proxy-groups:
 - name: 🏦 金融支付
   type: select
   proxies: *id002
-- name: 📧 邮件服务
-  type: select
-  proxies: *id002
 - name: 💬 即时通讯
   type: select
   proxies: *id002
@@ -394,10 +391,7 @@ proxy-groups:
 - name: 🎮 国外游戏
   type: select
   proxies: *id002
-- name: 🔍 搜索引擎
-  type: select
-  proxies: *id002
-- name: 📟 开发者服务
+- name: 🔧 工具与服务
   type: select
   proxies: *id002
 - name: Ⓜ️ 微软服务
@@ -407,9 +401,6 @@ proxy-groups:
   type: select
   proxies: *id003
 - name: 📥 下载更新
-  type: select
-  proxies: *id003
-- name: ☁️ 云与CDN
   type: select
   proxies: *id002
 - name: 🛰️ BT/PT Tracker
@@ -3301,10 +3292,10 @@ rules:
 - "DOMAIN-SUFFIX,modal.run,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,runpod.io,\U0001F916 AI 服务"
 - "RULE-SET,civitai,\U0001F916 AI 服务"
-- "DOMAIN-SUFFIX,gmail.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,googlemail.com,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.google.com,\U0001F4E7 邮件服务"
-- "DOMAIN,inbox.google.com,\U0001F4E7 邮件服务"
+- "DOMAIN-SUFFIX,gmail.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,googlemail.com,\U0001F310 国外网站"
+- "DOMAIN,mail.google.com,\U0001F310 国外网站"
+- "DOMAIN,inbox.google.com,\U0001F310 国外网站"
 - "RULE-SET,googlevoice,\U0001F4AC 即时通讯"
 - "DOMAIN-SUFFIX,meet.google.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN,meet.googleapis.com,\U0001F9D1‍\U0001F4BC 会议协作"
@@ -3312,11 +3303,11 @@ rules:
 - "DOMAIN-SUFFIX,play.googleapis.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,android.clients.google.com,\U0001F4E5 下载更新"
 - "RULE-SET,googlefcm,\U0001F4E5 下载更新"
-- "RULE-SET,googlesearch,\U0001F50D 搜索引擎"
-- "RULE-SET,googledrive,\U0001F50D 搜索引擎"
-- "RULE-SET,googleearth,\U0001F50D 搜索引擎"
-- "RULE-SET,google,\U0001F50D 搜索引擎"
-- "RULE-SET,google-ip,\U0001F50D 搜索引擎,no-resolve"
+- "RULE-SET,googlesearch,\U0001F527 工具与服务"
+- "RULE-SET,googledrive,\U0001F527 工具与服务"
+- "RULE-SET,googleearth,\U0001F527 工具与服务"
+- "RULE-SET,google,\U0001F527 工具与服务"
+- "RULE-SET,google-ip,\U0001F527 工具与服务,no-resolve"
 - "RULE-SET,szkane-ai,\U0001F916 AI 服务"
 - "RULE-SET,szkane-ciciai,\U0001F916 AI 服务"
 - "RULE-SET,acc-appleai,\U0001F916 AI 服务"
@@ -3381,31 +3372,31 @@ rules:
 - DOMAIN,login.live.com,Ⓜ️ 微软服务
 - DOMAIN,g.live.com,Ⓜ️ 微软服务
 - DOMAIN-SUFFIX,officeapps.live.com,Ⓜ️ 微软服务
-- "DOMAIN-SUFFIX,outlook.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,outlook.live.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,hotmail.com,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.live.com,\U0001F4E7 邮件服务"
-- "DOMAIN,outlook.office365.com,\U0001F4E7 邮件服务"
-- "DOMAIN,outlook.office.com,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.yahoo.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,ymail.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,protonmail.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,proton.me,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,pm.me,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,tutanota.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,tuta.com,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.zoho.com,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.zoho.eu,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.zoho.in,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.zoho.com.au,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.zoho.jp,\U0001F4E7 邮件服务"
-- "DOMAIN,mail.me.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,fastmail.com,\U0001F4E7 邮件服务"
-- "DOMAIN-SUFFIX,fastmail.fm,\U0001F4E7 邮件服务"
-- "RULE-SET,mail,\U0001F4E7 邮件服务"
-- "RULE-SET,mailru,\U0001F4E7 邮件服务"
-- "RULE-SET,protonmail,\U0001F4E7 邮件服务"
-- "RULE-SET,spark,\U0001F4E7 邮件服务"
+- "DOMAIN-SUFFIX,outlook.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,outlook.live.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,hotmail.com,\U0001F310 国外网站"
+- "DOMAIN,mail.live.com,\U0001F310 国外网站"
+- "DOMAIN,outlook.office365.com,\U0001F310 国外网站"
+- "DOMAIN,outlook.office.com,\U0001F310 国外网站"
+- "DOMAIN,mail.yahoo.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,ymail.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,protonmail.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,proton.me,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,pm.me,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,tutanota.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,tuta.com,\U0001F310 国外网站"
+- "DOMAIN,mail.zoho.com,\U0001F310 国外网站"
+- "DOMAIN,mail.zoho.eu,\U0001F310 国外网站"
+- "DOMAIN,mail.zoho.in,\U0001F310 国外网站"
+- "DOMAIN,mail.zoho.com.au,\U0001F310 国外网站"
+- "DOMAIN,mail.zoho.jp,\U0001F310 国外网站"
+- "DOMAIN,mail.me.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,fastmail.com,\U0001F310 国外网站"
+- "DOMAIN-SUFFIX,fastmail.fm,\U0001F310 国外网站"
+- "RULE-SET,mail,\U0001F310 国外网站"
+- "RULE-SET,mailru,\U0001F310 国外网站"
+- "RULE-SET,protonmail,\U0001F310 国外网站"
+- "RULE-SET,spark,\U0001F310 国外网站"
 - DOMAIN-SUFFIX,mail.qq.com,DIRECT
 - DOMAIN-SUFFIX,mail.163.com,DIRECT
 - DOMAIN-SUFFIX,mail.126.com,DIRECT
@@ -3639,10 +3630,10 @@ rules:
 - "RULE-SET,paramount,\U0001F1FA\U0001F1F8 美国流媒体"
 - "RULE-SET,peacock,\U0001F1FA\U0001F1F8 美国流媒体"
 - "RULE-SET,twitch,\U0001F1FA\U0001F1F8 美国流媒体"
-- DOMAIN-SUFFIX,amazonaws.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,awsstatic.com,☁️ 云与CDN
-- "DOMAIN-SUFFIX,aws.amazon.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,elasticbeanstalk.com,\U0001F4DF 开发者服务"
+- DOMAIN-SUFFIX,amazonaws.com,🌐 国外网站
+- DOMAIN-SUFFIX,awsstatic.com,🌐 国外网站
+- "DOMAIN-SUFFIX,aws.amazon.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,elasticbeanstalk.com,\U0001F527 工具与服务"
 - "RULE-SET,amazon,\U0001F1FA\U0001F1F8 美国流媒体"
 - "DOMAIN-SUFFIX,crunchyroll.com,\U0001F1FA\U0001F1F8 美国流媒体"
 - "DOMAIN-SUFFIX,vrv.co,\U0001F1FA\U0001F1F8 美国流媒体"
@@ -3859,21 +3850,21 @@ rules:
 - "RULE-SET,ubi,\U0001F3AE 国外游戏"
 - "RULE-SET,wildrift,\U0001F3AE 国外游戏"
 - "RULE-SET,sony,\U0001F3AE 国外游戏"
-- "RULE-SET,bing,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,yahoo.com,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,yahoo.co.jp,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,duckduckgo.com,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,ddg.co,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,brave.com,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,yandex.com,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,yandex.ru,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,ecosia.org,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,startpage.com,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,you.com,\U0001F50D 搜索引擎"
-- "DOMAIN-SUFFIX,search.naver.com,\U0001F50D 搜索引擎"
-- "RULE-SET,scholar,\U0001F50D 搜索引擎"
-- "RULE-SET,yandex,\U0001F50D 搜索引擎"
-- "RULE-SET,github,\U0001F4DF 开发者服务"
+- "RULE-SET,bing,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,yahoo.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,yahoo.co.jp,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,duckduckgo.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,ddg.co,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,brave.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,yandex.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,yandex.ru,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,ecosia.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,startpage.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,you.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,search.naver.com,\U0001F527 工具与服务"
+- "RULE-SET,scholar,\U0001F527 工具与服务"
+- "RULE-SET,yandex,\U0001F527 工具与服务"
+- "RULE-SET,github,\U0001F527 工具与服务"
 - RULE-SET,onedrive,Ⓜ️ 微软服务
 - RULE-SET,microsoft,Ⓜ️ 微软服务
 - RULE-SET,microsoftedge,Ⓜ️ 微软服务
@@ -3892,65 +3883,65 @@ rules:
 - "RULE-SET,findmy,\U0001F34E 苹果服务"
 - "RULE-SET,acc-applenews,\U0001F34E 苹果服务"
 - "RULE-SET,acc-apple,\U0001F34E 苹果服务"
-- "RULE-SET,docker,\U0001F4DF 开发者服务"
-- "RULE-SET,gitlab,\U0001F4DF 开发者服务"
-- "GEOSITE,category-dev,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,npmjs.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,npmjs.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,yarnpkg.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,pypi.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,pythonhosted.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,crates.io,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,rubygems.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,packagist.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,maven.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,nuget.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,cocoapods.org,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,stackoverflow.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,stackexchange.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,sstatic.net,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,vercel.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,vercel.app,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,netlify.app,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,netlify.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,pages.dev,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,workers.dev,\U0001F4DF 开发者服务"
-- "DOMAIN,dash.cloudflare.com,\U0001F4DF 开发者服务"
-- "DOMAIN,api.cloudflare.com,\U0001F4DF 开发者服务"
-- "DOMAIN,developers.cloudflare.com,\U0001F4DF 开发者服务"
-- "DOMAIN,www.cloudflare.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,heroku.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,herokuapp.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,fly.io,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,railway.app,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,render.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,supabase.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,supabase.co,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,planetscale.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,neon.tech,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,digitalocean.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,vultr.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,linode.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,sentry.io,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,datadog.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,grafana.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,postman.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,jetbrains.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,hashicorp.com,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,terraform.io,\U0001F4DF 开发者服务"
-- "DOMAIN-SUFFIX,vagrantup.com,\U0001F4DF 开发者服务"
-- "RULE-SET,developer,\U0001F4DF 开发者服务"
-- "RULE-SET,python,\U0001F4DF 开发者服务"
-- "RULE-SET,gitbook,\U0001F4DF 开发者服务"
-- "RULE-SET,jfrog,\U0001F4DF 开发者服务"
-- "RULE-SET,sublimetext,\U0001F4DF 开发者服务"
-- "RULE-SET,wordpress,\U0001F4DF 开发者服务"
-- "RULE-SET,wix,\U0001F4DF 开发者服务"
-- "RULE-SET,cisco,\U0001F4DF 开发者服务"
-- "RULE-SET,ibm,\U0001F4DF 开发者服务"
-- "RULE-SET,oracle,\U0001F4DF 开发者服务"
-- "RULE-SET,unity,\U0001F4DF 开发者服务"
-- "RULE-SET,szkane-developer,\U0001F4DF 开发者服务"
+- "RULE-SET,docker,\U0001F527 工具与服务"
+- "RULE-SET,gitlab,\U0001F527 工具与服务"
+- "GEOSITE,category-dev,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,npmjs.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,npmjs.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,yarnpkg.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,pypi.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,pythonhosted.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,crates.io,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,rubygems.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,packagist.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,maven.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,nuget.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,cocoapods.org,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,stackoverflow.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,stackexchange.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,sstatic.net,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,vercel.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,vercel.app,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,netlify.app,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,netlify.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,pages.dev,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,workers.dev,\U0001F527 工具与服务"
+- "DOMAIN,dash.cloudflare.com,\U0001F527 工具与服务"
+- "DOMAIN,api.cloudflare.com,\U0001F527 工具与服务"
+- "DOMAIN,developers.cloudflare.com,\U0001F527 工具与服务"
+- "DOMAIN,www.cloudflare.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,heroku.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,herokuapp.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,fly.io,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,railway.app,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,render.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,supabase.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,supabase.co,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,planetscale.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,neon.tech,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,digitalocean.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,vultr.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,linode.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,sentry.io,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,datadog.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,grafana.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,postman.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,jetbrains.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,hashicorp.com,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,terraform.io,\U0001F527 工具与服务"
+- "DOMAIN-SUFFIX,vagrantup.com,\U0001F527 工具与服务"
+- "RULE-SET,developer,\U0001F527 工具与服务"
+- "RULE-SET,python,\U0001F527 工具与服务"
+- "RULE-SET,gitbook,\U0001F527 工具与服务"
+- "RULE-SET,jfrog,\U0001F527 工具与服务"
+- "RULE-SET,sublimetext,\U0001F527 工具与服务"
+- "RULE-SET,wordpress,\U0001F527 工具与服务"
+- "RULE-SET,wix,\U0001F527 工具与服务"
+- "RULE-SET,cisco,\U0001F527 工具与服务"
+- "RULE-SET,ibm,\U0001F527 工具与服务"
+- "RULE-SET,oracle,\U0001F527 工具与服务"
+- "RULE-SET,unity,\U0001F527 工具与服务"
+- "RULE-SET,szkane-developer,\U0001F527 工具与服务"
 - "RULE-SET,systemota,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,windowsupdate.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,update.microsoft.com,\U0001F4E5 下载更新"
@@ -3989,47 +3980,47 @@ rules:
 - "RULE-SET,canon,\U0001F4E5 下载更新"
 - "RULE-SET,lg,\U0001F4E5 下载更新"
 - "RULE-SET,acc-macappupgrade,\U0001F4E5 下载更新"
-- RULE-SET,cloudflare-ip,☁️ 云与CDN,no-resolve
-- RULE-SET,cloudfront-ip,☁️ 云与CDN,no-resolve
-- RULE-SET,fastly-ip,☁️ 云与CDN,no-resolve
-- DOMAIN-SUFFIX,akamai.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,akamaized.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,akamaihd.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,akamaiedge.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,akamaitechnologies.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,edgekey.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,edgesuite.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,cloudfront.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,fastly.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,fastlylb.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,kxcdn.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,stackpathdns.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,stackpathcdn.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,b-cdn.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,bunny.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,bunnycdn.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,cdn77.org,☁️ 云与CDN
-- DOMAIN-SUFFIX,azureedge.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,azurefd.net,☁️ 云与CDN
-- DOMAIN-SUFFIX,msecnd.net,☁️ 云与CDN
+- RULE-SET,cloudflare-ip,🌐 国外网站,no-resolve
+- RULE-SET,cloudfront-ip,🌐 国外网站,no-resolve
+- RULE-SET,fastly-ip,🌐 国外网站,no-resolve
+- DOMAIN-SUFFIX,akamai.net,🌐 国外网站
+- DOMAIN-SUFFIX,akamaized.net,🌐 国外网站
+- DOMAIN-SUFFIX,akamaihd.net,🌐 国外网站
+- DOMAIN-SUFFIX,akamaiedge.net,🌐 国外网站
+- DOMAIN-SUFFIX,akamaitechnologies.com,🌐 国外网站
+- DOMAIN-SUFFIX,edgekey.net,🌐 国外网站
+- DOMAIN-SUFFIX,edgesuite.net,🌐 国外网站
+- DOMAIN-SUFFIX,cloudfront.net,🌐 国外网站
+- DOMAIN-SUFFIX,fastly.net,🌐 国外网站
+- DOMAIN-SUFFIX,fastlylb.net,🌐 国外网站
+- DOMAIN-SUFFIX,kxcdn.com,🌐 国外网站
+- DOMAIN-SUFFIX,stackpathdns.com,🌐 国外网站
+- DOMAIN-SUFFIX,stackpathcdn.com,🌐 国外网站
+- DOMAIN-SUFFIX,b-cdn.net,🌐 国外网站
+- DOMAIN-SUFFIX,bunny.net,🌐 国外网站
+- DOMAIN-SUFFIX,bunnycdn.com,🌐 国外网站
+- DOMAIN-SUFFIX,cdn77.org,🌐 国外网站
+- DOMAIN-SUFFIX,azureedge.net,🌐 国外网站
+- DOMAIN-SUFFIX,azurefd.net,🌐 国外网站
+- DOMAIN-SUFFIX,msecnd.net,🌐 国外网站
 - "DOMAIN-SUFFIX,jsdelivr.net,\U0001F6AB 受限网站"
-- DOMAIN-SUFFIX,unpkg.com,☁️ 云与CDN
+- DOMAIN-SUFFIX,unpkg.com,🌐 国外网站
 - "DOMAIN-SUFFIX,cloudflare-dns.com,\U0001F6AB 受限网站"
-- DOMAIN-SUFFIX,cloudflarestorage.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,r2.dev,☁️ 云与CDN
-- DOMAIN-SUFFIX,ziffstatic.com,☁️ 云与CDN
-- DOMAIN-SUFFIX,ucoz.ru,☁️ 云与CDN
-- DOMAIN-SUFFIX,ucoz.net,☁️ 云与CDN
-- RULE-SET,cloudflare,☁️ 云与CDN
-- RULE-SET,akamai,☁️ 云与CDN
-- RULE-SET,digicert,☁️ 云与CDN
-- RULE-SET,globalsign,☁️ 云与CDN
-- RULE-SET,sectigo,☁️ 云与CDN
-- RULE-SET,brightcove,☁️ 云与CDN
-- RULE-SET,jwplayer,☁️ 云与CDN
-- RULE-SET,acc-fastly,☁️ 云与CDN
-- DOMAIN-SUFFIX,letsencrypt.org,☁️ 云与CDN
-- DOMAIN-SUFFIX,lencr.org,☁️ 云与CDN
+- DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站
+- DOMAIN-SUFFIX,r2.dev,🌐 国外网站
+- DOMAIN-SUFFIX,ziffstatic.com,🌐 国外网站
+- DOMAIN-SUFFIX,ucoz.ru,🌐 国外网站
+- DOMAIN-SUFFIX,ucoz.net,🌐 国外网站
+- RULE-SET,cloudflare,🌐 国外网站
+- RULE-SET,akamai,🌐 国外网站
+- RULE-SET,digicert,🌐 国外网站
+- RULE-SET,globalsign,🌐 国外网站
+- RULE-SET,sectigo,🌐 国外网站
+- RULE-SET,brightcove,🌐 国外网站
+- RULE-SET,jwplayer,🌐 国外网站
+- RULE-SET,acc-fastly,🌐 国外网站
+- DOMAIN-SUFFIX,letsencrypt.org,🌐 国外网站
+- DOMAIN-SUFFIX,lencr.org,🌐 国外网站
 - "GEOSITE,tracker,\U0001F6F0️ BT/PT Tracker"
 - "DOMAIN-SUFFIX,tracker.opentrackr.org,\U0001F6F0️ BT/PT Tracker"
 - "DOMAIN-SUFFIX,open.stealth.si,\U0001F6F0️ BT/PT Tracker"
@@ -4171,12 +4162,12 @@ rules:
 - "DOMAIN-SUFFIX,box.com,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,boxcdn.net,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,noip.com,\U0001F310 国外网站"
-- GEOIP,cloudflare,☁️ 云与CDN,no-resolve
+- GEOIP,cloudflare,🌐 国外网站,no-resolve
 - "GEOIP,telegram,\U0001F4AC 即时通讯,no-resolve"
 - "GEOIP,netflix,\U0001F1FA\U0001F1F8 美国流媒体,no-resolve"
 - "GEOIP,facebook,\U0001F4F1 社交媒体,no-resolve"
 - "GEOIP,twitter,\U0001F4F1 社交媒体,no-resolve"
-- "GEOIP,google,\U0001F50D 搜索引擎,no-resolve"
+- "GEOIP,google,\U0001F527 工具与服务,no-resolve"
 - "GEOIP,CN,\U0001F3E0 国内网站,no-resolve"
 - "MATCH,\U0001F41F 漏网之鱼"
 OVERRIDE_EOF
@@ -4193,7 +4184,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.2.10-oc-normal.2"
+VERSION = "v5.2.11-oc-normal.1"
 
 STATUS_LOG = "/tmp/clash_normal_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
