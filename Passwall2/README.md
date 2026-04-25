@@ -18,7 +18,7 @@
 | 基础分流（AI / 流媒体 / 支付 / GFW） | ✅ | ✅ |
 | 25 业务分类 | ✅（手工配置）| ✅（自动）|
 | 9 区域组自动 url-test 选最低延迟 | ⚠️ 用负载均衡组近似 | ✅ 原生 |
-| 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 28 条规则的目标** | ✅ 自动 |
+| 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 25 条规则的目标** | ✅ 自动 |
 | Smart + LightGBM 机器学习择优 | ❌ | ✅ 原生 |
 | JS 覆写 / 订阅预处理 | ❌ | ✅ |
 | 广告拦截（纵深多源）| ⚠️ 只能导 1-2 个 list | ✅ 20+ 源 |
@@ -55,7 +55,7 @@
 - ❌ **规则多了顺序错乱**：Passwall2 按列表顺序匹配，**把"国内网站"/"广告拦截"放最前或最后**，业务规则放中间
 - ❌ **geosite 关键字不识别**：确认 Passwall2 的 xray/sing-box 核已下载 `geosite.dat`（LuCI → 全局设置 → 规则资源设置里有个"更新 geosite.dat / geoip.dat"按钮）
 - ❌ **节点换了规则都白写**：这是 Passwall 的固有限制，没办法。想避开就换 OpenClash
-- ❌ **混淆 Passwall 和 Passwall2**：这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库迁入）**并行维护**的两款插件（**不是**新旧关系；最新发版仅差 4 天）。Passwall = 全功能（有直连/屏蔽/GFW/代理 4 列表 + 分流），Passwall2 = 精简分流（只有 keyword/domain/geosite/geoip 匹配）。**规则语法两者完全相同**（共用 `shunt_rules.lua` 解析器），本目录的 28 个 `.list` 同时适用。
+- ❌ **混淆 Passwall 和 Passwall2**：这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库迁入）**并行维护**的两款插件（**不是**新旧关系；最新发版仅差 4 天）。Passwall = 全功能（有直连/屏蔽/GFW/代理 4 列表 + 分流），Passwall2 = 精简分流（只有 keyword/domain/geosite/geoip 匹配）。**规则语法两者完全相同**（共用 `shunt_rules.lua` 解析器），本目录的 25 个 `.list` 同时适用。
 
 ---
 
@@ -171,20 +171,7 @@ domain:mastercard.com
 domain:amex.com
 ```
 
-### 5️⃣ 📧 邮件服务
-**推荐节点**：🇯🇵 日韩 / 🌍 全球
-
-**域名列表**：
-```
-geosite:gmail
-geosite:outlook
-geosite:protonmail
-domain:fastmail.com
-domain:tuta.com
-domain:mail.ru
-```
-
-### 6️⃣ 💬 即时通讯
+### 5️⃣ 💬 即时通讯
 **推荐节点**：🇭🇰 香港 / 🇯🇵 日韩
 
 **域名列表**：
@@ -202,7 +189,7 @@ geosite:kakao
 geoip:telegram
 ```
 
-### 7️⃣ 📱 社交媒体
+### 6️⃣ 📱 社交媒体
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -223,7 +210,7 @@ geoip:twitter
 geoip:facebook
 ```
 
-### 8️⃣ 🧑‍💼 会议协作
+### 7️⃣ 🧑‍💼 会议协作
 **推荐节点**：🇯🇵 日韩 / 🌍 全球
 
 **域名列表**：
@@ -236,7 +223,7 @@ geosite:atlassian
 domain:meet.google.com
 ```
 
-### 9️⃣ 📺 国内流媒体
+### 8️⃣ 📺 国内流媒体
 **推荐**：**direct**（境内）或 🇭🇰 香港（境外）
 
 **域名列表**：
@@ -251,7 +238,7 @@ geosite:netease-music
 geosite:qqmusic
 ```
 
-### 🔟 📺 东南亚流媒体
+### 9️⃣ 📺 东南亚流媒体
 **推荐节点**：🌏 亚太（SG/ID）
 
 **域名列表**：
@@ -263,7 +250,7 @@ domain:vidio.com
 domain:iqiyiintl.com
 ```
 
-### 1️⃣1️⃣ 🇺🇸 美国流媒体
+### 1️⃣0️⃣ 🇺🇸 美国流媒体
 **推荐节点**：🇺🇸 美国
 
 **域名列表**：
@@ -285,7 +272,7 @@ domain:twitch.tv
 geoip:netflix
 ```
 
-### 1️⃣2️⃣ 🇭🇰 香港流媒体
+### 1️⃣1️⃣ 🇭🇰 香港流媒体
 **推荐节点**：🇭🇰 香港
 
 **域名列表**：
@@ -298,7 +285,7 @@ domain:encoretvb.com
 domain:rthk.hk
 ```
 
-### 1️⃣3️⃣ 🇹🇼 台湾流媒体
+### 1️⃣2️⃣ 🇹🇼 台湾流媒体
 **推荐节点**：🇹🇼 台湾
 
 **域名列表**：
@@ -312,7 +299,7 @@ domain:hamivideo.hinet.net
 domain:friday.tw
 ```
 
-### 1️⃣4️⃣ 🇯🇵 日韩流媒体
+### 1️⃣3️⃣ 🇯🇵 日韩流媒体
 **推荐节点**：🇯🇵 日韩
 
 **域名列表**：
@@ -326,7 +313,7 @@ domain:tver.jp
 domain:rakuten.tv
 ```
 
-### 1️⃣5️⃣ 🇪🇺 欧洲流媒体
+### 1️⃣4️⃣ 🇪🇺 欧洲流媒体
 **推荐节点**：🇪🇺 欧洲
 
 **域名列表**：
@@ -340,7 +327,7 @@ domain:skygo.com
 domain:britbox.co.uk
 ```
 
-### 1️⃣6️⃣ 🕹️ 国内游戏
+### 1️⃣5️⃣ 🕹️ 国内游戏
 **推荐**：**direct**
 
 **域名列表**：
@@ -351,7 +338,7 @@ domain:majsoul.com
 domain:battlenet.com.cn
 ```
 
-### 1️⃣7️⃣ 🎮 国外游戏
+### 1️⃣6️⃣ 🎮 国外游戏
 **推荐节点**：🇯🇵 日韩 / 🇭🇰 香港
 
 **域名列表**：
@@ -368,28 +355,18 @@ domain:hoyoverse.com
 domain:mihoyo.com
 ```
 
-### 1️⃣8️⃣ 🔍 搜索引擎
+### 1️⃣7️⃣ 🔧 工具与服务（合并自原搜索引擎 + 开发者服务）
 **推荐节点**：🌍 全球
 
 **域名列表**：
 ```
+# 原 🔍 搜索引擎
 geosite:google
 geosite:bing
 geosite:duckduckgo
 geosite:yandex
 domain:scholar.google.com
-```
-
-**IP 列表**：
-```
-geoip:google
-```
-
-### 1️⃣9️⃣ 📟 开发者服务
-**推荐节点**：🇺🇸 美国 / 🌍 全球
-
-**域名列表**：
-```
+# 原 📟 开发者服务
 geosite:github
 geosite:gitlab
 geosite:docker
@@ -401,7 +378,12 @@ domain:stackoverflow.com
 domain:stackexchange.com
 ```
 
-### 2️⃣0️⃣ Ⓜ️ 微软服务
+**IP 列表**：
+```
+geoip:google
+```
+
+### 1️⃣8️⃣ Ⓜ️ 微软服务
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -413,7 +395,7 @@ domain:live.com
 domain:microsoftedge.com
 ```
 
-### 2️⃣1️⃣ 🍎 苹果服务
+### 1️⃣9️⃣ 🍎 苹果服务
 **推荐**：**direct**（境内）或 🌍 全球（境外）
 
 **域名列表**：
@@ -427,8 +409,8 @@ domain:applemusic.com
 domain:apple-dns.net
 ```
 
-### 2️⃣2️⃣ 📥 下载更新
-**推荐**：**direct**
+### 2️⃣0️⃣ 📥 下载更新
+**推荐**：**proxy**（策略已从 direct 调整为 proxy）
 
 **域名列表**：
 ```
@@ -442,25 +424,7 @@ domain:mozilla.org
 domain:apkpure.com
 ```
 
-### 2️⃣3️⃣ ☁️ 云与CDN
-**推荐节点**：🌍 全球
-
-**域名列表**：
-```
-geosite:cloudflare
-geosite:fastly
-geosite:akamai
-domain:jsdelivr.net
-domain:cloudfront.net
-```
-
-**IP 列表**：
-```
-geoip:cloudflare
-geoip:fastly
-```
-
-### 2️⃣4️⃣ 🛰️ BT/PT Tracker
+### 2️⃣1️⃣ 🛰️ BT/PT Tracker
 **推荐**：**direct** 或 **block**
 
 **域名列表**：
@@ -471,7 +435,7 @@ domain:openbittorrent.com
 domain:nyaa.si
 ```
 
-### 2️⃣5️⃣ 🏠 国内网站
+### 2️⃣2️⃣ 🏠 国内网站
 **推荐**：**direct**
 
 **域名列表**：
@@ -485,7 +449,7 @@ geoip:cn
 geoip:private
 ```
 
-### 2️⃣6️⃣ 🚫 受限网站
+### 2️⃣3️⃣ 🚫 受限网站
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -494,7 +458,7 @@ geosite:gfw
 geosite:greatfire
 ```
 
-### 2️⃣7️⃣ 🌐 国外网站
+### 2️⃣4️⃣ 🌐 国外网站（合并自原邮件服务 + 云与CDN）
 **推荐节点**：🌍 全球
 
 **域名列表**：
@@ -504,9 +468,28 @@ domain:cnn.com
 domain:nytimes.com
 domain:bloomberg.com
 domain:wikipedia.org
+# 合并自原 📧 邮件服务
+geosite:gmail
+geosite:outlook
+geosite:protonmail
+domain:fastmail.com
+domain:tuta.com
+domain:mail.ru
+# 合并自原 ☁️ 云与CDN
+geosite:cloudflare
+geosite:fastly
+geosite:akamai
+domain:jsdelivr.net
+domain:cloudfront.net
 ```
 
-### 2️⃣8️⃣ 🐟 漏网之鱼 FINAL
+**IP 列表**：
+```
+geoip:cloudflare
+geoip:fastly
+```
+
+### 2️⃣5️⃣ 🐟 漏网之鱼 FINAL
 **推荐节点**：🌍 全球
 
 **域名列表**：留空（兜底规则不用显式写域名；Passwall / Passwall2 的 FINAL 走"全局设置 → 基本设置"里的**默认代理节点**开关，不是作为 shunt rule 的一条）
@@ -530,7 +513,7 @@ domain:wikipedia.org
 
 想换回 OpenClash 反过来就行。配置互相独立保留，切换无数据丢失。
 
-**想要 mihomo 的 proxy-groups 嵌套（业务组 → 区域组）+ Smart/LightGBM 自动择优？请改用 OpenClash**（本仓库 `OpenClash/`）。Passwall / Passwall2 架构上都**没有**嵌套选择器（Lua CBI 表单式 UI，无 YAML 嵌套组语义），也**都不打包** mihomo（只有 xray + sing-box 双栈）——本目录的 28 条 shunt rule 是**把两层结构手工展平**的降级方案，适合坚持用 Passwall 系的用户。
+**想要 mihomo 的 proxy-groups 嵌套（业务组 → 区域组）+ Smart/LightGBM 自动择优？请改用 OpenClash**（本仓库 `OpenClash/`）。Passwall / Passwall2 架构上都**没有**嵌套选择器（Lua CBI 表单式 UI，无 YAML 嵌套组语义），也**都不打包** mihomo（只有 xray + sing-box 双栈）——本目录的 25 条 shunt rule 是**把两层结构手工展平**的降级方案，适合坚持用 Passwall 系的用户。
 
 ---
 
