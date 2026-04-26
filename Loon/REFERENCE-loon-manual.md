@@ -5,6 +5,7 @@
 > - https://nsloon.uk/tutorial/ (Loon 官方教程网站)
 > - https://deepwiki.com/blackmatrix7/ios_rule_script/7.2-platform-specific-configuration (社区参考)
 > 获取日期: 2026-04-26
+> 更新于 2026-04-26: 补充 Loon 3.2.0+ 新字段 (ip-mode / udp-fallback-mode / hijack-dns / domain-reject-mode / dns-reject-mode / ipasn-url)；确认 ipv6 已废弃
 
 ---
 
@@ -41,29 +42,38 @@ Loon 支持两种配置格式：
 | `doh-server` | `https://URL,https://URL,...` | DoH 服务器，逗号分隔多组 | general.md |
 | `doh3-server` | `h3://IP/dns-query` | HTTP/3 DoH | general.md |
 | `doq-server` | `quic://域名:784` | DNS-over-QUIC | general.md |
-| `ipv6` | `true` / `false` | 启用 IPv6 DNS 查询 | general.md |
+| `ip-mode` | `ipv4-only`/`dual`/`ipv4-preferred`/`ipv6-preferred` | IP 双栈模式（3.2.0+ 替代已废弃的 `ipv6`） | general.md |
+| `ipv6` | `true`/`false` | **[已废弃]** 3.2.0+ 已拆分为 `ip-mode` | general.md |
 | `allow-wifi-access` | `true` / `false` | 允许局域网代理访问 | general.md |
 | `wifi-access-http-port` | 端口号 | HTTP 代理端口 | general.md |
 | `wifi-access-socks5-port` | 端口号 | SOCKS5 端口 | general.md |
 | `proxy-test-url` | URL | 代理延迟测试 URL | general.md |
 | `internet-test-url` | URL | 网络连通性测试 URL | general.md |
 | `test-timeout` | 秒数 | 节点测试超时 | general.md |
-| `switch-node-after-failure-times` | 次数 | 连续失败切换次数 | general.md |
+| `switch-node-after-failure-times` | 次数 | 连续失败切换次数（已废弃，由系统自动处理） | general.md |
 | `resource-parser` | URL | 订阅解析器 | general.md |
 | `ssid-trigger` | `"SSID":MODE,...` | SSID 触发模式切换 | general.md |
-| `real-ip` | `域名,*.通配符` | 真实 IP 域名列表 | general.md |
+| `real-ip` | `域名,*.通配符` | 真实 IP 域名列表（等同于 [Host] 段的 DNS 映射，推荐用于 FakeIP 排除） | general.md |
+| `hijack-dns` | `IP:port,...` | DNS 劫持目标（用于 FakeIP，劫持硬编码 DNS 请求） | general.md |
 | `interface-mode` | `Auto`/`Cellular`/`Performance`/`Balance` | 网络接口模式 | general.md |
-| `force-http-engine-hosts` | `域名,:端口` | 强制 HTTP 引擎 | general.md |
+| `force-http-engine-hosts` | `域名,:端口` | 强制 HTTP 引擎（已废弃） | general.md |
+| `udp-fallback-mode` | `DIRECT`/`REJECT` | **3.2.0+ build 702** — 当匹配节点不支持 UDP 时：REJECT=丢弃 / DIRECT=直连 | general.md |
 | `disable-udp-ports` | `端口,端口,...` | 禁用 UDP 的端口 | general.md |
 | `disable-stun` | `true` / `false` | 禁用 STUN 防 WebRTC 泄漏 | general.md |
+| `domain-reject-mode` | `DNS`/`Request` | 域名拒绝阶段：DNS 层或请求层 | general.md |
+| `dns-reject-mode` | `LOOPBACKIP`/`NOANSWER`/`NXDOMAIN` | DNS 拒绝方式 | general.md |
+| `skip-first-packet` | `true`/`false` | 跳过首包解析（用于 server-speaks-first 协议） | general.md |
 | `geoip-url` | URL | GeoIP MMDB 数据库下载 URL | general.md |
+| `ipasn-url` | URL | ASN 数据库下载 URL | general.md |
 
 ### 注意点
 
 - **`dns-server`**：仅接受 `system` 关键字与纯 IP 地址，不支持 DoH URL
 - **`doh-server`**：仅接受标准 HTTPS URL 格式
-- **`ipv6`**：字段名是 `ipv6`（不是 `ipv6-enabled` 或 `ipv6-enable`）
+- **`ipv6`**：**Loon 3.2.0+ 已废弃**，请使用 `ip-mode = dual`（双栈）替代。旧版（< 3.2.0）继续使用 `ipv6 = true`。
+- **`udp-fallback-mode`**：Loon 3.2.0+ build 702 引入，< 3.2.0 版本会静默忽略
 - **`geoip-url`**：用于自动更新 GeoIP 数据库；Loon 同时内置 MaxMind GeoLite2
+- **`[Host]` 段通配符**：`*.apple.com = server:system` 格式 Loon 3.2.0+ 支持；等效替代方案是 [General] 段 `real-ip = *.apple.com`
 
 ---
 

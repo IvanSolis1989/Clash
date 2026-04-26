@@ -26,7 +26,7 @@
 # ⚠️  警告：
 #   • 本脚本在 ImmortalWrt / OpenWrt 官方源的 Passwall2 上测过
 #   • 运行前建议备份: cp /etc/config/passwall2 /etc/config/passwall2.bak
-#   • 运行会 append 25 条新规则，不会删除既有的（重复运行会产生副本）
+#   • 运行会 append 31 条新规则，不会删除既有的（重复运行会产生副本）
 # ═══════════════════════════════════════════════════════════════════════════
 
 set -e
@@ -440,8 +440,8 @@ uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 
 uci commit ${CONFIG_NAME}
 
-echo "✓ 25 条 shunt rule 创建完成。"
+echo "✓ 31 条 shunt rule 创建完成。"
 echo "下一步："
 echo "  1. LuCI → Passwall2 → 分流控制 → 逐条为每个 rule 指定目标节点"
-echo "  2. 确认规则顺序：#01 广告拦截在最前；#22-#25（受限/国外/工具/FINAL）保持在末尾"
+echo "  2. 确认规则顺序：#01 广告拦截在最前；#29-#31（受限/国外/FINAL）保持在末尾"
 echo "  3. 重启 Passwall2: /etc/init.d/passwall2 restart"

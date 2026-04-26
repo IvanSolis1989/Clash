@@ -2200,8 +2200,8 @@ function overwriteGeneral(config) {
 function cleanupSubscription(config) {
   // v5.2.6 FIX#26-P0: 清空订阅自带的所有 proxy-groups
   //   原 4 关键词黑名单（负载均衡/自动选择/手动选择/节点选择）只能清除部分机场模板，
-  //   机场若提供地区组（🇭🇰 香港 / 🇹🇼 台湾 / …）或流媒体组，会和本脚本 18 Smart + 25 业务组共存，
-  //   用户端会看到 60+ 甚至 70+ 代理组（本脚本期望恰好 46 个）。
+  //   机场若提供地区组（🇭🇰 香港 / 🇹🇼 台湾 / …）或流媒体组，会和本脚本 18 Smart + 31 业务组共存，
+  //   用户端会看到 60+ 甚至 70+ 代理组（本脚本期望恰好 49 个）。
   //   本脚本 46 个组是唯一权威来源：业务组只引用 SMART.* / DIRECT / REJECT，Smart 组只引用
   //   config.proxies 里的节点名，不依赖任何订阅原生组，所以可以安全地整体清空。
   var removed = (config['proxy-groups'] || []).length
