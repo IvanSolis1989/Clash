@@ -105,6 +105,125 @@ proxy-providers:
 - `exclude-filter` 已内置过滤广告节点与高倍率节点，无需改动。
 - 若你使用 **Sub-Store** 做多机场融合，可直接粘贴 Sub-Store 生成的单一 URL。
 
+### 多机场订阅：三种方式
+
+如果你同时购买了多家机场（例如一家主打香港、一家主打美国、一家做家宽），需要把它们的节点合并到同一份 CMFA 配置里。
+
+#### 方式 A：Sub-Store 融合（推荐）
+
+**Sub-Store** 是一个 Mihomo / Surge / Loon 生态的订阅管理工具，可以把你所有机场的订阅链接合并成一个 URL，统一输出。
+
+1. 在桌面端 Mihomo Party / Clash Verge Rev 中安装 Sub-Store 插件
+2. 新建「组合订阅」→ 把多个机场 URL 填进去 → 勾选「输出为 Mihomo 格式」
+3. 生成一个融合后的 URL（形如 `http://127.0.0.1:19500/api/collection/xxx`）
+4. 把这个 URL 填到上面 `proxy-providers.Subscribe.url` 里
+
+**优点**：不需要改 YAML 结构，一个 URL 搞定一切；支持重命名节点、按正则过滤、全平台通用。
+
+#### 方式 B：在线订阅转换站（零门槛，无需安装任何工具）
+
+如果你不想装任何 App 或插件，可以用第三方 **订阅转换站**。你把多个机场的订阅链接粘贴进去，它会输出一个合并后的 URL。
+
+**这个方案与客户端无关**——转换站在网页上完成，输出的 URL 直接用于 Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN 等**所有客户端**。
+
+常见转换站（社区维护，任选其一）：
+- `https://acl4ssr-sub.github.io`（ACL4SSR 官方前端）
+- `https://sub.v1.mk`（Sub-Store 在线版）
+- `https://id9.cc`（备用）
+
+操作步骤：
+1. 打开上述任一网站
+2. 把多家机场的订阅链接粘贴到「订阅链接」输入框（一行一个或用 `|` 分隔）
+3. 后端/输出选 **Mihomo（Clash.Meta）**
+4. 点击「生成订阅链接」→ 复制输出的新 URL
+5. 把新 URL 填到 `proxy-providers.Subscribe.url` 里
+
+> ⚠️ **隐私提醒**：转换站服务端能看到你提交的所有订阅链接（包括 token），理论上也能解密节点流量特征。**不要在转换站上提交包含敏感信息（如专属专线 IP、企业内部 VPN）的订阅链接**。如果你对隐私有要求，优先用方式 A（Sub-Store 跑在本地）或方式 C（手动 YAML）。
+
+#### 方式 C：YAML 直接写多个 proxy-providers（无需额外工具）
+
+如果你不想装 Sub-Store，可以直接在 YAML 里写多个 `proxy-providers`，Mihomo 会自动合并所有来源的节点到同一个代理组中。
+
+把单机场的 `proxy-providers` 块：
+
+```yaml
+proxy-providers:
+  Subscribe:
+    type: http
+    url: 'https://airport1.example.com/sub?token=xxx'
+    interval: 86400
+    path: ./proxy_providers/sub1.yaml
+    health-check:
+      enable: true
+      url: 'https://www.gstatic.com/generate_204'
+      interval: 300
+    exclude-filter: '(?i)(导航网址|距离下次重置|剩余流量|套餐到期|网址导航|官网|订阅|到期|剩余|重置)'
+```
+
+改为多机场版本：
+
+```yaml
+proxy-providers:
+  Airport1:
+    type: http
+    url: 'https://airport1.example.com/sub?token=xxx'
+    interval: 86400
+    path: ./proxy_providers/airport1.yaml
+    health-check:
+      enable: true
+      url: 'https://www.gstatic.com/generate_204'
+      interval: 300
+    exclude-filter: '(?i)(导航网址|距离下次重置|剩余流量|套餐到期|网址导航|官网|订阅|到期|剩余|重置)'
+
+  Airport2:
+    type: http
+    url: 'https://airport2.example.com/sub?token=yyy'
+    interval: 86400
+    path: ./proxy_providers/airport2.yaml
+    health-check:
+      enable: true
+      url: 'https://www.gstatic.com/generate_204'
+      interval: 300
+    exclude-filter: '(?i)(导航网址|距离下次重置|剩余流量|套餐到期|网址导航|官网|订阅|到期|剩余|重置)'
+
+  Airport3:
+    type: http
+    url: 'https://airport3.example.com/sub?token=zzz'
+    interval: 86400
+    path: ./proxy_providers/airport3.yaml
+    health-check:
+      enable: true
+      url: 'https://www.gstatic.com/generate_204'
+      interval: 300
+    exclude-filter: '(?i)(导航网址|距离下次重置|剩余流量|套餐到期|网址导航|官网|订阅|到期|剩余|重置)'
+```
+
+**关键机制**：本配置中所有 `url-test` 区域组（🌍 全球节点、🇭🇰 香港节点等）使用 `use:` 字段引用 proxy-provider 名称来获取节点，并通过 `filter:` 正则按节点名自动归类（例如「香港节点」组的 `filter:` 匹配 "香港/HongKong/HKG/HK"）。
+
+**如果你用了上面「方式 C」的多机场写法，必须把每个区域组的 `use:` 也更新**，加上所有新的 provider 名。否则新加的机场节点不会出现在任何组里。
+
+在 YAML 中找到所有 `use:` 行（约第 538 行起），把：
+
+```yaml
+  use:
+  - Subscribe
+```
+
+改为（以 3 个机场为例）：
+
+```yaml
+  use:
+  - Airport1
+  - Airport2
+  - Airport3
+```
+
+每个 `url-test` 区域组（🌍 全球节点、🏡 全球家宽、🇭🇰 香港节点 … 共 18 个组）都要做同样的修改。可以用文本编辑器的「查找替换」功能：把所有 `- Subscribe` 替换为 `- Airport1\n  - Airport2\n  - Airport3`。
+
+> 💡 **更省事的做法**：把所有 proxy-provider 的名字统一为 `Subscribe`，在不同机场之间用注释分隔——这样 `use: [Subscribe]` 不用改。但 Mihomo **不允许**两个 provider 重名（后定义的会覆盖前面的）。所以多机场还是得用不同名字 + 改 `use:`。
+
+**方式 A（Sub-Store）没有这个问题**——因为 Sub-Store 输出的是单一 URL，填到 `Subscribe` 这一个 provider 里即可，`use: [Subscribe]` 完全不用动。
+
 ---
 
 ## 三、导入配置到 CMFA
