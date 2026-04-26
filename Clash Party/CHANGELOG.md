@@ -3,9 +3,29 @@
 > 本文件是 `Clash Party/ClashParty(mihomo-smart).js` 的完整变更日志。
 > 本 JS 覆写脚本是仓库的**主线基线**，其它所有产物（CMFA YAML / OpenClash Normal+Smart / Shadowrocket / SingBox / Surge / Loon / Quantumult X / v2rayN）跟随本版本。
 >
-> 主版本号 `v5.2.X`；主版本变更必须同步传递到所有 9 份产物的子版本号。
+> 主版本号 `v5.3.X`；主版本变更必须同步传递到所有 9 份产物的子版本号。
 
 ---
+
+## v5.3.0 (2026-04-26)
+
+- ★ **REFACTOR#2**：流媒体分组架构重构——按区域 → 按平台（解决跨区低价订阅的解锁碎片化问题）
+  - **拆出 5 个主流平台独立组**（跨区订阅刚需，用户可为不同平台选不同区域节点）：
+    - `🎥 Netflix` — select, standardProxies（从原 🇺🇸美国流媒体 拆出）
+    - `🎬 Disney+` — select, standardProxies（同上；土耳其/印度低价区极度普遍）
+    - `📡 HBO/Max` — select, standardProxies（同上）
+    - `📺 Hulu` — select, standardProxies（同上；含 Hulu JP `hulu.jp`/`happyon.jp` 从 🇯🇵日韩流媒体 移入）
+    - `🎬 Prime Video` — select, standardProxies（同上）
+  - **拆出 2 个全球平台独立组**（无需区域 IP，可走最快节点）：
+    - `📹 YouTube` — select, standardProxies（从原 🇺🇸美国流媒体 拆出；全球可用，无需区域锁）
+    - `🎵 音乐流媒体` — select, standardProxies（Spotify/Apple Music/Tidal/Deezer/SoundCloud/Pandora/Qobuz/Overcast；从 🇺🇸美国流媒体 + 🇪🇺欧洲流媒体 汇聚）
+  - **保留 4 个区域锁区组**（这些平台永锁特定区域 IP，不存在跨区账号场景）：
+    - `🇭🇰 香港流媒体` / `🇹🇼 台湾流媒体` / `🇯🇵 日韩流媒体` / `🇪🇺 欧洲流媒体`
+  - **删去 `🇺🇸 美国流媒体`**（拆分为上述平台组+兜底组）、**删去 `📺 东南亚流媒体`**（并入兜底组）
+  - **新增 `🌐 其他国外流媒体`** 兜底（接收 Paramount+/Peacock/Twitch/Crunchyroll/Vimeo/Dailymotion/Pluto 等 ~30 平台 + 原 SEA 全部平台）
+  - 流媒体组 7→13，业务组 25→31，总组 43→49（SingBox：50）
+  - 所有组均为 `select`，候选列表只含 Smart 区域组（+ DIRECT），不直接放节点
+- ★ **全版本联动**：§1 强制同步全部 10 产物 + 11 子目录 README + 14 CHANGELOG
 
 ## v5.2.11 (2026-04-26)
 

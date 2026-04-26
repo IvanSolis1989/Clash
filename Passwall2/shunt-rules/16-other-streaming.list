@@ -1,0 +1,19 @@
+# 🌐 其他国外流媒体
+# 推荐出站: 🌐 其他国外流媒体（自动选择最优节点）
+# 建议目标策略: proxy
+# ───────────────────────────────
+# 在 Passwall LuCI 分流规则的「域名列表」字段里粘贴下面的所有非注释行。
+
+# [Domain List]
+# 原东南亚流媒体
+geosite:viu
+domain:iq.com
+domain:wetv.vip
+domain:vidio.com
+domain:iqiyiintl.com
+# 其他国外流媒体（原美国流媒体剩余项）
+domain:paramountplus.com
+domain:peacocktv.com
+domain:twitch.tv
+domain:crunchyroll.com
+domain:vrv.co

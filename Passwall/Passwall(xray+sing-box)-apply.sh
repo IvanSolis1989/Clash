@@ -1,16 +1,17 @@
 #!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for Passwall — UCI batch helper
-# Version: v5.2.10-pw.2 | Build 2026-04-26
+# Version: v5.3.0-pw.3 | Build 2026-04-26
 #
 # 用途：一次性在 Passwall（全功能版）中创建 25 条 shunt rule（含域名列表 + IP 列表），
 #       每条目标节点留空（NEED_CONFIG），用户之后到 LuCI 里手工选节点。
 #
-# 变更：v5.2.10-pw.2 — 跟随基线合并 4 组为 2 组
-#   • 邮件服务 + 云与CDN → 合并到 国外网站
-#   • 搜索引擎 + 开发者服务 → 合并为 工具与服务（新设）
-#   • 下载更新策略从 direct 调整为 proxy
-#   • 规则数从 28 条精简为 25 条
+# 变更：v5.3.0-pw.3 — 跟随基线将流媒体重组为按平台分组
+#   • 移除 📺 东南亚流媒体（合并到 🌐 其他国外流媒体）
+#   • 移除 🇺🇸 美国流媒体（拆分为 7 个平台组 + 🌐 其他国外流媒体）
+#   • 新增 8 个平台流媒体组：Netflix / Disney+ / HBO/Max / Hulu /
+#     Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体
+#   • 规则数从 25 条扩展为 31 条
 #
 # 备注：Passwall 和 Passwall2 是 Openwrt-Passwall 组织（原 xiaorouji 个人仓库迁入）
 #       并行维护的两款插件，UCI key 不同（passwall vs passwall2）。
@@ -35,7 +36,7 @@
 # ⚠️  警告：
 #   • 本脚本在 ImmortalWrt / OpenWrt 官方源的 Passwall 上测过
 #   • 运行前建议备份: cp /etc/config/passwall /etc/config/passwall.bak
-#   • 运行会 append 25 条新规则，不会删除既有的（重复运行会产生副本）
+#   • 运行会 append 31 条新规则，不会删除既有的（重复运行会产生副本）
 # ═══════════════════════════════════════════════════════════════════════════
 
 set -e
@@ -56,7 +57,7 @@ echo "建议先备份: cp /etc/config/${CONFIG_NAME} /etc/config/${CONFIG_NAME}.
 echo "按 Ctrl+C 取消，回车继续..."
 read _
 
-echo "开始创建 25 条 shunt rule..."
+echo "开始创建 31 条 shunt rule..."
 
 # [01] 🛑 广告拦截
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
@@ -173,35 +174,81 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:qqmusic'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [09] 📺 东南亚流媒体
+# [09] 🎥 Netflix
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
-uci set ${CONFIG_NAME}.${SEC}.remarks='📺 东南亚流媒体'
+uci set ${CONFIG_NAME}.${SEC}.remarks='🎥 Netflix'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:netflix'
+uci add_list ${CONFIG_NAME}.${SEC}.ip_list='geoip:netflix'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [10] 🎬 Disney+
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='🎬 Disney+'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:disney'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [11] 📡 HBO/Max
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='📡 HBO/Max'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:hbo'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:max.com'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:hbomax.com'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [12] 📺 Hulu
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='📺 Hulu'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:hulu'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [13] 🎬 Prime Video
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='🎬 Prime Video'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:primevideo'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [14] 📹 YouTube
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='📹 YouTube'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:youtube'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [15] 🎵 音乐流媒体
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='🎵 音乐流媒体'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:spotify'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:tidal.com'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:deezer.com'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:soundcloud.com'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:pandora.com'
+uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
+# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
+
+# [16] 🌐 其他国外流媒体（合并自原东南亚流媒体 + 美国流媒体余项）
+SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
+uci set ${CONFIG_NAME}.${SEC}.remarks='🌐 其他国外流媒体'
+# 原东南亚流媒体
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:viu'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:iq.com'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:wetv.vip'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:vidio.com'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:iqiyiintl.com'
-uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
-# uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
-
-# [10] 🇺🇸 美国流媒体
-SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
-uci set ${CONFIG_NAME}.${SEC}.remarks='🇺🇸 美国流媒体'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:youtube'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:netflix'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:disney'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:hbo'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:hulu'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:spotify'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:primevideo'
+# 其他国外流媒体（原美国流媒体剩余项）
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:paramountplus.com'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:peacocktv.com'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:twitch.tv'
-uci add_list ${CONFIG_NAME}.${SEC}.ip_list='geoip:netflix'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:crunchyroll.com'
+uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:vrv.co'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [11] 🇭🇰 香港流媒体
+# [17] 🇭🇰 香港流媒体
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🇭🇰 香港流媒体'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:mytvsuper'
@@ -213,7 +260,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:rthk.hk'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [12] 🇹🇼 台湾流媒体
+# [18] 🇹🇼 台湾流媒体
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🇹🇼 台湾流媒体'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:bahamut'
@@ -226,7 +273,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:friday.tw'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [13] 🇯🇵 日韩流媒体
+# [19] 🇯🇵 日韩流媒体
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🇯🇵 日韩流媒体'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:abema'
@@ -239,7 +286,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:rakuten.tv'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [14] 🇪🇺 欧洲流媒体
+# [20] 🇪🇺 欧洲流媒体
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🇪🇺 欧洲流媒体'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:bbc'
@@ -252,7 +299,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:britbox.co.uk'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [15] 🕹️ 国内游戏
+# [21] 🕹️ 国内游戏
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🕹️ 国内游戏'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:steamcn'
@@ -262,7 +309,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:battlenet.com.cn'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [16] 🎮 国外游戏
+# [22] 🎮 国外游戏
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🎮 国外游戏'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:steam'
@@ -278,7 +325,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:mihoyo.com'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [17] Ⓜ️ 微软服务
+# [23] Ⓜ️ 微软服务
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='Ⓜ️ 微软服务'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:microsoft'
@@ -289,7 +336,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:microsoftedge.com'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [18] 🍎 苹果服务
+# [24] 🍎 苹果服务
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🍎 苹果服务'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:apple'
@@ -302,7 +349,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:apple-dns.net'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [19] 📥 下载更新
+# [25] 📥 下载更新
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='📥 下载更新'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:dl.google.com'
@@ -316,7 +363,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:apkpure.com'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [20] 🛰️ BT/PT Tracker
+# [26] 🛰️ BT/PT Tracker
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🛰️ BT/PT Tracker'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:private-tracker'
@@ -326,7 +373,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:nyaa.si'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [21] 🏠 国内网站
+# [27] 🏠 国内网站
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🏠 国内网站'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:cn'
@@ -335,7 +382,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.ip_list='geoip:private'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [22] 🚫 受限网站
+# [28] 🚫 受限网站
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🚫 受限网站'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:gfw'
@@ -343,7 +390,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:greatfire'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [23] 🌐 国外网站（合并自原邮件服务 + 云与CDN）
+# [29] 🌐 国外网站（合并自原邮件服务 + 云与CDN）
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🌐 国外网站'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:geolocation-!cn'
@@ -369,7 +416,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.ip_list='geoip:fastly'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [24] 🔧 工具与服务（新设，合并自原搜索引擎 + 开发者服务）
+# [30] 🔧 工具与服务（新设，合并自原搜索引擎 + 开发者服务）
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🔧 工具与服务'
 # 原 🔍 搜索引擎
@@ -392,7 +439,7 @@ uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:stackexchange.com'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.tcp_node='NEED_CONFIG_IN_LUCI'
 
-# [25] 🐟 漏网之鱼 FINAL
+# [31] 🐟 漏网之鱼 FINAL
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🐟 漏网之鱼 FINAL'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
@@ -400,12 +447,12 @@ uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 
 uci commit ${CONFIG_NAME}
 
-echo "✓ 25 条 shunt rule 创建完成。"
+echo "✓ 31 条 shunt rule 创建完成。"
 echo "下一步："
 echo "  1. LuCI → Passwall → 节点列表 → 按区域创建 TCP 节点 + 负载均衡组"
 echo "  2. LuCI → Passwall → 分流控制 → 逐条为每个 rule 指定 tcp_node"
 echo "  3. LuCI → Passwall → 基本设置 → 确认 tcp_node / udp_node 指向正确"
-echo "  4. 确认规则顺序：#01 广告拦截在最前；#22-#25（受限/国外/工具/FINAL）保持在末尾"
+echo "  4. 确认规则顺序：#01 广告拦截在最前；#28-#31（受限/国外/工具/FINAL）保持在末尾"
 echo "  5. 重启 Passwall: /etc/init.d/passwall restart"
 echo ""
 echo "======== 配置提示 ========"

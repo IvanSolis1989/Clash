@@ -29,7 +29,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 - **v2rayN（mihomo/sing-box 模式）**：直接消费 CMFA YAML 或 SingBox Full JSON
 
 有 **降级产物** 的客户端（功能受限但可用）：
-- **Passwall / Passwall2**：底层走 xray/sing-box，支持 geosite/geoip/rule_set 规则匹配，但没有 mihomo 的 proxy-groups 嵌套选择器。本仓库提供两个独立参考目录：`Passwall/`（全功能版）和 `Passwall2/`（精简分流版），各自含 28 条展平 shunt rule。两者规则语法完全相同（共用 `shunt_rules.lua` 解析器），`.list` 文件互通。想要完整体验的用户应迁移到 OpenClash。
+- **Passwall / Passwall2**：底层走 xray/sing-box，支持 geosite/geoip/rule_set 规则匹配，但没有 mihomo 的 proxy-groups 嵌套选择器。本仓库提供两个独立参考目录：`Passwall/`（全功能版）和 `Passwall2/`（精简分流版），各自含 31 条展平 shunt rule。两者规则语法完全相同（共用 `shunt_rules.lua` 解析器），`.list` 文件互通。想要完整体验的用户应迁移到 OpenClash。
 
 显式不支持的客户端：
 - **SSR Plus+**：架构老旧 + 已停止维护，没有 geosite/rule_set 层能力；建议用户迁移到 OpenClash
@@ -124,7 +124,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 ### 3.3 可变与不可变文件
 
 **不可变（改动前必须征得 maintainer 同意）：**
-- `Clash Party/ClashParty(mihomo-smart).js` 中 `SMART` / `BIZ` 常量定义（§4.1 的 46 组命名：18 区域 + 28 业务）
+- `Clash Party/ClashParty(mihomo-smart).js` 中 `SMART` / `BIZ` 常量定义（§4.1 的 49 组命名：18 区域 + 31 业务）
 - `SingBox/SingBox(sing-box)-generator.js` 的生成策略
 - `CLAUDE.md` / `AGENTS.md`
 
@@ -160,7 +160,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 - [ ] 根 `README.md` + 对应子目录 `README.md` 已更新
 - [ ] `CLAUDE.md §5` 自检命令全部通过（输出贴在 PR 描述）
 - [ ] PR 描述引用了所有涉及 APP 的**官方文档锚点**
-- [ ] 代理组数仍为 46（18 区域〔9 全部 + 9 家宽〕 + 28 业务），未新增/删除/改名
+- [ ] 代理组数仍为 49（18 区域〔9 全部 + 9 家宽〕 + 31 业务），未新增/删除/改名
 - [ ] 规则-provider 下载代理仍为 `🚫 受限网站`（Shadowrocket / sing-box 例外）
 - [ ] sing-box full 产物是通过 `node SingBox/SingBox(sing-box)-generator.js` **重新生成**的
 
@@ -174,7 +174,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 |------|---------|---------|---------|
 | OpenClash Normal 的 `rule-providers.proxy: DIRECT` | v5.3.1-oc-normal 之前 | 墙内无法直连 jsdelivr / GitHub，规则下载失败 | 全部改 `proxy: 🚫 受限网站` |
 | CMFA 的 `rule-providers.proxy: '☁️ 云与CDN'` | v5.2.0-cmfa 之前 | 与 Clash Party FIX#17-P0 不一致，墙内同样失败 | 改 `proxy: '🚫 受限网站'` |
-| Shadowrocket 多出 `🎵 TikTok` 组 | v5.2.2-SR.1 | 基线只有 28 业务组，TikTok 应归 `📱 社交媒体` | 删组，规则目标改 `📱 社交媒体` |
+| Shadowrocket 多出 `🎵 TikTok` 组 | v5.2.2-SR.1 | 基线只有 31 业务组，TikTok 应归 `📱 社交媒体` | 删组，规则目标改 `📱 社交媒体` |
 | Shadowrocket 引用 `🇸🇬 亚太节点` | v5.2.2-SR.1 | 实际组名是 `🌏 亚太节点`，引用不存在，SR 会静默忽略该候选 | 统一使用 `🌏 亚太节点` |
 | 改代码但忘了 bump 版本号或加 CHANGELOG 条目 | 多次 | 历史追溯失效，后续代理无法判断当前主线是哪个版本 | 每次修改必须 bump 尾段版本 + 在对应 `<子目录>/CHANGELOG.md` 顶部追加一节 |
 | 把详细变更日志塞回产物文件头 | 历史版本 v5.2.3 及之前 | 配置文件头被大段注释淹没；README + CHANGELOG + 代码三处不同步 | 自 v5.2.4 起：变更详情只写 `<子目录>/CHANGELOG.md`，配置文件头只保留版本号 + 一行架构声明 + 指向 CHANGELOG 的引用 |
@@ -193,6 +193,6 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 
 **不同步 = 违规。**
 **不核对官方文档 = 违规。**
-**改 46 个代理组命名但未在 PR 中论证 = 违规。**
+**改 49 个代理组命名但未在 PR 中论证 = 违规。**
 
 > 本仓库的长期可维护性依赖这份契约被所有代理严格遵守。

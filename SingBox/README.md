@@ -132,7 +132,7 @@ sing-box 由 SagerNet 团队开发，是目前**新协议实现最前沿**的代
 
 1. 打开 Hiddify → 右上角 **配置 / Profile** → **添加新的配置** → **从剪贴板 / 从文件导入**。
 2. 选择本仓库的 `SingBox/SingBox(sing-box)-full.json`。
-3. Hiddify 会读取文件里的 `outbounds`、`route`、`dns`、`rule_set`，9 区域 + 28 业务组会全部出现在 Hiddify 的「策略」面板。
+3. Hiddify 会读取文件里的 `outbounds`、`route`、`dns`、`rule_set`，9 区域 + 25 业务组会全部出现在 Hiddify 的「策略」面板。
 
 ### 两个小提示
 

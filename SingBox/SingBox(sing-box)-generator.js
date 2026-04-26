@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.2.10-sing.2';
-const BUILD = '2026-04-25';
-const BASELINE = 'Clash Party v5.2.10';
+const VERSION = 'v5.3.0-sing.1';
+const BUILD = '2026-04-26';
+const BASELINE = 'Clash Party v5.3.0';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -34,8 +34,14 @@ const BIZ = {
   SOCIAL: '📱 社交媒体',
   WORK: '🧑‍💼 会议协作',
   CNMEDIA: '📺 国内流媒体',
-  STREAM_SEA: '📺 东南亚流媒体',
-  STREAM_US: '🇺🇸 美国流媒体',
+  NFLX: '🎥 Netflix',
+  DSNP: '🎬 Disney+',
+  HBO: '📡 HBO/Max',
+  HULU: '📺 Hulu',
+  PRIME: '🎬 Prime Video',
+  YT: '📹 YouTube',
+  MUSIC: '🎵 音乐流媒体',
+  STREAM_OTHER: '🌐 其他国外流媒体',
   STREAM_HK: '🇭🇰 香港流媒体',
   STREAM_TW: '🇹🇼 台湾流媒体',
   STREAM_JP: '🇯🇵 日韩流媒体',
@@ -186,10 +192,6 @@ function buildTrackerProxies() {
   return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'APAC']));
 }
 
-function buildSeaProxies() {
-  return withResidential(['APAC', 'GLOBAL', 'HK', 'JPKR', 'US']).concat('DIRECT');
-}
-
 function buildRegionPreferredProxies(primaryKey) {
   const order = [primaryKey].concat(REGION_ORDER.filter((key) => key !== primaryKey));
   return withResidential(order).concat('DIRECT');
@@ -237,8 +239,14 @@ function buildOutbounds() {
     selector(BIZ.SOCIAL, buildStandardProxies()),
     selector(BIZ.WORK, buildStandardProxies()),
     selector(BIZ.CNMEDIA, buildDirectFirstProxies()),
-    selector(BIZ.STREAM_SEA, buildSeaProxies()),
-    selector(BIZ.STREAM_US, buildRegionPreferredProxies('US')),
+    selector(BIZ.NFLX, buildStandardProxies()),
+    selector(BIZ.DSNP, buildStandardProxies()),
+    selector(BIZ.HBO, buildStandardProxies()),
+    selector(BIZ.HULU, buildStandardProxies()),
+    selector(BIZ.PRIME, buildStandardProxies()),
+    selector(BIZ.YT, buildStandardProxies()),
+    selector(BIZ.MUSIC, buildStandardProxies()),
+    selector(BIZ.STREAM_OTHER, buildStandardProxies()),
     selector(BIZ.STREAM_HK, buildRegionPreferredProxies('HK')),
     selector(BIZ.STREAM_TW, buildRegionPreferredProxies('TW')),
     selector(BIZ.STREAM_JP, buildRegionPreferredProxies('JPKR')),

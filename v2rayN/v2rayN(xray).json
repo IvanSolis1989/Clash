@@ -2,7 +2,7 @@
     {
       "id": "scki-000-meta",
       "enabled": false,
-      "remarks": "Smart-Config-Kit v5.2.10-v2n.2 | Build 2026-04-26 | Baseline Clash Party v5.2.10 (25 biz groups) | changelog: v2rayN/CHANGELOG.md",
+      "remarks": "Smart-Config-Kit v5.3.0-v2n.1 | Build 2026-04-26 | Baseline Clash Party v5.3.0 (31 biz groups) | changelog: v2rayN/CHANGELOG.md",
       "outboundTag": "direct",
       "domain": [
         "domain:smart-config-kit.invalid"
@@ -296,7 +296,7 @@
     {
       "id": "scki-019a-sea-media",
       "enabled": true,
-      "remarks": "东南亚流媒体 (biliintl 国际版 B 站) → 代理；v2rayN Xray 只有 proxy/direct/block 三出站，STREAM_SEA 区域组在此降级为 proxy",
+      "remarks": "国外流媒体 (biliintl 国际版 B 站 / 原东南亚流媒体) → 代理；v2rayN Xray 只有 proxy/direct/block 三出站，流媒体平台组在此降级为 proxy",
       "outboundTag": "proxy",
       "domain": [
         "geosite:biliintl"
@@ -310,7 +310,7 @@
     {
       "id": "scki-020-us-media",
       "enabled": true,
-      "remarks": "美国流媒体 (YouTube / Netflix / Disney+ / HBO / Hulu / Spotify) → 代理",
+      "remarks": "美国流媒体 → 拆分为平台组 (YouTube / Netflix / Disney+ / HBO / Hulu / Spotify/Prime Video) → 代理；v2rayN Xray 只有 proxy/direct/block 三出站，流媒体平台组在此降级为 proxy",
       "outboundTag": "proxy",
       "domain": [
         "geosite:youtube",

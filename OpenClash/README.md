@@ -28,7 +28,7 @@
 | 区域组类型 | `type: smart` | `type: url-test` |
 | LightGBM | 支持（`uselightgbm: true`） | 不支持 |
 | 规则覆盖 | 385 providers / 975 rules | 385 providers / 975 rules |
-| 业务组数量 | 28 | 28 |
+| 业务组数量 | 25 | 25 |
 | 区域组数量 | 9 | 9 |
 | DNS / Sniffer / Rule-Providers | 完全一致 | 完全一致 |
 

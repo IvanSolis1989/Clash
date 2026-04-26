@@ -7,7 +7,16 @@
 
 ---
 
+## v5.3.0 (2026-04-26) — 流媒体分组架构重构
+
+- ★ REFACTOR#2：跟随 Clash Party v5.3.0 基线，流媒体 7→13 组（按平台拆分）
+  - 拆出：🎥 Netflix / 🎬 Disney+ / 📡 HBO/Max / 📺 Hulu / 🎬 Prime Video / 📹 YouTube / 🎵 音乐流媒体
+  - 新增 🌐 其他国外流媒体 兜底
+  - 业务组 25→31，总组 43→49
+
 ## Normal（`OpenClash(mihomo).sh`，非 Smart 内核 / url-test 版）
+
+### v5.3.0-oc-normal.1 (2026-04-26) — 同上
 
 ### v5.2.11-oc-normal.1 (2026-04-26) — 业务组合并：4 个冗余组 → 保留组 + 新增「🔧 工具与服务」
 
@@ -136,6 +145,8 @@
 ---
 
 ## Full（`OpenClash(mihomo-smart).sh`）
+
+### v5.3.0-oc-full.1 (2026-04-26) — 同上
 
 ### v5.2.11-oc-full.1 (2026-04-26) — 业务组合并：28 → 25（与 Normal 同步）
 

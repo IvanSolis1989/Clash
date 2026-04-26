@@ -2,36 +2,36 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash v5.2.11-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Clash Smart v5.3.0-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
 # ============================================================================
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：18 个区域组（9 全部 + 9 家宽）从 type: smart（uselightgbm）换成 type: url-test。
-#       对齐 Clash Party v5.2.10 JS 基线。
+#       对齐 Clash Party v5.3.0 JS 基线。流媒体分组重构：7 区域 → 13 平台（v5.3.0）。
 #       适用场景：
 #         - OpenClash 内核选的是 Meta(mihomo 稳定版) 而非 Meta Alpha，不支持 smart + LightGBM
 #         - 或者明确想关闭 LightGBM ML 评估、只靠经典 url-test 延迟选路
 #       需要 LightGBM 智能评估请改用 OpenClash(mihomo-smart).sh（Smart 版）。
 # 架构：
 #   • 18 url-test 区域组（9 全部 + 9 家宽；interval 600s / tolerance 150ms / lazy：与 Smart 版同步延迟参数）
-#   • 25 业务策略组
+#   • 31 业务策略组（流媒体按平台拆分：Netflix / Disney+ / HBO/Max / Hulu / Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体）
 #   • 384 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
-#   • ~975 条 rules
+#   • ~990 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / url-test 组生成 / TLS 指纹注入
-# 基线：Clash Party v5.2.10（唯一主线）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v5.3.0（唯一主线）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Normal 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v5.2.11-oc-normal.1"
+VERSION_TAG="v5.3.0-oc-normal.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
 LOG_OUT "Info" "[Clash-Normal] $VERSION_TAG overwrite starting..."
 LOG_OUT "Info" "[Clash-Normal] Processing: $CONFIG_FILE"
-LOG_OUT "Info" "[Clash-Normal] Full-rule build (Clash Party parity, non-Smart kernel)"
+LOG_OUT "Info" "[Clash-Normal] Full-rule build (v5.3.0, 31 business groups, non-Smart kernel)"
 
 # ============================================================================
 # OVERRIDE YAML
@@ -261,42 +261,27 @@ proxy-groups:
   - 🏡 美洲家宽
   - 🌍 非洲节点
   - 🏡 非洲家宽
-- name: 📺 东南亚流媒体
+- name: 🎥 Netflix
   type: select
-  proxies:
-  - 🌏 亚太节点
-  - 🏡 亚太家宽
-  - 🌍 全球节点
-  - 🏡 全球家宽
-  - 🇭🇰 香港节点
-  - 🏡 香港家宽
-  - 🇯🇵 日韩节点
-  - 🏡 日韩家宽
-  - 🇺🇸 美国节点
-  - 🏡 美国家宽
-  - DIRECT
-- name: 🇺🇸 美国流媒体
+  proxies: *id002
+- name: 🎬 Disney+
   type: select
-  proxies:
-    - 🇺🇸 美国节点
-    - 🏡 美国家宽
-    - 🌍 全球节点
-    - 🏡 全球家宽
-    - 🇭🇰 香港节点
-    - 🏡 香港家宽
-    - 🇹🇼 台湾节点
-    - 🏡 台湾家宽
-    - 🇯🇵 日韩节点
-    - 🏡 日韩家宽
-    - 🌏 亚太节点
-    - 🏡 亚太家宽
-    - 🇪🇺 欧洲节点
-    - 🏡 欧洲家宽
-    - 🌎 美洲节点
-    - 🏡 美洲家宽
-    - 🌍 非洲节点
-    - 🏡 非洲家宽
-    - DIRECT
+  proxies: *id002
+- name: 📡 HBO/Max
+  type: select
+  proxies: *id002
+- name: 📺 Hulu
+  type: select
+  proxies: *id002
+- name: 🎬 Prime Video
+  type: select
+  proxies: *id002
+- name: 📹 YouTube
+  type: select
+  proxies: *id002
+- name: 🎵 音乐流媒体
+  type: select
+  proxies: *id002
 - name: 🇭🇰 香港流媒体
   type: select
   proxies:
@@ -385,6 +370,9 @@ proxy-groups:
     - 🌍 非洲节点
     - 🏡 非洲家宽
     - DIRECT
+- name: 🌐 其他国外流媒体
+  type: select
+  proxies: *id002
 - name: 🕹️ 国内游戏
   type: select
   proxies: *id003
@@ -3249,13 +3237,13 @@ rules:
 - "DOMAIN-SUFFIX,binancefuture.com,\U0001F4B0 加密货币"
 - "DOMAIN,dns.google,\U0001F6AB 受限网站"
 - "DOMAIN,dns.google.com,\U0001F6AB 受限网站"
-- "DOMAIN-SUFFIX,youtube.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,youtu.be,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,googlevideo.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,ytimg.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,ggpht.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,youtube-nocookie.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,youtubekids.com,\U0001F1FA\U0001F1F8 美国流媒体"
+- "DOMAIN-SUFFIX,youtube.com,\U0001F4F9 YouTube"
+- "DOMAIN-SUFFIX,youtu.be,\U0001F4F9 YouTube"
+- "DOMAIN-SUFFIX,googlevideo.com,\U0001F4F9 YouTube"
+- "DOMAIN-SUFFIX,ytimg.com,\U0001F4F9 YouTube"
+- "DOMAIN-SUFFIX,ggpht.com,\U0001F4F9 YouTube"
+- "DOMAIN-SUFFIX,youtube-nocookie.com,\U0001F4F9 YouTube"
+- "DOMAIN-SUFFIX,youtubekids.com,\U0001F4F9 YouTube"
 - "RULE-SET,openai,\U0001F916 AI 服务"
 - "RULE-SET,claude,\U0001F916 AI 服务"
 - "RULE-SET,gemini,\U0001F916 AI 服务"
@@ -3592,86 +3580,86 @@ rules:
 - "RULE-SET,acc-fl-douban,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-fl-xianyu,\U0001F4FA 国内流媒体"
 - "RULE-SET,szkane-bilihmt,\U0001F1ED\U0001F1F0 香港流媒体"
-- "RULE-SET,viu,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,wetv.vip,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,wetvinfo.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,iq.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,vidio.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,vidio.static6.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,rctiplus.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,visionplus.id,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,genflix.co.id,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,goplay.co.id,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,maxstream.tv,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,biliintl,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,viki.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,viki.io,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,iflix.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,catchplay.com,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,mewatch.sg,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,trueid.net,\U0001F4FA 东南亚流媒体"
-- "DOMAIN-SUFFIX,dimsum.my,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,asianmedia,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,iqiyiintl,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,joox,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,mewatch,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,viki,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,wetv,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,zee,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,acc-kwai,\U0001F4FA 东南亚流媒体"
-- "RULE-SET,youtube,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,netflix,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,netflix-ip,\U0001F1FA\U0001F1F8 美国流媒体,no-resolve"
-- "RULE-SET,spotify,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,disney,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,hbo,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,primevideo,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,hulu,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,paramount,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,peacock,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,twitch,\U0001F1FA\U0001F1F8 美国流媒体"
+- "RULE-SET,viu,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,wetv.vip,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,wetvinfo.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,iq.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,vidio.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,vidio.static6.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,rctiplus.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,visionplus.id,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,genflix.co.id,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,goplay.co.id,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,maxstream.tv,\U0001F310 其他国外流媒体"
+- "RULE-SET,biliintl,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,viki.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,viki.io,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,iflix.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,catchplay.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,mewatch.sg,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,trueid.net,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,dimsum.my,\U0001F310 其他国外流媒体"
+- "RULE-SET,asianmedia,\U0001F310 其他国外流媒体"
+- "RULE-SET,iqiyiintl,\U0001F310 其他国外流媒体"
+- "RULE-SET,joox,\U0001F310 其他国外流媒体"
+- "RULE-SET,mewatch,\U0001F310 其他国外流媒体"
+- "RULE-SET,viki,\U0001F310 其他国外流媒体"
+- "RULE-SET,wetv,\U0001F310 其他国外流媒体"
+- "RULE-SET,zee,\U0001F310 其他国外流媒体"
+- "RULE-SET,acc-kwai,\U0001F310 其他国外流媒体"
+- "RULE-SET,youtube,\U0001F4F9 YouTube"
+- "RULE-SET,netflix,\U0001F3A5 Netflix"
+- "RULE-SET,netflix-ip,\U0001F3A5 Netflix,no-resolve"
+- "RULE-SET,spotify,\U0001F3B5 音乐流媒体"
+- "RULE-SET,disney,\U0001F3AC Disney+"
+- "RULE-SET,hbo,\U0001F4E1 HBO/Max"
+- "RULE-SET,primevideo,\U0001F3AC Prime Video"
+- "RULE-SET,hulu,\U0001F4FA Hulu"
+- "RULE-SET,paramount,\U0001F310 其他国外流媒体"
+- "RULE-SET,peacock,\U0001F310 其他国外流媒体"
+- "RULE-SET,twitch,\U0001F310 其他国外流媒体"
 - DOMAIN-SUFFIX,amazonaws.com,🌐 国外网站
 - DOMAIN-SUFFIX,awsstatic.com,🌐 国外网站
 - "DOMAIN-SUFFIX,aws.amazon.com,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,elasticbeanstalk.com,\U0001F527 工具与服务"
-- "RULE-SET,amazon,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,crunchyroll.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,vrv.co,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,soundcloud.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,sndcdn.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,pandora.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,pluto.tv,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,tubi.tv,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,fubo.tv,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,discoveryplus.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,max.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,appletv.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,deezer.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,tidal.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,vimeo.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "DOMAIN-SUFFIX,dailymotion.com,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,cbs,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,nbc,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,pbs,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,attwatchtv,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,fox,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,fubotv,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,sling,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,soundcloud,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,pandora,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,pandoratv,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,tidal,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,vimeo,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,dailymotion,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,deezer,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,discoveryplus,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,overcast,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,americasvoice,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,cake,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,dood,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,lastfm,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,emby,\U0001F1FA\U0001F1F8 美国流媒体"
-- "RULE-SET,szkane-netflixip,\U0001F1FA\U0001F1F8 美国流媒体,no-resolve"
+- "RULE-SET,amazon,\U0001F3AC Prime Video"
+- "DOMAIN-SUFFIX,crunchyroll.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,vrv.co,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,soundcloud.com,\U0001F3B5 音乐流媒体"
+- "DOMAIN-SUFFIX,sndcdn.com,\U0001F3B5 音乐流媒体"
+- "DOMAIN-SUFFIX,pandora.com,\U0001F3B5 音乐流媒体"
+- "DOMAIN-SUFFIX,pluto.tv,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,tubi.tv,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,fubo.tv,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,discoveryplus.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,max.com,\U0001F4E1 HBO/Max"
+- "DOMAIN-SUFFIX,appletv.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,deezer.com,\U0001F3B5 音乐流媒体"
+- "DOMAIN-SUFFIX,tidal.com,\U0001F3B5 音乐流媒体"
+- "DOMAIN-SUFFIX,vimeo.com,\U0001F310 其他国外流媒体"
+- "DOMAIN-SUFFIX,dailymotion.com,\U0001F310 其他国外流媒体"
+- "RULE-SET,cbs,\U0001F310 其他国外流媒体"
+- "RULE-SET,nbc,\U0001F310 其他国外流媒体"
+- "RULE-SET,pbs,\U0001F310 其他国外流媒体"
+- "RULE-SET,attwatchtv,\U0001F310 其他国外流媒体"
+- "RULE-SET,fox,\U0001F310 其他国外流媒体"
+- "RULE-SET,fubotv,\U0001F310 其他国外流媒体"
+- "RULE-SET,sling,\U0001F310 其他国外流媒体"
+- "RULE-SET,soundcloud,\U0001F3B5 音乐流媒体"
+- "RULE-SET,pandora,\U0001F3B5 音乐流媒体"
+- "RULE-SET,pandoratv,\U0001F3B5 音乐流媒体"
+- "RULE-SET,tidal,\U0001F3B5 音乐流媒体"
+- "RULE-SET,vimeo,\U0001F310 其他国外流媒体"
+- "RULE-SET,dailymotion,\U0001F310 其他国外流媒体"
+- "RULE-SET,deezer,\U0001F3B5 音乐流媒体"
+- "RULE-SET,discoveryplus,\U0001F310 其他国外流媒体"
+- "RULE-SET,overcast,\U0001F3B5 音乐流媒体"
+- "RULE-SET,americasvoice,\U0001F310 其他国外流媒体"
+- "RULE-SET,cake,\U0001F310 其他国外流媒体"
+- "RULE-SET,dood,\U0001F310 其他国外流媒体"
+- "RULE-SET,lastfm,\U0001F3B5 音乐流媒体"
+- "RULE-SET,emby,\U0001F310 其他国外流媒体"
+- "RULE-SET,szkane-netflixip,\U0001F3A5 Netflix,no-resolve"
 - "DOMAIN-SUFFIX,mytvsuper.com,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,mytv.com.hk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,viu.com,\U0001F1ED\U0001F1F0 香港流媒体"
@@ -4164,7 +4152,7 @@ rules:
 - "DOMAIN-SUFFIX,noip.com,\U0001F310 国外网站"
 - GEOIP,cloudflare,🌐 国外网站,no-resolve
 - "GEOIP,telegram,\U0001F4AC 即时通讯,no-resolve"
-- "GEOIP,netflix,\U0001F1FA\U0001F1F8 美国流媒体,no-resolve"
+- "GEOIP,netflix,\U0001F3A5 Netflix,no-resolve"
 - "GEOIP,facebook,\U0001F4F1 社交媒体,no-resolve"
 - "GEOIP,twitter,\U0001F4F1 社交媒体,no-resolve"
 - "GEOIP,google,\U0001F527 工具与服务,no-resolve"
@@ -4184,7 +4172,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.2.11-oc-normal.1"
+VERSION = "v5.3.0-oc-normal.1"
 
 STATUS_LOG = "/tmp/clash_normal_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

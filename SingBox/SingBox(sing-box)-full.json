@@ -11,9 +11,9 @@
     },
     "_meta": {
       "name": "SingBox Smart Full",
-      "version": "v5.2.10-sing.2",
+      "version": "v5.3.0-sing.1",
       "build": "2026-04-26",
-      "baseline": "Clash Party v5.2.10",
+      "baseline": "Clash Party v5.3.0",
       "changelog": "见 SingBox/CHANGELOG.md"
     }
   },
@@ -456,28 +456,8 @@
     },
     {
       "type": "selector",
-      "tag": "📺 东南亚流媒体",
+      "tag": "🎥 Netflix",
       "outbounds": [
-        "🌏 亚太节点",
-        "🏡 亚太家宽",
-        "🌍 全球节点",
-        "🏡 全球家宽",
-        "🇭🇰 香港节点",
-        "🏡 香港家宽",
-        "🇯🇵 日韩节点",
-        "🏡 日韩家宽",
-        "🇺🇸 美国节点",
-        "🏡 美国家宽",
-        "DIRECT"
-      ],
-      "default": "🌏 亚太节点"
-    },
-    {
-      "type": "selector",
-      "tag": "🇺🇸 美国流媒体",
-      "outbounds": [
-        "🇺🇸 美国节点",
-        "🏡 美国家宽",
         "🌍 全球节点",
         "🏡 全球家宽",
         "🇭🇰 香港节点",
@@ -488,6 +468,8 @@
         "🏡 日韩家宽",
         "🌏 亚太节点",
         "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
         "🇪🇺 欧洲节点",
         "🏡 欧洲家宽",
         "🌎 美洲节点",
@@ -496,7 +478,189 @@
         "🏡 非洲家宽",
         "DIRECT"
       ],
-      "default": "🇺🇸 美国节点"
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "🎬 Disney+",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "📡 HBO/Max",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "📺 Hulu",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "🎬 Prime Video",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "📹 YouTube",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "🎵 音乐流媒体",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "🌐 其他国外流媒体",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
     },
     {
       "type": "selector",
@@ -1781,49 +1945,49 @@
           "youtube.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "domain_suffix": [
           "youtu.be"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "domain_suffix": [
           "googlevideo.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "domain_suffix": [
           "ytimg.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "domain_suffix": [
           "ggpht.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "domain_suffix": [
           "youtube-nocookie.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "domain_suffix": [
           "youtubekids.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "rule_set": [
@@ -3275,154 +3439,154 @@
           "wetv.vip"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "wetvinfo.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "iq.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "vidio.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "vidio.static6.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "rctiplus.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "visionplus.id"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "genflix.co.id"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "goplay.co.id"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "maxstream.tv"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "rule_set": [
           "biliintl"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "viki.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "viki.io"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "iflix.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "catchplay.com"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "mewatch.sg"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "trueid.net"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "dimsum.my"
         ],
         "action": "route",
-        "outbound": "📺 东南亚流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "rule_set": [
           "youtube"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📹 YouTube"
       },
       {
         "rule_set": [
           "netflix"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎥 Netflix"
       },
       {
         "rule_set": [
           "netflix-ip"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎥 Netflix"
       },
       {
         "rule_set": [
           "spotify"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎵 音乐流媒体"
       },
       {
         "domain_suffix": [
@@ -3457,105 +3621,105 @@
           "crunchyroll.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "vrv.co"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "soundcloud.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎵 音乐流媒体"
       },
       {
         "domain_suffix": [
           "sndcdn.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎵 音乐流媒体"
       },
       {
         "domain_suffix": [
           "pandora.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎵 音乐流媒体"
       },
       {
         "domain_suffix": [
           "pluto.tv"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "tubi.tv"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "fubo.tv"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "discoveryplus.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "max.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "📡 HBO/Max"
       },
       {
         "domain_suffix": [
           "appletv.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "deezer.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎵 音乐流媒体"
       },
       {
         "domain_suffix": [
           "tidal.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎵 音乐流媒体"
       },
       {
         "domain_suffix": [
           "vimeo.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
           "dailymotion.com"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🌐 其他国外流媒体"
       },
       {
         "domain_suffix": [
@@ -5872,7 +6036,7 @@
           "netflix"
         ],
         "action": "route",
-        "outbound": "🇺🇸 美国流媒体"
+        "outbound": "🎥 Netflix"
       },
       {
         "geoip": [
