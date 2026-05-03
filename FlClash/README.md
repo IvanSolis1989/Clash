@@ -1,24 +1,60 @@
-# FlClash 使用教程
+# FlClash 使用教程 — 覆写脚本版
 
+> 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
+> 内核要求：FlClash >= **v0.8.85**
 
 ---
 
-## 当前推荐：CMFA 静态 YAML
+## 快速开始（两步操作）
 
-**FlClash v0.8.92 覆写脚本功能存在 bug**（关联任何覆写脚本后「代理」「规则」标签消失），
-已提交 [Issue #1994](https://github.com/chen08209/FlClash/issues/1994) 跟踪。
+> ⚠️ **注意**：
+> 1. 必须先「创建」脚本再「关联」到订阅，只粘贴不关联不会生效
+> 2. 订阅转换器生成的配置可能导致兼容问题，建议使用机场**原生订阅链接**
 
-在官方修复前，请使用 CMFA 静态 YAML：
+### 第 1 步：创建覆写脚本
 
-1. 下载 [`Clash Meta For Android/CMFA(mihomo).yaml`](../Clash%20Meta%20For%20Android/CMFA(mihomo).yaml)
-2. 用文本编辑器打开，找到 `url:` 行（约第 31 行），替换为你的机场订阅地址
-3. FlClash → 配置 → **+** → **从文件导入** → 选择修改后的 YAML
-4. 启动即可
+1. FlClash → 底部「配置」→ 顶部 **「覆写脚本」**
+2. 点右上角 **+**
+3. 输入名称（如 `Smart分流`），选择加载方式：
+   - **URL**：填入 `https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/FlClash/FlClash(mihomo).js`
+   - **jsdelivr CDN**（国内更快）：`https://cdn.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/FlClash/FlClash(mihomo).js`
+   - **粘贴**：浏览器打开 GitHub 链接，全选复制粘贴
+4. 保存
 
-### 必改配置（导入 YAML 后手动设置）
+### 第 2 步：关联到订阅
 
-**① 外部资源（GeoX URL）**：编辑配置 → 外部资源标签：
+1. 返回配置页 → 点订阅卡片右上角 ⋮
+2. **更多** → **覆写**
+3. 选择刚才创建的覆写脚本 → 确定
+4. 返回首页 → 下拉刷新（或重启 FlClash）
+
+### 验证
+
+点「代理」标签，应看到：
+- **18 区域组**（9 全部 + 9 家宽）：🌍 全球节点、🇭🇰 香港节点……
+- **31 业务组**：🤖 AI 服务、🎥 Netflix、📱 社交媒体……
+
+---
+
+## 与 CMFA YAML 的对比
+
+| | 覆写脚本（推荐） | CMFA YAML（备选） |
+|---|---|---|
+| 节点分类 | **word-boundary 正则**，TW 不误伤 TWN | Go RE2 子串匹配 |
+| 订阅垃圾清理 | 自动剔除机场无用 proxy-groups | 不支持 |
+| 家宽识别 | 自动识别并建独立组 | 支持（filter 正则） |
+| 空区域处理 | 无节点自动跳过不建空组 | 可能产生空组 |
+| Smart + LightGBM | 不支持（内核限制） | 不支持（同） |
+
+---
+
+## 必改配置（手动设置）
+
+导入脚本后，以下两项需要在 FlClash UI 手动设置：
+
+### 外部资源（GeoX URL）
+配置 → 订阅卡片 ⋮ → 编辑 → 外部资源：
 ```yaml
 geox-url:
   geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
@@ -28,7 +64,8 @@ geox-url:
 geo-auto-update: true
 ```
 
-**② 进阶配置（DNS）**：编辑配置 → 进阶配置标签：
+### 进阶配置（DNS）
+配置 → 订阅卡片 ⋮ → 编辑 → 进阶配置：
 ```yaml
 dns:
   use-hosts: false
@@ -67,16 +104,32 @@ dns:
 
 ---
 
-## 覆写脚本（待 FlClash 修复后启用）
+## 常见问题
 
-`FlClash(mihomo).js` 是基于 Clash Party Normal JS 移植的覆写脚本，
-提供动态节点分类、家宽识别、订阅清理等能力。
-当前因 FlClash v0.8.92 bug（[#1994](https://github.com/chen08209/FlClash/issues/1994)）暂不可用，
-待官方修复后恢复推荐。
+### Q: 代理/规则标签消失了？
+可能是订阅转换器生成的配置不兼容。试试用机场的**原生订阅链接**（不经转换器）。
+
+### Q: 区域组为什么是 url-test 不是 smart？
+FlClash 内核是标准 Mihomo，不支持 `type: smart` + LightGBM。
+
+### Q: 换机场后需要重新配置吗？
+不需要。覆写脚本换订阅后自动重新执行。
+
+---
+
+## 协议支持
+
+| 协议 | 支持 |
+|---|:-:|
+| Shadowsocks (SS) / SSR | ✅ |
+| VMess / VLESS（含 REALITY + XTLS-Vision） | ✅ |
+| Trojan（含 Trojan-Go） | ✅ |
+| Hysteria v1/v2 / TUIC v5 | ✅ |
+| WireGuard / AnyTLS / ShadowTLS / Snell v4 | ✅ |
 
 ---
 
 ## 相关链接
 - [FlClash GitHub](https://github.com/chen08209/FlClash)
-- [Bug 跟踪：Issue #1994](https://github.com/chen08209/FlClash/issues/1994)
-- [CMFA 使用教程](../Clash%20Meta%20For%20Android/README.md)
+- [覆写脚本源码](./FlClash(mihomo).js)
+- [CMFA YAML（备选方案）](../Clash%20Meta%20For%20Android/CMFA(mihomo).yaml)
