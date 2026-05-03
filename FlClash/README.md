@@ -4,11 +4,7 @@
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
 
-<img width="1440" height="3200" alt="dd3b01109d3cbfbab4f76910ce41502d" src="https://github.com/user-attachments/assets/e88e0724-2bc0-4111-851e-e8aa0a9141d3" />
-<img width="1440" height="3200" alt="bc0539527c13f1778576af538a70a09d" src="https://github.com/user-attachments/assets/530d9f3a-e793-423b-a4d6-85a2d4a75054" />
-<img width="1440" height="3200" alt="5b25c4340eaff432378d7c377b3df609" src="https://github.com/user-attachments/assets/f2b03096-3469-4d67-ab10-60bac2b82347" />
-<img width="1440" height="3200" alt="0d3e152c32aeb52aef5d5f56efd7fb39" src="https://github.com/user-attachments/assets/be31a91a-259c-47a7-b599-fa08752bef8d" />
-<img width="1440" height="3200" alt="dfc8e334665def3d620a279822ac5c68" src="https://github.com/user-attachments/assets/770eb553-86c5-49a7-80f4-4fd68594888b" />
+<img width="180" height="400" alt="dd3b01109d3cbfbab4f76910ce41502d" src="https://github.com/user-attachments/assets/e88e0724-2bc0-4111-851e-e8aa0a9141d3" /><img width="180" height="400" alt="bc0539527c13f1778576af538a70a09d" src="https://github.com/user-attachments/assets/530d9f3a-e793-423b-a4d6-85a2d4a75054" /><img width="180" height="400" alt="5b25c4340eaff432378d7c377b3df609" src="https://github.com/user-attachments/assets/f2b03096-3469-4d67-ab10-60bac2b82347" /><img width="180" height="400" alt="0d3e152c32aeb52aef5d5f56efd7fb39" src="https://github.com/user-attachments/assets/be31a91a-259c-47a7-b599-fa08752bef8d" /><img width="180" height="400" alt="dfc8e334665def3d620a279822ac5c68" src="https://github.com/user-attachments/assets/770eb553-86c5-49a7-80f4-4fd68594888b" />
 
 
 ---
