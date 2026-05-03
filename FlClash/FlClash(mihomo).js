@@ -1,36 +1,15 @@
-// FlClash 覆写脚本 — 防御版
-// 版本：v5.3.2-flclash.2 (2026-05-03)
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  FlClash 覆写脚本 — 实验版（暂不可用）                       ║
+// ╠══════════════════════════════════════════════════════════════╣
+// ║  版本：v5.3.2-flclash.2 (2026-05-03)                        ║
+// ║  基线：Clash Party Normal v5.3.2                             ║
+// ║  状态：FlClash v0.8.90~v0.8.92 覆写脚本存在未修复 bug，      ║
+// ║        对 config["proxy-groups"] 的修改不生效。               ║
+// ║        请使用 CMFA YAML 作为稳定方案。                        ║
+// ║  跟踪：https://github.com/chen08209/FlClash/issues/1541       ║
+// ║  变更历史：见 `FlClash/CHANGELOG.md`                         ║
+// ╚══════════════════════════════════════════════════════════════╝
 
 const main = (config) => {
-  // 确保 proxy-groups 存在
-  if (!config["proxy-groups"]) {
-    config["proxy-groups"] = [];
-  }
-  // 确保 rules 存在
-  if (!config.rules) {
-    config.rules = [];
-  }
-  // 确保 proxies 存在
-  if (!config.proxies) {
-    config.proxies = [];
-  }
-
-  // 构建测试节点列表
-  var names = ["DIRECT"];
-  for (var i = 0; i < config.proxies.length && i < 3; i++) {
-    var p = config.proxies[i];
-    if (p && p.name) { names.push(p.name); }
-  }
-
-  // 注入测试组（用 unshift 放在最前面）
-  config["proxy-groups"].unshift({
-    name: "TEST-GROUP",
-    type: "select",
-    proxies: names
-  });
-
-  // 注入测试规则
-  config.rules.unshift("DOMAIN-SUFFIX,test.example.com,TEST-GROUP");
-
   return config;
 };

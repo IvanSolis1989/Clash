@@ -306,8 +306,7 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 | 端 | DNS 段已内置 | 用户要做的 |
 |---|:-:|---|
 | Clash Party / Verge / Mihomo Party | ❌（脚本不注入 DNS，需粘到 UI Mixin） | 把 `Clash Party/README.md` 第四章的 DNS YAML 粘到客户端 Mixin / 合并字段 |
-| CMFA / FlClash YAML | ✅（已写在 YAML 里） | 无 |
-| FlClash JS | ✅（脚本已注入） | FlClash >= v0.8.85；覆写脚本自动注入 geox-url |
+| CMFA / FlClash | ✅（已写在 YAML 里） | FlClash 用户直接导入 CMFA YAML；JS 覆写脚本暂不可用（FlClash bug #1541） |
 | OpenClash Smart / Normal | ✅（脚本已注入） | 无 |
 | Shadowrocket | ✅（`.conf` 已含 DoH 字段） | iOS 15+ 即可，不需额外操作 |
 | Surge / Loon / QX | ✅（`.conf` 已含 DoH） | 无 |
@@ -348,7 +347,7 @@ tcpdump -n -i any port 443       # 应看到持续流量 → DoH 正常
 **🏷️ 客户端列名缩写对照**：
 - **Clash Party** = Clash Party / Clash Verge Rev / Mihomo Party
 - **CMFA** = Clash Meta For Android / mihomo-party-android / **[ClashMi](https://github.com/KaringX/clashmi)**（KaringX 跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，同样 bundle MetaCubeX mainline，直接复用 `CMFA(mihomo).yaml`；导入流程与差异点见 [CMFA 子目录 §九](./Clash%20Meta%20For%20Android/README.md#九兼容客户端clashmi跨平台)）
-- **FlClash** = 跨平台 Flutter GUI（Android/Windows/macOS/Linux），提供两条路径：（1）[**覆写脚本**](./FlClash/FlClash(mihomo).js)（推荐；动态节点分类 + 家宽识别，需 v0.8.85+）；（2）[**CMFA YAML**](./Clash%20Meta%20For%20Android/CMFA(mihomo).yaml)（备选；直接导入）
+- **FlClash** = 跨平台 Flutter GUI（Android/Windows/macOS/Linux），直接复用 [CMFA YAML](./Clash%20Meta%20For%20Android/CMFA(mihomo).yaml)。JS 覆写脚本曾计划提供但 FlClash v0.8.90+ 存在未修复 bug（[#1541](https://github.com/chen08209/FlClash/issues/1541)），暂不可用
 - **QX** = Quantumult X
 - **sing-box** = sing-box 通用客户端（SFA / SFM / SFI / Hiddify / NekoBox / Karing / HomeProxy）
 - **v2rayN Xray** = v2rayN 默认 Xray 核模式
