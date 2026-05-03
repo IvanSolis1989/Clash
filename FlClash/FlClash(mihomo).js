@@ -5,11 +5,24 @@
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
-// === 导入方法（FlClash） ===
-// 1. 在 FlClash 中导入机场订阅（配置 → 新建配置+ → URL）
-// 2. 进入该订阅的「覆写」→ 开启「启用覆写」→ 切换到「脚本」标签
-// 3. 将本文件全部内容粘贴到脚本编辑器中 → 保存
-// 4. 返回首页 → 重新加载配置（或重启 FlClash）
+// === 导入方法（FlClash，二选一） ===
+//
+// 【方法 A：URL 导入（推荐）】
+//   1. FlClash「配置」→ 导入订阅 → 启动代理（先确保能访问 GitHub）
+//   2. 进入订阅的「覆写」→ 开启「启用覆写」→ 切换到「脚本」标签
+//   3. 点击右上角「链接」图标，填入下方 URL：
+//      https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/FlClash/FlClash(mihomo).js
+//   4. 保存 → 返回首页 → 下拉刷新（或重启 FlClash）
+//
+// 【方法 B：手动粘贴（GitHub 不可用时用）】
+//   1. 打开 https://github.com/IvanSolis1989/Smart-Config-Kit/blob/main/FlClash/FlClash(mihomo).js
+//   2. 全选复制 → 粘贴到 FlClash 覆写脚本编辑器 → 保存
+//
+// 【方法 C：jsdelivr CDN（备选，国内可能更快）】
+//   https://cdn.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/FlClash/FlClash(mihomo).js
+//
+// ⚠️ GitHub Raw / jsdelivr 在国内可能被墙，URL 导入前必须先确保代理已通。
+//    如果代理没通，先用方法 B 手动粘贴，脚本生效后后续自动更新可切回 URL。
 //
 // === 与 CMFA YAML 的选择 ===
 // - 本 JS 脚本：动态节点分类（word-boundary 正则，精确度高于 YAML filter:）、

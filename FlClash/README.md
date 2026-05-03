@@ -33,14 +33,27 @@ FlClash 用户现在有 **两种选择**：
 2. 粘贴机场提供的订阅地址 → 提交
 3. 点击订阅卡片右上角 ⋮ → **同步**，确认节点列表加载成功
 
-### 第 2 步：粘贴覆写脚本
+### 第 2 步：加载覆写脚本
 
-1. 点击订阅卡片右上角 ⋮ → **覆写**
-2. 开启「启用覆写」开关
-3. 切换到「**脚本**」标签
-4. 删除编辑器里的默认内容
-5. 打开本仓库的 [`FlClash(mihomo).js`](./FlClash(mihomo).js)，**全选复制**
-6. 粘贴到 FlClash 脚本编辑器中 → 右上角 **保存**
+**方式 A：URL 导入（推荐，一劳永逸）**
+
+1. 确保代理已通（先选一个能用的节点启动，否则 GitHub 可能被墙）
+2. 点击订阅卡片右上角 ⋮ → **覆写** → 开启「启用覆写」→ 切换到「**脚本**」标签
+3. 点击右上角「链接」图标，填入：
+   ```
+   https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/FlClash/FlClash(mihomo).js
+   ```
+4. 保存 → 之后脚本会随 GitHub 自动更新（FlClash 定期拉取远程脚本内容）
+5. ⚠️ 如果 GitHub Raw 加载失败，改用 jsdelivr CDN：
+   ```
+   https://cdn.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/FlClash/FlClash(mihomo).js
+   ```
+
+**方式 B：手动粘贴（GitHub 完全不通时用）**
+
+1. 浏览器打开 [`FlClash(mihomo).js`](https://github.com/IvanSolis1989/Smart-Config-Kit/blob/main/FlClash/FlClash(mihomo).js)
+2. 全选复制 → 粘贴到 FlClash 脚本编辑器 → 保存
+3. 缺点：更新需手动重新粘贴
 
 ### 第 3 步：验证生效
 
@@ -64,6 +77,11 @@ FlClash 内核是标准 Mihomo，不支持 `type: smart` + LightGBM。`url-test`
 1. 确认 FlClash 版本 >= v0.8.85（设置 → 关于）
 2. 检查脚本是否完整粘贴（不丢行、不截断）
 3. 提 Issue 到本仓库，附上 FlClash 日志截图
+
+### Q: URL 导入和手动粘贴有什么区别？
+- **URL 导入**：填 GitHub Raw / jsdelivr 链接，FlClash 自动拉取脚本；更新时只需在脚本页面点「刷新」重新拉取，**不需要手动重新粘贴**。
+- **手动粘贴**：把 JS 源码完整复制到编辑器，更新需重新粘贴。
+- 推荐先用 URL 导入（jsdelivr 国内可能更快）；如果 GitHub 完全被墙，先手动粘贴，脚本生效（代理通了）之后可切回 URL。
 
 ### Q: 能和图形化覆写规则同时用吗？
 可以。图形化覆写规则在脚本**之前**合并（配置流水线：订阅 → 图形化覆写合并 → 脚本评估 → YAML 编码），两者互不干扰。
