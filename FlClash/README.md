@@ -67,7 +67,7 @@
 导入脚本后，以下两项需要在 FlClash UI 手动设置：
 
 ### 外部资源（GeoX URL）
-配置 → 订阅卡片 ⋮ → 编辑 → 外部资源：
+工具 → 资源 ⋮ → 编辑 → 同步：
 ```yaml
 geox-url:
   geoip: https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat
@@ -78,7 +78,7 @@ geo-auto-update: true
 ```
 
 ### 进阶配置（DNS）
-配置 → 订阅卡片 ⋮ → 编辑 → 进阶配置：
+工具 → 进阶配置 ⋮ → DNS：
 ```yaml
 dns:
   use-hosts: false
