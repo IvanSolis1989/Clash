@@ -2230,13 +2230,8 @@ function cleanupSubscription(config) {
     config['proxy-groups'].splice(0, config['proxy-groups'].length)
   }
   if (removed > 0) log(`[${VERSION}] Cleared ${removed} subscription proxy-groups`)
-  if (config.rules && config.rules.length > 0) {
-    config.rules.splice(0, config.rules.length)
-  }
-  if (config['rule-providers']) {
-    var rpKeys = Object.keys(config['rule-providers'])
-    for (var i = 0; i < rpKeys.length; i++) { delete config['rule-providers'][rpKeys[i]] }
-  }
+  // FlClash: 不清理 rules 和 rule-providers（订阅配置可能依赖它们）。
+  //   清空会导致 RULE-SET 引用失效 → 核心加载失败 → UI 标签消失。
 }
 
 // ================================================================
@@ -2350,10 +2345,11 @@ function main(config) {
     log(`[${VERSION}] Active url-test region groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
 
     injectBusinessGroups(config, activeSmartNames)
-    injectRuleProviders(config)
-    injectRules(config)
+    // FlClash: 不注入 rule-providers 和 rules（保留订阅原始配置）。
+    //   Clash Party 版在此处注入 371+ provider + 1000+ rule，
+    //   但 FlClash 覆写脚本环境下这些操作会导致配置加载失败。
     sortProxyGroups(config)
-    log(`[${VERSION}] Done! Groups: ${config['proxy-groups'].length}, Rules: ${config.rules.length}, Providers: ${Object.keys(config['rule-providers']).length}`)
+    log(`[${VERSION}] Done! Groups: ${config['proxy-groups'].length}`)
     return config
   } catch (e) {
     log(`[${VERSION}] Error:`, e)
