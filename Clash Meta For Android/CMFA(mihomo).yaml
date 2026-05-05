@@ -1,8 +1,8 @@
 # ================================================================
-# Clash Smart v5.3.0-cmfa.1 - CMFA (Clash Meta for Android) 配置
-# Build: 2026-04-26
-# 架构：proxy-providers 订阅 + 18 url-test 区域组（9 全部 + 9 家宽）+ 31 业务策略组（含 13 流媒体平台组）+ 384 rule-providers
-# 基线：Clash Party v5.3.2（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，移动端不适用）
+# Clash Smart v5.4.1-cmfa.1 - CMFA (Clash Meta for Android) 配置
+# Build: 2026-05-05
+# 架构：proxy-providers 订阅 + 22 url-test 区域组（11 全部 + 11 家宽）+ 31 业务策略组（含 13 流媒体平台组）+ 384+ rule-providers
+# 基线：Clash Party v5.4.1（唯一主线）
 # 变更历史：见 `Clash Meta For Android/CHANGELOG.md`
 # ================================================================
 # ★ 快速上手：
@@ -29,6 +29,18 @@ geox-url:
   mmdb: 'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb'
   asn: 'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb'
   geosite: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat'
+hosts:
+  'dns.alidns.com':
+  - 223.5.5.5
+  - 223.6.6.6
+  'doh.pub':
+  - 119.29.29.29
+  'dns.google':
+  - 8.8.8.8
+  - 8.8.4.4
+  'cloudflare-dns.com':
+  - 1.1.1.1
+  - 1.0.0.1
 profile:
   store-selected: true
   store-fake-ip: true
@@ -38,26 +50,33 @@ dns:
   ipv6: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
+  fake-ip-filter-mode: rule
   fake-ip-filter:
-  - +.lan
-  - +.local
-  - 'time.*.com'
-  - 'ntp.*.com'
-  - +.market.xiaomi.com
-  - +.localdomain
-  - +.home.arpa
-  - '+.stun.*.*'
-  - +.ntp.org
-  - +.pool.ntp.org
-  - +.n.n.srv.nintendo.net
-  - +.stun.playstation.net
-  - +.xboxlive.com
-  - stun.l.google.com
-  - auth.docker.io
-  - registry-1.docker.io
-  - index.docker.io
-  - hub.docker.com
-  - production.cloudflare.docker.com
+  - 'RULE-SET,fakeip-filter,real-ip'
+  - 'RULE-SET,Private,real-ip'
+  - 'RULE-SET,Direct,real-ip'
+  - 'RULE-SET,XPTV,real-ip'
+  - 'RULE-SET,Download,real-ip'
+  - 'RULE-SET,AppleCN,real-ip'
+  - 'RULE-SET,China,real-ip'
+  - 'RULE-SET,AI,fake-ip'
+  - 'DOMAIN-KEYWORD,speedtest,fake-ip'
+  - 'RULE-SET,Speedtest,fake-ip'
+  - 'RULE-SET,Twitter,fake-ip'
+  - 'RULE-SET,Telegram,fake-ip'
+  - 'RULE-SET,SocialMedia,fake-ip'
+  - 'RULE-SET,NewsMedia,fake-ip'
+  - 'RULE-SET,Games,fake-ip'
+  - 'RULE-SET,Crypto,fake-ip'
+  - 'RULE-SET,Emby,fake-ip'
+  - 'RULE-SET,Netflix,fake-ip'
+  - 'RULE-SET,YouTube,fake-ip'
+  - 'RULE-SET,Streaming,fake-ip'
+  - 'RULE-SET,Apple,fake-ip'
+  - 'RULE-SET,Google,fake-ip'
+  - 'RULE-SET,Microsoft,fake-ip'
+  - 'RULE-SET,Proxy,fake-ip'
+  - 'MATCH,real-ip'
   use-hosts: false
   use-system-hosts: false
   respect-rules: true
@@ -152,6 +171,7 @@ proxy-groups:
   - '🏡 全球家宽'
   - '🏡 香港家宽'
   - '🏡 台湾家宽'
+  - '🏡 狮城家宽'
   - '🏡 日韩家宽'
   - '🏡 亚太家宽'
   - '🏡 美国家宽'
@@ -161,6 +181,7 @@ proxy-groups:
   - '🌍 全球节点'
   - '🇭🇰 香港节点'
   - '🇹🇼 台湾节点'
+  - '🇸🇬 狮城节点'
   - '🇯🇵 日韩节点'
   - '🌏 亚太节点'
   - '🇺🇸 美国节点'
@@ -177,6 +198,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -212,6 +235,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -335,6 +360,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -357,6 +384,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -379,6 +408,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -401,6 +432,8 @@ proxy-groups:
   - '🏡 全球家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -419,6 +452,8 @@ proxy-groups:
   proxies:
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🌍 全球节点'
   - '🏡 全球家宽'
   - '🇭🇰 香港节点'
@@ -447,6 +482,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🌏 亚太节点'
   - '🏡 亚太家宽'
   - '🇺🇸 美国节点'
@@ -469,6 +506,8 @@ proxy-groups:
   - '🏡 香港家宽'
   - '🇹🇼 台湾节点'
   - '🏡 台湾家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🇯🇵 日韩节点'
   - '🏡 日韩家宽'
   - '🌏 亚太节点'
@@ -507,6 +546,8 @@ proxy-groups:
   - '🏡 全球家宽'
   - '🇭🇰 香港节点'
   - '🏡 香港家宽'
+  - '🇸🇬 狮城节点'
+  - '🏡 狮城家宽'
   - '🌏 亚太节点'
   - '🏡 亚太家宽'
 - name: '🏠 国内网站'
@@ -584,6 +625,24 @@ proxy-groups:
   interval: 120
   tolerance: 30
   lazy: true
+  name: '🇸🇬 狮城节点'
+  use:
+  - Subscribe
+  filter: '(?i)(新加坡|Singapore|狮城|SGP|SIN|XSP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$))'
+- type: url-test
+  url: 'https://www.gstatic.com/generate_204'
+  interval: 120
+  tolerance: 30
+  lazy: true
+  name: '🏡 狮城家宽'
+  use:
+  - Subscribe
+  filter: '(?i)((新加坡|Singapore|狮城|SGP|SIN|XSP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$)).*(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带)|(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带).*(新加坡|Singapore|狮城|SGP|SIN|XSP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$)))'
+- type: url-test
+  url: 'https://www.gstatic.com/generate_204'
+  interval: 120
+  tolerance: 30
+  lazy: true
   name: '🇯🇵 日韩节点'
   use:
   - Subscribe
@@ -605,8 +664,8 @@ proxy-groups:
   name: '🌏 亚太节点'
   use:
   - Subscribe
-  # v5.2.8-cmfa.3 FIX#28-P0: 🌏 亚太节点 应包含 HK/TW/JP/KR（原 filter 只匹配 SG/MY/ID/TH/... 导致港台日韩节点被排除；对齐 Clash Party 主线 apacNodes = HK+TW+CN+JP+KR+SG+APAC_OTHER）
-  filter: '(?i)(香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇸🇬|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺|(^|[^a-zA-Z])SG([^a-zA-Z]|$))'
+  # v5.4.0 FIX#28-P0+FIX#SG: 🌏 亚太节点 = HK+TW+CN+JP+KR+APAC_OTHER（SG 已独立为 🇸🇬 狮城节点）
+  filter: '(?i)(香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺)'
 - type: url-test
   url: 'https://www.gstatic.com/generate_204'
   interval: 120
@@ -615,8 +674,8 @@ proxy-groups:
   name: '🏡 亚太家宽'
   use:
   - Subscribe
-  # v5.2.8-cmfa.3 FIX#28-P0: 🏡 亚太家宽 同步扩展（对齐 🌏 亚太节点），补 HK/TW/JP/KR 子串
-  filter: '(?i)((香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇸🇬|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺|(^|[^a-zA-Z])SG([^a-zA-Z]|$)).*(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带)|(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带).*(香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇸🇬|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺|(^|[^a-zA-Z])SG([^a-zA-Z]|$)))'
+  # v5.4.0 FIX#28-P0+FIX#SG: 🏡 亚太家宽 同步更新（SG 已独立，从 filter 中移除）
+  filter: '(?i)((香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺).*(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带)|(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带).*(香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺)))'
 - type: url-test
   url: 'https://www.gstatic.com/generate_204'
   interval: 120
@@ -689,6 +748,23 @@ proxy-groups:
   use:
   - Subscribe
   filter: '(?i)((非洲|Africa|南非|South\s*Africa|埃及|Egypt|🇿🇦|🇪🇬|(^|[^a-zA-Z])AF([^a-zA-Z]|$)).*(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带)|(resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带).*(非洲|Africa|南非|South\s*Africa|埃及|Egypt|🇿🇦|🇪🇬|(^|[^a-zA-Z])AF([^a-zA-Z]|$)))'
+# v5.4.1 P1: 否定式 OTHER——无 filter 的 url-test 组，兜底未分类节点
+- type: url-test
+  url: 'https://www.gstatic.com/generate_204'
+  interval: 120
+  tolerance: 30
+  lazy: true
+  name: '🌏 其他节点'
+  use:
+  - Subscribe
+- type: url-test
+  url: 'https://www.gstatic.com/generate_204'
+  interval: 120
+  tolerance: 30
+  lazy: true
+  name: '🏡 其他家宽'
+  use:
+  - Subscribe
 rule-providers:
   anti-ad:
     type: http

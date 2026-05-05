@@ -2,8 +2,8 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.3.0-oc-normal.2 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
-# Build: 2026-04-26
+# Clash Smart v5.4.0-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Build: 2026-05-05
 # ============================================================================
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：18 个区域组（9 全部 + 9 家宽）从 type: smart（uselightgbm）换成 type: url-test。
@@ -13,7 +13,7 @@
 #         - 或者明确想关闭 LightGBM ML 评估、只靠经典 url-test 延迟选路
 #       需要 LightGBM 智能评估请改用 OpenClash(mihomo-smart).sh（Smart 版）。
 # 架构：
-#   • 18 url-test 区域组（9 全部 + 9 家宽；interval 600s / tolerance 150ms / lazy：与 Smart 版同步延迟参数）
+#   • 20 url-test 区域组（10 全部 + 10 家宽；interval 600s / tolerance 150ms / lazy：与 Smart 版同步延迟参数）
 #   • 31 业务策略组（流媒体按平台拆分：Netflix / Disney+ / HBO/Max / Hulu / Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体）
 #   • 384 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
 #   • ~990 条 rules
@@ -26,7 +26,7 @@
 
 
 
-VERSION_TAG="v5.3.0-oc-normal.2"
+VERSION_TAG="v5.4.0-oc-normal.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -186,6 +186,7 @@ proxy-groups:
     - 🏡 全球家宽
     - 🏡 香港家宽
     - 🏡 台湾家宽
+    - 🏡 狮城家宽
     - 🏡 日韩家宽
     - 🏡 亚太家宽
     - 🏡 美国家宽
@@ -195,6 +196,7 @@ proxy-groups:
     - 🌍 全球节点
     - 🇭🇰 香港节点
     - 🇹🇼 台湾节点
+    - 🇸🇬 狮城节点
     - 🇯🇵 日韩节点
     - 🌏 亚太节点
     - 🇺🇸 美国节点
@@ -211,6 +213,8 @@ proxy-groups:
     - 🏡 香港家宽
     - 🇹🇼 台湾节点
     - 🏡 台湾家宽
+    - 🇸🇬 狮城节点
+    - 🏡 狮城家宽
     - 🇯🇵 日韩节点
     - 🏡 日韩家宽
     - 🌏 亚太节点
@@ -246,6 +250,8 @@ proxy-groups:
   - 🏡 香港家宽
   - 🇹🇼 台湾节点
   - 🏡 台湾家宽
+  - 🇸🇬 狮城节点
+  - 🏡 狮城家宽
   - 🇯🇵 日韩节点
   - 🏡 日韩家宽
   - 🌏 亚太节点
@@ -4169,7 +4175,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.3.0-oc-normal.2"
+VERSION = "v5.4.0-oc-normal.1"
 
 STATUS_LOG = "/tmp/clash_normal_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
@@ -4265,43 +4271,49 @@ REGIONS = {
 #   原实现每个 code 只落入 GROUP_MAP 的首个命中条目（下方 each/break），导致：
 #     • HK/TW/JP/KR 只进香港/台湾/日韩子组，永远进不了 🌏 亚太节点
 #     • US 只进美国子组，永远进不了 🌎 美洲节点
-#   Clash Party JS 主线语义：区域大组 = 子区域并集（apacNodes = HK+TW+CN+JP+KR+SG+APAC_OTHER；
+#   Clash Party JS 主线语义：区域大组 = 子区域并集（SG 已独立为 🇸🇬 狮城节点，不再归入 🌏 亚太节点；
 #   americasNodes = US+AM）。修复：APAC 扩充至涵盖 HK/TW/JP/KR + 原 APAC_OTHER 集；AM 扩充至
 #   包含 US；分类循环移除 break，同一节点可同时进入子区域组与所属大洲组。
 GROUP_MAP = {
   "HK"     => ["HK"],
   "TW"     => ["TW"],
+  "SG"     => ["SG"],
   "JP_KR"  => ["JP", "KR"],
   "US"     => ["US"],
   "EU"     => ["UK", "DE", "FR", "NL", "CH", "IT", "ES", "PT", "GR", "AT", "BE", "IE", "DK", "SE", "FI", "NO", "PL", "CZ", "RO", "HU", "RU"],
   "AM"     => ["US", "CA", "MX", "BR", "AR"],
   "AF"     => ["ZA", "EG", "NG"],
-  "APAC"   => ["HK", "TW", "JP", "KR", "SG", "IN", "TH", "VN", "MY", "ID", "PH", "AU", "NZ", "TR", "AE"],
+  "APAC"   => ["HK", "TW", "JP", "KR", "IN", "TH", "VN", "MY", "ID", "PH", "AU", "NZ", "TR", "AE"],
+  "OTHER"  => ["OTHER"],
 }
 GROUP_NAMES = {
   "HK"    => "🇭🇰 香港节点",
   "TW"    => "🇹🇼 台湾节点",
+  "SG"    => "🇸🇬 狮城节点",
   "JP_KR" => "🇯🇵 日韩节点",
   "US"    => "🇺🇸 美国节点",
   "EU"    => "🇪🇺 欧洲节点",
   "AM"    => "🌎 美洲节点",
   "AF"    => "🌍 非洲节点",
   "APAC"  => "🌏 亚太节点",
+  "OTHER" => "🌏 其他节点",
 }
 HOME_GROUP_NAMES = {
   "HK"    => "🏡 香港家宽",
   "TW"    => "🏡 台湾家宽",
+  "SG"    => "🏡 狮城家宽",
   "JP_KR" => "🏡 日韩家宽",
   "US"    => "🏡 美国家宽",
   "EU"    => "🏡 欧洲家宽",
   "AM"    => "🏡 美洲家宽",
   "AF"    => "🏡 非洲家宽",
   "APAC"  => "🏡 亚太家宽",
+  "OTHER" => "🏡 其他家宽",
 }
 
 classify = ->(name) {
   REGIONS.each { |code, re| return code if name.match?(re) }
-  nil
+  "OTHER"
 }
 
 buckets = Hash.new { |h, k| h[k] = [] }
@@ -4357,7 +4369,7 @@ smart_groups << make_smart_group("🌍 全球节点", proxies_filter_mode: :incl
 smart_groups << make_smart_group("🏡 全球家宽", proxies_filter_mode: :explicit, explicit_proxies: home_all_members.uniq) if home_all_members.any?
 
 # 8 个区域组：仅该区域节点参与 url-test；家宽子组只在匹配到家宽节点时创建
-%w[HK TW JP_KR US EU AM AF APAC].each do |gkey|
+%w[HK TW SG JP_KR US EU AM AF APAC OTHER].each do |gkey|
   gname = GROUP_NAMES[gkey]
   members = buckets[gkey].uniq
   smart_groups << make_smart_group(gname, proxies_filter_mode: :explicit, explicit_proxies: members) unless members.empty?

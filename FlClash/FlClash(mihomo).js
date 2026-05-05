@@ -1,58 +1,59 @@
-// FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v5.3.2-flclash.1 (2026-05-03)
-// 架构：18 url-test 区域组（9 全部 + 9 家宽）+ 31 业务策略组（含 13 流媒体平台组）+ 371+ rule-providers 100%+ 服务覆盖
-// 基线：Clash Party Normal v5.3.2（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
-// 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
-// 变更历史：见 `FlClash/CHANGELOG.md`
+// FlClash 瑕嗗啓鑴氭湰 鈥?鏍囧噯 Mihomo 鍐呮牳鍔ㄦ€佸垎娴佺増
+// 鐗堟湰锛歷5.4.1-flclash.1 (2026-05-05)
+// 鏋舵瀯锛?2 url-test 鍖哄煙缁勶紙11 鍏ㄩ儴 + 11 瀹跺锛? 31 涓氬姟绛栫暐缁勶紙鍚?13 娴佸獟浣撳钩鍙扮粍锛? 371+ rule-providers 100%+ 鏈嶅姟瑕嗙洊
+// 鍩虹嚎锛欳lash Party Normal v5.4.1锛堣鍒?100% 绛変环锛涘尯鍩熺粍涓?url-test 鈥?FlClash 鍐呮牳涓烘爣鍑?Mihomo锛屼笉鏀寔 smart + LightGBM锛?
+// 閫傜敤锛欶lClash >= v0.8.85锛堣鐩栬剼鏈姛鑳借嚜璇ョ増鏈紩鍏ワ級锛涘叾浠栦娇鐢ㄦ爣鍑?Mihomo 鍐呮牳鐨勫鎴风
+// 鍙樻洿鍘嗗彶锛氳 `FlClash/CHANGELOG.md`
 //
-// === 导入方法（FlClash，两步操作） ===
+// === 瀵煎叆鏂规硶锛團lClash锛屼袱姝ユ搷浣滐級 ===
 //
-// ⚠️ 必须先「创建」脚本再「关联」到订阅！
+// 鈿狅笍 蹇呴』鍏堛€屽垱寤恒€嶈剼鏈啀銆屽叧鑱斻€嶅埌璁㈤槄锛?
 //
-// 【第 1 步：创建覆写脚本】
-//   FlClash → 配置 →「覆写脚本」→ 右上角 + → 输入名称
-//   方式 A（URL）：填入 https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/FlClash/FlClash(mihomo).js
-//   方式 B（粘贴）：打开上方 GitHub 链接，全选复制粘贴
-//   方式 C（jsdelivr）：https://cdn.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/FlClash/FlClash(mihomo).js
-//   保存。
+// 銆愮 1 姝ワ細鍒涘缓瑕嗗啓鑴氭湰銆?
+//   FlClash 鈫?閰嶇疆 鈫掋€岃鍐欒剼鏈€嶁啋 鍙充笂瑙?+ 鈫?杈撳叆鍚嶇О
+//   鏂瑰紡 A锛圲RL锛夛細濉叆 https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/FlClash/FlClash(mihomo).js
+//   鏂瑰紡 B锛堢矘璐达級锛氭墦寮€涓婃柟 GitHub 閾炬帴锛屽叏閫夊鍒剁矘璐?
+//   鏂瑰紡 C锛坖sdelivr锛夛細https://cdn.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/FlClash/FlClash(mihomo).js
+//   淇濆瓨銆?
 //
-// 【第 2 步：关联到订阅】
-//   配置页 → 订阅卡片 ⋮ →「更多」→「覆写」→ 点选刚才创建的脚本 → 确定 → 下拉刷新。
+// 銆愮 2 姝ワ細鍏宠仈鍒拌闃呫€?
+//   閰嶇疆椤?鈫?璁㈤槄鍗＄墖 鈰?鈫掋€屾洿澶氥€嶁啋銆岃鍐欍€嶁啋 鐐归€夊垰鎵嶅垱寤虹殑鑴氭湰 鈫?纭畾 鈫?涓嬫媺鍒锋柊銆?
 //
-// ⚠️ GitHub 被墙时先确保代理已通，或用 jsdelivr CDN / 手动粘贴。
+// 鈿狅笍 GitHub 琚鏃跺厛纭繚浠ｇ悊宸查€氾紝鎴栫敤 jsdelivr CDN / 鎵嬪姩绮樿创銆?
 //
-// === 脚本导入后必做的手动配置（FlClash UI 内操作） ===
-// 以下两项由 FlClash App UI 托管，覆写脚本无法注入，必须手动配置：
-//   1. 外部资源（GeoX URL）：编辑订阅 →「外部资源」标签 → 粘贴 geox-url YAML
-//   2. 进阶配置（DNS）：编辑订阅 →「进阶配置」标签 → 粘贴 dns YAML
-//   完整 YAML 见：FlClash/README.md → 第 4 步 必改配置
+// === 鑴氭湰瀵煎叆鍚庡繀鍋氱殑鎵嬪姩閰嶇疆锛團lClash UI 鍐呮搷浣滐級 ===
+// 浠ヤ笅涓ら」鐢?FlClash App UI 鎵樼锛岃鍐欒剼鏈棤娉曟敞鍏ワ紝蹇呴』鎵嬪姩閰嶇疆锛?
+//   1. 澶栭儴璧勬簮锛圙eoX URL锛夛細缂栬緫璁㈤槄 鈫掋€屽閮ㄨ祫婧愩€嶆爣绛?鈫?绮樿创 geox-url YAML
+//   2. 杩涢樁閰嶇疆锛圖NS锛夛細缂栬緫璁㈤槄 鈫掋€岃繘闃堕厤缃€嶆爣绛?鈫?绮樿创 dns YAML
+//   瀹屾暣 YAML 瑙侊細FlClash/README.md 鈫?绗?4 姝?蹇呮敼閰嶇疆
 //
-// === 与 CMFA YAML 的选择 ===
-// - 本 JS 脚本：动态节点分类（word-boundary 正则，精确度高于 YAML filter:）、
-//   自动清理订阅垃圾组、家宽识别、空区域自动不建组
-// - CMFA YAML：静态配置，适合不想用脚本的用户；导入即用无需额外操作
+// === 涓?CMFA YAML 鐨勯€夋嫨 ===
+// - 鏈?JS 鑴氭湰锛氬姩鎬佽妭鐐瑰垎绫伙紙word-boundary 姝ｅ垯锛岀簿纭害楂樹簬 YAML filter:锛夈€?
+//   鑷姩娓呯悊璁㈤槄鍨冨溇缁勩€佸瀹借瘑鍒€佺┖鍖哄煙鑷姩涓嶅缓缁?
+// - CMFA YAML锛氶潤鎬侀厤缃紝閫傚悎涓嶆兂鐢ㄨ剼鏈殑鐢ㄦ埛锛涘鍏ュ嵆鐢ㄦ棤闇€棰濆鎿嶄綔
 
 // ================================================================
-//  版本常量
+//  鐗堟湰甯搁噺
 // ================================================================
 
-const VERSION = 'v5.3.2-flclash.1'
+const VERSION = 'v5.4.1-flclash.1'
 
-// FlClash JS 引擎环境兼容：QuickJS 可能不提供 console，安全包装
+// FlClash JS 寮曟搸鐜鍏煎锛歈uickJS 鍙兘涓嶆彁渚?console锛屽畨鍏ㄥ寘瑁?
 var log = (typeof console !== 'undefined' && console.log) ? console.log.bind(console) : function(){}
 
 // ================================================================
-//  模块 A：节点过滤 / 家宽识别
+//  妯″潡 A锛氳妭鐐硅繃婊?/ 瀹跺璇嗗埆
 // ================================================================
 
 function isInfoNode(name) {
-  const infoPatterns = ['导航网址', '距离下次重置', '剩余流量', '套餐到期', '网址导航', '官网', '订阅', '到期', '剩余', '重置']
+  const infoPatterns = ['瀵艰埅缃戝潃', '璺濈涓嬫閲嶇疆', '鍓╀綑娴侀噺', '濂楅鍒版湡', '缃戝潃瀵艰埅', '瀹樼綉', '璁㈤槄', '鍒版湡', '鍓╀綑', '閲嶇疆']
+  const infoRes = [/\b(?:USE|USED|TOTAL|EXPIRE|EMAIL)\b/i, /Panel|Channel|Author|鍓╀綑娴侀噺|宸茬敤娴侀噺|鍒版湡鏃堕棿|涓嬫閲嶇疆/i]
   const s = String(name || '')
-  return infoPatterns.some(p => s.includes(p))
+  return infoPatterns.some(p => s.includes(p)) || infoRes.some(re => re.test(s))
 }
 
 const RESIDENTIAL_PATTERNS = [
-  /家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带/,
+  /瀹跺|瀹跺涵瀹藉甫|瀹跺涵浣忓畢|浣忓畢瀹藉甫|浣忓畢|瀹藉甫/,
   /\bresi(?:dential)?\b/i,
   /\bhome(?:\s|-|_)?ip\b/i,
   /\bhome(?:\s|-|_)?broadband\b/i,
@@ -66,27 +67,26 @@ function isResidentialNode(name) {
 }
 
 // ================================================================
-//  模块 B：国家/地区分类数据库（v4.5.1 修复 CN 区域）
+//  妯″潡 B锛氬浗瀹?鍦板尯鍒嗙被鏁版嵁搴擄紙v4.5.1 淇 CN 鍖哄煙锛?
 // ================================================================
 
 const REGION_DB = [
-  // v5.2.6-normal.1 FIX#24-P0: 补齐 ISO alpha-3 代码（TWN/JPN/KOR/SGP/CHN），
-  //   与 Clash Smart 内核覆写脚本.js 保持对齐（见 Smart 版同编号修复）
-  { id: 'HK', kw: ['香港', 'hong kong', 'hongkong', 'hkg'], iso: ['HK'] },
-  { id: 'TW', kw: ['台湾', '台北', '台中', '高雄', '新北', '桃园', 'taiwan', 'taipei', 'taichung', 'kaohsiung', 'tpe', 'twn'], iso: ['TW'] },
-  { id: 'CN', kw: ['中国', '大陆', '国内', '中国大陆', 'china', 'mainland', '回国节点', '回国专线', '回国线路', '回国加速', '回国服务', '直连国内', '国内直连', '中转国内', '落地国内', '北京', '上海', '广州', '深圳', 'beijing', 'shanghai', 'guangzhou', 'shenzhen', '成都', '重庆', '杭州', '南京', '武汉', '天津', '苏州', '西安', '长沙', 'chengdu', 'chongqing', 'hangzhou', 'nanjing', 'wuhan', 'tianjin', 'suzhou', 'xian', 'changsha', '沈阳', '青岛', '郑州', '大连', '东莞', '宁波', '厦门', '济南', '无锡', '合肥', '昆明', '福州', '哈尔滨', '佛山', '长春', '石家庄', '太原', '南宁', '贵阳', '乌鲁木齐', '兰州', '海口', '银川', '西宁', '拉萨', '呼和浩特', '电信', '联通', '移动', '铁通', 'chinatelecom', 'chinaunicom', 'chinamobile', 'chn', 'pek', 'pkx', 'pvg', 'szx', 'ctu', 'ckg', 'hgh', 'nkg', 'wuh', 'tsn', 'syx', 'xiy', 'csx', 'kmg', 'hak', 'dlc', 'tao', 'she', 'hrb', 'cgo'], iso: ['CN'] },
-  { id: 'JP', kw: ['日本', '东京', '大阪', '横滨', '名古屋', '福冈', '札幌', '京都', '神户', '千叶', '埼玉', '仙台', '广岛', '冲绳', '那霸', 'japan', 'tokyo', 'osaka', 'yokohama', 'nagoya', 'fukuoka', 'sapporo', 'kyoto', 'kobe', 'chiba', 'sendai', 'hiroshima', 'okinawa', 'naha', 'jpn', 'nrt', 'hnd', 'kix', 'ngo', 'fuk', 'cts', 'oka'], iso: ['JP'] },
-  { id: 'KR', kw: ['韩国', '首尔', '釜山', '仁川', '大田', '大邱', '光州', '济州', 'korea', 'seoul', 'busan', 'incheon', 'daejeon', 'daegu', 'gwangju', 'jeju', 'kor', 'icn', 'gmp', 'pus'], iso: ['KR'] },
-  { id: 'SG', kw: ['新加坡', 'singapore', 'sgp', 'sin'], iso: ['SG'] },
-  { id: 'US', kw: ['美国', 'united states', 'america', 'usa', '洛杉矶', 'los angeles', '圣何塞', 'san jose', '旧金山', '三藩市', 'san francisco', '西雅图', 'seattle', '纽约', 'new york', '芝加哥', 'chicago', '达拉斯', 'dallas', '丹佛', 'denver', '凤凰城', 'phoenix', '亚特兰大', 'atlanta', '迈阿密', 'miami', '波士顿', 'boston', '华盛顿', 'washington', '费城', 'philadelphia', '休斯顿', 'houston', '圣地亚哥', 'san diego', '拉斯维加斯', 'las vegas', '波特兰', 'portland', '硅谷', 'silicon valley', '弗吉尼亚', 'virginia', '夏洛特', 'charlotte', '奥斯汀', 'austin', '纳什维尔', 'nashville', '盐湖城', 'salt lake', '明尼阿波利斯', 'minneapolis', '圣路易斯', 'st louis', '堪萨斯', 'kansas city', '底特律', 'detroit', '匹兹堡', 'pittsburgh', '克利夫兰', 'cleveland', '檀香山', 'honolulu', '安克雷奇', 'anchorage', 'lax', 'sjc', 'sfo', 'sea', 'jfk', 'ewr', 'ord', 'dfw', 'iad', 'atl', 'mia', 'bos', 'den', 'phx', 'iah', 'msp', 'dtw', 'phl', 'san', 'las', 'slc', 'pdx', 'clt', 'hnl', 'anc'], iso: ['US'] },
-  { id: 'EU', kw: ['欧洲', 'europe', '英国', 'united kingdom', 'england', 'britain', 'london', '伦敦', 'manchester', '曼彻斯特', 'birmingham', 'glasgow', 'edinburgh', 'liverpool', 'leeds', 'bristol', 'lhr', 'lgw', 'man', 'edi', '爱尔兰', 'ireland', 'dublin', '都柏林', '法国', 'france', 'paris', '巴黎', 'marseille', '马赛', 'lyon', '里昂', 'nice', 'toulouse', 'cdg', 'ory', '德国', 'germany', 'frankfurt', '法兰克福', 'berlin', '柏林', 'munich', '慕尼黑', 'hamburg', '汉堡', 'dusseldorf', 'cologne', 'fra', 'muc', 'ber', '荷兰', 'netherlands', 'holland', 'amsterdam', '阿姆斯特丹', 'rotterdam', 'ams', '比利时', 'belgium', 'brussels', '布鲁塞尔', '卢森堡', 'luxembourg', '瑞士', 'switzerland', 'zurich', '苏黎世', 'geneva', '日内瓦', 'bern', 'zrh', '奥地利', 'austria', 'vienna', '维也纳', 'vie', '列支敦士登', 'liechtenstein', '摩纳哥', 'monaco', '丹麦', 'denmark', 'copenhagen', '哥本哈根', '冰岛', 'iceland', 'reykjavik', '挪威', 'norway', 'oslo', '奥斯陆', '瑞典', 'sweden', 'stockholm', '斯德哥尔摩', '芬兰', 'finland', 'helsinki', '赫尔辛基', '爱沙尼亚', 'estonia', 'tallinn', '塔林', '拉脱维亚', 'latvia', 'riga', '里加', '立陶宛', 'lithuania', 'vilnius', '维尔纽斯', '意大利', 'italy', 'rome', '罗马', 'milan', '米兰', 'naples', 'florence', 'fco', 'mxp', '西班牙', 'spain', 'madrid', '马德里', 'barcelona', '巴塞罗那', 'mad', 'bcn', '葡萄牙', 'portugal', 'lisbon', '里斯本', '希腊', 'greece', 'athens', '雅典', '马耳他', 'malta', '安道尔', 'andorra', '圣马力诺', 'san marino', '波兰', 'poland', 'warsaw', '华沙', 'krakow', 'waw', '捷克', 'czech', 'prague', '布拉格', '斯洛伐克', 'slovakia', 'bratislava', '匈牙利', 'hungary', 'budapest', '布达佩斯', '罗马尼亚', 'romania', 'bucharest', '布加勒斯特', '保加利亚', 'bulgaria', 'sofia', '索菲亚', '俄罗斯', 'russia', 'moscow', '莫斯科', 'svo', 'dme', '乌克兰', 'ukraine', 'kiev', 'kyiv', '基辅', '白俄罗斯', 'belarus', 'minsk', '明斯克', '摩尔多瓦', 'moldova', 'chisinau', '塞尔维亚', 'serbia', 'belgrade', '贝尔格莱德', '黑山', 'montenegro', '克罗地亚', 'croatia', 'zagreb', '斯洛文尼亚', 'slovenia', 'ljubljana', '波黑', 'bosnia', 'herzegovina', 'sarajevo', '马其顿', 'macedonia', 'skopje', '阿尔巴尼亚', 'albania', 'tirana', '科索沃', 'kosovo', 'pristina', '塞浦路斯', 'cyprus', 'nicosia', '格鲁吉亚', 'georgia', 'tbilisi', '第比利斯'], iso: ['GB', 'UK', 'IE', 'FR', 'DE', 'NL', 'LU', 'CH', 'DK', 'SE', 'FI', 'EE', 'LV', 'LT', 'ES', 'PT', 'GR', 'PL', 'CZ', 'SK', 'HU', 'RO', 'BG', 'RU', 'UA', 'MD', 'RS', 'HR', 'SI', 'MK', 'XK', 'CY', 'GE', 'EU'] },
-  { id: 'AM', kw: ['美洲', 'americas', '拉丁美洲', 'latin america', '南美', 'south america', '中美洲', 'central america', '加勒比', 'caribbean', '加拿大', 'canada', 'toronto', '多伦多', 'vancouver', '温哥华', 'montreal', '蒙特利尔', 'ottawa', '渥太华', 'calgary', '卡尔加里', 'edmonton', 'winnipeg', 'yyz', 'yvr', 'yul', '墨西哥', 'mexico', 'mexico city', '墨西哥城', 'cancun', '坎昆', 'guadalajara', 'monterrey', 'mex', '危地马拉', 'guatemala', '伯利兹', 'belize', '萨尔瓦多', 'el salvador', '洪都拉斯', 'honduras', '尼加拉瓜', 'nicaragua', '哥斯达黎加', 'costa rica', '巴拿马', 'panama', '古巴', 'cuba', '牙买加', 'jamaica', '多米尼加', 'dominican republic', '波多黎各', 'puerto rico', '巴哈马', 'bahamas', '巴巴多斯', 'barbados', '特立尼达', 'trinidad', '海地', 'haiti', '巴西', 'brazil', 'sao paulo', '圣保罗', 'rio de janeiro', '里约热内卢', 'gru', 'gig', '阿根廷', 'argentina', 'buenos aires', '布宜诺斯艾利斯', 'eze', '智利', 'chile', 'santiago', '秘鲁', 'peru', 'lima', '利马', '哥伦比亚', 'colombia', 'bogota', '波哥大', 'medellin', '委内瑞拉', 'venezuela', '厄瓜多尔', 'ecuador', '玻利维亚', 'bolivia', '巴拉圭', 'paraguay', '乌拉圭', 'uruguay', 'montevideo', '圭亚那', 'guyana', '苏里南', 'suriname'], iso: ['CA', 'MX', 'GT', 'BZ', 'SV', 'HN', 'NI', 'CR', 'PA', 'CU', 'JM', 'PR', 'BS', 'BB', 'TT', 'HT', 'BR', 'AR', 'CL', 'PE', 'CO', 'VE', 'EC', 'BO', 'PY', 'UY', 'GY', 'SR'] },
-  { id: 'AF', kw: ['非洲', 'africa', '埃及', 'egypt', 'cairo', '开罗', 'cai', '苏丹', 'sudan', '南苏丹', 'south sudan', '利比亚', 'libya', '突尼斯', 'tunisia', '阿尔及利亚', 'algeria', '摩洛哥', 'morocco', 'casablanca', '埃塞俄比亚', 'ethiopia', '索马里', 'somalia', '肯尼亚', 'kenya', 'nairobi', 'nbo', '坦桑尼亚', 'tanzania', '乌干达', 'uganda', '卢旺达', 'rwanda', '布隆迪', 'burundi', '厄立特里亚', 'eritrea', '吉布提', 'djibouti', '马达加斯加', 'madagascar', '毛里求斯', 'mauritius', '莫桑比克', 'mozambique', '塞舌尔', 'seychelles', '赞比亚', 'zambia', '津巴布韦', 'zimbabwe', '马拉维', 'malawi', '喀麦隆', 'cameroon', '刚果', 'congo', '安哥拉', 'angola', '加蓬', 'gabon', '乍得', 'chad', '中非', 'central african', '赤道几内亚', 'equatorial guinea', '南非', 'south africa', 'johannesburg', '约翰内斯堡', 'cape town', '开普敦', 'pretoria', 'jnb', 'cpt', '纳米比亚', 'namibia', '博茨瓦纳', 'botswana', '莱索托', 'lesotho', '斯威士兰', 'eswatini', 'swaziland', '尼日利亚', 'nigeria', 'lagos', 'abuja', '加纳', 'ghana', 'accra', '塞内加尔', 'senegal', 'dakar', '马里', 'mali', '布基纳法索', 'burkina faso', '几内亚', 'guinea', '科特迪瓦', 'ivory coast', "cote d'ivoire", '塞拉利昂', 'sierra leone', '利比里亚', 'liberia', '多哥', 'togo', '贝宁', 'benin', '尼日尔', 'niger', '毛里塔尼亚', 'mauritania', '冈比亚', 'gambia', '佛得角', 'cape verde'], iso: ['EG', 'SD', 'SS', 'LY', 'TN', 'DZ', 'ET', 'KE', 'TZ', 'UG', 'RW', 'MG', 'MU', 'MZ', 'ZM', 'ZW', 'MW', 'CM', 'CD', 'CG', 'AO', 'GA', 'TD', 'ZA', 'BW', 'LS', 'SZ', 'NG', 'GH', 'SN', 'ML', 'BF', 'GN', 'CI', 'SL', 'LR', 'TG', 'BJ', 'NE', 'MR', 'GM', 'CV'] },
-  { id: 'APAC_OTHER', kw: ['马来','亚太', 'apac', 'asia pacific', 'asia', '亚洲', '大洋洲', 'oceania', 'iplc', 'iepl', '专线', '低延迟', 'cn2', 'gia', '马来西亚', 'malaysia', 'kuala lumpur', '吉隆坡', 'kul', '印度尼西亚', '印尼', 'indonesia', 'jakarta', '雅加达', '泰国', 'thailand', 'bangkok', '曼谷', 'bkk', '越南', 'vietnam', 'hanoi', '河内', 'ho chi minh', '胡志明', 'saigon', 'sgn', 'han', '菲律宾', 'philippines', 'manila', '马尼拉', 'mnl', '柬埔寨', 'cambodia', 'phnom penh', '金边', '缅甸', 'myanmar', 'yangon', '老挝', 'laos', 'vientiane', '文莱', 'brunei', '东帝汶', 'timor-leste', '印度', 'india', 'mumbai', '孟买', 'delhi', '新德里', 'bangalore', '班加罗尔', 'chennai', 'hyderabad', 'kolkata', 'bom', 'del', 'blr', '巴基斯坦', 'pakistan', 'karachi', 'islamabad', '孟加拉', 'bangladesh', 'dhaka', '斯里兰卡', 'sri lanka', 'colombo', '尼泊尔', 'nepal', 'kathmandu', '马尔代夫', 'maldives', '不丹', 'bhutan', '阿富汗', 'afghanistan', '土耳其', 'turkey', 'turkiye', 'istanbul', '伊斯坦布尔', 'ankara', 'ist', '以色列', 'israel', 'tel aviv', 'tlv', '沙特', 'saudi', 'riyadh', '阿联酋', 'uae', 'emirates', 'dubai', '迪拜', 'abu dhabi', 'dxb', 'auh', '卡塔尔', 'qatar', 'doha', 'doh', '科威特', 'kuwait', '巴林', 'bahrain', '阿曼', 'oman', 'muscat', '伊拉克', 'iraq', 'baghdad', '伊朗', 'iran', 'tehran', '约旦', 'jordan', 'amman', '黎巴嫩', 'lebanon', 'beirut', '叙利亚', 'syria', '也门', 'yemen', '巴勒斯坦', 'palestine', '亚美尼亚', 'armenia', 'yerevan', '阿塞拜疆', 'azerbaijan', 'baku', '哈萨克斯坦', 'kazakhstan', 'almaty', 'astana', '乌兹别克斯坦', 'uzbekistan', 'tashkent', '吉尔吉斯斯坦', 'kyrgyzstan', '土库曼斯坦', 'turkmenistan', '塔吉克斯坦', 'tajikistan', '澳门', 'macau', 'macao', '蒙古', 'mongolia', 'ulaanbaatar', '澳大利亚', 'australia', 'sydney', '悉尼', 'melbourne', '墨尔本', 'brisbane', 'perth', 'adelaide', 'syd', 'mel', '新西兰', 'new zealand', 'auckland', '奥克兰', 'wellington', 'akl', '斐济', 'fiji', '巴布亚新几内亚', 'papua new guinea', '关岛', 'guam', '新喀里多尼亚', 'new caledonia'], iso: ['IN','IND','MY','ID', 'TH', 'VN', 'PH', 'KH', 'MM', 'BN', 'TL', 'PK', 'BD', 'LK', 'NP', 'MV', 'BT', 'AF', 'TR', 'IL', 'AE', 'QA', 'KW', 'BH', 'OM', 'IQ', 'IR', 'JO', 'LB', 'SY', 'YE', 'PS', 'AZ', 'KZ', 'UZ', 'KG', 'TM', 'TJ', 'MO', 'MN', 'AU', 'NZ', 'FJ', 'PG', 'GU', 'NC', 'PF'] },
+  // v5.2.6-normal.1 FIX#24-P0: 琛ラ綈 ISO alpha-3 浠ｇ爜锛圱WN/JPN/KOR/SGP/CHN锛夛紝
+  //   涓?Clash Smart 鍐呮牳瑕嗗啓鑴氭湰.js 淇濇寔瀵归綈锛堣 Smart 鐗堝悓缂栧彿淇锛?
+  { id: 'HK', kw: ['棣欐腐', 'hong kong', 'hongkong', 'hkg'], iso: ['HK'] },
+  { id: 'TW', kw: ['鍙版咕', '鍙板寳', '鍙颁腑', '楂橀泟', '鏂板寳', '妗冨洯', 'taiwan', 'taipei', 'taichung', 'kaohsiung', 'tpe', 'twn'], iso: ['TW'] },
+  { id: 'CN', kw: ['涓浗', '澶ч檰', '鍥藉唴', '涓浗澶ч檰', 'china', 'mainland', '鍥炲浗鑺傜偣', '鍥炲浗涓撶嚎', '鍥炲浗绾胯矾', '鍥炲浗鍔犻€?, '鍥炲浗鏈嶅姟', '鐩磋繛鍥藉唴', '鍥藉唴鐩磋繛', '涓浆鍥藉唴', '钀藉湴鍥藉唴', '鍖椾含', '涓婃捣', '骞垮窞', '娣卞湷', 'beijing', 'shanghai', 'guangzhou', 'shenzhen', '鎴愰兘', '閲嶅簡', '鏉窞', '鍗椾含', '姝︽眽', '澶╂触', '鑻忓窞', '瑗垮畨', '闀挎矙', 'chengdu', 'chongqing', 'hangzhou', 'nanjing', 'wuhan', 'tianjin', 'suzhou', 'xian', 'changsha', '娌堥槼', '闈掑矝', '閮戝窞', '澶ц繛', '涓滆帪', '瀹佹尝', '鍘﹂棬', '娴庡崡', '鏃犻敗', '鍚堣偉', '鏄嗘槑', '绂忓窞', '鍝堝皵婊?, '浣涘北', '闀挎槬', '鐭冲搴?, '澶師', '鍗楀畞', '璐甸槼', '涔岄瞾鏈ㄩ綈', '鍏板窞', '娴峰彛', '閾跺窛', '瑗垮畞', '鎷夎惃', '鍛煎拰娴╃壒', '鐢典俊', '鑱旈€?, '绉诲姩', '閾侀€?, 'chinatelecom', 'chinaunicom', 'chinamobile', 'chn', 'pek', 'pkx', 'pvg', 'szx', 'ctu', 'ckg', 'hgh', 'nkg', 'wuh', 'tsn', 'syx', 'xiy', 'csx', 'kmg', 'hak', 'dlc', 'tao', 'she', 'hrb', 'cgo'], iso: ['CN'] },
+  { id: 'JP', kw: ['鏃ユ湰', '涓滀含', '澶ч槳', '妯花', '鍚嶅彜灞?, '绂忓唸', '鏈箤', '浜兘', '绁炴埛', '鍗冨彾', '鍩肩帀', '浠欏彴', '骞垮矝', '鍐茬怀', '閭ｉ湼', 'japan', 'tokyo', 'osaka', 'yokohama', 'nagoya', 'fukuoka', 'sapporo', 'kyoto', 'kobe', 'chiba', 'sendai', 'hiroshima', 'okinawa', 'naha', 'jpn', 'nrt', 'hnd', 'kix', 'ngo', 'fuk', 'cts', 'oka'], iso: ['JP'] },
+  { id: 'KR', kw: ['闊╁浗', '棣栧皵', '閲滃北', '浠佸窛', '澶х敯', '澶ч偙', '鍏夊窞', '娴庡窞', 'korea', 'seoul', 'busan', 'incheon', 'daejeon', 'daegu', 'gwangju', 'jeju', 'kor', 'icn', 'gmp', 'pus'], iso: ['KR'] },
+  { id: 'SG', kw: ['鏂板姞鍧?, 'singapore', 'sgp', 'sin'], iso: ['SG'] },
+  { id: 'US', kw: ['缇庡浗', 'united states', 'america', 'usa', '娲涙潐鐭?, 'los angeles', '鍦ｄ綍濉?, 'san jose', '鏃ч噾灞?, '涓夎棭甯?, 'san francisco', '瑗块泤鍥?, 'seattle', '绾界害', 'new york', '鑺濆姞鍝?, 'chicago', '杈炬媺鏂?, 'dallas', '涓逛經', 'denver', '鍑ゅ嚢鍩?, 'phoenix', '浜氱壒鍏板ぇ', 'atlanta', '杩堥樋瀵?, 'miami', '娉㈠＋椤?, 'boston', '鍗庣洓椤?, 'washington', '璐瑰煄', 'philadelphia', '浼戞柉椤?, 'houston', '鍦ｅ湴浜氬摜', 'san diego', '鎷夋柉缁村姞鏂?, 'las vegas', '娉㈢壒鍏?, 'portland', '纭呰胺', 'silicon valley', '寮楀悏灏间簹', 'virginia', '澶忔礇鐗?, 'charlotte', '濂ユ柉姹€', 'austin', '绾充粈缁村皵', 'nashville', '鐩愭箹鍩?, 'salt lake', '鏄庡凹闃挎尝鍒╂柉', 'minneapolis', '鍦ｈ矾鏄撴柉', 'st louis', '鍫惃鏂?, 'kansas city', '搴曠壒寰?, 'detroit', '鍖瑰吂鍫?, 'pittsburgh', '鍏嬪埄澶叞', 'cleveland', '妾€棣欏北', 'honolulu', '瀹夊厠闆峰', 'anchorage', 'lax', 'sjc', 'sfo', 'sea', 'jfk', 'ewr', 'ord', 'dfw', 'iad', 'atl', 'mia', 'bos', 'den', 'phx', 'iah', 'msp', 'dtw', 'phl', 'san', 'las', 'slc', 'pdx', 'clt', 'hnl', 'anc'], iso: ['US'] },
+  { id: 'EU', kw: ['娆ф床', 'europe', '鑻卞浗', 'united kingdom', 'england', 'britain', 'london', '浼︽暒', 'manchester', '鏇煎交鏂壒', 'birmingham', 'glasgow', 'edinburgh', 'liverpool', 'leeds', 'bristol', 'lhr', 'lgw', 'man', 'edi', '鐖卞皵鍏?, 'ireland', 'dublin', '閮芥煆鏋?, '娉曞浗', 'france', 'paris', '宸撮粠', 'marseille', '椹禌', 'lyon', '閲屾槀', 'nice', 'toulouse', 'cdg', 'ory', '寰峰浗', 'germany', 'frankfurt', '娉曞叞鍏嬬', 'berlin', '鏌忔灄', 'munich', '鎱曞凹榛?, 'hamburg', '姹夊牎', 'dusseldorf', 'cologne', 'fra', 'muc', 'ber', '鑽峰叞', 'netherlands', 'holland', 'amsterdam', '闃垮鏂壒涓?, 'rotterdam', 'ams', '姣斿埄鏃?, 'belgium', 'brussels', '甯冮瞾濉炲皵', '鍗㈡．鍫?, 'luxembourg', '鐟炲＋', 'switzerland', 'zurich', '鑻忛粠涓?, 'geneva', '鏃ュ唴鐡?, 'bern', 'zrh', '濂ュ湴鍒?, 'austria', 'vienna', '缁翠篃绾?, 'vie', '鍒楁敮鏁﹀＋鐧?, 'liechtenstein', '鎽╃撼鍝?, 'monaco', '涓归害', 'denmark', 'copenhagen', '鍝ユ湰鍝堟牴', '鍐板矝', 'iceland', 'reykjavik', '鎸▉', 'norway', 'oslo', '濂ユ柉闄?, '鐟炲吀', 'sweden', 'stockholm', '鏂痉鍝ュ皵鎽?, '鑺叞', 'finland', 'helsinki', '璧皵杈涘熀', '鐖辨矙灏间簹', 'estonia', 'tallinn', '濉旀灄', '鎷夎劚缁翠簹', 'latvia', 'riga', '閲屽姞', '绔嬮櫠瀹?, 'lithuania', 'vilnius', '缁村皵绾芥柉', '鎰忓ぇ鍒?, 'italy', 'rome', '缃楅┈', 'milan', '绫冲叞', 'naples', 'florence', 'fco', 'mxp', '瑗跨彮鐗?, 'spain', 'madrid', '椹痉閲?, 'barcelona', '宸村缃楅偅', 'mad', 'bcn', '钁¤悇鐗?, 'portugal', 'lisbon', '閲屾柉鏈?, '甯岃厞', 'greece', 'athens', '闆呭吀', '椹€充粬', 'malta', '瀹夐亾灏?, 'andorra', '鍦ｉ┈鍔涜', 'san marino', '娉㈠叞', 'poland', 'warsaw', '鍗庢矙', 'krakow', 'waw', '鎹峰厠', 'czech', 'prague', '甯冩媺鏍?, '鏂礇浼愬厠', 'slovakia', 'bratislava', '鍖堢墮鍒?, 'hungary', 'budapest', '甯冭揪浣╂柉', '缃楅┈灏间簹', 'romania', 'bucharest', '甯冨姞鍕掓柉鐗?, '淇濆姞鍒╀簹', 'bulgaria', 'sofia', '绱㈣彶浜?, '淇勭綏鏂?, 'russia', 'moscow', '鑾柉绉?, 'svo', 'dme', '涔屽厠鍏?, 'ukraine', 'kiev', 'kyiv', '鍩鸿緟', '鐧戒縿缃楁柉', 'belarus', 'minsk', '鏄庢柉鍏?, '鎽╁皵澶氱摝', 'moldova', 'chisinau', '濉炲皵缁翠簹', 'serbia', 'belgrade', '璐濆皵鏍艰幈寰?, '榛戝北', 'montenegro', '鍏嬬綏鍦颁簹', 'croatia', 'zagreb', '鏂礇鏂囧凹浜?, 'slovenia', 'ljubljana', '娉㈤粦', 'bosnia', 'herzegovina', 'sarajevo', '椹叾椤?, 'macedonia', 'skopje', '闃垮皵宸村凹浜?, 'albania', 'tirana', '绉戠储娌?, 'kosovo', 'pristina', '濉炴郸璺柉', 'cyprus', 'nicosia', '鏍奸瞾鍚変簹', 'georgia', 'tbilisi', '绗瘮鍒╂柉'], iso: ['GB', 'UK', 'IE', 'FR', 'DE', 'NL', 'LU', 'CH', 'DK', 'SE', 'FI', 'EE', 'LV', 'LT', 'ES', 'PT', 'GR', 'PL', 'CZ', 'SK', 'HU', 'RO', 'BG', 'RU', 'UA', 'MD', 'RS', 'HR', 'SI', 'MK', 'XK', 'CY', 'GE', 'EU'] },
+  { id: 'AM', kw: ['缇庢床', 'americas', '鎷変竵缇庢床', 'latin america', '鍗楃編', 'south america', '涓編娲?, 'central america', '鍔犲嫆姣?, 'caribbean', '鍔犳嬁澶?, 'canada', 'toronto', '澶氫鸡澶?, 'vancouver', '娓╁摜鍗?, 'montreal', '钂欑壒鍒╁皵', 'ottawa', '娓ュお鍗?, 'calgary', '鍗″皵鍔犻噷', 'edmonton', 'winnipeg', 'yyz', 'yvr', 'yul', '澧ㄨタ鍝?, 'mexico', 'mexico city', '澧ㄨタ鍝ュ煄', 'cancun', '鍧庢槅', 'guadalajara', 'monterrey', 'mex', '鍗卞湴椹媺', 'guatemala', '浼埄鍏?, 'belize', '钀ㄥ皵鐡﹀', 'el salvador', '娲兘鎷夋柉', 'honduras', '灏煎姞鎷夌摐', 'nicaragua', '鍝ユ柉杈鹃粠鍔?, 'costa rica', '宸存嬁椹?, 'panama', '鍙ゅ反', 'cuba', '鐗欎拱鍔?, 'jamaica', '澶氱背灏煎姞', 'dominican republic', '娉㈠榛庡悇', 'puerto rico', '宸村搱椹?, 'bahamas', '宸村反澶氭柉', 'barbados', '鐗圭珛灏艰揪', 'trinidad', '娴峰湴', 'haiti', '宸磋タ', 'brazil', 'sao paulo', '鍦ｄ繚缃?, 'rio de janeiro', '閲岀害鐑唴鍗?, 'gru', 'gig', '闃挎牴寤?, 'argentina', 'buenos aires', '甯冨疁璇烘柉鑹惧埄鏂?, 'eze', '鏅哄埄', 'chile', 'santiago', '绉橀瞾', 'peru', 'lima', '鍒╅┈', '鍝ヤ鸡姣斾簹', 'colombia', 'bogota', '娉㈠摜澶?, 'medellin', '濮斿唴鐟炴媺', 'venezuela', '鍘勭摐澶氬皵', 'ecuador', '鐜诲埄缁翠簹', 'bolivia', '宸存媺鍦?, 'paraguay', '涔屾媺鍦?, 'uruguay', 'montevideo', '鍦簹閭?, 'guyana', '鑻忛噷鍗?, 'suriname'], iso: ['CA', 'MX', 'GT', 'BZ', 'SV', 'HN', 'NI', 'CR', 'PA', 'CU', 'JM', 'PR', 'BS', 'BB', 'TT', 'HT', 'BR', 'AR', 'CL', 'PE', 'CO', 'VE', 'EC', 'BO', 'PY', 'UY', 'GY', 'SR'] },
+  { id: 'AF', kw: ['闈炴床', 'africa', '鍩冨強', 'egypt', 'cairo', '寮€缃?, 'cai', '鑻忎腹', 'sudan', '鍗楄嫃涓?, 'south sudan', '鍒╂瘮浜?, 'libya', '绐佸凹鏂?, 'tunisia', '闃垮皵鍙婂埄浜?, 'algeria', '鎽╂礇鍝?, 'morocco', 'casablanca', '鍩冨淇勬瘮浜?, 'ethiopia', '绱㈤┈閲?, 'somalia', '鑲凹浜?, 'kenya', 'nairobi', 'nbo', '鍧︽灏间簹', 'tanzania', '涔屽共杈?, 'uganda', '鍗㈡椇杈?, 'rwanda', '甯冮殕杩?, 'burundi', '鍘勭珛鐗归噷浜?, 'eritrea', '鍚夊竷鎻?, 'djibouti', '椹揪鍔犳柉鍔?, 'madagascar', '姣涢噷姹傛柉', 'mauritius', '鑾姣斿厠', 'mozambique', '濉炶垖灏?, 'seychelles', '璧炴瘮浜?, 'zambia', '娲ュ反甯冮煢', 'zimbabwe', '椹媺缁?, 'malawi', '鍠€楹﹂殕', 'cameroon', '鍒氭灉', 'congo', '瀹夊摜鎷?, 'angola', '鍔犺摤', 'gabon', '涔嶅緱', 'chad', '涓潪', 'central african', '璧ら亾鍑犲唴浜?, 'equatorial guinea', '鍗楅潪', 'south africa', 'johannesburg', '绾︾堪鍐呮柉鍫?, 'cape town', '寮€鏅暒', 'pretoria', 'jnb', 'cpt', '绾崇背姣斾簹', 'namibia', '鍗氳尐鐡︾撼', 'botswana', '鑾辩储鎵?, 'lesotho', '鏂▉澹叞', 'eswatini', 'swaziland', '灏兼棩鍒╀簹', 'nigeria', 'lagos', 'abuja', '鍔犵撼', 'ghana', 'accra', '濉炲唴鍔犲皵', 'senegal', 'dakar', '椹噷', 'mali', '甯冨熀绾虫硶绱?, 'burkina faso', '鍑犲唴浜?, 'guinea', '绉戠壒杩摝', 'ivory coast', "cote d'ivoire", '濉炴媺鍒╂槀', 'sierra leone', '鍒╂瘮閲屼簹', 'liberia', '澶氬摜', 'togo', '璐濆畞', 'benin', '灏兼棩灏?, 'niger', '姣涢噷濉斿凹浜?, 'mauritania', '鍐堟瘮浜?, 'gambia', '浣涘緱瑙?, 'cape verde'], iso: ['EG', 'SD', 'SS', 'LY', 'TN', 'DZ', 'ET', 'KE', 'TZ', 'UG', 'RW', 'MG', 'MU', 'MZ', 'ZM', 'ZW', 'MW', 'CM', 'CD', 'CG', 'AO', 'GA', 'TD', 'ZA', 'BW', 'LS', 'SZ', 'NG', 'GH', 'SN', 'ML', 'BF', 'GN', 'CI', 'SL', 'LR', 'TG', 'BJ', 'NE', 'MR', 'GM', 'CV'] },
 ]
 
 // ================================================================
-//  模块 C：单次分类引擎
+//  妯″潡 C锛氬崟娆″垎绫诲紩鎿?
 // ================================================================
 
 const _regexCache = new Map()
@@ -125,13 +125,11 @@ function classifyNode(name) {
       else { if (m.regex.test(nameStr)) return region.id }
     }
   }
-  return null
+  return 'OTHER'
 }
 
 function classifyAllNodes(proxies) {
   var result = {
-    HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], APAC_OTHER: [], UNCLASSIFIED: [], ALL: [],
-    HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_APAC_OTHER: [], HOME_UNCLASSIFIED: [], HOME_ALL: [],
   }
   for (var i = 0; i < proxies.length; i++) {
     var p = proxies[i]
@@ -154,40 +152,42 @@ function classifyAllNodes(proxies) {
 }
 
 // ================================================================
-//  模块 D：常量定义
+//  妯″潡 D锛氬父閲忓畾涔?
 // ================================================================
 
 const SMART = {
-  GLOBAL: '🌍 全球节点', GLOBAL_HOME: '🏡 全球家宽',
-  HK: '🇭🇰 香港节点', HK_HOME: '🏡 香港家宽',
-  TW: '🇹🇼 台湾节点', TW_HOME: '🏡 台湾家宽',
-  JPKR: '🇯🇵 日韩节点', JPKR_HOME: '🏡 日韩家宽',
-  APAC: '🌏 亚太节点', APAC_HOME: '🏡 亚太家宽',
-  US: '🇺🇸 美国节点', US_HOME: '🏡 美国家宽',
-  EU: '🇪🇺 欧洲节点', EU_HOME: '🏡 欧洲家宽',
-  AMERICAS: '🌎 美洲节点', AMERICAS_HOME: '🏡 美洲家宽',
-  AFRICA: '🌍 非洲节点', AFRICA_HOME: '🏡 非洲家宽',
+  GLOBAL: '馃實 鍏ㄧ悆鑺傜偣', GLOBAL_HOME: '馃彙 鍏ㄧ悆瀹跺',
+  HK: '馃嚟馃嚢 棣欐腐鑺傜偣', HK_HOME: '馃彙 棣欐腐瀹跺',
+  TW: '馃嚬馃嚰 鍙版咕鑺傜偣', TW_HOME: '馃彙 鍙版咕瀹跺',
+  SG: "🇸🇬 狮城节点", SG_HOME: "🏡 狮城家宽",
+  JPKR: '馃嚡馃嚨 鏃ラ煩鑺傜偣', JPKR_HOME: '馃彙 鏃ラ煩瀹跺',
+  APAC: '馃審 浜氬お鑺傜偣', APAC_HOME: '馃彙 浜氬お瀹跺',
+  US: '馃嚭馃嚫 缇庡浗鑺傜偣', US_HOME: '馃彙 缇庡浗瀹跺',
+  EU: '馃嚜馃嚭 娆ф床鑺傜偣', EU_HOME: '馃彙 娆ф床瀹跺',
+  AMERICAS: '馃寧 缇庢床鑺傜偣', AMERICAS_HOME: '馃彙 缇庢床瀹跺',
+  AFRICA: '馃實 闈炴床鑺傜偣', AFRICA_HOME: '馃彙 闈炴床瀹跺',
+  OTHER: "🌏 其他节点", OTHER_HOME: "🏡 其他家宽",
 }
 
 const BIZ = {
-  AI: '🤖 AI 服务', CRYPTO: '💰 加密货币', PAYMENTS: '🏦 金融支付',
-  IM: '💬 即时通讯', SOCIAL: '📱 社交媒体',
-  WORK: '🧑‍💼 会议协作', CNMEDIA: '📺 国内流媒体',
-  NFLX: '🎥 Netflix', DSNP: '🎬 Disney+', HBO: '📡 HBO/Max',
-  HULU: '📺 Hulu', PRIME: '🎬 Prime Video',
-  YT: '📹 YouTube', MUSIC: '🎵 音乐流媒体',
-  STREAM_HK: '🇭🇰 香港流媒体', STREAM_TW: '🇹🇼 台湾流媒体',
-  STREAM_JP: '🇯🇵 日韩流媒体', STREAM_EU: '🇪🇺 欧洲流媒体',
-  STREAM_OTHER: '🌐 其他国外流媒体',
-  GAME_CN: '🕹️ 国内游戏', GAME_INTL: '🎮 国外游戏',
-  TOOLS: '🔧 工具与服务', MS: 'Ⓜ️ 微软服务', APPLE: '🍎 苹果服务',
-  DOWNLOAD: '📥 下载更新', TRACKER: '🛰️ BT/PT Tracker',
-  CN_SITE: '🏠 国内网站',
-  GFW: '🚫 受限网站', INTL_SITE: '🌐 国外网站',
-  FINAL: '🐟 漏网之鱼', AD: '🛑 广告拦截',
+  AI: '馃 AI 鏈嶅姟', CRYPTO: '馃挵 鍔犲瘑璐у竵', PAYMENTS: '馃彟 閲戣瀺鏀粯',
+  IM: '馃挰 鍗虫椂閫氳', SOCIAL: '馃摫 绀句氦濯掍綋',
+  WORK: '馃鈥嶐煉?浼氳鍗忎綔', CNMEDIA: '馃摵 鍥藉唴娴佸獟浣?,
+  NFLX: '馃帴 Netflix', DSNP: '馃幀 Disney+', HBO: '馃摗 HBO/Max',
+  HULU: '馃摵 Hulu', PRIME: '馃幀 Prime Video',
+  YT: '馃摴 YouTube', MUSIC: '馃幍 闊充箰娴佸獟浣?,
+  STREAM_HK: '馃嚟馃嚢 棣欐腐娴佸獟浣?, STREAM_TW: '馃嚬馃嚰 鍙版咕娴佸獟浣?,
+  STREAM_JP: '馃嚡馃嚨 鏃ラ煩娴佸獟浣?, STREAM_EU: '馃嚜馃嚭 娆ф床娴佸獟浣?,
+  STREAM_OTHER: '馃寪 鍏朵粬鍥藉娴佸獟浣?,
+  GAME_CN: '馃暪锔?鍥藉唴娓告垙', GAME_INTL: '馃幃 鍥藉娓告垙',
+  TOOLS: '馃敡 宸ュ叿涓庢湇鍔?, MS: '鈸傦笍 寰蒋鏈嶅姟', APPLE: '馃崕 鑻规灉鏈嶅姟',
+  DOWNLOAD: '馃摜 涓嬭浇鏇存柊', TRACKER: '馃洶锔?BT/PT Tracker',
+  CN_SITE: '馃彔 鍥藉唴缃戠珯',
+  GFW: '馃毇 鍙楅檺缃戠珯', INTL_SITE: '馃寪 鍥藉缃戠珯',
+  FINAL: '馃悷 婕忕綉涔嬮奔', AD: '馃洃 骞垮憡鎷︽埅',
 }
 
-const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA']
+const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'SG', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA', 'OTHER']
 const REGION_HOME_MAP = {
   GLOBAL: 'GLOBAL_HOME', HK: 'HK_HOME', TW: 'TW_HOME',
   JPKR: 'JPKR_HOME', APAC: 'APAC_HOME', US: 'US_HOME',
@@ -234,15 +234,15 @@ function buildDirectFirstProxies() {
 }
 
 function buildTrackerProxies() {
-  return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'APAC']))
+  return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'SG', 'APAC']))
 }
 
 function buildSeaProxies() {
-  return withResidential(['APAC', 'GLOBAL', 'HK', 'JPKR', 'US']).concat('DIRECT')
+  return withResidential(['SG', 'APAC', 'GLOBAL', 'HK', 'JPKR', 'US']).concat('DIRECT')
 }
 
-// v5.1.2: GeoRouting 区域列表（module-level，供 providers + rules 共用）
-// ★ FIX#1: Asia_China 从 INTL 循环剥离，单独映射 CN_SITE（v5.1.1 误将中国域名/IP 路由到国外网站）
+// v5.1.2: GeoRouting 鍖哄煙鍒楄〃锛坢odule-level锛屼緵 providers + rules 鍏辩敤锛?
+// 鈽?FIX#1: Asia_China 浠?INTL 寰幆鍓ョ锛屽崟鐙槧灏?CN_SITE锛坴5.1.1 璇皢涓浗鍩熷悕/IP 璺敱鍒板浗澶栫綉绔欙級
 const GEO_REGIONS_ALL = [
   'Asia_East', 'Asia_EastSouth', 'Asia_South', 'Asia_Central', 'Asia_West',
   'Asia_China',
@@ -254,7 +254,7 @@ const GEO_REGIONS_ALL = [
 const GEO_REGIONS_INTL = GEO_REGIONS_ALL.filter(r => r !== 'Asia_China')
 
 // ================================================================
-//  模块 E：区域组创建（url-test，非 Smart 内核等价写法）
+//  妯″潡 E锛氬尯鍩熺粍鍒涘缓锛坲rl-test锛岄潪 Smart 鍐呮牳绛変环鍐欐硶锛?
 // ================================================================
 
 function upsertSmartGroup(config, name, proxies) {
@@ -265,7 +265,7 @@ function upsertSmartGroup(config, name, proxies) {
 }
 
 // ================================================================
-//  模块 F：业务策略组注入（28组）
+//  妯″潡 F锛氫笟鍔＄瓥鐣ョ粍娉ㄥ叆锛?8缁勶級
 // ================================================================
 
 function injectBusinessGroups(config, activeSmartNames) {
@@ -328,28 +328,28 @@ function injectBusinessGroups(config, activeSmartNames) {
 }
 
 // ================================================================
-//  模块 G：rule-providers 注入（v5.0: 326 providers）
+//  妯″潡 G锛歳ule-providers 娉ㄥ叆锛坴5.0: 326 providers锛?
 // ================================================================
 
 function injectRuleProviders(config) {
   if (!config['rule-providers']) config['rule-providers'] = {}
 
-  // v5.1.6 P0-FIX#2: CDN 切换（raw.githubusercontent.com → fastly.jsdelivr.net）消除启动 EOF 风暴
+  // v5.1.6 P0-FIX#2: CDN 鍒囨崲锛坮aw.githubusercontent.com 鈫?fastly.jsdelivr.net锛夋秷闄ゅ惎鍔?EOF 椋庢毚
   const META = 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo'
-  // v5.1.8 PERF#2: BM7 常量移至下方 CDN 混合策略区块（BM7_FASTLY + BM7_CF）
+  // v5.1.8 PERF#2: BM7 甯搁噺绉昏嚦涓嬫柟 CDN 娣峰悎绛栫暐鍖哄潡锛圔M7_FASTLY + BM7_CF锛?
   const ACC  = 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main'
 
-  // v5.1.6 P0-FIX#1: 所有 rule-providers 走代理下载，避免 DIRECT 在墙内环境拉取失败
-  // v5.2.1 FIX: jsdelivr 和 rule-provider 下载走受限网站组（中国用代理，印尼用直连）
+  // v5.1.6 P0-FIX#1: 鎵€鏈?rule-providers 璧颁唬鐞嗕笅杞斤紝閬垮厤 DIRECT 鍦ㄥ鍐呯幆澧冩媺鍙栧け璐?
+  // v5.2.1 FIX: jsdelivr 鍜?rule-provider 涓嬭浇璧板彈闄愮綉绔欑粍锛堜腑鍥界敤浠ｇ悊锛屽嵃灏肩敤鐩磋繛锛?
   const RP_PROXY = BIZ.GFW
 
   const RP_BASE = 85500
   const RP_STEP = 15
   let _rpIdx = 0
-  // v5.1.8 PERF#2: 随机抖动 0~59s 打破整齐步长的周期性并发浪峰
+  // v5.1.8 PERF#2: 闅忔満鎶栧姩 0~59s 鎵撶牬鏁撮綈姝ラ暱鐨勫懆鏈熸€у苟鍙戞氮宄?
   const nextInterval = () => RP_BASE + ((_rpIdx++) * RP_STEP) + Math.floor(Math.random() * 60)
 
-  // v5.1.8 PERF#2: bm7 CDN 混合策略（奇偶轮替 Fastly / Cloudflare，分散 EOF 风暴）
+  // v5.1.8 PERF#2: bm7 CDN 娣峰悎绛栫暐锛堝鍋惰疆鏇?Fastly / Cloudflare锛屽垎鏁?EOF 椋庢毚锛?
   const BM7_FASTLY = 'https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash'
   const BM7_CF     = 'https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash'
   let _bm7Idx = 0
@@ -369,22 +369,22 @@ function injectRuleProviders(config) {
     config['rule-providers'][id] = { type: 'http', behavior: 'classical', url: `${cdn}/${dir}/${file}.yaml`, path: `./ruleset/bm7-${id}.yaml`, interval: nextInterval(), proxy: RP_PROXY }
   }
 
-  // ============ #1 广告拦截 ============
-  // v5.1.7 PERF: anti-ad → DustinWin ads.mrs（同源 privacy-protection-tools/anti-AD，domain behavior + mrs format）
-  // 备选方案（若 DustinWin .mrs 源不可用，取消下方注释并注释掉 mrs 版本）：
+  // ============ #1 骞垮憡鎷︽埅 ============
+  // v5.1.7 PERF: anti-ad 鈫?DustinWin ads.mrs锛堝悓婧?privacy-protection-tools/anti-AD锛宒omain behavior + mrs format锛?
+  // 澶囬€夋柟妗堬紙鑻?DustinWin .mrs 婧愪笉鍙敤锛屽彇娑堜笅鏂规敞閲婂苟娉ㄩ噴鎺?mrs 鐗堟湰锛夛細
   //   config['rule-providers']['anti-ad'] = { type: 'http', behavior: 'domain', url: 'https://anti-ad.net/clash.yaml', path: './ruleset/anti-ad.yaml', interval: nextInterval(), proxy: RP_PROXY }
   config['rule-providers']['anti-ad'] = { type: 'http', behavior: 'domain', format: 'mrs', url: 'https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/ads.mrs', path: './ruleset/anti-ad.mrs', interval: nextInterval(), proxy: RP_PROXY }
 
-  // ============ #2~5 AI 服务 ============
+  // ============ #2~5 AI 鏈嶅姟 ============
   metaDomain('openai', 'openai')
   bm7('claude',  'Claude')
   bm7('gemini',  'Gemini')
   bm7('copilot', 'Copilot')
 
-  // ============ #6 加密货币 ============
+  // ============ #6 鍔犲瘑璐у竵 ============
   bm7('cryptocurrency', 'Cryptocurrency')
 
-  // ============ #7~12 即时通讯 ============
+  // ============ #7~12 鍗虫椂閫氳 ============
   metaDomain('telegram', 'telegram')
   metaIpCidr('telegram-ip', 'telegram')
   bm7('discord', 'Discord')
@@ -392,34 +392,34 @@ function injectRuleProviders(config) {
   bm7('whatsapp', 'Whatsapp')
   bm7('kakaotalk', 'KakaoTalk')
 
-  // ============ #13~22 社交媒体 ============
+  // ============ #13~22 绀句氦濯掍綋 ============
   metaDomain('twitter', 'twitter')
   metaIpCidr('twitter-ip', 'twitter')
   metaDomain('tiktok', 'tiktok')
   bm7('reddit', 'Reddit')
   bm7('facebook', 'Facebook')
   bm7('instagram', 'Instagram')
-  // v5.2.3 FIX: Snap 规则改用 Meta geosite（兼容 mihomo，不再触发 USER-AGENT,TikTok* 解析警告）
-  // bm7 Apple 相关 provider 含格式错误 IP-CIDR（多余空格），每次 reload 产生 warning，不影响功能
-  // v5.2.4 FIX#22-P0: MetaCubeX geosite 的实际文件名是 `snap.mrs` 不是 `snapchat.mrs`，
-  //   之前 metaDomain('snapchat','snapchat') 会产生 [Provider] snapchat pull error: 403 Forbidden
+  // v5.2.3 FIX: Snap 瑙勫垯鏀圭敤 Meta geosite锛堝吋瀹?mihomo锛屼笉鍐嶈Е鍙?USER-AGENT,TikTok* 瑙ｆ瀽璀﹀憡锛?
+  // bm7 Apple 鐩稿叧 provider 鍚牸寮忛敊璇?IP-CIDR锛堝浣欑┖鏍硷級锛屾瘡娆?reload 浜х敓 warning锛屼笉褰卞搷鍔熻兘
+  // v5.2.4 FIX#22-P0: MetaCubeX geosite 鐨勫疄闄呮枃浠跺悕鏄?`snap.mrs` 涓嶆槸 `snapchat.mrs`锛?
+  //   涔嬪墠 metaDomain('snapchat','snapchat') 浼氫骇鐢?[Provider] snapchat pull error: 403 Forbidden
   metaDomain('snapchat', 'snap')
   bm7('pinterest', 'Pinterest')
   bm7('linkedin', 'LinkedIn')
   metaIpCidr('facebook-ip', 'facebook')
 
-  // ============ #23~25 会议协作 ============
+  // ============ #23~25 浼氳鍗忎綔 ============
   bm7('slack', 'Slack')
   config['rule-providers']['zoom'] = { type: 'http', behavior: 'classical', url: 'https://fastly.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Providers/Ruleset/Zoom.yaml', path: './ruleset/acl4ssr-Zoom.yaml', interval: nextInterval(), proxy: RP_PROXY }
   bm7('teams', 'Teams')
 
-  // ============ #26~29 搜索引擎 ============
+  // ============ #26~29 鎼滅储寮曟搸 ============
   metaDomain('google', 'google')
   metaIpCidr('google-ip', 'google')
   bm7('bing', 'Bing')
   bm7('googlesearch', 'GoogleSearch')
 
-  // ============ #30~41 美国流媒体 ============
+  // ============ #30~41 缇庡浗娴佸獟浣?============
   metaDomain('youtube', 'youtube')
   metaDomain('netflix', 'netflix')
   metaIpCidr('netflix-ip', 'netflix')
@@ -433,19 +433,19 @@ function injectRuleProviders(config) {
   bm7('peacock', 'Peacock')
   bm7('twitch', 'Twitch')
 
-  // ============ #42~43 台湾流媒体 ============
+  // ============ #42~43 鍙版咕娴佸獟浣?============
   metaDomain('bahamut', 'bahamut')
   bm7('kktv', 'KKTV')
 
-  // ============ #44~45 日韩流媒体 ============
+  // ============ #44~45 鏃ラ煩娴佸獟浣?============
   metaDomain('abema', 'abema')
   bm7('dazn', 'DAZN')
 
-  // ============ #46 欧洲流媒体 ============
-  // v5.2.3 FIX: BBC 规则改用 Meta geosite（兼容 mihomo，不再触发 USER-AGENT,BBCiPlayer* 解析警告）
+  // ============ #46 娆ф床娴佸獟浣?============
+  // v5.2.3 FIX: BBC 瑙勫垯鏀圭敤 Meta geosite锛堝吋瀹?mihomo锛屼笉鍐嶈Е鍙?USER-AGENT,BBCiPlayer* 瑙ｆ瀽璀﹀憡锛?
   metaDomain('bbc', 'bbc')
 
-  // ============ #47~53 国外游戏 ============
+  // ============ #47~53 鍥藉娓告垙 ============
   bm7('steam', 'Steam')
   bm7('epic', 'Epic')
   bm7('playstation', 'PlayStation')
@@ -454,44 +454,44 @@ function injectRuleProviders(config) {
   bm7('ea', 'EA')
   bm7('blizzard', 'Blizzard')
 
-  // ============ #54~55 微软服务 ============
+  // ============ #54~55 寰蒋鏈嶅姟 ============
   metaDomain('microsoft', 'microsoft')
   metaDomain('onedrive', 'onedrive')
 
-  // ============ #56~58 苹果服务 ============
+  // ============ #56~58 鑻规灉鏈嶅姟 ============
   metaDomain('apple', 'apple')
   metaDomain('icloud', 'icloud')
   bm7('applemusic', 'AppleMusic')
 
-  // ============ #59~61 开发者服务 ============
+  // ============ #59~61 寮€鍙戣€呮湇鍔?============
   metaDomain('github', 'github')
   bm7('docker', 'Docker')
   bm7('gitlab', 'GitLab')
 
-  // ============ #62 金融支付 ============
+  // ============ #62 閲戣瀺鏀粯 ============
   bm7('paypal', 'PayPal')
 
-  // ============ #63~65 云与CDN ============
+  // ============ #63~65 浜戜笌CDN ============
   metaIpCidr('cloudflare-ip', 'cloudflare')
   metaIpCidr('cloudfront-ip', 'cloudfront')
   metaIpCidr('fastly-ip', 'fastly')
 
-  // ============ #66 下载更新 ============
+  // ============ #66 涓嬭浇鏇存柊 ============
   bm7('systemota', 'SystemOTA')
 
-  // ============ #67 东南亚流媒体 ============
+  // ============ #67 涓滃崡浜氭祦濯掍綋 ============
   bm7('viu', 'ViuTV')
 
-  // ============ #68~69 国内流媒体 ============
+  // ============ #68~69 鍥藉唴娴佸獟浣?============
   metaDomain('bilibili', 'bilibili')
   metaDomain('biliintl', 'biliintl')
 
-  // ============ #70~72 国内/国外兜底 ============
+  // ============ #70~72 鍥藉唴/鍥藉鍏滃簳 ============
   metaDomain('cn', 'cn')
   metaIpCidr('cn-ip', 'cn')
   metaDomain('proxy', 'geolocation-!cn')
 
-    // ============ v5.0 新增 254 providers (bm7) ============
+    // ============ v5.0 鏂板 254 providers (bm7) ============
     bm7('advertising', 'Advertising')
     bm7('advertisingmitv', 'AdvertisingMiTV')
     bm7('adobeactivation', 'AdobeActivation')
@@ -687,8 +687,8 @@ function injectRuleProviders(config) {
     bm7('lg', 'LG')
     bm7('cloudflare', 'Cloudflare')
     bm7('akamai', 'Akamai')
-    // v5.1.2 FIX#6: 删除 bm7 DNS provider（混合中外DNS锁死CLOUD_CDN，改为自然分流）
-    // bm7('dns', 'DNS')  ← REMOVED
+    // v5.1.2 FIX#6: 鍒犻櫎 bm7 DNS provider锛堟贩鍚堜腑澶朌NS閿佹CLOUD_CDN锛屾敼涓鸿嚜鐒跺垎娴侊級
+    // bm7('dns', 'DNS')  鈫?REMOVED
     bm7('digicert', 'DigiCert')
     bm7('globalsign', 'GlobalSign')
     bm7('sectigo', 'Sectigo')
@@ -710,12 +710,12 @@ function injectRuleProviders(config) {
 
 
     // ================================================================
-    //  v5.1 Step 1: P0/P2 安全规则 + 量化交易增强
+    //  v5.1 Step 1: P0/P2 瀹夊叏瑙勫垯 + 閲忓寲浜ゆ槗澧炲己
     // ================================================================
 
-    // ── P0: Ckrvxr/MihomoRules 安全防护 ──
-    // v5.2.1 REMOVED: ckrvxr-antipcdn 和 ckrvxr-antifraud 规则源已下线（持续 404），已删除
-    // P0: SukkaW 13万钓鱼域名拦截（domain behavior + text format）
+    // 鈹€鈹€ P0: Ckrvxr/MihomoRules 瀹夊叏闃叉姢 鈹€鈹€
+    // v5.2.1 REMOVED: ckrvxr-antipcdn 鍜?ckrvxr-antifraud 瑙勫垯婧愬凡涓嬬嚎锛堟寔缁?404锛夛紝宸插垹闄?
+    // P0: SukkaW 13涓囬挀楸煎煙鍚嶆嫤鎴紙domain behavior + text format锛?
     config['rule-providers']['sukka-phishing'] = {
       type: 'http', behavior: 'domain', format: 'text',
       url: 'https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt',
@@ -723,9 +723,9 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.1.6-P0: Hagezi Threat Intelligence Feeds（威胁情报：malware/cryptojacking/C2/scam/spam）
-    // 优先方案：MiHomoer .mrs 二进制格式（domain behavior，冷启动开销极小）
-    // 备选方案（若 mrs 源不可用，取消下方注释并注释掉 mrs 版本）：
+    // v5.1.6-P0: Hagezi Threat Intelligence Feeds锛堝▉鑳佹儏鎶ワ細malware/cryptojacking/C2/scam/spam锛?
+    // 浼樺厛鏂规锛歁iHomoer .mrs 浜岃繘鍒舵牸寮忥紙domain behavior锛屽喎鍚姩寮€閿€鏋佸皬锛?
+    // 澶囬€夋柟妗堬紙鑻?mrs 婧愪笉鍙敤锛屽彇娑堜笅鏂规敞閲婂苟娉ㄩ噴鎺?mrs 鐗堟湰锛夛細
     //   config['rule-providers']['hagezi-tif'] = {
     //     type: 'http', behavior: 'domain', format: 'text',
     //     url: 'https://fastly.jsdelivr.net/gh/hagezi/dns-blocklists@main/domains/tif.medium.txt',
@@ -742,10 +742,10 @@ function injectRuleProviders(config) {
     }
 
     // ================================================================
-    //  v5.1 Step 3: szkane/ClashRuleSet 全量补充
+    //  v5.1 Step 3: szkane/ClashRuleSet 鍏ㄩ噺琛ュ厖
     // ================================================================
 
-    // ── szkane AI 服务（OpenAI/Claude/Grok/Perplexity/Gemini 合并）──
+    // 鈹€鈹€ szkane AI 鏈嶅姟锛圤penAI/Claude/Grok/Perplexity/Gemini 鍚堝苟锛夆攢鈹€
     config['rule-providers']['szkane-ai'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/AiDomain.list',
@@ -753,11 +753,11 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane CiciAI（字节海外AI：Coze International/Luma AI，需新加坡节点）──
-    // v5.2.7 FIX#27-P1: upstream `Clash/Ruleset/CiciAi.list` 含 `USER-AGENT,TikTok*`，mihomo
-    //   classical provider 不识别 USER-AGENT 会触发 `parse classical rule [USER-AGENT,TikTok*]
-    //   error: unsupported rule type: USER-AGENT`。改用本仓库 mirrors/ 的清洗副本（仅删该行，
-    //   TikTok 域名已由 metaDomain('tiktok','tiktok') 覆盖）。
+    // 鈹€鈹€ szkane CiciAI锛堝瓧鑺傛捣澶朅I锛欳oze International/Luma AI锛岄渶鏂板姞鍧¤妭鐐癸級鈹€鈹€
+    // v5.2.7 FIX#27-P1: upstream `Clash/Ruleset/CiciAi.list` 鍚?`USER-AGENT,TikTok*`锛宮ihomo
+    //   classical provider 涓嶈瘑鍒?USER-AGENT 浼氳Е鍙?`parse classical rule [USER-AGENT,TikTok*]
+    //   error: unsupported rule type: USER-AGENT`銆傛敼鐢ㄦ湰浠撳簱 mirrors/ 鐨勬竻娲楀壇鏈紙浠呭垹璇ヨ锛?
+    //   TikTok 鍩熷悕宸茬敱 metaDomain('tiktok','tiktok') 瑕嗙洊锛夈€?
     config['rule-providers']['szkane-ciciai'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/CiciAi.list',
@@ -765,7 +765,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane Web3（DeFi/NFT/区块链RPC/交易所）★量化交易核心 ──
+    // 鈹€鈹€ szkane Web3锛圖eFi/NFT/鍖哄潡閾綬PC/浜ゆ槗鎵€锛夆槄閲忓寲浜ゆ槗鏍稿績 鈹€鈹€
     config['rule-providers']['szkane-web3'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Web3.list',
@@ -773,7 +773,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane Developer（Docker镜像/HuggingFace模型/开发者下载）──
+    // 鈹€鈹€ szkane Developer锛圖ocker闀滃儚/HuggingFace妯″瀷/寮€鍙戣€呬笅杞斤級鈹€鈹€
     config['rule-providers']['szkane-developer'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Developer.list',
@@ -781,7 +781,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane Education（Khan Academy）──
+    // 鈹€鈹€ szkane Education锛圞han Academy锛夆攢鈹€
     config['rule-providers']['szkane-khan'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Khan.list',
@@ -789,7 +789,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane Education（Coursera/edX/Udacity等）──
+    // 鈹€鈹€ szkane Education锛圕oursera/edX/Udacity绛夛級鈹€鈹€
     config['rule-providers']['szkane-edutools'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Edutools.list',
@@ -797,11 +797,11 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane UK Apps ──
-    // v5.2.7 FIX#27-P1: upstream `Clash/Ruleset/UK.list` 含 `USER-AGENT,BBCiPlayer*`，
-    //   mihomo classical provider 不识别 USER-AGENT 会触发
-    //   `parse classical rule [USER-AGENT,BBCiPlayer*] error: unsupported rule type: USER-AGENT`。
-    //   改用本仓库 mirrors/ 的清洗副本（BBC 域名已由 metaDomain('bbc','bbc') 覆盖）。
+    // 鈹€鈹€ szkane UK Apps 鈹€鈹€
+    // v5.2.7 FIX#27-P1: upstream `Clash/Ruleset/UK.list` 鍚?`USER-AGENT,BBCiPlayer*`锛?
+    //   mihomo classical provider 涓嶈瘑鍒?USER-AGENT 浼氳Е鍙?
+    //   `parse classical rule [USER-AGENT,BBCiPlayer*] error: unsupported rule type: USER-AGENT`銆?
+    //   鏀圭敤鏈粨搴?mirrors/ 鐨勬竻娲楀壇鏈紙BBC 鍩熷悕宸茬敱 metaDomain('bbc','bbc') 瑕嗙洊锛夈€?
     config['rule-providers']['szkane-uk'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/UK.list',
@@ -809,7 +809,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane BilibiliHMT（港澳台哔哩哔哩）──
+    // 鈹€鈹€ szkane BilibiliHMT锛堟腐婢冲彴鍝斿摡鍝斿摡锛夆攢鈹€
     config['rule-providers']['szkane-bilihmt'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/BilibiliHMT.list',
@@ -817,7 +817,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane Netflix IP 段 ──
+    // 鈹€鈹€ szkane Netflix IP 娈?鈹€鈹€
     config['rule-providers']['szkane-netflixip'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/NetflixIP.list',
@@ -825,7 +825,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // ── szkane ProxyGFWlist（GFW域名补充）──
+    // 鈹€鈹€ szkane ProxyGFWlist锛圙FW鍩熷悕琛ュ厖锛夆攢鈹€
     config['rule-providers']['szkane-proxygfw'] = {
       type: 'http', behavior: 'classical', format: 'text',
       url: 'https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/ProxyGFWlist.list',
@@ -835,20 +835,20 @@ function injectRuleProviders(config) {
     }
 
     // ================================================================
-    //  v5.1.4: Loyalsoldier/clash-rules GFW 封锁域名规则集
-    //  ★ 中国 GFW 领域最权威的 Clash 格式规则源（⭐3.6k）
-    //  上游数据链：
-    //    gfwlist/gfwlist（⭐11k，GFW 封锁域名原始列表）
-    //    + v2fly/domain-list-community（⭐7.1k，V2Ray 社区域名分类数据库）
-    //    + GreatFire Analyzer（独立封锁探测机构）
-    //    → Loyalsoldier/v2ray-rules-dat（聚合转换）
-    //    → Loyalsoldier/clash-rules（Clash 格式 GitHub Actions 每日北京时间6:30自动构建）
-    //  ❌ 排除 tld-not-cn.txt：包含所有非CN顶级域名(.com/.net/.org)，太宽泛会吞掉几乎所有国外域名
+    //  v5.1.4: Loyalsoldier/clash-rules GFW 灏侀攣鍩熷悕瑙勫垯闆?
+    //  鈽?涓浗 GFW 棰嗗煙鏈€鏉冨▉鐨?Clash 鏍煎紡瑙勫垯婧愶紙猸?.6k锛?
+    //  涓婃父鏁版嵁閾撅細
+    //    gfwlist/gfwlist锛堚瓙11k锛孏FW 灏侀攣鍩熷悕鍘熷鍒楄〃锛?
+    //    + v2fly/domain-list-community锛堚瓙7.1k锛孷2Ray 绀惧尯鍩熷悕鍒嗙被鏁版嵁搴擄級
+    //    + GreatFire Analyzer锛堢嫭绔嬪皝閿佹帰娴嬫満鏋勶級
+    //    鈫?Loyalsoldier/v2ray-rules-dat锛堣仛鍚堣浆鎹級
+    //    鈫?Loyalsoldier/clash-rules锛圕lash 鏍煎紡 GitHub Actions 姣忔棩鍖椾含鏃堕棿6:30鑷姩鏋勫缓锛?
+    //  鉂?鎺掗櫎 tld-not-cn.txt锛氬寘鍚墍鏈夐潪CN椤剁骇鍩熷悕(.com/.net/.org)锛屽お瀹芥硾浼氬悶鎺夊嚑涔庢墍鏈夊浗澶栧煙鍚?
     // ================================================================
 
-    // ── GFWList 封锁域名（核心列表，~4000+ 域名）──
-    // v5.1.7 PERF: text → MetaCubeX geosite:gfw.mrs（同源 gfwlist → v2fly/domain-list-community）
-    // 备选方案（若 MetaCubeX .mrs 源不可用，取消下方注释并注释掉 mrs 版本）：
+    // 鈹€鈹€ GFWList 灏侀攣鍩熷悕锛堟牳蹇冨垪琛紝~4000+ 鍩熷悕锛夆攢鈹€
+    // v5.1.7 PERF: text 鈫?MetaCubeX geosite:gfw.mrs锛堝悓婧?gfwlist 鈫?v2fly/domain-list-community锛?
+    // 澶囬€夋柟妗堬紙鑻?MetaCubeX .mrs 婧愪笉鍙敤锛屽彇娑堜笅鏂规敞閲婂苟娉ㄩ噴鎺?mrs 鐗堟湰锛夛細
     //   config['rule-providers']['loyalsoldier-gfw'] = {
     //     type: 'http', behavior: 'domain', format: 'text',
     //     url: 'https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/gfw.txt',
@@ -857,9 +857,9 @@ function injectRuleProviders(config) {
     //     proxy: RP_PROXY
     //   }
     metaDomain('loyalsoldier-gfw', 'gfw')
-    // ── GreatFire 封锁域名（独立探测源，与 GFWList 互补）──
-    // v5.1.7 PERF: text → MetaCubeX geosite:greatfire.mrs（同源 GreatFire Analyzer → v2fly）
-    // 备选方案（若 MetaCubeX .mrs 源不可用，取消下方注释并注释掉 mrs 版本）：
+    // 鈹€鈹€ GreatFire 灏侀攣鍩熷悕锛堢嫭绔嬫帰娴嬫簮锛屼笌 GFWList 浜掕ˉ锛夆攢鈹€
+    // v5.1.7 PERF: text 鈫?MetaCubeX geosite:greatfire.mrs锛堝悓婧?GreatFire Analyzer 鈫?v2fly锛?
+    // 澶囬€夋柟妗堬紙鑻?MetaCubeX .mrs 婧愪笉鍙敤锛屽彇娑堜笅鏂规敞閲婂苟娉ㄩ噴鎺?mrs 鐗堟湰锛夛細
     //   config['rule-providers']['loyalsoldier-greatfire'] = {
     //     type: 'http', behavior: 'domain', format: 'text',
     //     url: 'https://fastly.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/greatfire.txt',
@@ -870,11 +870,11 @@ function injectRuleProviders(config) {
     metaDomain('loyalsoldier-greatfire', 'greatfire')
 
     // ================================================================
-    //  v5.1 Step 2: Accademia/Additional_Rule_For_Clash 全量35目录
-    //  ★ 作为 blackmatrix7/ios_rule_script 的补充规则
+    //  v5.1 Step 2: Accademia/Additional_Rule_For_Clash 鍏ㄩ噺35鐩綍
+    //  鈽?浣滀负 blackmatrix7/ios_rule_script 鐨勮ˉ鍏呰鍒?
     // ================================================================
 
-    // ── AI 服务补充 ──
+    // 鈹€鈹€ AI 鏈嶅姟琛ュ厖 鈹€鈹€
     config['rule-providers']['acc-appleai'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/AppleAI/AppleAI.yaml',
@@ -882,10 +882,10 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.2.7 FIX#27-P1: upstream `Grok/Grok.yaml` 含 `IP-CIDR         , 17.253.4.125`
-    //   （多余空格 + 缺 CIDR 掩码）会触发
-    //   `parse classical rule [IP-CIDR , 17.253.4.125] error: payloadRule error`。
-    //   改用本仓库 mirrors/ 的清洗副本（仅删该行 + 规整空格）。
+    // v5.2.7 FIX#27-P1: upstream `Grok/Grok.yaml` 鍚?`IP-CIDR         , 17.253.4.125`
+    //   锛堝浣欑┖鏍?+ 缂?CIDR 鎺╃爜锛変細瑙﹀彂
+    //   `parse classical rule [IP-CIDR , 17.253.4.125] error: payloadRule error`銆?
+    //   鏀圭敤鏈粨搴?mirrors/ 鐨勬竻娲楀壇鏈紙浠呭垹璇ヨ + 瑙勬暣绌烘牸锛夈€?
     config['rule-providers']['acc-grok'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/Grok.yaml',
@@ -908,7 +908,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── 金融服务：Bank × 10国（原 acc-bank 404 → 拆分为子 provider）──
+    // 鈹€鈹€ 閲戣瀺鏈嶅姟锛欱ank 脳 10鍥斤紙鍘?acc-bank 404 鈫?鎷嗗垎涓哄瓙 provider锛夆攢鈹€
     for (const cc of ['US', 'UK', 'HK', 'SG', 'JP', 'AU', 'CA', 'DE', 'NL', 'FR']) {
       config['rule-providers'][`acc-bank-${cc.toLowerCase()}`] = {
         type: 'http', behavior: 'classical',
@@ -918,7 +918,7 @@ function injectRuleProviders(config) {
         proxy: RP_PROXY
       }
     }
-    // ── 金融服务：VirtualFinance × 4（原 acc-virtualfinance 404 → 拆分）──
+    // 鈹€鈹€ 閲戣瀺鏈嶅姟锛歏irtualFinance 脳 4锛堝師 acc-virtualfinance 404 鈫?鎷嗗垎锛夆攢鈹€
     for (const svc of ['Paypal', 'Wise', 'Monzo', 'Revolut']) {
       config['rule-providers'][`acc-vf-${svc.toLowerCase()}`] = {
         type: 'http', behavior: 'classical',
@@ -929,7 +929,7 @@ function injectRuleProviders(config) {
       }
     }
 
-    // ── 苹果补充 ──
+    // 鈹€鈹€ 鑻规灉琛ュ厖 鈹€鈹€
     config['rule-providers']['acc-applenews'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/AppleNews/AppleNews.yaml',
@@ -945,7 +945,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── 微软补充 ──
+    // 鈹€鈹€ 寰蒋琛ュ厖 鈹€鈹€
     config['rule-providers']['acc-microsoftapps'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/MicrosoftAPPs/MicrosoftAPPs.yaml',
@@ -954,7 +954,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── 即时通讯 ──
+    // 鈹€鈹€ 鍗虫椂閫氳 鈹€鈹€
     config['rule-providers']['acc-signal'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Signal/Signal.yaml',
@@ -963,7 +963,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── 远程协作 ──
+    // 鈹€鈹€ 杩滅▼鍗忎綔 鈹€鈹€
     config['rule-providers']['acc-rustdesk'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/RustDesk/RustDesk.yaml',
@@ -979,7 +979,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── 国内云盘/流媒体 ──
+    // 鈹€鈹€ 鍥藉唴浜戠洏/娴佸獟浣?鈹€鈹€
     config['rule-providers']['acc-alipan'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Alipan/Alipan.yaml',
@@ -1008,7 +1008,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.1.1: FakeLocation × 10 平台（原 acc-fakelocation 404 → 拆分）
+    // v5.1.1: FakeLocation 脳 10 骞冲彴锛堝師 acc-fakelocation 404 鈫?鎷嗗垎锛?
     for (const app of [
       'BiliBili', 'DouYin', 'KuaiShou', 'XiaoHongShu', 'XiGua',
       'WeiBo', 'ZhiHu', 'TieBa', 'DouBan', 'XianYu'
@@ -1022,7 +1022,7 @@ function injectRuleProviders(config) {
       }
     }
 
-    // ── 广告/安全/隐私 ──
+    // 鈹€鈹€ 骞垮憡/瀹夊叏/闅愮 鈹€鈹€
     config['rule-providers']['acc-hijackingplus'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HijackingPlus/HijackingPlus.yaml',
@@ -1052,7 +1052,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── 下载更新 ──
+    // 鈹€鈹€ 涓嬭浇鏇存柊 鈹€鈹€
     config['rule-providers']['acc-macappupgrade'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/MacAppUpgrade/MacAppUpgrade.yaml',
@@ -1061,7 +1061,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── CDN/DNS ──
+    // 鈹€鈹€ CDN/DNS 鈹€鈹€
     config['rule-providers']['acc-fastly'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Fastly/Fastly.yaml',
@@ -1069,15 +1069,15 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.1.2 FIX#6: 删除 acc-globaldns provider（国外DNS由各服务商规则自然分流）
-    // acc-globaldns  ← REMOVED
-    // v5.1.2 FIX#6: 删除 acc-chinadns provider（中国DNS由CN兜底规则自然分流到直连）
-    // acc-chinadns  ← REMOVED
-    // v5.2.5 FIX#23-P1: acc-geositecn + acc-china 删除
-    //   这两个是 geosite:cn (metaDomain('cn', 'cn') 已提供) 的纯重复，
-    //   保留 acc-chinamax 作为 ChinaMax 独立补充覆盖
+    // v5.1.2 FIX#6: 鍒犻櫎 acc-globaldns provider锛堝浗澶朌NS鐢卞悇鏈嶅姟鍟嗚鍒欒嚜鐒跺垎娴侊級
+    // acc-globaldns  鈫?REMOVED
+    // v5.1.2 FIX#6: 鍒犻櫎 acc-chinadns provider锛堜腑鍥紻NS鐢盋N鍏滃簳瑙勫垯鑷劧鍒嗘祦鍒扮洿杩烇級
+    // acc-chinadns  鈫?REMOVED
+    // v5.2.5 FIX#23-P1: acc-geositecn + acc-china 鍒犻櫎
+    //   杩欎袱涓槸 geosite:cn (metaDomain('cn', 'cn') 宸叉彁渚? 鐨勭函閲嶅锛?
+    //   淇濈暀 acc-chinamax 浣滀负 ChinaMax 鐙珛琛ュ厖瑕嗙洊
 
-    // ── 国内兜底补充 ──
+    // 鈹€鈹€ 鍥藉唴鍏滃簳琛ュ厖 鈹€鈹€
     config['rule-providers']['acc-chinamax'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/ChinaMax/ChinaMax.yaml',
@@ -1085,7 +1085,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.1.1: HomeIP × 2国（原 acc-homeip 404 → 拆分）
+    // v5.1.1: HomeIP 脳 2鍥斤紙鍘?acc-homeip 404 鈫?鎷嗗垎锛?
     for (const cc of ['US', 'JP']) {
       config['rule-providers'][`acc-homeip-${cc.toLowerCase()}`] = {
         type: 'http', behavior: 'classical',
@@ -1096,7 +1096,7 @@ function injectRuleProviders(config) {
       }
     }
 
-    // ── 国外网站 ──
+    // 鈹€鈹€ 鍥藉缃戠珯 鈹€鈹€
     config['rule-providers']['acc-waybackmachine'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/WaybackMachine/WaybackMachine.yaml',
@@ -1112,7 +1112,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── IoT：Aqara × 2（原 acc-aqara 404 → 拆分国内/国际）──
+    // 鈹€鈹€ IoT锛欰qara 脳 2锛堝師 acc-aqara 404 鈫?鎷嗗垎鍥藉唴/鍥介檯锛夆攢鈹€
     config['rule-providers']['acc-aqara-cn'] = {
       type: 'http', behavior: 'classical',
       url: `${ACC}/Aqara/AqaraCN.yaml`,
@@ -1128,7 +1128,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── P2P/Tracker ──
+    // 鈹€鈹€ P2P/Tracker 鈹€鈹€
     config['rule-providers']['acc-emuleserver'] = {
       type: 'http', behavior: 'classical',
       url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/eMuleServer/eMuleServer.yaml',
@@ -1137,7 +1137,7 @@ function injectRuleProviders(config) {
       proxy: RP_PROXY
     }
 
-    // ── GeoRouting Domain × 17 区域（原 acc-georouting-domain 404 → 按区域拆分，Domain版=作者推荐🔥）──
+    // 鈹€鈹€ GeoRouting Domain 脳 17 鍖哄煙锛堝師 acc-georouting-domain 404 鈫?鎸夊尯鍩熸媶鍒嗭紝Domain鐗?浣滆€呮帹鑽愷煍ワ級鈹€鈹€
     for (const region of GEO_REGIONS_ALL) {
       const slug = region.toLowerCase().replace(/_/g, '-')
       config['rule-providers'][`acc-geo-d-${slug}`] = {
@@ -1148,7 +1148,7 @@ function injectRuleProviders(config) {
         proxy: RP_PROXY
       }
     }
-    // ── GeoRouting IP × 17 区域（原 acc-georouting-ip 404 → 按区域拆分）──
+    // 鈹€鈹€ GeoRouting IP 脳 17 鍖哄煙锛堝師 acc-georouting-ip 404 鈫?鎸夊尯鍩熸媶鍒嗭級鈹€鈹€
     for (const region of GEO_REGIONS_ALL) {
       const slug = region.toLowerCase().replace(/_/g, '-')
       config['rule-providers'][`acc-geo-ip-${slug}`] = {
@@ -1165,19 +1165,19 @@ function injectRuleProviders(config) {
 }
 
 // ================================================================
-//  模块 H：规则注入
+//  妯″潡 H锛氳鍒欐敞鍏?
 // ================================================================
 
 function injectRules(config) {
-  // FlClash: 先构建完整数组，再原地写入（不能 config.rules = [...] 因为 QuickJS FFI 不支持数组重赋值）
+  // FlClash: 鍏堟瀯寤哄畬鏁存暟缁勶紝鍐嶅師鍦板啓鍏ワ紙涓嶈兘 config.rules = [...] 鍥犱负 QuickJS FFI 涓嶆敮鎸佹暟缁勯噸璧嬪€硷級
   var _newRules = [
     `RULE-SET,anti-ad,${BIZ.AD}`,
-    // v5.1: P0 安全 - 钓鱼域名拦截（13万条，SukkaW）
+    // v5.1: P0 瀹夊叏 - 閽撻奔鍩熷悕鎷︽埅锛?3涓囨潯锛孲ukkaW锛?
     `RULE-SET,sukka-phishing,${BIZ.AD}`,
-    // v5.1.6: P0 安全 - 威胁情报（Hagezi TIF：malware/cryptojacking/C2/scam/spam）
+    // v5.1.6: P0 瀹夊叏 - 濞佽儊鎯呮姤锛圚agezi TIF锛歮alware/cryptojacking/C2/scam/spam锛?
     `RULE-SET,hagezi-tif,${BIZ.AD}`,
-    // v5.2.1 REMOVED: ckrvxr-antifraud 和 ckrvxr-antipcdn 规则源已下线
-    // v5.1: Accademia 安全补充
+    // v5.2.1 REMOVED: ckrvxr-antifraud 鍜?ckrvxr-antipcdn 瑙勫垯婧愬凡涓嬬嚎
+    // v5.1: Accademia 瀹夊叏琛ュ厖
     `RULE-SET,acc-hijackingplus,${BIZ.AD}`,
     `RULE-SET,acc-blockhttpdnsplus,${BIZ.AD}`,
     `RULE-SET,acc-prerepaireasyprivacy,${BIZ.AD}`,
@@ -1194,7 +1194,7 @@ function injectRules(config) {
     `RULE-SET,miuiprivacy,${BIZ.AD}`,
     `RULE-SET,privacy,${BIZ.AD}`,
     `RULE-SET,youmengchuangxiang,${BIZ.AD}`,
-    // v5.2.1 FIX#19: DST-PORT,7680 必须在 GEOIP,private 之前，否则私有 IP 先匹配走 DIRECT
+    // v5.2.1 FIX#19: DST-PORT,7680 蹇呴』鍦?GEOIP,private 涔嬪墠锛屽惁鍒欑鏈?IP 鍏堝尮閰嶈蛋 DIRECT
     'DST-PORT,7680,REJECT',
     'GEOSITE,private,DIRECT',
     'GEOIP,private,DIRECT,no-resolve',
@@ -1207,8 +1207,8 @@ function injectRules(config) {
     'PROCESS-NAME,gdphost.exe,DIRECT',
     'PROCESS-NAME,gehsender.exe,DIRECT',
     'PROCESS-NAME,GSCService.exe,DIRECT',
-    // v5.1.8 FIX#12-P1: GSCService.exe 每 2h 访问 ip.cip.cc 做外部 IP 检测，TUN 下 DNS 解析失败
-    // 日志：dial DIRECT (match ProcessName/GSCService.exe) --> ip.cip.cc:80 error: dns resolve failed
+    // v5.1.8 FIX#12-P1: GSCService.exe 姣?2h 璁块棶 ip.cip.cc 鍋氬閮?IP 妫€娴嬶紝TUN 涓?DNS 瑙ｆ瀽澶辫触
+    // 鏃ュ織锛歞ial DIRECT (match ProcessName/GSCService.exe) --> ip.cip.cc:80 error: dns resolve failed
     'DOMAIN,ip.cip.cc,DIRECT',
     'PROCESS-NAME,gsupservice.exe,DIRECT',
     'PROCESS-NAME,gchsvc.exe,DIRECT',
@@ -1224,8 +1224,8 @@ function injectRules(config) {
     'DST-PORT,3479,DIRECT',
     'DOMAIN-SUFFIX,chiphell.com,DIRECT',
     'DOMAIN-SUFFIX,iwipwedabay.com,DIRECT',
-    // v5.2.0 CLEAN#2: Binance 精确 DOMAIN 规则已清理（全部被同组 DOMAIN-SUFFIX 覆盖）
-    // 保留 fake-ip-filter 中的精确域名（DNS 层独立于规则层，不受影响）
+    // v5.2.0 CLEAN#2: Binance 绮剧‘ DOMAIN 瑙勫垯宸叉竻鐞嗭紙鍏ㄩ儴琚悓缁?DOMAIN-SUFFIX 瑕嗙洊锛?
+    // 淇濈暀 fake-ip-filter 涓殑绮剧‘鍩熷悕锛圖NS 灞傜嫭绔嬩簬瑙勫垯灞傦紝涓嶅彈褰卞搷锛?
     `DOMAIN-SUFFIX,binance.vision,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.com,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.info,${BIZ.CRYPTO}`,
@@ -1233,15 +1233,15 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,binance.me,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.org,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binancefuture.com,${BIZ.CRYPTO}`,
-    // v5.1.8 FIX#11-P0: dns.google 是 DoH 服务，前置拦截防止 szkane-ai 宽规则吞入 AI 组
-    // v5.2.10 FIX#39: 由 ☁️ 云与CDN 改路由到 🚫 受限网站——dns.google 在境内被封，
-    //                 若用户把 CDN 组误设直连，DoH 必失败；放在 GFW 组语义更准确
+    // v5.1.8 FIX#11-P0: dns.google 鏄?DoH 鏈嶅姟锛屽墠缃嫤鎴槻姝?szkane-ai 瀹借鍒欏悶鍏?AI 缁?
+    // v5.2.10 FIX#39: 鐢?鈽侊笍 浜戜笌CDN 鏀硅矾鐢卞埌 馃毇 鍙楅檺缃戠珯鈥斺€攄ns.google 鍦ㄥ鍐呰灏侊紝
+    //                 鑻ョ敤鎴锋妸 CDN 缁勮璁剧洿杩烇紝DoH 蹇呭け璐ワ紱鏀惧湪 GFW 缁勮涔夋洿鍑嗙‘
     `DOMAIN,dns.google,${BIZ.GFW}`,
     `DOMAIN,dns.google.com,${BIZ.GFW}`,
-    // v5.1.8 FIX#14-P0: YouTube/googlevideo 被 szkane-ai 宽规则吞入 AI 组
-    // szkane AiDomain.list 含 Google 宽域名（因 Gemini），导致 YouTube 全系误走 AI 代理
-    // 日志：[TCP] dial 🤖 AI 服务 (match RuleSet/szkane-ai) --> www.youtube.com / yt3.ggpht.com / googlevideo.com
-    // 前置精准拦截到 STREAM_US，优先于 RULE-SET,szkane-ai 生效
+    // v5.1.8 FIX#14-P0: YouTube/googlevideo 琚?szkane-ai 瀹借鍒欏悶鍏?AI 缁?
+    // szkane AiDomain.list 鍚?Google 瀹藉煙鍚嶏紙鍥?Gemini锛夛紝瀵艰嚧 YouTube 鍏ㄧ郴璇蛋 AI 浠ｇ悊
+    // 鏃ュ織锛歔TCP] dial 馃 AI 鏈嶅姟 (match RuleSet/szkane-ai) --> www.youtube.com / yt3.ggpht.com / googlevideo.com
+    // 鍓嶇疆绮惧噯鎷︽埅鍒?STREAM_US锛屼紭鍏堜簬 RULE-SET,szkane-ai 鐢熸晥
     `DOMAIN-SUFFIX,youtube.com,${BIZ.YT}`,
     `DOMAIN-SUFFIX,youtu.be,${BIZ.YT}`,
     `DOMAIN-SUFFIX,googlevideo.com,${BIZ.YT}`,
@@ -1273,7 +1273,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,notebooklm.google,${BIZ.AI}`,
     `DOMAIN-SUFFIX,poe.com,${BIZ.AI}`,
     `DOMAIN-SUFFIX,character.ai,${BIZ.AI}`,
-    // v5.2.2: PI.ai/Inflection → GFW（中国被墙需代理，印尼可直连）
+    // v5.2.2: PI.ai/Inflection 鈫?GFW锛堜腑鍥借澧欓渶浠ｇ悊锛屽嵃灏煎彲鐩磋繛锛?
     `DOMAIN-SUFFIX,inflection.ai,${BIZ.GFW}`,
     `DOMAIN-SUFFIX,pi.ai,${BIZ.GFW}`,
     `DOMAIN-SUFFIX,suno.ai,${BIZ.AI}`,
@@ -1286,43 +1286,43 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,modal.run,${BIZ.AI}`,
     `DOMAIN-SUFFIX,runpod.io,${BIZ.AI}`,
     `RULE-SET,civitai,${BIZ.AI}`,
-    // ════════════════════════════════════════════════════════════════
-    //  v5.1.8 FIX#14-P0：Google 子服务防吞盾
-    //  szkane AiDomain.list 含 Google 宽域名（因 Gemini/Bard），导致 Google 全系误走 AI 代理
-    //  解法：在 RULE-SET,szkane-ai 之前前置所有 Google 非 AI 子服务精准规则
-    //  已安全（在此之前已匹配）：Gemini(RULE-SET) / NotebookLM / YouTube / dns.google
-    //  ▼ 以下规则从各业务区块提升至此，原位置 dead rules 已在 v5.1.9 清除
-    // ════════════════════════════════════════════════════════════════
-    // ── Google 邮件 ──
+    // 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+    //  v5.1.8 FIX#14-P0锛欸oogle 瀛愭湇鍔￠槻鍚炵浘
+    //  szkane AiDomain.list 鍚?Google 瀹藉煙鍚嶏紙鍥?Gemini/Bard锛夛紝瀵艰嚧 Google 鍏ㄧ郴璇蛋 AI 浠ｇ悊
+    //  瑙ｆ硶锛氬湪 RULE-SET,szkane-ai 涔嬪墠鍓嶇疆鎵€鏈?Google 闈?AI 瀛愭湇鍔＄簿鍑嗚鍒?
+    //  宸插畨鍏紙鍦ㄦ涔嬪墠宸插尮閰嶏級锛欸emini(RULE-SET) / NotebookLM / YouTube / dns.google
+    //  鈻?浠ヤ笅瑙勫垯浠庡悇涓氬姟鍖哄潡鎻愬崌鑷虫锛屽師浣嶇疆 dead rules 宸插湪 v5.1.9 娓呴櫎
+    // 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+    // 鈹€鈹€ Google 閭欢 鈹€鈹€
     `DOMAIN-SUFFIX,gmail.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,googlemail.com,${BIZ.INTL_SITE}`,
     `DOMAIN,mail.google.com,${BIZ.INTL_SITE}`,
     `DOMAIN,inbox.google.com,${BIZ.INTL_SITE}`,
-    // ── Google 即时通讯 ──
+    // 鈹€鈹€ Google 鍗虫椂閫氳 鈹€鈹€
     `RULE-SET,googlevoice,${BIZ.IM}`,
-    // ── Google 会议协作 ──
+    // 鈹€鈹€ Google 浼氳鍗忎綔 鈹€鈹€
     `DOMAIN-SUFFIX,meet.google.com,${BIZ.WORK}`,
     `DOMAIN,meet.googleapis.com,${BIZ.WORK}`,
-    // ── Google 下载更新 ──
+    // 鈹€鈹€ Google 涓嬭浇鏇存柊 鈹€鈹€
     `DOMAIN-SUFFIX,dl.google.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,play.googleapis.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,android.clients.google.com,${BIZ.DOWNLOAD}`,
     `RULE-SET,googlefcm,${BIZ.DOWNLOAD}`,
-    // ── Google 搜索引擎（兜底：MetaCubeX geosite:google 覆盖 google.com/co.*/com.*）──
+    // 鈹€鈹€ Google 鎼滅储寮曟搸锛堝厹搴曪細MetaCubeX geosite:google 瑕嗙洊 google.com/co.*/com.*锛夆攢鈹€
     `RULE-SET,googlesearch,${BIZ.TOOLS}`,
     `RULE-SET,googledrive,${BIZ.TOOLS}`,
     `RULE-SET,googleearth,${BIZ.TOOLS}`,
     `RULE-SET,google,${BIZ.TOOLS}`,
     `RULE-SET,google-ip,${BIZ.TOOLS},no-resolve`,
-    // ════════════════════════════════════════════════════════════════
-    // v5.1: szkane AI 综合 + Accademia AI 补充
+    // 鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲鈺愨晲
+    // v5.1: szkane AI 缁煎悎 + Accademia AI 琛ュ厖
     `RULE-SET,szkane-ai,${BIZ.AI}`,
     `RULE-SET,szkane-ciciai,${BIZ.AI}`,
     `RULE-SET,acc-appleai,${BIZ.AI}`,
     `RULE-SET,acc-grok,${BIZ.AI}`,
     `RULE-SET,acc-gemini,${BIZ.AI}`,
-    // v5.1.8 FIX#13-P2: 微软 Delivery Optimization 遥测非 Copilot AI，前置拦截
-    // 日志：match RuleSet/acc-copilot) --> geover.prod.do.dsp.mp.microsoft.com:443
+    // v5.1.8 FIX#13-P2: 寰蒋 Delivery Optimization 閬ユ祴闈?Copilot AI锛屽墠缃嫤鎴?
+    // 鏃ュ織锛歮atch RuleSet/acc-copilot) --> geover.prod.do.dsp.mp.microsoft.com:443
     `DOMAIN-SUFFIX,do.dsp.mp.microsoft.com,${BIZ.DOWNLOAD}`,
     `RULE-SET,acc-copilot,${BIZ.AI}`,
     `DOMAIN-SUFFIX,tradingview.com,${BIZ.CRYPTO}`,
@@ -1334,7 +1334,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,eth.limo,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,glitternode.ru,${BIZ.CRYPTO}`,
     `RULE-SET,binance,${BIZ.CRYPTO}`,
-    // v5.1: szkane Web3（DeFi/NFT/区块链RPC）★量化交易核心
+    // v5.1: szkane Web3锛圖eFi/NFT/鍖哄潡閾綬PC锛夆槄閲忓寲浜ゆ槗鏍稿績
     `RULE-SET,szkane-web3,${BIZ.CRYPTO}`,
     `RULE-SET,paypal,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,stripe.com,${BIZ.PAYMENTS}`,
@@ -1366,13 +1366,13 @@ function injectRules(config) {
     `RULE-SET,stripe,${BIZ.PAYMENTS}`,
     `RULE-SET,visa,${BIZ.PAYMENTS}`,
     `RULE-SET,tigerfintech,${BIZ.PAYMENTS}`,
-    // v5.1.1: Accademia 银行 × 10国 + 虚拟金融 × 4
+    // v5.1.1: Accademia 閾惰 脳 10鍥?+ 铏氭嫙閲戣瀺 脳 4
     ...['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(cc => `RULE-SET,acc-bank-${cc.toLowerCase()},${BIZ.PAYMENTS}`),
     ...['paypal','wise','monzo','revolut'].map(svc => `RULE-SET,acc-vf-${svc},${BIZ.PAYMENTS}`),
     `DOMAIN,login.live.com,${BIZ.MS}`,
     `DOMAIN,g.live.com,${BIZ.MS}`,
     `DOMAIN-SUFFIX,officeapps.live.com,${BIZ.MS}`,
-    // v5.1.9 CLEAN#1: gmail.com/googlemail.com/mail.google.com/inbox.google.com 已提升至防吞盾（FIX#14），dead rules 已清除
+    // v5.1.9 CLEAN#1: gmail.com/googlemail.com/mail.google.com/inbox.google.com 宸叉彁鍗囪嚦闃插悶鐩撅紙FIX#14锛夛紝dead rules 宸叉竻闄?
     `DOMAIN-SUFFIX,outlook.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,outlook.live.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,hotmail.com,${BIZ.INTL_SITE}`,
@@ -1386,7 +1386,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,pm.me,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tutanota.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tuta.com,${BIZ.INTL_SITE}`,
-    // v5.1.3 FIX#7: Zoho 宽域名收窄为邮件专用子域名（防止吞掉 RULE-SET,zoho 会议协作规则）
+    // v5.1.3 FIX#7: Zoho 瀹藉煙鍚嶆敹绐勪负閭欢涓撶敤瀛愬煙鍚嶏紙闃叉鍚炴帀 RULE-SET,zoho 浼氳鍗忎綔瑙勫垯锛?
     `DOMAIN,mail.zoho.com,${BIZ.INTL_SITE}`,
     `DOMAIN,mail.zoho.eu,${BIZ.INTL_SITE}`,
     `DOMAIN,mail.zoho.in,${BIZ.INTL_SITE}`,
@@ -1430,9 +1430,9 @@ function injectRules(config) {
     `RULE-SET,telegramsg,${BIZ.IM},no-resolve`,
     `RULE-SET,telegramus,${BIZ.IM},no-resolve`,
     `RULE-SET,zalo,${BIZ.IM}`,
-    // v5.1.9 CLEAN#1: googlevoice 已提升至防吞盾（FIX#14），dead rule 已清除
+    // v5.1.9 CLEAN#1: googlevoice 宸叉彁鍗囪嚦闃插悶鐩撅紙FIX#14锛夛紝dead rule 宸叉竻闄?
     `RULE-SET,italkbb,${BIZ.IM}`,
-    // v5.1: Accademia Signal 补充
+    // v5.1: Accademia Signal 琛ュ厖
     `RULE-SET,acc-signal,${BIZ.IM}`,
     `DOMAIN-SUFFIX,icq.com,${BIZ.IM}`,
     `RULE-SET,twitter,${BIZ.SOCIAL}`,
@@ -1469,7 +1469,7 @@ function injectRules(config) {
     `RULE-SET,zoom,${BIZ.WORK}`,
     `RULE-SET,slack,${BIZ.WORK}`,
     `RULE-SET,teams,${BIZ.WORK}`,
-    // v5.1.9 CLEAN#1: meet.google.com/meet.googleapis.com 已提升至防吞盾（FIX#14），dead rules 已清除
+    // v5.1.9 CLEAN#1: meet.google.com/meet.googleapis.com 宸叉彁鍗囪嚦闃插悶鐩撅紙FIX#14锛夛紝dead rules 宸叉竻闄?
     `DOMAIN-SUFFIX,webex.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,wbx2.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,ciscospark.com,${BIZ.WORK}`,
@@ -1503,7 +1503,7 @@ function injectRules(config) {
     `RULE-SET,zendesk,${BIZ.WORK}`,
     `RULE-SET,intercom,${BIZ.WORK}`,
     `RULE-SET,remotedesktop,${BIZ.WORK}`,
-    // v5.1: Accademia 远程桌面补充
+    // v5.1: Accademia 杩滅▼妗岄潰琛ュ厖
     `RULE-SET,acc-rustdesk,${BIZ.WORK}`,
     `RULE-SET,acc-parsec,${BIZ.WORK}`,
     'DOMAIN-SUFFIX,feishu.cn,DIRECT',
@@ -1584,16 +1584,16 @@ function injectRules(config) {
     `RULE-SET,56,${BIZ.CNMEDIA}`,
     `RULE-SET,cetv,${BIZ.CNMEDIA}`,
     `RULE-SET,yyets,${BIZ.CNMEDIA}`,
-    // v5.1: Accademia 国内云盘/媒体补充
+    // v5.1: Accademia 鍥藉唴浜戠洏/濯掍綋琛ュ厖
     `RULE-SET,acc-alipan,${BIZ.CNMEDIA}`,
     `RULE-SET,acc-baidunetdisk,${BIZ.CNMEDIA}`,
     `RULE-SET,acc-weiyun,${BIZ.CNMEDIA}`,
-    // v5.1.3 FIX#8: acc-kwai（Kwai国际版）从 CNMEDIA 移到 STREAM_SEA（海外APP需代理）
-    // RULE-SET,acc-kwai 已移至东南亚流媒体区块
-    // v5.1.1: Accademia FakeLocation × 10 平台（国内APP IP归属地伪装）
+    // v5.1.3 FIX#8: acc-kwai锛圞wai鍥介檯鐗堬級浠?CNMEDIA 绉诲埌 STREAM_SEA锛堟捣澶朅PP闇€浠ｇ悊锛?
+    // RULE-SET,acc-kwai 宸茬Щ鑷充笢鍗椾簹娴佸獟浣撳尯鍧?
+    // v5.1.1: Accademia FakeLocation 脳 10 骞冲彴锛堝浗鍐匒PP IP褰掑睘鍦颁吉瑁咃級
     ...['bilibili','douyin','kuaishou','xiaohongshu','xigua',
         'weibo','zhihu','tieba','douban','xianyu'].map(app => `RULE-SET,acc-fl-${app},${BIZ.CNMEDIA}`),
-    // v5.1.2 FIX#2: 港澳台哔哩哔哩需港区代理解锁（v5.1.1 误归入 CNMEDIA/DIRECT 导致 412）
+    // v5.1.2 FIX#2: 娓境鍙板摂鍝╁摂鍝╅渶娓尯浠ｇ悊瑙ｉ攣锛坴5.1.1 璇綊鍏?CNMEDIA/DIRECT 瀵艰嚧 412锛?
     `RULE-SET,szkane-bilihmt,${BIZ.STREAM_HK}`,
     `RULE-SET,viu,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,wetv.vip,${BIZ.STREAM_OTHER}`,
@@ -1621,7 +1621,7 @@ function injectRules(config) {
     `RULE-SET,viki,${BIZ.STREAM_OTHER}`,
     `RULE-SET,wetv,${BIZ.STREAM_OTHER}`,
     `RULE-SET,zee,${BIZ.STREAM_OTHER}`,
-    // v5.1.3 FIX#8: acc-kwai（Kwai国际版）移入东南亚流媒体（巴西/印尼主战场需代理）
+    // v5.1.3 FIX#8: acc-kwai锛圞wai鍥介檯鐗堬級绉诲叆涓滃崡浜氭祦濯掍綋锛堝反瑗?鍗板凹涓绘垬鍦洪渶浠ｇ悊锛?
     `RULE-SET,acc-kwai,${BIZ.STREAM_OTHER}`,
     `RULE-SET,youtube,${BIZ.YT}`,
     `RULE-SET,netflix,${BIZ.NFLX}`,
@@ -1673,11 +1673,11 @@ function injectRules(config) {
     `RULE-SET,americasvoice,${BIZ.STREAM_OTHER}`,
     `RULE-SET,cake,${BIZ.STREAM_OTHER}`,
     `RULE-SET,dood,${BIZ.STREAM_OTHER}`,
-    // v5.1.3 FIX#9: ehgallery 从 STREAM_US 移到 INTL_SITE（非流媒体，全球节点更灵活）
-    // RULE-SET,ehgallery 已移至国外网站区块
+    // v5.1.3 FIX#9: ehgallery 浠?STREAM_US 绉诲埌 INTL_SITE锛堥潪娴佸獟浣擄紝鍏ㄧ悆鑺傜偣鏇寸伒娲伙級
+    // RULE-SET,ehgallery 宸茬Щ鑷冲浗澶栫綉绔欏尯鍧?
     `RULE-SET,lastfm,${BIZ.MUSIC}`,
     `RULE-SET,emby,${BIZ.STREAM_OTHER}`,
-    // v5.1: szkane Netflix IP 段补充
+    // v5.1: szkane Netflix IP 娈佃ˉ鍏?
     `RULE-SET,szkane-netflixip,${BIZ.NFLX},no-resolve`,
     `DOMAIN-SUFFIX,mytvsuper.com,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,mytv.com.hk,${BIZ.STREAM_HK}`,
@@ -1842,7 +1842,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,leagueoflegends.com,${BIZ.GAME_INTL}`,
     `DOMAIN-SUFFIX,valorant.com,${BIZ.GAME_INTL}`,
     `DOMAIN-SUFFIX,rockstargames.com,${BIZ.GAME_INTL}`,
-    // v5.2.0 CLEAN#3: socialclub.rockstargames.com 已被上行 SUFFIX 覆盖，dead rule 已清除
+    // v5.2.0 CLEAN#3: socialclub.rockstargames.com 宸茶涓婅 SUFFIX 瑕嗙洊锛宒ead rule 宸叉竻闄?
     `DOMAIN-SUFFIX,gog.com,${BIZ.GAME_INTL}`,
     `DOMAIN-SUFFIX,gogalaxy.com,${BIZ.GAME_INTL}`,
     `DOMAIN-SUFFIX,bethesda.net,${BIZ.GAME_INTL}`,
@@ -1860,7 +1860,7 @@ function injectRules(config) {
     `RULE-SET,wildrift,${BIZ.GAME_INTL}`,
     `RULE-SET,sony,${BIZ.GAME_INTL}`,
     // v5.1.9 CLEAN#1: googlesearch/googledrive/googleearth/google/google-ip + dl.google.com/play.googleapis.com/android.clients.google.com
-    //   已提升至防吞盾（FIX#14），dead rules 已清除
+    //   宸叉彁鍗囪嚦闃插悶鐩撅紙FIX#14锛夛紝dead rules 宸叉竻闄?
     `RULE-SET,bing,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,yahoo.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,yahoo.co.jp,${BIZ.TOOLS}`,
@@ -1873,15 +1873,15 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,startpage.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,you.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,search.naver.com,${BIZ.TOOLS}`,
-    // v5.1.2 FIX#3: 补充孤儿 provider 规则引用（v5.1.1 定义了 provider 但未注入 RULE-SET）
-    // v5.1.9 CLEAN#1: googledrive/googleearth 已提升至防吞盾，此处仅保留 scholar/yandex
+    // v5.1.2 FIX#3: 琛ュ厖瀛ゅ効 provider 瑙勫垯寮曠敤锛坴5.1.1 瀹氫箟浜?provider 浣嗘湭娉ㄥ叆 RULE-SET锛?
+    // v5.1.9 CLEAN#1: googledrive/googleearth 宸叉彁鍗囪嚦闃插悶鐩撅紝姝ゅ浠呬繚鐣?scholar/yandex
     `RULE-SET,scholar,${BIZ.TOOLS}`,
     `RULE-SET,yandex,${BIZ.TOOLS}`,
     `RULE-SET,github,${BIZ.TOOLS}`,
     `RULE-SET,onedrive,${BIZ.MS}`,
     `RULE-SET,microsoft,${BIZ.MS}`,
     `RULE-SET,microsoftedge,${BIZ.MS}`,
-    // v5.1: Accademia 微软APP补充
+    // v5.1: Accademia 寰蒋APP琛ュ厖
     `RULE-SET,acc-microsoftapps,${BIZ.MS}`,
     `RULE-SET,applemusic,${BIZ.APPLE}`,
     `RULE-SET,icloud,${BIZ.APPLE}`,
@@ -1895,7 +1895,7 @@ function injectRules(config) {
     `RULE-SET,testflight,${BIZ.APPLE}`,
     `RULE-SET,applefirmware,${BIZ.APPLE}`,
     `RULE-SET,findmy,${BIZ.APPLE}`,
-    // v5.1: Accademia 苹果补充（AppleAI与AppleNews交叉规则，建议同节点）
+    // v5.1: Accademia 鑻规灉琛ュ厖锛圓ppleAI涓嶢ppleNews浜ゅ弶瑙勫垯锛屽缓璁悓鑺傜偣锛?
     `RULE-SET,acc-applenews,${BIZ.APPLE}`,
     `RULE-SET,acc-apple,${BIZ.APPLE}`,
     `RULE-SET,docker,${BIZ.TOOLS}`,
@@ -1921,8 +1921,8 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,netlify.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,pages.dev,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,workers.dev,${BIZ.TOOLS}`,
-    // v5.2.0 FIX#16: cloudflare.com 收窄为开发者入口精确匹配
-    // 原 DOMAIN-SUFFIX 会吞掉 cdnjs.cloudflare.com 等 CDN 子域名，导致无法命中后续 RULE-SET,cloudflare → CLOUD_CDN
+    // v5.2.0 FIX#16: cloudflare.com 鏀剁獎涓哄紑鍙戣€呭叆鍙ｇ簿纭尮閰?
+    // 鍘?DOMAIN-SUFFIX 浼氬悶鎺?cdnjs.cloudflare.com 绛?CDN 瀛愬煙鍚嶏紝瀵艰嚧鏃犳硶鍛戒腑鍚庣画 RULE-SET,cloudflare 鈫?CLOUD_CDN
     `DOMAIN,dash.cloudflare.com,${BIZ.TOOLS}`,
     `DOMAIN,api.cloudflare.com,${BIZ.TOOLS}`,
     `DOMAIN,developers.cloudflare.com,${BIZ.TOOLS}`,
@@ -1958,7 +1958,7 @@ function injectRules(config) {
     `RULE-SET,ibm,${BIZ.TOOLS}`,
     `RULE-SET,oracle,${BIZ.TOOLS}`,
     `RULE-SET,unity,${BIZ.TOOLS}`,
-    // v5.1: szkane Developer（Docker镜像/模型文件下载）
+    // v5.1: szkane Developer锛圖ocker闀滃儚/妯″瀷鏂囦欢涓嬭浇锛?
     `RULE-SET,szkane-developer,${BIZ.TOOLS}`,
     `RULE-SET,systemota,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,windowsupdate.com,${BIZ.DOWNLOAD}`,
@@ -1991,14 +1991,14 @@ function injectRules(config) {
     `RULE-SET,mozilla,${BIZ.DOWNLOAD}`,
     `RULE-SET,apkpure,${BIZ.DOWNLOAD}`,
     `RULE-SET,android,${BIZ.DOWNLOAD}`,
-    // v5.1.9 CLEAN#1: googlefcm 已提升至防吞盾（FIX#14），dead rule 已清除
+    // v5.1.9 CLEAN#1: googlefcm 宸叉彁鍗囪嚦闃插悶鐩撅紙FIX#14锛夛紝dead rule 宸叉竻闄?
     `RULE-SET,intel,${BIZ.DOWNLOAD}`,
     `RULE-SET,nvidia,${BIZ.DOWNLOAD}`,
     `RULE-SET,dell,${BIZ.DOWNLOAD}`,
     `RULE-SET,hp,${BIZ.DOWNLOAD}`,
     `RULE-SET,canon,${BIZ.DOWNLOAD}`,
     `RULE-SET,lg,${BIZ.DOWNLOAD}`,
-    // v5.1: Accademia MacApp升级规则（Homebrew/Sparkle源）
+    // v5.1: Accademia MacApp鍗囩骇瑙勫垯锛圚omebrew/Sparkle婧愶級
     `RULE-SET,acc-macappupgrade,${BIZ.DOWNLOAD}`,
     `RULE-SET,cloudflare-ip,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,cloudfront-ip,${BIZ.INTL_SITE},no-resolve`,
@@ -2023,10 +2023,10 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,azureedge.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,azurefd.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,msecnd.net,${BIZ.INTL_SITE}`,
-    // v5.2.1 FIX: jsdelivr 走受限网站组（中国用代理，海外可设直连），避免 rule-provider 刷新时 DNS 循环依赖
+    // v5.2.1 FIX: jsdelivr 璧板彈闄愮綉绔欑粍锛堜腑鍥界敤浠ｇ悊锛屾捣澶栧彲璁剧洿杩烇級锛岄伩鍏?rule-provider 鍒锋柊鏃?DNS 寰幆渚濊禆
     `DOMAIN-SUFFIX,jsdelivr.net,${BIZ.GFW}`,
     `DOMAIN-SUFFIX,unpkg.com,${BIZ.INTL_SITE}`,
-    // v5.2.10 FIX#39: 同 dns.google 改到 GFW 组（cloudflare-dns.com 在境内被封）
+    // v5.2.10 FIX#39: 鍚?dns.google 鏀瑰埌 GFW 缁勶紙cloudflare-dns.com 鍦ㄥ鍐呰灏侊級
     `DOMAIN-SUFFIX,cloudflare-dns.com,${BIZ.GFW}`,
     `DOMAIN-SUFFIX,cloudflarestorage.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,r2.dev,${BIZ.INTL_SITE}`,
@@ -2035,15 +2035,15 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,ucoz.net,${BIZ.INTL_SITE}`,
     `RULE-SET,cloudflare,${BIZ.INTL_SITE}`,
     `RULE-SET,akamai,${BIZ.INTL_SITE}`,
-    // v5.1.2 FIX#6: RULE-SET,dns 已删除（DNS自然分流，不锁死代理组）
+    // v5.1.2 FIX#6: RULE-SET,dns 宸插垹闄わ紙DNS鑷劧鍒嗘祦锛屼笉閿佹浠ｇ悊缁勶級
     `RULE-SET,digicert,${BIZ.INTL_SITE}`,
     `RULE-SET,globalsign,${BIZ.INTL_SITE}`,
     `RULE-SET,sectigo,${BIZ.INTL_SITE}`,
     `RULE-SET,brightcove,${BIZ.INTL_SITE}`,
     `RULE-SET,jwplayer,${BIZ.INTL_SITE}`,
-    // v5.1: Accademia CDN 补充
+    // v5.1: Accademia CDN 琛ュ厖
     `RULE-SET,acc-fastly,${BIZ.INTL_SITE}`,
-    // v5.1.2 FIX#6: RULE-SET,acc-globaldns 已删除（DNS自然分流）
+    // v5.1.2 FIX#6: RULE-SET,acc-globaldns 宸插垹闄わ紙DNS鑷劧鍒嗘祦锛?
     `DOMAIN-SUFFIX,letsencrypt.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,lencr.org,${BIZ.INTL_SITE}`,
     `GEOSITE,tracker,${BIZ.TRACKER}`,
@@ -2055,9 +2055,9 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,tracker.publicbt.com,${BIZ.TRACKER}`,
     `DOMAIN-SUFFIX,tracker.dler.org,${BIZ.TRACKER}`,
     `RULE-SET,privatetracker,${BIZ.TRACKER}`,
-    // v5.1: Accademia eMule服务器
+    // v5.1: Accademia eMule鏈嶅姟鍣?
     `RULE-SET,acc-emuleserver,${BIZ.TRACKER}`,
-    // ═══ v5.1.5: 原「印尼本地」规则重分配 → 银行/证券归入金融支付 ═══
+    // 鈺愨晲鈺?v5.1.5: 鍘熴€屽嵃灏兼湰鍦般€嶈鍒欓噸鍒嗛厤 鈫?閾惰/璇佸埜褰掑叆閲戣瀺鏀粯 鈺愨晲鈺?
     `DOMAIN-SUFFIX,bca.co.id,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,klikbca.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,bni.co.id,${BIZ.PAYMENTS}`,
@@ -2071,7 +2071,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,banksinarmas.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,idx.co.id,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,ksei.co.id,${BIZ.PAYMENTS}`,
-    // ═══ v5.1.5: 原「印尼本地」规则重分配 → 电商/出行/外卖/电信/政府/新闻归入国外网站 ═══
+    // 鈺愨晲鈺?v5.1.5: 鍘熴€屽嵃灏兼湰鍦般€嶈鍒欓噸鍒嗛厤 鈫?鐢靛晢/鍑鸿/澶栧崠/鐢典俊/鏀垮簻/鏂伴椈褰掑叆鍥藉缃戠珯 鈺愨晲鈺?
     `DOMAIN-SUFFIX,tokopedia.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tokopedia.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,shopee.co.id,${BIZ.INTL_SITE}`,
@@ -2108,7 +2108,7 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,gofood.co.id,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,grabfood.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,66tutup.com,${BIZ.INTL_SITE}`,
-    // v5.1.5: GEOIP,ID 归入国外网站（与 GEOIP,CN→国内网站 对称）
+    // v5.1.5: GEOIP,ID 褰掑叆鍥藉缃戠珯锛堜笌 GEOIP,CN鈫掑浗鍐呯綉绔?瀵圭О锛?
     `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
     `DOMAIN-SUFFIX,163.com,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,126.com,${BIZ.CN_SITE}`,
@@ -2118,20 +2118,20 @@ function injectRules(config) {
     `RULE-SET,cn-ip,${BIZ.CN_SITE},no-resolve`,
     `DOMAIN-SUFFIX,alimama.com,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,zxtdjy.com,${BIZ.CN_SITE}`,
-    // v5.1.2 FIX#6: RULE-SET,acc-chinadns 已删除（中国DNS由CN兜底自然直连）
-    // v5.2.5 FIX#23-P1: acc-geositecn / acc-china 删除（与 metaDomain('cn','cn') 纯重复）
+    // v5.1.2 FIX#6: RULE-SET,acc-chinadns 宸插垹闄わ紙涓浗DNS鐢盋N鍏滃簳鑷劧鐩磋繛锛?
+    // v5.2.5 FIX#23-P1: acc-geositecn / acc-china 鍒犻櫎锛堜笌 metaDomain('cn','cn') 绾噸澶嶏級
     `RULE-SET,acc-chinamax,${BIZ.CN_SITE}`,
-    // v5.1.2 FIX#4: HomeIP × 2国 → INTL_SITE（v5.1.1 误归入 CN_SITE 导致美日IP段走直连）
+    // v5.1.2 FIX#4: HomeIP 脳 2鍥?鈫?INTL_SITE锛坴5.1.1 璇綊鍏?CN_SITE 瀵艰嚧缇庢棩IP娈佃蛋鐩磋繛锛?
     `RULE-SET,acc-homeip-us,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-homeip-jp,${BIZ.INTL_SITE},no-resolve`,
-    // v5.1.2 FIX#5: Aqara 国内 → CN_SITE，国际 → INTL_SITE（v5.1.1 Global 误归入 CN_SITE）
+    // v5.1.2 FIX#5: Aqara 鍥藉唴 鈫?CN_SITE锛屽浗闄?鈫?INTL_SITE锛坴5.1.1 Global 璇綊鍏?CN_SITE锛?
     `RULE-SET,acc-aqara-cn,${BIZ.CN_SITE}`,
     `RULE-SET,acc-aqara-global,${BIZ.INTL_SITE}`,
 
-    // ═══ v5.1.4: 🚫 受限网站（GFW 封锁域名兜底，位于 INTL_SITE 之前）═══
-    // 语义区分：GFW 组 = 确认被中国 GFW 封锁的域名 / INTL_SITE = 普通国外域名
-    // 在中国：GFW 组手动选代理节点，INTL_SITE 保持默认可探测直连
-    // 在印尼：GFW 组选 DIRECT（被墙站点在印尼可直连），INTL_SITE 也选 DIRECT
+    // 鈺愨晲鈺?v5.1.4: 馃毇 鍙楅檺缃戠珯锛圙FW 灏侀攣鍩熷悕鍏滃簳锛屼綅浜?INTL_SITE 涔嬪墠锛夆晲鈺愨晲
+    // 璇箟鍖哄垎锛欸FW 缁?= 纭琚腑鍥?GFW 灏侀攣鐨勫煙鍚?/ INTL_SITE = 鏅€氬浗澶栧煙鍚?
+    // 鍦ㄤ腑鍥斤細GFW 缁勬墜鍔ㄩ€変唬鐞嗚妭鐐癸紝INTL_SITE 淇濇寔榛樿鍙帰娴嬬洿杩?
+    // 鍦ㄥ嵃灏硷細GFW 缁勯€?DIRECT锛堣澧欑珯鐐瑰湪鍗板凹鍙洿杩烇級锛孖NTL_SITE 涔熼€?DIRECT
     `GEOSITE,gfw,${BIZ.GFW}`,
     `RULE-SET,loyalsoldier-gfw,${BIZ.GFW}`,
     `RULE-SET,loyalsoldier-greatfire,${BIZ.GFW}`,
@@ -2150,18 +2150,18 @@ function injectRules(config) {
     `RULE-SET,wikipedia,${BIZ.INTL_SITE}`,
     `RULE-SET,duolingo,${BIZ.INTL_SITE}`,
     `RULE-SET,proxy,${BIZ.INTL_SITE}`,
-    // v5.1.4: szkane-proxygfw 已移至「🚫 受限网站」GFW 组（见上方）
-    // v5.1: Accademia 国外网站补充
+    // v5.1.4: szkane-proxygfw 宸茬Щ鑷炽€岎煔?鍙楅檺缃戠珯銆岹FW 缁勶紙瑙佷笂鏂癸級
+    // v5.1: Accademia 鍥藉缃戠珯琛ュ厖
     `RULE-SET,acc-waybackmachine,${BIZ.INTL_SITE}`,
     `RULE-SET,acc-pornhub,${BIZ.INTL_SITE}`,
     // v5.1: szkane Education
     `RULE-SET,szkane-khan,${BIZ.INTL_SITE}`,
     `RULE-SET,szkane-edutools,${BIZ.INTL_SITE}`,
-    // v5.1.2 FIX#3: naver 宽域名兜底（子域名已精准分流到日韩流媒体/搜索引擎）
+    // v5.1.2 FIX#3: naver 瀹藉煙鍚嶅厹搴曪紙瀛愬煙鍚嶅凡绮惧噯鍒嗘祦鍒版棩闊╂祦濯掍綋/鎼滅储寮曟搸锛?
     `RULE-SET,naver,${BIZ.INTL_SITE}`,
-    // v5.1.3 FIX#9: ehgallery 移入国外网站（非流媒体服务，全球节点更灵活）
+    // v5.1.3 FIX#9: ehgallery 绉诲叆鍥藉缃戠珯锛堥潪娴佸獟浣撴湇鍔★紝鍏ㄧ悆鑺傜偣鏇寸伒娲伙級
     `RULE-SET,ehgallery,${BIZ.INTL_SITE}`,
-    // v5.1.2 FIX#1: GeoRouting Domain × 16国外 + 1中国（Asia_China → CN_SITE）
+    // v5.1.2 FIX#1: GeoRouting Domain 脳 16鍥藉 + 1涓浗锛圓sia_China 鈫?CN_SITE锛?
     ...GEO_REGIONS_INTL.map(r => `RULE-SET,acc-geo-d-${r.toLowerCase().replace(/_/g,'-')},${BIZ.INTL_SITE}`),
     ...GEO_REGIONS_INTL.map(r => `RULE-SET,acc-geo-ip-${r.toLowerCase().replace(/_/g,'-')},${BIZ.INTL_SITE},no-resolve`),
     `RULE-SET,acc-geo-d-asia-china,${BIZ.CN_SITE}`,
@@ -2171,14 +2171,14 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,udemycdn.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,grammarly.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,grammarly.io,${BIZ.INTL_SITE}`,
-    // v5.1.6 P0-FIX#7: jetbrains.com 已在 DEV 组覆盖（line ~1796），此处为死规则，已删除
+    // v5.1.6 P0-FIX#7: jetbrains.com 宸插湪 DEV 缁勮鐩栵紙line ~1796锛夛紝姝ゅ涓烘瑙勫垯锛屽凡鍒犻櫎
     `DOMAIN-SUFFIX,jetbrains.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,theguardian.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,guardianapis.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,box.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,boxcdn.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,noip.com,${BIZ.INTL_SITE}`,
-    // ㉑½ v5.1: Loyalsoldier GEOIP 精准标签路由（需 Loyalsoldier 加强版 MMDB）
+    // 銐懧?v5.1: Loyalsoldier GEOIP 绮惧噯鏍囩璺敱锛堥渶 Loyalsoldier 鍔犲己鐗?MMDB锛?
     `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,telegram,${BIZ.IM},no-resolve`,
     `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
@@ -2186,18 +2186,18 @@ function injectRules(config) {
     `GEOIP,twitter,${BIZ.SOCIAL},no-resolve`,
     `GEOIP,google,${BIZ.TOOLS},no-resolve`,
 
-    // ㉒ GEOIP CN
+    // 銐?GEOIP CN
     `GEOIP,CN,${BIZ.CN_SITE},no-resolve`,
     `MATCH,${BIZ.FINAL}`,
   ]
-  // FlClash: 原地写入（splice 清空 + 逐个 push），不能在 QuickJS FFI 桥接层直接重赋值
+  // FlClash: 鍘熷湴鍐欏叆锛坰plice 娓呯┖ + 閫愪釜 push锛夛紝涓嶈兘鍦?QuickJS FFI 妗ユ帴灞傜洿鎺ラ噸璧嬪€?
   config.rules.splice(0, config.rules.length)
   for (var _ri = 0; _ri < _newRules.length; _ri++) { config.rules.push(_newRules[_ri]) }
   log(`[${VERSION}] Injected ${config.rules.length} rules`)
 }
 
 // ================================================================
-//  模块 I：全局参数覆写
+//  妯″潡 I锛氬叏灞€鍙傛暟瑕嗗啓
 // ================================================================
 
 function overwriteGeneral(config) {
@@ -2206,10 +2206,10 @@ function overwriteGeneral(config) {
   config['find-process-mode'] = 'strict'
   config['keep-alive-idle'] = 30
   config['keep-alive-interval'] = 15
-  // FlClash: 端口/TUN/DNS/GeoX 均由 App UI 管理，脚本不覆写。
-  //   - 外部资源（GeoX URL）：见 FlClash/README.md §必改配置
-  //   - 进阶配置（DNS）：见 FlClash/README.md §必改配置
-  //   （与 Clash Party Sub-Store 版不同，后者由脚本注入全部全局设置）
+  // FlClash: 绔彛/TUN/DNS/GeoX 鍧囩敱 App UI 绠＄悊锛岃剼鏈笉瑕嗗啓銆?
+  //   - 澶栭儴璧勬簮锛圙eoX URL锛夛細瑙?FlClash/README.md 搂蹇呮敼閰嶇疆
+  //   - 杩涢樁閰嶇疆锛圖NS锛夛細瑙?FlClash/README.md 搂蹇呮敼閰嶇疆
+  //   锛堜笌 Clash Party Sub-Store 鐗堜笉鍚岋紝鍚庤€呯敱鑴氭湰娉ㄥ叆鍏ㄩ儴鍏ㄥ眬璁剧疆锛?
   if (!config.profile) config.profile = {}
   config.profile['store-selected'] = true
   config.profile['store-fake-ip'] = true
@@ -2217,13 +2217,13 @@ function overwriteGeneral(config) {
 }
 
 // ================================================================
-//  模块 J：清理订阅自带的旧组和旧规则
+//  妯″潡 J锛氭竻鐞嗚闃呰嚜甯︾殑鏃х粍鍜屾棫瑙勫垯
 // ================================================================
 
 function cleanupSubscription(config) {
-  // FlClash: 必须用原地修改（splice/length=0），不能重新赋值（= []）。
-  //    QuickJS ↔ Dart FFI 桥接层：若创建新数组，Dart 端仍持有旧引用 → 修改丢失。
-  //    旧注释(v5.2.6-normal.1 FIX#26-P0): 4 关键词黑名单无法清除机场模板 → 全量重建。
+  // FlClash: 蹇呴』鐢ㄥ師鍦颁慨鏀癸紙splice/length=0锛夛紝涓嶈兘閲嶆柊璧嬪€硷紙= []锛夈€?
+  //    QuickJS 鈫?Dart FFI 妗ユ帴灞傦細鑻ュ垱寤烘柊鏁扮粍锛孌art 绔粛鎸佹湁鏃у紩鐢?鈫?淇敼涓㈠け銆?
+  //    鏃ф敞閲?v5.2.6-normal.1 FIX#26-P0): 4 鍏抽敭璇嶉粦鍚嶅崟鏃犳硶娓呴櫎鏈哄満妯℃澘 鈫?鍏ㄩ噺閲嶅缓銆?
   var removed = (config['proxy-groups'] || []).length
   if (config['proxy-groups'] && config['proxy-groups'].length > 0) {
     config['proxy-groups'].splice(0, config['proxy-groups'].length)
@@ -2239,7 +2239,7 @@ function cleanupSubscription(config) {
 }
 
 // ================================================================
-//  模块 K：注入智能 TLS 指纹
+//  妯″潡 K锛氭敞鍏ユ櫤鑳?TLS 鎸囩汗
 // ================================================================
 
 function _simpleHash(str) {
@@ -2255,14 +2255,14 @@ function injectSmartFingerprint(config) {
   const fpFallbackCandidates = ['chrome','firefox','safari','ios','android','edge']
   config.proxies.forEach(p => {
     if (!p || typeof p !== 'object') return
-    // v5.2.0 FIX#15: 先判断协议类型，再判断是否需要指纹（逻辑顺序优化）
+    // v5.2.0 FIX#15: 鍏堝垽鏂崗璁被鍨嬶紝鍐嶅垽鏂槸鍚﹂渶瑕佹寚绾癸紙閫昏緫椤哄簭浼樺寲锛?
     if (['vless','vmess','trojan'].indexOf(p.type) === -1) return
     const isReality = !!(p['reality-opts'] || p['reality_opts'])
     const flow = (p.flow || '').toLowerCase()
     const isXTLS = /xtls-rprx/.test(flow)
-    // 仅对 TLS 或 Reality/XTLS 节点注入指纹（非加密连接无需指纹）
+    // 浠呭 TLS 鎴?Reality/XTLS 鑺傜偣娉ㄥ叆鎸囩汗锛堥潪鍔犲瘑杩炴帴鏃犻渶鎸囩汗锛?
     if (!p.tls && !isReality && !isXTLS) return
-    // v5.1.6 P0-FIX#4: 不覆盖节点已有 fingerprint（机场可能为 Reality 节点调优过）
+    // v5.1.6 P0-FIX#4: 涓嶈鐩栬妭鐐瑰凡鏈?fingerprint锛堟満鍦哄彲鑳戒负 Reality 鑺傜偣璋冧紭杩囷級
     if (p['client-fingerprint']) return
     let chosenFP = null
     const name = String(p.name)
@@ -2276,7 +2276,7 @@ function injectSmartFingerprint(config) {
 }
 
 // ================================================================
-//  模块 L：proxy-groups 最终排序
+//  妯″潡 L锛歱roxy-groups 鏈€缁堟帓搴?
 // ================================================================
 
 function sortProxyGroups(config) {
@@ -2293,14 +2293,14 @@ function sortProxyGroups(config) {
   bizGroups.sort((a, b) => bizOrder.indexOf(a.name) - bizOrder.indexOf(b.name))
   const smartOrder = Object.values(SMART)
   smartGroups.sort((a, b) => { const ia = smartOrder.indexOf(a.name); const ib = smartOrder.indexOf(b.name); return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib) })
-  // FlClash: 必须原地修改，不能重新赋值（QuickJS FFI 桥接层限制）
+  // FlClash: 蹇呴』鍘熷湴淇敼锛屼笉鑳介噸鏂拌祴鍊硷紙QuickJS FFI 妗ユ帴灞傞檺鍒讹級
   config['proxy-groups'].splice(0, config['proxy-groups'].length)
   var sorted = bizGroups.concat(otherGroups, smartGroups)
   for (var i = 0; i < sorted.length; i++) { config['proxy-groups'].push(sorted[i]) }
 }
 
 // ================================================================
-//  主函数
+//  涓诲嚱鏁?
 // ================================================================
 
 function main(config) {
@@ -2314,21 +2314,20 @@ function main(config) {
     cleanupSubscription(config)
     injectSmartFingerprint(config)
     var c = classifyAllNodes(config.proxies)
-    log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} APAC_OTHER=${c.APAC_OTHER.length}/${c.HOME_APAC_OTHER.length} UNCLASSIFIED=${c.UNCLASSIFIED.length}/${c.HOME_UNCLASSIFIED.length}`)
     var jpkrNodes = c.JP.concat(c.KR)
-    var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR, c.SG, c.APAC_OTHER)
     var americasNodes = c.US.concat(c.AM)
     var homeJpkrNodes = c.HOME_JP.concat(c.HOME_KR)
-    var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG, c.HOME_APAC_OTHER)
     var homeAmericasNodes = c.HOME_US.concat(c.HOME_AM)
     upsertSmartGroup(config, SMART.GLOBAL, c.ALL)
     if (c.HOME_ALL.length > 0) upsertSmartGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)
-    // v5.2.8-normal.2: 全部/家宽区域统一空组不创建，避免静默回退污染家宽或地区语义
-    //   （与 Smart 版同步修复。SMART.GLOBAL 始终存在兜底）
+    // v5.2.8-normal.2: 鍏ㄩ儴/瀹跺鍖哄煙缁熶竴绌虹粍涓嶅垱寤猴紝閬垮厤闈欓粯鍥為€€姹℃煋瀹跺鎴栧湴鍖鸿涔?
+    //   锛堜笌 Smart 鐗堝悓姝ヤ慨澶嶃€係MART.GLOBAL 濮嬬粓瀛樺湪鍏滃簳锛?
     if (c.HK.length > 0) upsertSmartGroup(config, SMART.HK, c.HK)
     if (c.HOME_HK.length > 0) upsertSmartGroup(config, SMART.HK_HOME, c.HOME_HK)
     if (c.TW.length > 0) upsertSmartGroup(config, SMART.TW, c.TW)
     if (c.HOME_TW.length > 0) upsertSmartGroup(config, SMART.TW_HOME, c.HOME_TW)
+    if (c.SG.length > 0) upsertSmartGroup(config, SMART.SG, c.SG)
+    if (c.HOME_SG.length > 0) upsertSmartGroup(config, SMART.SG_HOME, c.HOME_SG)
     if (jpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR, jpkrNodes)
     if (homeJpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR_HOME, homeJpkrNodes)
     if (apacNodes.length > 0) upsertSmartGroup(config, SMART.APAC, apacNodes)
@@ -2341,8 +2340,10 @@ function main(config) {
     if (homeAmericasNodes.length > 0) upsertSmartGroup(config, SMART.AMERICAS_HOME, homeAmericasNodes)
     if (c.AF.length > 0) upsertSmartGroup(config, SMART.AFRICA, c.AF)
     if (c.HOME_AF.length > 0) upsertSmartGroup(config, SMART.AFRICA_HOME, c.HOME_AF)
+    if (c.OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER, c.OTHER)
+    if (c.HOME_OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER_HOME, c.HOME_OTHER)
 
-    // 收集实际创建的区域组名（按 SMART 常量名匹配），过滤业务组的 proxy 引用
+    // 鏀堕泦瀹為檯鍒涘缓鐨勫尯鍩熺粍鍚嶏紙鎸?SMART 甯搁噺鍚嶅尮閰嶏級锛岃繃婊や笟鍔＄粍鐨?proxy 寮曠敤
     var _regionNameSet = new Set(Object.values(SMART))
     var activeSmartNames = new Set(config['proxy-groups'].filter(function(g) { return g && _regionNameSet.has(g.name) }).map(function(g) { return g.name }))
     activeSmartNames.add('DIRECT'); activeSmartNames.add('REJECT')

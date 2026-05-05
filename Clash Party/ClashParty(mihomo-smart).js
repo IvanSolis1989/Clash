@@ -1,13 +1,14 @@
 // Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.3.2 (2026-04-28)
-// 架构：SUB-STORE 多机场融合 + 18 Smart 区域组（9 全部 + 9 家宽）+ 31 业务策略组（含 13 流媒体平台组）+ 371+ rule-providers 100%+ 服务覆盖
+// 版本：v5.4.1 (2026-05-05)
+// 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 31 业务策略组（含 13 流媒体平台组）+ 371+ rule-providers 100%+ 服务覆盖
+// v5.4.1: P0 fake-ip-filter rule-set · P1 否定式 OTHER · P2 Hosts DNS + isInfoNode EN · P3 QUIC阻断 + Mixed Listeners
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.3.2'
+const VERSION = 'v5.4.1'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别
@@ -15,8 +16,9 @@ const VERSION = 'v5.3.2'
 
 function isInfoNode(name) {
   const infoPatterns = ['导航网址', '距离下次重置', '剩余流量', '套餐到期', '网址导航', '官网', '订阅', '到期', '剩余', '重置']
+  const infoRes = [/\b(?:USE|USED|TOTAL|EXPIRE|EMAIL)\b/i, /Panel|Channel|Author|剩余流量|已用流量|到期时间|下次重置/i]
   const s = String(name || '')
-  return infoPatterns.some(p => s.includes(p))
+  return infoPatterns.some(p => s.includes(p)) || infoRes.some(re => re.test(s))
 }
 
 const RESIDENTIAL_PATTERNS = [
@@ -51,7 +53,6 @@ const REGION_DB = [
   { id: 'EU', kw: ['欧洲', 'europe', '英国', 'united kingdom', 'england', 'britain', 'london', '伦敦', 'manchester', '曼彻斯特', 'birmingham', 'glasgow', 'edinburgh', 'liverpool', 'leeds', 'bristol', 'lhr', 'lgw', 'man', 'edi', '爱尔兰', 'ireland', 'dublin', '都柏林', '法国', 'france', 'paris', '巴黎', 'marseille', '马赛', 'lyon', '里昂', 'nice', 'toulouse', 'cdg', 'ory', '德国', 'germany', 'frankfurt', '法兰克福', 'berlin', '柏林', 'munich', '慕尼黑', 'hamburg', '汉堡', 'dusseldorf', 'cologne', 'fra', 'muc', 'ber', '荷兰', 'netherlands', 'holland', 'amsterdam', '阿姆斯特丹', 'rotterdam', 'ams', '比利时', 'belgium', 'brussels', '布鲁塞尔', '卢森堡', 'luxembourg', '瑞士', 'switzerland', 'zurich', '苏黎世', 'geneva', '日内瓦', 'bern', 'zrh', '奥地利', 'austria', 'vienna', '维也纳', 'vie', '列支敦士登', 'liechtenstein', '摩纳哥', 'monaco', '丹麦', 'denmark', 'copenhagen', '哥本哈根', '冰岛', 'iceland', 'reykjavik', '挪威', 'norway', 'oslo', '奥斯陆', '瑞典', 'sweden', 'stockholm', '斯德哥尔摩', '芬兰', 'finland', 'helsinki', '赫尔辛基', '爱沙尼亚', 'estonia', 'tallinn', '塔林', '拉脱维亚', 'latvia', 'riga', '里加', '立陶宛', 'lithuania', 'vilnius', '维尔纽斯', '意大利', 'italy', 'rome', '罗马', 'milan', '米兰', 'naples', 'florence', 'fco', 'mxp', '西班牙', 'spain', 'madrid', '马德里', 'barcelona', '巴塞罗那', 'mad', 'bcn', '葡萄牙', 'portugal', 'lisbon', '里斯本', '希腊', 'greece', 'athens', '雅典', '马耳他', 'malta', '安道尔', 'andorra', '圣马力诺', 'san marino', '波兰', 'poland', 'warsaw', '华沙', 'krakow', 'waw', '捷克', 'czech', 'prague', '布拉格', '斯洛伐克', 'slovakia', 'bratislava', '匈牙利', 'hungary', 'budapest', '布达佩斯', '罗马尼亚', 'romania', 'bucharest', '布加勒斯特', '保加利亚', 'bulgaria', 'sofia', '索菲亚', '俄罗斯', 'russia', 'moscow', '莫斯科', 'svo', 'dme', '乌克兰', 'ukraine', 'kiev', 'kyiv', '基辅', '白俄罗斯', 'belarus', 'minsk', '明斯克', '摩尔多瓦', 'moldova', 'chisinau', '塞尔维亚', 'serbia', 'belgrade', '贝尔格莱德', '黑山', 'montenegro', '克罗地亚', 'croatia', 'zagreb', '斯洛文尼亚', 'slovenia', 'ljubljana', '波黑', 'bosnia', 'herzegovina', 'sarajevo', '马其顿', 'macedonia', 'skopje', '阿尔巴尼亚', 'albania', 'tirana', '科索沃', 'kosovo', 'pristina', '塞浦路斯', 'cyprus', 'nicosia', '格鲁吉亚', 'georgia', 'tbilisi', '第比利斯'], iso: ['GB', 'UK', 'IE', 'FR', 'DE', 'NL', 'LU', 'CH', 'DK', 'SE', 'FI', 'EE', 'LV', 'LT', 'ES', 'PT', 'GR', 'PL', 'CZ', 'SK', 'HU', 'RO', 'BG', 'RU', 'UA', 'MD', 'RS', 'HR', 'SI', 'MK', 'XK', 'CY', 'GE', 'EU'] },
   { id: 'AM', kw: ['美洲', 'americas', '拉丁美洲', 'latin america', '南美', 'south america', '中美洲', 'central america', '加勒比', 'caribbean', '加拿大', 'canada', 'toronto', '多伦多', 'vancouver', '温哥华', 'montreal', '蒙特利尔', 'ottawa', '渥太华', 'calgary', '卡尔加里', 'edmonton', 'winnipeg', 'yyz', 'yvr', 'yul', '墨西哥', 'mexico', 'mexico city', '墨西哥城', 'cancun', '坎昆', 'guadalajara', 'monterrey', 'mex', '危地马拉', 'guatemala', '伯利兹', 'belize', '萨尔瓦多', 'el salvador', '洪都拉斯', 'honduras', '尼加拉瓜', 'nicaragua', '哥斯达黎加', 'costa rica', '巴拿马', 'panama', '古巴', 'cuba', '牙买加', 'jamaica', '多米尼加', 'dominican republic', '波多黎各', 'puerto rico', '巴哈马', 'bahamas', '巴巴多斯', 'barbados', '特立尼达', 'trinidad', '海地', 'haiti', '巴西', 'brazil', 'sao paulo', '圣保罗', 'rio de janeiro', '里约热内卢', 'gru', 'gig', '阿根廷', 'argentina', 'buenos aires', '布宜诺斯艾利斯', 'eze', '智利', 'chile', 'santiago', '秘鲁', 'peru', 'lima', '利马', '哥伦比亚', 'colombia', 'bogota', '波哥大', 'medellin', '委内瑞拉', 'venezuela', '厄瓜多尔', 'ecuador', '玻利维亚', 'bolivia', '巴拉圭', 'paraguay', '乌拉圭', 'uruguay', 'montevideo', '圭亚那', 'guyana', '苏里南', 'suriname'], iso: ['CA', 'MX', 'GT', 'BZ', 'SV', 'HN', 'NI', 'CR', 'PA', 'CU', 'JM', 'PR', 'BS', 'BB', 'TT', 'HT', 'BR', 'AR', 'CL', 'PE', 'CO', 'VE', 'EC', 'BO', 'PY', 'UY', 'GY', 'SR'] },
   { id: 'AF', kw: ['非洲', 'africa', '埃及', 'egypt', 'cairo', '开罗', 'cai', '苏丹', 'sudan', '南苏丹', 'south sudan', '利比亚', 'libya', '突尼斯', 'tunisia', '阿尔及利亚', 'algeria', '摩洛哥', 'morocco', 'casablanca', '埃塞俄比亚', 'ethiopia', '索马里', 'somalia', '肯尼亚', 'kenya', 'nairobi', 'nbo', '坦桑尼亚', 'tanzania', '乌干达', 'uganda', '卢旺达', 'rwanda', '布隆迪', 'burundi', '厄立特里亚', 'eritrea', '吉布提', 'djibouti', '马达加斯加', 'madagascar', '毛里求斯', 'mauritius', '莫桑比克', 'mozambique', '塞舌尔', 'seychelles', '赞比亚', 'zambia', '津巴布韦', 'zimbabwe', '马拉维', 'malawi', '喀麦隆', 'cameroon', '刚果', 'congo', '安哥拉', 'angola', '加蓬', 'gabon', '乍得', 'chad', '中非', 'central african', '赤道几内亚', 'equatorial guinea', '南非', 'south africa', 'johannesburg', '约翰内斯堡', 'cape town', '开普敦', 'pretoria', 'jnb', 'cpt', '纳米比亚', 'namibia', '博茨瓦纳', 'botswana', '莱索托', 'lesotho', '斯威士兰', 'eswatini', 'swaziland', '尼日利亚', 'nigeria', 'lagos', 'abuja', '加纳', 'ghana', 'accra', '塞内加尔', 'senegal', 'dakar', '马里', 'mali', '布基纳法索', 'burkina faso', '几内亚', 'guinea', '科特迪瓦', 'ivory coast', "cote d'ivoire", '塞拉利昂', 'sierra leone', '利比里亚', 'liberia', '多哥', 'togo', '贝宁', 'benin', '尼日尔', 'niger', '毛里塔尼亚', 'mauritania', '冈比亚', 'gambia', '佛得角', 'cape verde'], iso: ['EG', 'SD', 'SS', 'LY', 'TN', 'DZ', 'ET', 'KE', 'TZ', 'UG', 'RW', 'MG', 'MU', 'MZ', 'ZM', 'ZW', 'MW', 'CM', 'CD', 'CG', 'AO', 'GA', 'TD', 'ZA', 'BW', 'LS', 'SZ', 'NG', 'GH', 'SN', 'ML', 'BF', 'GN', 'CI', 'SL', 'LR', 'TG', 'BJ', 'NE', 'MR', 'GM', 'CV'] },
-  { id: 'APAC_OTHER', kw: ['马来','亚太', 'apac', 'asia pacific', 'asia', '亚洲', '大洋洲', 'oceania', 'iplc', 'iepl', '专线', '低延迟', 'cn2', 'gia', '马来西亚', 'malaysia', 'kuala lumpur', '吉隆坡', 'kul', '印度尼西亚', '印尼', 'indonesia', 'jakarta', '雅加达', '泰国', 'thailand', 'bangkok', '曼谷', 'bkk', '越南', 'vietnam', 'hanoi', '河内', 'ho chi minh', '胡志明', 'saigon', 'sgn', 'han', '菲律宾', 'philippines', 'manila', '马尼拉', 'mnl', '柬埔寨', 'cambodia', 'phnom penh', '金边', '缅甸', 'myanmar', 'yangon', '老挝', 'laos', 'vientiane', '文莱', 'brunei', '东帝汶', 'timor-leste', '印度', 'india', 'mumbai', '孟买', 'delhi', '新德里', 'bangalore', '班加罗尔', 'chennai', 'hyderabad', 'kolkata', 'bom', 'del', 'blr', '巴基斯坦', 'pakistan', 'karachi', 'islamabad', '孟加拉', 'bangladesh', 'dhaka', '斯里兰卡', 'sri lanka', 'colombo', '尼泊尔', 'nepal', 'kathmandu', '马尔代夫', 'maldives', '不丹', 'bhutan', '阿富汗', 'afghanistan', '土耳其', 'turkey', 'turkiye', 'istanbul', '伊斯坦布尔', 'ankara', 'ist', '以色列', 'israel', 'tel aviv', 'tlv', '沙特', 'saudi', 'riyadh', '阿联酋', 'uae', 'emirates', 'dubai', '迪拜', 'abu dhabi', 'dxb', 'auh', '卡塔尔', 'qatar', 'doha', 'doh', '科威特', 'kuwait', '巴林', 'bahrain', '阿曼', 'oman', 'muscat', '伊拉克', 'iraq', 'baghdad', '伊朗', 'iran', 'tehran', '约旦', 'jordan', 'amman', '黎巴嫩', 'lebanon', 'beirut', '叙利亚', 'syria', '也门', 'yemen', '巴勒斯坦', 'palestine', '亚美尼亚', 'armenia', 'yerevan', '阿塞拜疆', 'azerbaijan', 'baku', '哈萨克斯坦', 'kazakhstan', 'almaty', 'astana', '乌兹别克斯坦', 'uzbekistan', 'tashkent', '吉尔吉斯斯坦', 'kyrgyzstan', '土库曼斯坦', 'turkmenistan', '塔吉克斯坦', 'tajikistan', '澳门', 'macau', 'macao', '蒙古', 'mongolia', 'ulaanbaatar', '澳大利亚', 'australia', 'sydney', '悉尼', 'melbourne', '墨尔本', 'brisbane', 'perth', 'adelaide', 'syd', 'mel', '新西兰', 'new zealand', 'auckland', '奥克兰', 'wellington', 'akl', '斐济', 'fiji', '巴布亚新几内亚', 'papua new guinea', '关岛', 'guam', '新喀里多尼亚', 'new caledonia'], iso: ['IN','IND','MY','ID', 'TH', 'VN', 'PH', 'KH', 'MM', 'BN', 'TL', 'PK', 'BD', 'LK', 'NP', 'MV', 'BT', 'AF', 'TR', 'IL', 'AE', 'QA', 'KW', 'BH', 'OM', 'IQ', 'IR', 'JO', 'LB', 'SY', 'YE', 'PS', 'AZ', 'KZ', 'UZ', 'KG', 'TM', 'TJ', 'MO', 'MN', 'AU', 'NZ', 'FJ', 'PG', 'GU', 'NC', 'PF'] },
 ]
 
 // ================================================================
@@ -94,13 +95,13 @@ function classifyNode(name) {
       else { if (m.regex.test(nameStr)) return region.id }
     }
   }
-  return null
+  return 'OTHER'
 }
 
 function classifyAllNodes(proxies) {
   var result = {
-    HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], APAC_OTHER: [], UNCLASSIFIED: [], ALL: [],
-    HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_APAC_OTHER: [], HOME_UNCLASSIFIED: [], HOME_ALL: [],
+    HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], OTHER: [], ALL: [],
+    HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_OTHER: [], HOME_ALL: [],
   }
   for (var i = 0; i < proxies.length; i++) {
     var p = proxies[i]
@@ -130,12 +131,14 @@ const SMART = {
   GLOBAL: '🌍 全球节点', GLOBAL_HOME: '🏡 全球家宽',
   HK: '🇭🇰 香港节点', HK_HOME: '🏡 香港家宽',
   TW: '🇹🇼 台湾节点', TW_HOME: '🏡 台湾家宽',
+  SG: '🇸🇬 狮城节点', SG_HOME: '🏡 狮城家宽',
   JPKR: '🇯🇵 日韩节点', JPKR_HOME: '🏡 日韩家宽',
   APAC: '🌏 亚太节点', APAC_HOME: '🏡 亚太家宽',
   US: '🇺🇸 美国节点', US_HOME: '🏡 美国家宽',
   EU: '🇪🇺 欧洲节点', EU_HOME: '🏡 欧洲家宽',
   AMERICAS: '🌎 美洲节点', AMERICAS_HOME: '🏡 美洲家宽',
   AFRICA: '🌍 非洲节点', AFRICA_HOME: '🏡 非洲家宽',
+  OTHER: '🌏 其他节点', OTHER_HOME: '🏡 其他家宽',
 }
 
 const BIZ = {
@@ -156,11 +159,12 @@ const BIZ = {
   FINAL: '🐟 漏网之鱼', AD: '🛑 广告拦截',
 }
 
-const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA']
+const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'SG', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA', 'OTHER']
 const REGION_HOME_MAP = {
   GLOBAL: 'GLOBAL_HOME', HK: 'HK_HOME', TW: 'TW_HOME',
-  JPKR: 'JPKR_HOME', APAC: 'APAC_HOME', US: 'US_HOME',
-  EU: 'EU_HOME', AMERICAS: 'AMERICAS_HOME', AFRICA: 'AFRICA_HOME',
+  SG: 'SG_HOME', JPKR: 'JPKR_HOME', APAC: 'APAC_HOME',
+  US: 'US_HOME', EU: 'EU_HOME', AMERICAS: 'AMERICAS_HOME', AFRICA: 'AFRICA_HOME',
+  OTHER: 'OTHER_HOME',
 }
 
 function withResidential(keys) {
@@ -203,11 +207,11 @@ function buildDirectFirstProxies() {
 }
 
 function buildTrackerProxies() {
-  return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'APAC']))
+  return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'SG', 'APAC']))
 }
 
 function buildSeaProxies() {
-  return withResidential(['APAC', 'GLOBAL', 'HK', 'JPKR', 'US']).concat('DIRECT')
+  return withResidential(['SG', 'APAC', 'GLOBAL', 'HK', 'JPKR', 'US']).concat('DIRECT')
 }
 
 // v5.1.2: GeoRouting 区域列表（module-level，供 providers + rules 共用）
@@ -1161,6 +1165,8 @@ function injectRules(config) {
     `RULE-SET,miuiprivacy,${BIZ.AD}`,
     `RULE-SET,privacy,${BIZ.AD}`,
     `RULE-SET,youmengchuangxiang,${BIZ.AD}`,
+    // v5.4.1 P3: QUIC 条件阻断——阻断海外 QUIC (UDP/443)，保留国内 QUIC，减少 UDP 超时
+    `AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOIP,CN)))),REJECT`,
     // v5.2.1 FIX#19: DST-PORT,7680 必须在 GEOIP,private 之前，否则私有 IP 先匹配走 DIRECT
     'DST-PORT,7680,REJECT',
     'GEOSITE,private,DIRECT',
@@ -2171,23 +2177,72 @@ function overwriteGeneral(config) {
   config['keep-alive-idle'] = 30
   config['keep-alive-interval'] = 15
   config['geodata-mode'] = true
-  // v5.1: Loyalsoldier 加强版 MMDB（含 cloudflare/telegram/netflix/facebook/twitter/google IP段）
-  // geoip.dat 保留 MetaCubeX（最全面），MMDB 切换 Loyalsoldier（精准标签）
-  // v5.1.9 CFG#1: geosite URL 移除（由 Clash Party UI 手动管理 fastly/cdn 切换策略）
   config['geox-url'] = {
     geoip:   'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/geoip.dat',
     mmdb:    'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/Country.mmdb',
     asn:     'https://fastly.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-ASN.mmdb',
   }
   config['geo-auto-update'] = true
-  // v5.1.9 CFG#1: geo-update-interval 移除（由 Clash Party UI 手动管理）
   if (!config.profile) config.profile = {}
   config.profile['store-selected'] = true
   config.profile['store-fake-ip'] = true
   config.profile['tracing'] = true
+  // v5.4.1 P2: Hosts DNS 预解析——消除 fake-ip 冷启动循环依赖
+  if (!config.hosts) config.hosts = {}
+  var dnsHosts = {
+    'dns.alidns.com': ['223.5.5.5', '223.6.6.6', '2400:3200::1', '2400:3200:baba::1'],
+    'doh.pub': ['119.29.29.29', '2402:4e00::', '2402:4e00:1::'],
+    'dns.google': ['8.8.8.8', '8.8.4.4', '2001:4860:4860::8888', '2001:4860:4860::8844'],
+    'cloudflare-dns.com': ['1.1.1.1', '1.0.0.1', '2606:4700:4700::1111', '2606:4700:4700::1001']
+  }
+  Object.keys(dnsHosts).forEach(function(k) { if (!config.hosts[k]) config.hosts[k] = dnsHosts[k] })
+  // v5.4.1 P0: fake-ip-filter 改用 rule-set 路由，自动跟随上游更新
+  if (!config.dns) config.dns = {}
+  config.dns['fake-ip-filter-mode'] = 'rule'
+  config.dns['fake-ip-filter'] = [
+    'RULE-SET,fakeip-filter,real-ip',
+    'RULE-SET,Private,real-ip',
+    'RULE-SET,Direct,real-ip',
+    'RULE-SET,XPTV,real-ip',
+    'RULE-SET,Download,real-ip',
+    'RULE-SET,AppleCN,real-ip',
+    'RULE-SET,China,real-ip',
+    'RULE-SET,AI,fake-ip',
+    'DOMAIN-KEYWORD,speedtest,fake-ip',
+    'RULE-SET,Speedtest,fake-ip',
+    'RULE-SET,Twitter,fake-ip',
+    'RULE-SET,Telegram,fake-ip',
+    'RULE-SET,SocialMedia,fake-ip',
+    'RULE-SET,NewsMedia,fake-ip',
+    'RULE-SET,Games,fake-ip',
+    'RULE-SET,Crypto,fake-ip',
+    'RULE-SET,Emby,fake-ip',
+    'RULE-SET,Netflix,fake-ip',
+    'RULE-SET,YouTube,fake-ip',
+    'RULE-SET,Streaming,fake-ip',
+    'RULE-SET,Apple,fake-ip',
+    'RULE-SET,Google,fake-ip',
+    'RULE-SET,Microsoft,fake-ip',
+    'RULE-SET,Proxy,fake-ip',
+    'MATCH,real-ip'
+  ]
+  // v5.4.1 P3: Mixed Listeners——按地区分配端口，SwitchyOmega 一键切地区
+  if (!config.listeners) config.listeners = []
+  var regionPorts = [
+    { name: 'MIXED-HK', port: 50000, proxy: SMART.HK },
+    { name: 'MIXED-SG', port: 50001, proxy: SMART.SG },
+    { name: 'MIXED-TW', port: 50002, proxy: SMART.TW },
+    { name: 'MIXED-JP', port: 50003, proxy: SMART.JPKR },
+    { name: 'MIXED-US', port: 50004, proxy: SMART.US },
+    { name: 'MIXED-EU', port: 50005, proxy: SMART.EU },
+    { name: 'MIXED-DIRECT', port: 10086, proxy: 'DIRECT' }
+  ]
+  var existingPorts = new Set(config.listeners.map(function(l) { return l.port }))
+  regionPorts.forEach(function(r) {
+    if (!existingPorts.has(r.port)) config.listeners.push({ name: r.name, type: 'mixed', port: r.port, proxy: r.proxy })
+  })
   if (!config.tun) config.tun = {}
   if (!config.tun['exclude-process']) config.tun['exclude-process'] = []
-  // v5.2.1 FIX#20: GSCService.exe 加入排除列表，fake-ip 模式下 ip.cip.cc 无法解析
   var gcuExcludes = ['GCUService.exe', 'GCUBridge.exe', 'WorkPro.exe', 'GSCService.exe', 'gsupservice.exe', 'gchsvc.exe']
   gcuExcludes.forEach(function(proc) {
     if (config.tun['exclude-process'].indexOf(proc) === -1) { config.tun['exclude-process'].push(proc) }
@@ -2202,8 +2257,8 @@ function cleanupSubscription(config) {
   // v5.2.6 FIX#26-P0: 清空订阅自带的所有 proxy-groups
   //   原 4 关键词黑名单（负载均衡/自动选择/手动选择/节点选择）只能清除部分机场模板，
   //   机场若提供地区组（🇭🇰 香港 / 🇹🇼 台湾 / …）或流媒体组，会和本脚本 18 Smart + 31 业务组共存，
-  //   用户端会看到 60+ 甚至 70+ 代理组（本脚本期望恰好 49 个）。
-  //   本脚本 46 个组是唯一权威来源：业务组只引用 SMART.* / DIRECT / REJECT，Smart 组只引用
+  //   用户端会看到 70+ 甚至 80+ 代理组（本脚本期望恰好 53 个）。
+  //   本脚本 53 个组是唯一权威来源：业务组只引用 SMART.* / DIRECT / REJECT，Smart 组只引用
   //   config.proxies 里的节点名，不依赖任何订阅原生组，所以可以安全地整体清空。
   var removed = (config['proxy-groups'] || []).length
   config['proxy-groups'] = []
@@ -2285,12 +2340,14 @@ function main(config) {
     cleanupSubscription(config)
     injectSmartFingerprint(config)
     var c = classifyAllNodes(config.proxies)
-    console.log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} APAC_OTHER=${c.APAC_OTHER.length}/${c.HOME_APAC_OTHER.length} UNCLASSIFIED=${c.UNCLASSIFIED.length}/${c.HOME_UNCLASSIFIED.length}`)
+    console.log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} OTHER=${c.OTHER.length}/${c.HOME_OTHER.length}`)
+    var sgNodes = c.SG
     var jpkrNodes = c.JP.concat(c.KR)
-    var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR, c.SG, c.APAC_OTHER)
+    var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR)
     var americasNodes = c.US.concat(c.AM)
+    var homeSgNodes = c.HOME_SG
     var homeJpkrNodes = c.HOME_JP.concat(c.HOME_KR)
-    var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG, c.HOME_APAC_OTHER)
+    var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR)
     var homeAmericasNodes = c.HOME_US.concat(c.HOME_AM)
     upsertSmartGroup(config, SMART.GLOBAL, c.ALL)
     if (c.HOME_ALL.length > 0) upsertSmartGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)
@@ -2301,6 +2358,8 @@ function main(config) {
     if (c.HOME_HK.length > 0) upsertSmartGroup(config, SMART.HK_HOME, c.HOME_HK)
     if (c.TW.length > 0) upsertSmartGroup(config, SMART.TW, c.TW)
     if (c.HOME_TW.length > 0) upsertSmartGroup(config, SMART.TW_HOME, c.HOME_TW)
+    if (c.SG.length > 0) upsertSmartGroup(config, SMART.SG, c.SG)
+    if (c.HOME_SG.length > 0) upsertSmartGroup(config, SMART.SG_HOME, c.HOME_SG)
     if (jpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR, jpkrNodes)
     if (homeJpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR_HOME, homeJpkrNodes)
     if (apacNodes.length > 0) upsertSmartGroup(config, SMART.APAC, apacNodes)
@@ -2313,6 +2372,8 @@ function main(config) {
     if (homeAmericasNodes.length > 0) upsertSmartGroup(config, SMART.AMERICAS_HOME, homeAmericasNodes)
     if (c.AF.length > 0) upsertSmartGroup(config, SMART.AFRICA, c.AF)
     if (c.HOME_AF.length > 0) upsertSmartGroup(config, SMART.AFRICA_HOME, c.HOME_AF)
+    if (c.OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER, c.OTHER)
+    if (c.HOME_OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER_HOME, c.HOME_OTHER)
 
     // 收集实际创建的 Smart 组名，过滤业务组的 proxy 引用
     var activeSmartNames = new Set(config['proxy-groups'].filter(function(g) { return g && g.type === 'smart' }).map(function(g) { return g.name }))

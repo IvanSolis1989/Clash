@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.3.2-sing.1';
-const BUILD = '2026-04-28';
-const BASELINE = 'Clash Party v5.3.2';
+const VERSION = 'v5.4.0-sing.1';
+const BUILD = '2026-05-05';
+const BASELINE = 'Clash Party v5.4.0';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -14,6 +14,8 @@ const SMART = {
   TW_HOME: '🏡 台湾家宽',
   JPKR: '🇯🇵 日韩节点',
   JPKR_HOME: '🏡 日韩家宽',
+  SG: '🇸🇬 狮城节点',
+  SG_HOME: '🏡 狮城家宽',
   APAC: '🌏 亚太节点',
   APAC_HOME: '🏡 亚太家宽',
   US: '🇺🇸 美国节点',
@@ -60,12 +62,13 @@ const BIZ = {
   AD: '🛑 广告拦截'
 };
 
-const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA'];
+const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'JPKR', 'SG', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA'];
 const REGION_HOME_MAP = {
   GLOBAL: 'GLOBAL_HOME',
   HK: 'HK_HOME',
   TW: 'TW_HOME',
   JPKR: 'JPKR_HOME',
+  SG: 'SG_HOME',
   APAC: 'APAC_HOME',
   US: 'US_HOME',
   EU: 'EU_HOME',
@@ -80,8 +83,10 @@ const REGION_SELECTOR_MEMBERS = {
   TW_HOME: ['proxy-tw-home-1', 'DIRECT'],
   JPKR: ['proxy-jp-1', 'proxy-kr-1', 'DIRECT'],
   JPKR_HOME: ['proxy-jp-home-1', 'proxy-kr-home-1', 'DIRECT'],
-  APAC: ['proxy-sg-1', 'proxy-id-1', 'proxy-hk-1', 'proxy-jp-1', 'DIRECT'],
-  APAC_HOME: ['proxy-sg-home-1', 'proxy-hk-home-1', 'proxy-jp-home-1', 'proxy-tw-home-1', 'DIRECT'],
+  SG: ['proxy-sg-1', 'DIRECT'],
+  SG_HOME: ['proxy-sg-home-1', 'DIRECT'],
+  APAC: ['proxy-id-1', 'proxy-hk-1', 'proxy-jp-1', 'DIRECT'],
+  APAC_HOME: ['proxy-hk-home-1', 'proxy-jp-home-1', 'proxy-tw-home-1', 'DIRECT'],
   US: ['proxy-us-1', 'proxy-us-2', 'DIRECT'],
   US_HOME: ['proxy-us-home-1', 'DIRECT'],
   EU: ['proxy-eu-1', 'DIRECT'],
@@ -189,7 +194,7 @@ function buildDirectFirstProxies() {
 }
 
 function buildTrackerProxies() {
-  return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'APAC']));
+  return ['REJECT', 'DIRECT'].concat(withResidential(['GLOBAL', 'HK', 'SG', 'APAC']));
 }
 
 function buildRegionPreferredProxies(primaryKey) {
@@ -271,6 +276,7 @@ function buildOutbounds() {
       SMART.HK,
       SMART.TW,
       SMART.JPKR,
+      SMART.SG,
       SMART.APAC,
       SMART.US,
       SMART.EU,
@@ -281,6 +287,7 @@ function buildOutbounds() {
       SMART.HK_HOME,
       SMART.TW_HOME,
       SMART.JPKR_HOME,
+      SMART.SG_HOME,
       SMART.APAC_HOME,
       SMART.US_HOME,
       SMART.EU_HOME,
@@ -293,6 +300,8 @@ function buildOutbounds() {
     selector(SMART.TW_HOME, REGION_SELECTOR_MEMBERS.TW_HOME),
     selector(SMART.JPKR, REGION_SELECTOR_MEMBERS.JPKR),
     selector(SMART.JPKR_HOME, REGION_SELECTOR_MEMBERS.JPKR_HOME),
+    selector(SMART.SG, REGION_SELECTOR_MEMBERS.SG),
+    selector(SMART.SG_HOME, REGION_SELECTOR_MEMBERS.SG_HOME),
     selector(SMART.APAC, REGION_SELECTOR_MEMBERS.APAC),
     selector(SMART.APAC_HOME, REGION_SELECTOR_MEMBERS.APAC_HOME),
     selector(SMART.US, REGION_SELECTOR_MEMBERS.US),

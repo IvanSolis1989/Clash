@@ -61,7 +61,7 @@
 
 ### 1.1 触发条件（任一满足即必须全版本联动）
 
-- 新增/删除/重命名**任何代理组**（含 18 个区域组〔9 全部 + 9 家宽〕与 31 个业务组）
+- 新增/删除/重命名**任何代理组**（含 20 个区域组〔10 全部 + 10 家宽〕与 31 个业务组）
 - 新增/删除/修改**任何 rule-provider**（含 URL、behavior、format、interval、proxy 字段）
 - 修改**规则条目的目标组**（例如把 `RULE-SET,tiktok` 从 `📱 社交媒体` 改到其他组）
 - 修改**规则顺序**中影响命中优先级的段（特别是广告拦截、GFW、FINAL 前置关系）
@@ -113,7 +113,7 @@
 
 1. 产物名称 + 版本号（与 Clash Party 主版本对齐，加平台后缀）
 2. Build 日期（YYYY-MM-DD）
-3. 架构一句话（例如「18 区域〔9 全部 + 9 家宽〕 + 31 业务（含 13 流媒体平台组）+ 370+ RULE-SET」）
+3. 架构一句话（例如「20 区域〔10 全部 + 10 家宽〕 + 31 业务（含 13 流媒体平台组）+ 370+ RULE-SET」）
 4. 基线声明（「基线：Clash Party vX.Y.Z（唯一主线）」）
 5. 指向 CHANGELOG：「变更历史：见 `<子目录>/CHANGELOG.md`」
 6. 若有风险或代价，一行标注（OOM / 首次延迟 / iOS 限制）
@@ -324,13 +324,13 @@ done
 
 ## 3. 跨平台一致性矩阵（强制对齐项）
 
-### 3.1 代理组命名（18 区域〔9 全部 + 9 家宽〕 + 31 业务，共 49 组）
+### 3.1 代理组命名（20 区域〔10 全部 + 10 家宽〕 + 31 业务，共 51 组）
 
 区域组名称（emoji 必须逐字节一致，包含 RGI 旗帜序列）：
 
 ```
 🌍 全球节点 · 🏡 全球家宽 · 🇭🇰 香港节点 · 🏡 香港家宽 · 🇹🇼 台湾节点 · 🏡 台湾家宽
-🇯🇵 日韩节点 · 🏡 日韩家宽 · 🌏 亚太节点 · 🏡 亚太家宽 · 🇺🇸 美国节点 · 🏡 美国家宽
+🇸🇬 狮城节点 · 🏡 狮城家宽 · 🇯🇵 日韩节点 · 🏡 日韩家宽 · 🌏 亚太节点 · 🏡 亚太家宽 · 🇺🇸 美国节点 · 🏡 美国家宽
 🇪🇺 欧洲节点 · 🏡 欧洲家宽 · 🌎 美洲节点 · 🏡 美洲家宽 · 🌍 非洲节点 · 🏡 非洲家宽
 ```
 
@@ -348,7 +348,7 @@ done
 🏠 国内网站 · 🚫 受限网站 · 🌐 国外网站 · 🐟 漏网之鱼 · 🛑 广告拦截
 ```
 
-**禁止**新增/删除/改名这 49 个组；若业务确有需要，必须先在 PR 描述里说明并先改 Clash Party 基线。
+**禁止**新增/删除/改名这 51 个组；若业务确有需要，必须先在 PR 描述里说明并先改 Clash Party 基线。
 
 ### 3.2 Rule-provider 下载代理（`RP_PROXY`）
 
@@ -458,17 +458,17 @@ done
 ## 5. 自检脚本（提交前必须本地跑一遍）
 
 ```bash
-# 1) 数代理组数（必须为 31 业务组 + 18 区域组；sing-box 另加 1 个顶层节点选择）
+# 1) 数代理组数（必须为 31 业务组 + 20 区域组；sing-box 另加 1 个顶层节点选择）
 #    CMFA：业务组用 "- name:"、区域组用 "- type: url-test" + 缩进 "  name:"，需两种模式
-grep -cE "^- name: |^  name: " "Clash Meta For Android/CMFA(mihomo).yaml"  # 期望 49
-#    OpenClash：31 业务组是静态 "- name:"；18 区域组由 Ruby make_smart_group() 动态生成，静态 grep 只能数到 31
+grep -cE "^- name: |^  name: " "Clash Meta For Android/CMFA(mihomo).yaml"  # 期望 51
+#    OpenClash：31 业务组是静态 "- name:"；20 区域组由 Ruby make_smart_group() 动态生成，静态 grep 只能数到 31
 grep -cE "^- name: " "OpenClash/OpenClash(mihomo).sh"                  # 期望 31（静态业务组）
 grep -cE "^- name: " "OpenClash/OpenClash(mihomo-smart).sh"             # 期望 31（静态业务组）
-grep -cE " = select,|= url-test," "Shadowrocket/Shadowrocket.conf"        # 期望 49
-grep -cE " = select,|= url-test," "Surge/Surge.conf"                      # 期望 49
-grep -cE " = select,|= url-test," "Loon/Loon.conf"                        # 期望 49
-grep -cE "^(url-latency-benchmark|static)=" "Quantumult X/QuantumultX.conf"        # 期望 49
-node -e "const d=JSON.parse(require('fs').readFileSync('SingBox/SingBox(sing-box)-full.json','utf8'));const n=d.outbounds.filter(o=>o.type==='selector'||o.type==='urltest').length;console.log(n);process.exit(n===50?0:1)"  # 期望 50
+grep -cE " = select,|= url-test," "Shadowrocket/Shadowrocket.conf"        # 期望 51
+grep -cE " = select,|= url-test," "Surge/Surge.conf"                      # 期望 51
+grep -cE " = select,|= url-test," "Loon/Loon.conf"                        # 期望 51
+grep -cE "^(url-latency-benchmark|static)=" "Quantumult X/QuantumultX.conf"        # 期望 51
+node -e "const d=JSON.parse(require('fs').readFileSync('SingBox/SingBox(sing-box)-full.json','utf8'));const n=d.outbounds.filter(o=>o.type==='selector'||o.type==='urltest').length;console.log(n);process.exit(n===52?0:1)"  # 期望 52
 
 # 2) RP 代理字段
 grep -c "proxy: DIRECT" "OpenClash/OpenClash(mihomo).sh"                    # 期望 0

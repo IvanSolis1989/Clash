@@ -7,6 +7,16 @@
 
 ---
 
+## v5.4.0 (2026-05-05)
+
+- ★ FEAT#SG：新增 🇸🇬 狮城节点 + 🏡 狮城家宽 独立区域组
+  - 新加坡从 🌏 亚太节点 中拆分为独立区域（REGION_ORDER: GLOBAL/HK/TW/SG/JPKR/APAC/...）
+  - 区域组总数：18 → 20（10 全部 + 10 家宽），总组数：49 → 51
+  - 加密货币组自动包含狮城节点（低延迟 SG 优先）
+  - 东南亚流媒体优先路由至狮城节点（buildSeaProxies: SG 优先）
+  - BT/PT Tracker 链路加入 SG 节点
+  - 同步产物：全部 12 个产物（Passwall/Passwall2/v2rayN 豁免）
+
 ## v5.3.2 (2026-04-28)
 
 - ★ **微信/QQ 全系列进程强制 DIRECT**：Weixin.exe / WeChatAppEx.exe / QQ.exe / WeChat.exe → DIRECT

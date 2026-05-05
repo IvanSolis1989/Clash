@@ -183,6 +183,7 @@ proxy-groups:
   - 🏡 全球家宽
   - 🏡 香港家宽
   - 🏡 台湾家宽
+  - 🏡 狮城家宽
   - 🏡 日韩家宽
   - 🏡 亚太家宽
   - 🏡 美国家宽
@@ -192,6 +193,7 @@ proxy-groups:
   - 🌍 全球节点
   - 🇭🇰 香港节点
   - 🇹🇼 台湾节点
+  - 🇸🇬 狮城节点
   - 🇯🇵 日韩节点
   - 🌏 亚太节点
   - 🇺🇸 美国节点
@@ -208,6 +210,8 @@ proxy-groups:
   - 🏡 香港家宽
   - 🇹🇼 台湾节点
   - 🏡 台湾家宽
+  - 🇸🇬 狮城节点
+  - 🏡 狮城家宽
   - 🇯🇵 日韩节点
   - 🏡 日韩家宽
   - 🌏 亚太节点
@@ -243,6 +247,8 @@ proxy-groups:
   - 🏡 香港家宽
   - 🇹🇼 台湾节点
   - 🏡 台湾家宽
+  - 🇸🇬 狮城节点
+  - 🏡 狮城家宽
   - 🇯🇵 日韩节点
   - 🏡 日韩家宽
   - 🌏 亚太节点
@@ -4262,43 +4268,49 @@ REGIONS = {
 #   原实现每个 code 只落入 GROUP_MAP 的首个命中条目（下方 each/break），导致：
 #     • HK/TW/JP/KR 只进香港/台湾/日韩子组，永远进不了 🌏 亚太节点
 #     • US 只进美国子组，永远进不了 🌎 美洲节点
-#   Clash Party JS 主线语义：区域大组 = 子区域并集（apacNodes = HK+TW+CN+JP+KR+SG+APAC_OTHER；
+#   Clash Party JS 主线语义：区域大组 = 子区域并集（apacNodes = HK+TW+CN+JP+KR+APAC_OTHER；SG 已独立为 🇸🇬 狮城节点）；
 #   americasNodes = US+AM）。修复：APAC 扩充至涵盖 HK/TW/JP/KR + 原 APAC_OTHER 集；AM 扩充至
 #   包含 US；分类循环移除 break，同一节点可同时进入子区域组与所属大洲组。
 GROUP_MAP = {
   "HK"     => ["HK"],
   "TW"     => ["TW"],
+  "SG"     => ["SG"],
   "JP_KR"  => ["JP", "KR"],
   "US"     => ["US"],
   "EU"     => ["UK", "DE", "FR", "NL", "CH", "IT", "ES", "PT", "GR", "AT", "BE", "IE", "DK", "SE", "FI", "NO", "PL", "CZ", "RO", "HU", "RU"],
   "AM"     => ["US", "CA", "MX", "BR", "AR"],
   "AF"     => ["ZA", "EG", "NG"],
-  "APAC"   => ["HK", "TW", "JP", "KR", "SG", "IN", "TH", "VN", "MY", "ID", "PH", "AU", "NZ", "TR", "AE"],
+  "APAC"   => ["HK", "TW", "JP", "KR", "IN", "TH", "VN", "MY", "ID", "PH", "AU", "NZ", "TR", "AE"],
+  "OTHER"  => ["OTHER"],
 }
 GROUP_NAMES = {
   "HK"    => "🇭🇰 香港节点",
   "TW"    => "🇹🇼 台湾节点",
+  "SG"    => "🇸🇬 狮城节点",
   "JP_KR" => "🇯🇵 日韩节点",
   "US"    => "🇺🇸 美国节点",
   "EU"    => "🇪🇺 欧洲节点",
   "AM"    => "🌎 美洲节点",
   "AF"    => "🌍 非洲节点",
   "APAC"  => "🌏 亚太节点",
+  "OTHER" => "🌏 其他节点",
 }
 HOME_GROUP_NAMES = {
   "HK"    => "🏡 香港家宽",
   "TW"    => "🏡 台湾家宽",
+  "SG"    => "🏡 狮城家宽",
   "JP_KR" => "🏡 日韩家宽",
   "US"    => "🏡 美国家宽",
   "EU"    => "🏡 欧洲家宽",
   "AM"    => "🏡 美洲家宽",
   "AF"    => "🏡 非洲家宽",
   "APAC"  => "🏡 亚太家宽",
+  "OTHER" => "🏡 其他家宽",
 }
 
 classify = ->(name) {
   REGIONS.each { |code, re| return code if name.match?(re) }
-  nil
+  "OTHER"
 }
 
 buckets = Hash.new { |h, k| h[k] = [] }
@@ -4354,7 +4366,7 @@ smart_groups << make_smart_group("🌍 全球节点", proxies_filter_mode: :incl
 smart_groups << make_smart_group("🏡 全球家宽", proxies_filter_mode: :explicit, explicit_proxies: home_all_members.uniq) if home_all_members.any?
 
 # 8 个区域组：仅该区域节点参与；家宽子组只在匹配到家宽节点时创建
-%w[HK TW JP_KR US EU AM AF APAC].each do |gkey|
+%w[HK TW SG JP_KR US EU AM AF APAC OTHER].each do |gkey|
   gname = GROUP_NAMES[gkey]
   members = buckets[gkey].uniq
   smart_groups << make_smart_group(gname, proxies_filter_mode: :explicit, explicit_proxies: members) unless members.empty?
