@@ -103,7 +103,7 @@ flowchart LR
 | 🐟 漏网之鱼 | 以 GEOSITE/GEOIP/FINAL 兜底为主（非单一固定 provider） | MetaCubeX（geo 规则） |
 | 🛑 广告拦截 | `anti-ad` `sukka-phishing` `hagezi-tif` `advertising` `privacy` `acc-unsupportvpn` | DustinWin / SukkaW / Hagezi / blackmatrix7 / Accademia |
 
-> v5.4.12 起持续修复误伤白名单（Paddle / Cloudflare R2 / STUN / RustDesk）+ Surge `DEST-PORT` 兼容 + [GEOSITE 覆盖台账](./docs/GEOSITE_COVERAGE_LEDGER.md)；DNS 自 v5.4.17 起采用 split-bootstrap 加固；v5.4.19 借鉴 Proxy-override 批 A（国内 SDK/CDN 直连前置 + fake-ip-filter 远控/游戏/P2P 补全 + `direct-nameserver-follow-policy`），详见下方 [DNS 净化](#-dns-净化科学上网的第一道防线)。
+> v5.4.12 起持续修复误伤白名单（Paddle / Cloudflare R2 / STUN / RustDesk）+ Surge `DEST-PORT` 兼容 + [GEOSITE 覆盖台账](./docs/GEOSITE_COVERAGE_LEDGER.md)；DNS 自 v5.4.17 起采用 split-bootstrap 加固；v5.4.19 借鉴 Proxy-override 批 A（国内 SDK/CDN 直连前置 + fake-ip-filter 远控/游戏/P2P 补全 + `direct-nameserver-follow-policy`）；v5.4.20 批 B（#6 节点过滤 junk 关键词补充 免费/试用/应急/Sign/Login/Register/Help/FAQ，6 mihomo 产物），详见下方 [DNS 净化](#-dns-净化科学上网的第一道防线)。
 
 ---
 

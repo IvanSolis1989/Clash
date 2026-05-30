@@ -5,6 +5,15 @@
 
 ---
 
+## v5.4.20-cmfa.1 (2026-05-30)
+
+借鉴 Proxy-override 批 B · #6 节点过滤关键词补充（spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：
+
+- proxy-providers `exclude-filter` 正则新增：中文 `免费` / `试用` / `应急`；英文 `\bSign\b` / `\bLogin\b` / `\bRegister\b` / `\bHelp\b` / `\bFAQ\b`（Go RE2 子串引擎下用 `\b` 词边界，避免误伤 Signal 等）
+- 不加「更新」「地址」（误伤风险高，owner spec 排除）
+- 一致性回归：`tools/test-info-node-filter.js` 覆盖本产物 exclude-filter
+- 🔢 版本：v5.4.19-cmfa.1 → v5.4.20-cmfa.1
+
 ## v5.4.19-cmfa.1 (2026-05-30)
 
 借鉴 Proxy-override 批 A（跟随 Clash Party v5.4.19；spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：

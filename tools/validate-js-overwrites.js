@@ -98,7 +98,9 @@ const BIZ_GROUPS = [
 const EXPECTED_GROUP_ORDER = [SMART_GROUPS[0], ...BIZ_GROUPS, ...SMART_GROUPS.slice(1)];
 const DIRECT_POLICIES = new Set(['DIRECT', 'REJECT', 'REJECT-DROP', 'PASS']);
 const INFO_NODES = new Set(['剩余流量 10G', '官网 example.com', 'USE 100GB']);
-const EXTRA_INFO_NODES = new Set(['距离下次重置 12 天', '套餐到期 2026-06-01', 'Panel Channel Author']);
+const EXTRA_INFO_NODES = new Set(['距离下次重置 12 天', '套餐到期 2026-06-01', 'Panel Channel Author',
+  // v5.4.20 #6 借鉴 Proxy-override：新增 junk 关键词回归（免费/试用/应急 + Sign/Login/Register/Help/FAQ）
+  '免费节点 01', '试用 1 天', '应急入口', 'Sign Up Panel', 'Login Portal', 'Register Now', 'Help Center', 'FAQ']);
 const COST_AND_LINE_QUALITY_CASES = [
   'JP 02 0.2x Saver Home x0.2',
   'HK IPLC 03 x3',
@@ -123,6 +125,7 @@ const STUN_FAKE_IP_FILTER_ENTRIES = [
 const CLASSIFICATION_CASES = [
   ['HKG 01 IEPL x1', 'HK'],
   ['深港 IEPL 02 x1', 'HK'],
+  ['Signal 香港 IEPL x1', 'HK'],
   ['TWN 01 AnyRoute IEPL x2.5', 'TW'],
   ['SGP 01 Home x1', 'SG'],
   ['JPN 01 Tokyo Home x1', 'JP'],
@@ -225,6 +228,17 @@ function makeFixtureConfig() {
       makeProxy('Panel Channel Author'),
       makeProxy('JP 02 0.2x Saver Home x0.2'),
       makeProxy('HK IPLC 03 x3'),
+      // v5.4.20 #6 junk 关键词回归——以下应被 isInfoNode 过滤（排除出 classified ALL）
+      makeProxy('免费节点 01'),
+      makeProxy('试用 1 天'),
+      makeProxy('应急入口'),
+      makeProxy('Sign Up Panel'),
+      makeProxy('Login Portal'),
+      makeProxy('Register Now'),
+      makeProxy('Help Center'),
+      makeProxy('FAQ'),
+      // v5.4.20 #6 合法名守卫——"Signal" 含 "Sign" 但有词边界保护，必须保留并分类到 HK
+      makeProxy('Signal 香港 IEPL x1'),
     ],
     'proxy-groups': [
       { name: '机场自动选择', type: 'url-test', proxies: ['HKG 01 IEPL x1'] },

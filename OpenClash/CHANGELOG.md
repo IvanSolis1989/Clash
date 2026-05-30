@@ -7,6 +7,15 @@
 
 ---
 
+## v5.4.20-oc-normal.1 / v5.4.20-oc-smart.1 (2026-05-30)
+
+借鉴 Proxy-override 批 B · #6 节点过滤关键词补充（Normal / Smart 同步；spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：
+
+- Ruby `INFO_PATTERNS` reject 数组新增：中文 `/免费/` `/试用/` `/应急/`；英文 `/\bSign\b/i` `/\bLogin\b/i` `/\bRegister\b/i` `/\bHelp\b/i` `/\bFAQ\b/i`（`\b` 词边界防误伤 Signal；`/注册/` Register 中文已存在）
+- 不加「更新」「地址」（误伤风险高，owner spec 排除）
+- 一致性回归：`tools/test-info-node-filter.js` 覆盖两份 .sh 的 Ruby INFO_PATTERNS
+- 🔢 版本：v5.4.19-oc-* → v5.4.20-oc-*
+
 ## v5.4.19-oc-normal.1 / v5.4.19-oc-smart.1 (2026-05-30)
 
 借鉴 Proxy-override 批 A（Normal / Smart 同步；跟随 Clash Party v5.4.19；spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：

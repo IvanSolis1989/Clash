@@ -3,7 +3,7 @@
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
-> 当前版本：**v5.4.19-flclash.1**（22 url-test 区域组 + 32 业务策略组；含借鉴 Proxy-override 批 A：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy；DNS split-bootstrap 固定为 default 纯 IP + 其它 resolver 全 DoH，保留 GEOSITE 覆盖台账 / Cloudflare R2 / STUN/TURN / RustDesk 修复）
+> 当前版本：**v5.4.20-flclash.1**（22 url-test 区域组 + 32 业务策略组；含借鉴 Proxy-override 批 A+B：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy + 节点过滤 junk 关键词补充；DNS split-bootstrap 固定为 default 纯 IP + 其它 resolver 全 DoH，保留 GEOSITE 覆盖台账 / Cloudflare R2 / STUN/TURN / RustDesk 修复）
 
 <table><tr>
 <td><img width="160" alt="FlClash 截图1" src="https://github.com/user-attachments/assets/e88e0724-2bc0-4111-851e-e8aa0a9141d3"></td>

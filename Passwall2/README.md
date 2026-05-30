@@ -1,7 +1,7 @@
-# Passwall / Passwall2 使用教程（对齐 Clash Party v5.4.19 简化版）
+# Passwall / Passwall2 使用教程（对齐 Clash Party v5.4.20 简化版）
 
 > 配置参考：`Passwall2/` 目录  
-> 版本：**v5.4.19-pw2.1**（Build 2026-05-30；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连（27-cn-site.list）；DNS split-bootstrap 不适用于 Passwall2 shunt_rules，Paddle / Cloudflare R2 规则保持）
+> 版本：**v5.4.20-pw2.1**（Build 2026-05-30；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连（27-cn-site.list）；DNS split-bootstrap 不适用于 Passwall2 shunt_rules，Paddle / Cloudflare R2 规则保持）
 > 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）+ **[Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)**（精简分流版）—— [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已迁入）并行维护的两款 OpenWrt 插件，**规则语法同源**（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
 > 架构：32 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
 

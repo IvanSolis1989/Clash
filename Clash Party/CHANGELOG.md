@@ -7,6 +7,15 @@
 
 ---
 
+## v5.4.20 / v5.4.20-normal.1 (2026-05-30)
+
+借鉴 Proxy-override 批 B · #6 节点过滤关键词补充（spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：
+
+- junk 节点过滤器 `isInfoNode` 新增关键词：中文子串 `免费` / `试用` / `应急`；英文（`\b` 词边界，防误伤 Signal 等）`Sign` / `Login` / `Register` / `Help` / `FAQ`
+- 不加「更新」「地址」（误伤风险高，owner spec 排除）
+- 回归测试：新增 `tools/test-info-node-filter.js`（6 mihomo 产物源码一致性）+ 扩展 `tools/validate-js-overwrites.js` fixture（3 JS 行为断言：8 个 junk 正例被过滤 + `Signal 香港 IEPL x1` 负例保留并分类 HK，验证 `\b` 词边界生效）
+- 🔢 版本：v5.4.19 → v5.4.20
+
 ## v5.4.19 / v5.4.19-normal.1 (2026-05-30)
 
 借鉴 Proxy-override 批 A（低风险三项；设计 spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：

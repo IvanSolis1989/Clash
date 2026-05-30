@@ -1,7 +1,7 @@
-# Quantumult X 使用教程（对齐 Clash Party v5.4.19）
+# Quantumult X 使用教程（对齐 Clash Party v5.4.20）
 
 > 配置文件：`Quantumult X/QuantumultX.conf`
-> 版本：**v5.4.19-QX.1**（Build 2026-05-30，详见 `Quantumult X/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连，jpush/umeng 前置于 jiguang/youmeng 拦截；DNS split-bootstrap 按 QX 原生字段映射，DoH 顺序 AliDNS 优先）
+> 版本：**v5.4.20-QX.1**（Build 2026-05-30，详见 `Quantumult X/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连，jpush/umeng 前置于 jiguang/youmeng 拦截；DNS split-bootstrap 按 QX 原生字段映射，DoH 顺序 AliDNS 优先）
 > 目标：**Quantumult X iOS（App Store 付费正版）**
 > 架构：22 区域 `url-latency-benchmark` 组（11 全部 + 11 家宽）+ 32 业务 `static` 组 + ~290 filter_remote + 568 filter_local 规则
 

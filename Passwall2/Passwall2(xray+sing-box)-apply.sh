@@ -1,11 +1,12 @@
 #!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for Passwall / Passwall2 — UCI batch helper
-# Version: v5.4.19-pw2.1 | Build 2026-05-30
+# Version: v5.4.20-pw2.1 | Build 2026-05-30
 #
 # 用途：一次性在 Passwall2 中创建 32 条 shunt rule（含域名列表 + IP 列表），
 #       每条目标节点留空（NEED_CONFIG），用户之后到 LuCI 里手工选节点。
 #
+# 变更：v5.4.20-pw2.1 — N/A#6 节点过滤关键词补充：Passwall2 无运行时节点分类 / junk 过滤器，#6 不适用；版本跟随基线对齐
 # 变更：v5.4.19-pw2.1 — 借鉴 Proxy-override #2：27-cn-site.list 增国内推送 SDK(jpush/umeng) + 前端 CDN(baomitu/bootcss/staticfile/upaiyun) 直连
 # 变更：v5.4.17-pw2.1 — 跟随 Clash Party v5.4.17 记录 DNS split-bootstrap；Passwall2 shunt_rules 不承载 DNS
 # 变更：v5.4.16-pw2.1 — Paddle 许可/支付链路加入金融支付；Passwall2 不消费 anti-AD 远程源

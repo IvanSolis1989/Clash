@@ -6,6 +6,10 @@
 
 ---
 
+## v5.4.20-QX.1 (2026-05-30)
+
+- N/A#6 节点过滤关键词补充（批 B）：Quantumult X 不处理订阅去 junk（区域分类用 server-tag-regex，无 junk 排除器），#6 不适用；版本跟随 Clash Party v5.4.20 基线对齐。
+
 ## v5.4.19-QX.1 (2026-05-30)
 
 借鉴 Proxy-override 批 A · #2 国内 SDK/CDN 直连前置（跟随 Clash Party v5.4.19；spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：

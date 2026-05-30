@@ -1,6 +1,6 @@
-# SingBox 使用教程（对齐 Clash Party v5.4.19 Full 语义）
+# SingBox 使用教程（对齐 Clash Party v5.4.20 Full 语义）
 
-> 配置文件：`SingBox/SingBox(sing-box)-full.json`（v5.4.19-sing.1）
+> 配置文件：`SingBox/SingBox(sing-box)-full.json`（v5.4.20-sing.1）
 > 生成脚本：`SingBox/SingBox(sing-box)-generator.js`
 > 目标：在 **sing-box** 上复刻 Clash Party 的「20 区域组（10 全部 + 10 家宽）+ 32 业务组」静态策略结构，并只使用 sing-box 官方可消费的 SRS 规则集，保持 sing-box 1.12/1.13/1.14 官方配置兼容。
 > 本目录只提供 Full 配置。

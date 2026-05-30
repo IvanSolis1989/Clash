@@ -1,8 +1,10 @@
 # ================================================================
 # Clash Smart v5.4.19-cmfa.1 - CMFA (Clash Meta for Android) 配置
+﻿# ================================================================
+# Clash Smart v5.4.20-cmfa.1 - CMFA (Clash Meta for Android) 配置
 # Build: 2026-05-30
 # 架构：proxy-providers 订阅 + 22 url-test 区域组（11 全部 + 11 家宽，家宽 filter 新增 IEPL/IPLC/专线识别）+ 32 业务策略组（含 14 流媒体平台组）+ 384+ rule-providers
-# 基线：Clash Party v5.4.19（唯一主线）
+# 基线：Clash Party v5.4.20（唯一主线）
 # 变更历史：见 `Clash Meta For Android/CHANGELOG.md`
 # ================================================================
 # ★ 快速上手：
@@ -207,7 +209,8 @@ proxy-providers:
       enable: true
       url: 'https://www.gstatic.com/generate_204'
       interval: 300
-    exclude-filter: '(?i)(导航网址|距离下次重置|剩余流量|套餐到期|网址导航|官网|订阅|到期|剩余|重置)'
+    # v5.4.20 #6 借鉴 Proxy-override：补充 junk 关键词（免费/试用/应急 中文子串；Sign/Login/Register/Help/FAQ 英文用 \b 词边界，RE2 下避免误伤 Signal 等）
+    exclude-filter: '(?i)(导航网址|距离下次重置|剩余流量|套餐到期|网址导航|官网|订阅|到期|剩余|重置|免费|试用|应急|\bSign\b|\bLogin\b|\bRegister\b|\bHelp\b|\bFAQ\b)'
 proxy-groups:
   url: 'https://www.gstatic.com/generate_204'
   interval: 180

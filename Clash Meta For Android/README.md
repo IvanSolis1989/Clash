@@ -4,7 +4,7 @@
 > 适用客户端：**Clash Meta For Android（CMFA）** / **FlClash** / **mihomo-party-android**（Android 原生）· **[ClashMi](https://github.com/KaringX/clashmi)**（跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，复用同一 YAML；详见 §九）
 > 内核要求：**Mihomo**（原生 YAML 导入；区域组用 `url-test`，**不含 Smart + LightGBM**——CMFA 的静态 YAML 不支持 JS 覆写）
 > **FlClash 用户**：推荐使用 [FlClash 覆写脚本](../FlClash/FlClash(mihomo).js)（动态节点分类 + 家宽识别 + 订阅清理）。详见 [`FlClash/README.md`](../FlClash/README.md)。
-> 当前版本：**v5.4.19-cmfa.1**（跟随 Clash Party v5.4.19 主线；含借鉴 Proxy-override 批 A：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy；DNS split-bootstrap 固定为 default 纯 IP + 其它 resolver 全 DoH，保留 GEOSITE 覆盖台账 / Cloudflare R2 / STUN/TURN 修复）
+> 当前版本：**v5.4.20-cmfa.1**（跟随 Clash Party v5.4.20 主线；含借鉴 Proxy-override 批 A+B：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy + 节点过滤 junk 关键词补充；DNS split-bootstrap 固定为 default 纯 IP + 其它 resolver 全 DoH，保留 GEOSITE 覆盖台账 / Cloudflare R2 / STUN/TURN 修复）
 
 ---
 

@@ -5,6 +5,15 @@
 
 ---
 
+## v5.4.20-flclash.1 (2026-05-30)
+
+借鉴 Proxy-override 批 B · #6 节点过滤关键词补充（跟随 Clash Party v5.4.20）：
+
+- junk 节点过滤器 `isInfoNode` 新增：中文 `免费` / `试用` / `应急`；英文（`\b` 词边界）`Sign` / `Login` / `Register` / `Help` / `FAQ`
+- 不加「更新」「地址」（误伤风险高）
+- 回归：`tools/validate-js-overwrites.js` flclash target fixture（junk 过滤 + Signal 守卫）+ `tools/test-info-node-filter.js` 一致性
+- 🔢 版本：v5.4.19-flclash.1 → v5.4.20-flclash.1
+
 ## v5.4.19-flclash.1 (2026-05-30)
 
 借鉴 Proxy-override 批 A（跟随 Clash Party v5.4.19；spec：`docs/2026-05-30-proxy-override-借鉴设计.md`）：
