@@ -124,7 +124,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 ### 3.3 可变与不可变文件
 
 **不可变（改动前必须征得 maintainer 同意）：**
-- `Clash Party/ClashParty(mihomo-smart).js` 中 `SMART` / `BIZ` 常量定义（§4.1 的 49 组命名：18 区域 + 31 业务）
+- `Clash Party/ClashParty(mihomo-smart).js` 中 `SMART` / `BIZ` 常量定义（§3.1 的 54 组命名：22 区域 + 32 业务）
 - `SingBox/SingBox(sing-box)-generator.js` 的生成策略
 - `CLAUDE.md` / `AGENTS.md`
 
@@ -160,7 +160,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 - [ ] 根 `README.md` + 对应子目录 `README.md` 已更新
 - [ ] `CLAUDE.md §5` 自检命令全部通过（输出贴在 PR 描述）
 - [ ] PR 描述引用了所有涉及 APP 的**官方文档锚点**
-- [ ] 代理组数仍为 49（18 区域〔9 全部 + 9 家宽〕 + 31 业务），未新增/删除/改名
+- [ ] 代理组数仍为 54（22 区域〔11 全部 + 11 家宽〕 + 32 业务），未新增/删除/改名
 - [ ] 规则-provider 下载代理仍为 `🚫 受限网站`（Shadowrocket / sing-box 例外）
 - [ ] sing-box full 产物是通过 `node SingBox/SingBox(sing-box)-generator.js` **重新生成**的
 

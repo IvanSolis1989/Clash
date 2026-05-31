@@ -1,5 +1,7 @@
 # Sing-Box 配置参考文档
 
+> 更新于 2026-05-31（上次获取 2026-04-30）：1.14.0-alpha.26 新增 Hysteria2 gecko 混淆（QUIC 流量伪装，`min_packet_size`/`max_packet_size` 字段）。alpha.20-25 为 mDNS DNS servers、Windows Schannel TLS 引擎、Hysteria2 NAT traversal、自定义 TUN DNS 模式等。稳定版仍为 1.13.12。本仓库 SingBox JSON 已完成 `download_detour` → `http_client` 迁移，兼容当前 1.11-1.13 稳定版；alpha 新功能不影响现有配置。
+>
 > 更新于 2026-04-30（上次获取 2026-04-26）：1.14.0-alpha.19 引入 `http_clients` 顶层字段（替代内联 `http_client`）、DNS 旧格式兼容将于 1.14 移除、TLS spoof/NaiveProxy/Tailscale 新能力、`default_http_client` 字段。本仓库 SingBox JSON 已完成 `download_detour` → `http_client` 迁移，兼容当前 1.11-1.13 稳定版。
 >
 > 来源 URL：

@@ -2,6 +2,8 @@
 
 > 来源: https://manual.nssurge.com/
 > 获取日期: 2026-04-26
+> 更新于 2026-05-31（复查）：Surge iOS v5.18.0（2026-05-06）。manual.nssurge.com 配置手册未发现语法变更。Surge 5.x 配置语法与当前基线兼容。
+>
 > 更新于 2026-04-30（复查）：重新抓取 manual.nssurge.com，未发现版本号或配置语法变更。Surge 5.x 配置语法与当前基线兼容。
 > 注意: 本文档基于 Surge 5.x / Surge Mac 5.x 官方手册编写
 
@@ -193,6 +195,21 @@ Surge 支持使用单独的 `[DNS]` 段进行更精细的 DNS 配置。
 | `extended-matching` | 启用扩展匹配（DOMAIN-SUFFIX 匹配完整域名） | Yes | No |
 | `source` | 源地址匹配（IP-CIDR） | Yes | No |
 | `dns-failed` | FINAL 规则在 DNS 解析失败时使用（Shadowrocket 特有） | No | Yes |
+
+### Inline Ruleset（Mac 5.3.1+ 新能力）
+
+自 Surge Mac 5.3.1 起，支持在 profile 内直接嵌入规则集（无需外部文件/URL）：
+
+```
+[Ruleset Streaming]
+DOMAIN-SUFFIX,netflix.com
+DOMAIN-SUFFIX,netflix.net
+
+[Rule]
+RULE-SET,Streaming,StreamingProxy
+```
+
+本仓库使用远程 RULE-SET URL，不受此新功能影响。
 
 ---
 

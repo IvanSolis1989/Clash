@@ -5,8 +5,10 @@
 > - https://nsloon.uk/tutorial/ (Loon 官方教程网站)
 > - https://deepwiki.com/blackmatrix7/ios_rule_script/7.2-platform-specific-configuration (社区参考)
 > 获取日期: 2026-04-26
-> 更新于 2026-04-26: 补充 Loon 3.2.0+ 新字段 (ip-mode / udp-fallback-mode / hijack-dns / domain-reject-mode / dns-reject-mode / ipasn-url)；确认 ipv6 已废弃
+> 更新于 2026-05-31（复查）：Loon v3.4.0（2026-05-26）。新增 DNS mapping servers 自定义端口支持、AnyTLS 内存优化。不涉及分流配置语法变更。当前文档与基线兼容。
+>
 > 更新于 2026-04-30（复查）：重新检查 GitHub 仓库，无新发布或配置语法变更。当前文档与基线兼容。
+> 更新于 2026-04-26: 补充 Loon 3.2.0+ 新字段 (ip-mode / udp-fallback-mode / hijack-dns / domain-reject-mode / dns-reject-mode / ipasn-url)；确认 ipv6 已废弃
 
 ---
 

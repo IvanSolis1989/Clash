@@ -5,6 +5,8 @@
 > - https://qx.atlucky.me/ (社区权威 Wiki，页面 hash 认证)
 > - https://blackmatrix7.github.io/ios_rule_script/7.2-platform-specific-configuration (社区参考)
 > - 获取日期: 2026-04-26
+> 更新于 2026-05-31（复查）：QX v1.6.0（2026-05-21）。新增 AnyTLS 代理协议支持。不涉及分流配置语法变更。当前配置语法与基线兼容。
+>
 > 更新于 2026-04-30（复查）：重新检查 GitHub 仓库（crossutility/Quantumult-X），无新发布。当前配置语法与基线兼容。
 
 ---
@@ -86,6 +88,19 @@ doh-server=https://URL
 - QX 的 `server=` **不接受 DoH URL**（那是 Surge 的语法）
 - 多个 `doh-server=` 条目中，**只有第一个生效**
 - `system` 关键字作为 IP 值使用：`server=/example.com/system`
+
+### v1.6.0 新增 DNS 选项
+
+| 字段 | 说明 |
+| ---- | ---- |
+| `prefer-doh3` | 优先使用 DNS over HTTP/3，回退到 HTTP/2 |
+| `dns-reject-domain-behavior` | DNS 拒绝行为：`loopback` / `no-error-no-answer` / `nxdomain` / `none` |
+| `doh-server = URL, excluded_ssids=SSID1` | 按 SSID 排除 DoH 服务器 |
+| `doh-server = URL, included_ssids=SSID2` | 按 SSID 包含 DoH 服务器 |
+
+### v1.6.0 新增代理协议
+
+- **anytls**：原生 UDP-over-TCP 传输，无需单独配置 `udp-over-tcp`
 
 ---
 
