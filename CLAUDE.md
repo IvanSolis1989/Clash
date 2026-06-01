@@ -11,6 +11,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Quick Start / 常用命令
 
+> ⚠️ **开发前必读**：完整阅读 CLAUDE.md + AGENTS.md 后再动手修改任何产物。
+
+### 开发环境要求
+
+- **Node.js**: ≥ 18（推荐 22，与 CI 一致）
+- **Ruby**: ≥ 3.0（可选，用于 OpenClash YAML 严格解析）
+- **Git**: 最新版
+
+### 验证命令（提交前必跑）
+
 ```bash
 # 验证 JS 覆写脚本（节点分类 / 组顺序 / 规则引用等）
 node tools/validate-js-overwrites.js
@@ -25,10 +35,14 @@ node tools/validate-artifact-contracts.js --strict-ruby  # 含 Ruby YAML 解析
 # 验证 PROCESS-NAME 直连白名单
 node tools/validate-process-name-direct.js
 
+# §5 自检脚本（完整版见下方 §5 节）
+```
+
+### 产物重新生成
+
+```bash
 # 重新生成 SingBox Full JSON（禁止手工改）
 node "SingBox/SingBox(sing-box)-generator.js"
-
-# §5 自检脚本（完整版见下方 §5 节）
 ```
 
 ---
@@ -80,6 +94,18 @@ node "SingBox/SingBox(sing-box)-generator.js"
 > - Surge 与 Shadowrocket 语法最接近（~90% 兼容），从 Shadowrocket 迁移改动最小
 > - Loon 兼容 Surge 的 `[Rule] RULE-SET` 语法，但 [General] DNS 字段和 MMDB 配置方式不同
 > - Quantumult X 使用完全独立的 `[policy]` / `[filter_remote]` / `[filter_local]` 结构，由 `tools/srk_to_qx.py` 或等价脚本从 Shadowrocket 自动转换生成
+
+### 0.1 辅助目录（不影响产物同步）
+
+| 目录 | 用途 | 是否影响产物 |
+| --- | --- | --- |
+| `SubStore/` | Sub-Store 脚本模板和使用说明（独立于主产物） | ❌ 不影响 |
+| `docs/` | 捐款二维码、GEOSITE 覆盖台账、PROCESS-NAME 兼容性文档 | ❌ 不影响 |
+| `mirrors/` | 规则镜像文件（CiciAi.list、Grok.yaml、UK.list，供 rule-provider 备用源） | ❌ 不影响 |
+| `tools/` | 验证脚本（validate-js-overwrites.js、validate-artifact-contracts.js、validate-process-name-direct.js） | ❌ 不影响 |
+| `.github/workflows/` | CI 验证（JS 覆写 + 跨客户端一致性）+ AI Issue 自动回复 | ❌ 不影响 |
+
+这些目录的修改**不需要**触发 §1 全版本联动，但 `tools/` 和 `.github/workflows/` 的改动应在 PR 描述中说明。
 
 ---
 
@@ -558,7 +584,43 @@ node -e "const yaml=require('yaml'||'js-yaml');console.log('YAML parse: OK')" 2>
 
 - 不同步 = 违规。
 - 不核对官方文档 = 违规。
-- 删除/改名 49 个代理组之一而未在 PR 说明里论证 = 违规。
+- 删除/改名 54 个代理组之一而未在 PR 说明里论证 = 违规。
 - 伪造「已兼容」结论（没有引用官方文档就下结论）= 违规。
 
 > 这些约束是仓库长期可维护性的前提，优先级高于任何「小修快改」的便利。
+
+---
+
+## 8. CI/CD 集成
+
+### 8.1 自动验证（GitHub Actions）
+
+PR 提交后会自动运行两个验证工作流：
+
+1. **Validate JS Overwrites** — 验证 Clash Party / FlClash JS 覆写脚本
+   - 触发条件：PR/push 修改 `Clash Party/**/*.js`、`FlClash/**/*.js`、`tools/validate-js-overwrites.js`
+   - 验证内容：节点分类、组顺序、规则引用、订阅清理、TikTok 目标隔离等
+2. **Validate Artifact Contracts** — 跨客户端产物一致性验证（含 Ruby YAML 解析）
+   - 触发条件：PR/push 修改任何产物文件（JS/YAML/JSON/conf）
+   - 验证内容：JS 覆写 + CMFA/OpenClash/SR/Surge/Loon/QX/SingBox/v2rayN/Passwall 组计数 + JSON 合法性 + YAML 重复键
+
+任一工作流失败 → PR 不得合入。
+
+### 8.2 AI Issue 自动回复
+
+仓库配置了 DeepSeek AI 自动回复器（`.github/workflows/ai-responder.yml`）：
+
+- **触发方式**：
+  - Issue 打上 `question`/`bug`/`enhancement`/`documentation` 标签时自动触发
+  - 评论区输入 `/ai-help` 可升级为深度分析（v4-pro 模型）
+- **分层调用策略**：
+
+| Issue 类别 | 首次触发 | /ai-help 追问 | 代码修改权限 |
+| --- | --- | --- | --- |
+| question/faq/help wanted | v4-flash 思考 | v4-pro 思考 | ❌ |
+| bug | v4-flash 思考 | v4-pro 思考 | ✅ |
+| enhancement | v4-flash 思考 | v4-pro 思考 | ✅ |
+| documentation | v4-flash 思考 | v4-flash 思考 | ✅ (文档) |
+
+- **代码修改模式**：AI 输出结构化响应（`<!-- AI_REPLY -->` + `<!-- AI_PATCH -->` + `<!-- AI_PR -->`），workflow 自动提取补丁、创建分支、提交并开 PR
+- **所需 Secrets**：`DEEPSEEK_API_KEY`（必填）、`TAVILY_API_KEY`（可选，联网搜索）
