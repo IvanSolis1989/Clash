@@ -7,6 +7,10 @@
 
 ---
 
+## v5.4.23-v2n.1 (2026-06-02)
+
+- ★ FIX#161：`domain:zhimg.com` + `domain:zhihu.co` 加入 direct 路由规则（知乎图片 CDN + 短链，同步基线）。
+
 ## v5.4.22-v2n.1 (2026-05-31)
 
 - ★ GeTui(个推)推送 SDK `getui.com` / `getui.net` / `gepush.com` 加入 `scki-000c` direct 路由规则（review 后补；延续 #2，前置于 ads；owner 选放行保 App 推送如米家）。

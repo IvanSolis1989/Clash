@@ -7,6 +7,12 @@
 
 ---
 
+## v5.4.23 / v5.4.23-normal.1 (2026-06-02)
+
+- ★ FIX#161：知乎图片 CDN `zhimg.com` + 短链 `zhihu.co` 加入 🏠 国内网站 直连（此前 `pica.zhimg.com` 未被 geosite:cn / ChinaMax 覆盖，流量落入 FINAL 被代理导致知乎图片加载失败）。
+  - Clash Party JS × 2（Smart + Normal）：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → `CN_SITE`
+  - 同步全产物：CMFA / OpenClash×2 / SR / Surge / Loon / QX / FlClash / SingBox(重新生成) / v2rayN / Passwall / Passwall2
+
 ## v5.4.22 / v5.4.22-normal.1 (2026-05-31)
 
 - ★ GeTui(个推)推送 SDK `getui.com` / `getui.net` / `gepush.com` 加直连白名单（review 后补；延续 #2 jpush/umeng——被通用广告/隐私表当 tracker 拦截但承载 App 推送如米家；owner 选放行保推送可达）。

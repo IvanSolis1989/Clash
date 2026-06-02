@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v5.4.22-sing.1",
-    "build": "2026-05-31",
-    "baseline": "Clash Party v5.4.22",
+    "version": "v5.4.23-sing.1",
+    "build": "2026-06-02",
+    "baseline": "Clash Party v5.4.23",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {
@@ -6854,6 +6854,13 @@
         "outbound": "🏠 国内网站"
       },
       {
+        "domain_suffix": [
+          "zhimg.com"
+        ],
+        "action": "route",
+        "outbound": "🏠 国内网站"
+      },
+      {
         "rule_set": [
           "cn"
         ],
@@ -6877,6 +6884,13 @@
       {
         "domain_suffix": [
           "zxtdjy.com"
+        ],
+        "action": "route",
+        "outbound": "🏠 国内网站"
+      },
+      {
+        "domain_suffix": [
+          "zhihu.co"
         ],
         "action": "route",
         "outbound": "🏠 国内网站"

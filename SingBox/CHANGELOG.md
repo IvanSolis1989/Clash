@@ -5,6 +5,10 @@
 
 ---
 
+## v5.4.23-sing.1 (2026-06-02)
+
+- ★ FIX#161：generator 自动从主线派生 `domain_suffix: zhimg.com / zhihu.co` → 🏠 国内网站 route rule（知乎图片 CDN + 短链，重新生成 JSON）。
+
 ## v5.4.22-sing.1 (2026-05-31)
 
 - ★ GeTui(个推)推送 SDK `getui.com` / `getui.net` / `gepush.com` 直连（review 后补；由主线 allowlist 自动派生后重新生成 route.rules）。

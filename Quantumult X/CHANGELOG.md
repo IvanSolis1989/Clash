@@ -6,6 +6,10 @@
 
 ---
 
+## v5.4.23-QX.1 (2026-06-02)
+
+- ★ FIX#161：`host-suffix, zhimg.com` + `host-suffix, zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。
+
 ## v5.4.22-QX.1 (2026-05-31)
 
 - ★ GeTui(个推)推送 SDK `getui.com` / `getui.net` / `gepush.com` 加 `[filter_remote]` 直连白名单（review 后补；延续 #2，前置于广告 URL；owner 选放行保 App 推送如米家）。

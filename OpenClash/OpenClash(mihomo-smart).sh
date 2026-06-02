@@ -2,10 +2,10 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.4.22-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
-# Build: 2026-05-31
+# Clash Smart v5.4.23-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Build: 2026-06-02
 # ============================================================================
-# 定位：对齐 Clash Party v5.4.22 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
+# 定位：对齐 Clash Party v5.4.23 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
 #         - Normal 面向稳定版 mihomo / 经典 url-test
 #         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
@@ -16,14 +16,14 @@
 #   • ~990 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
-# 基线：Clash Party v5.4.20（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v5.4.23（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v5.4.22-oc-smart.1"
+VERSION_TAG="v5.4.23-oc-smart.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -4339,10 +4339,12 @@ rules:
 - "DOMAIN-SUFFIX,bootcss.com,\U0001F3E0 国内网站"
 - "DOMAIN-SUFFIX,staticfile.org,\U0001F3E0 国内网站"
 - "DOMAIN-SUFFIX,upaiyun.com,\U0001F3E0 国内网站"
+- "DOMAIN-SUFFIX,zhimg.com,\U0001F3E0 国内网站"
 - "RULE-SET,cn,\U0001F3E0 国内网站"
 - "RULE-SET,cn-ip,\U0001F3E0 国内网站,no-resolve"
 - "DOMAIN-SUFFIX,alimama.com,\U0001F3E0 国内网站"
 - "DOMAIN-SUFFIX,zxtdjy.com,\U0001F3E0 国内网站"
+- "DOMAIN-SUFFIX,zhihu.co,\U0001F3E0 国内网站"
 - "RULE-SET,acc-chinamax,\U0001F3E0 国内网站"
 # v5.4.4 FIX#144: bbys.app 视频播放走直连
 - DOMAIN-SUFFIX,bbys.app,DIRECT
@@ -4370,7 +4372,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.4.22-oc-smart.1"
+VERSION = "v5.4.23-oc-smart.1"
 
 STATUS_LOG = "/tmp/clash_smart_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

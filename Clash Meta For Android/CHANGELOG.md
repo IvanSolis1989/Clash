@@ -5,6 +5,10 @@
 
 ---
 
+## v5.4.23-cmfa.1 (2026-06-02)
+
+- ★ FIX#161：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。
+
 ## v5.4.22-cmfa.1 (2026-05-31)
 
 - ★ GeTui(个推)推送 SDK `getui.com` / `getui.net` / `gepush.com` 加直连白名单（review 后补；延续 #2，被通用广告/隐私表当 tracker 拦截但承载 App 推送如米家；owner 选放行）。

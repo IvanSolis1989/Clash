@@ -1,14 +1,14 @@
 ﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.22 (2026-05-31)
+// 版本：v5.4.23 (2026-06-02)
 // 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 32 业务策略组（含 14 流媒体平台组）+ 385 rule-providers 100%+ 服务覆盖
-// v5.4.22: 借鉴 Proxy-override 批C（#1 QUIC 精细化）· v5.4.21: 批D（#4 DoH-over-IP）· v5.4.20: 批B（#6 junk 过滤）· v5.4.19: 批A（#2/#3/#5）
+// v5.4.23: FIX#161 zhimg.com/zhihu.co 直连 · v5.4.22: 借鉴 Proxy-override 批C（#1 QUIC 精细化）· v5.4.21: 批D（#4 DoH-over-IP）
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.22'
+const VERSION = 'v5.4.23'
 
 // v5.4.9 FEAT#LOCAL-TOOLS:
 // Desktop-capable local tools that should not be routed through proxy nodes.
@@ -2293,10 +2293,12 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,bootcss.com,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,staticfile.org,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,upaiyun.com,${BIZ.CN_SITE}`,
+    `DOMAIN-SUFFIX,zhimg.com,${BIZ.CN_SITE}`,
     `RULE-SET,cn,${BIZ.CN_SITE}`,
     `RULE-SET,cn-ip,${BIZ.CN_SITE},no-resolve`,
     `DOMAIN-SUFFIX,alimama.com,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,zxtdjy.com,${BIZ.CN_SITE}`,
+    `DOMAIN-SUFFIX,zhihu.co,${BIZ.CN_SITE}`,
     `RULE-SET,acc-chinamax,${BIZ.CN_SITE}`,
     // v5.4.4 FIX#144: bbys.app 视频播放走直连
     `DOMAIN-SUFFIX,bbys.app,DIRECT`,

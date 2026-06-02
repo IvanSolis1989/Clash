@@ -1,7 +1,7 @@
 ﻿// Clash 覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.22-normal.1 (2026-05-31)
+// 版本：v5.4.23-normal.1 (2026-06-02)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 32 业务策略组 + 385 rule-providers
-// 基线：Clash Party v5.4.22（与同目录 ClashParty(mihomo-smart).js 规则 100% 等价，仅区域组从 smart 改为 url-test）
+// 基线：Clash Party v5.4.23（与同目录 ClashParty(mihomo-smart).js 规则 100% 等价，仅区域组从 smart 改为 url-test）
 // 适用：Mihomo / Clash.Meta 稳定版内核、不支持 smart + LightGBM 的分支；也适用于想完全关闭 ML 评估的用户
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
@@ -9,7 +9,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.22-normal.1'
+const VERSION = 'v5.4.23-normal.1'
 
 // v5.4.9 FEAT#LOCAL-TOOLS: desktop local-tool direct whitelist.
 const LOCAL_TOOL_DIRECT_PROCESS_NAMES = [
@@ -2288,10 +2288,12 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,bootcss.com,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,staticfile.org,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,upaiyun.com,${BIZ.CN_SITE}`,
+    `DOMAIN-SUFFIX,zhimg.com,${BIZ.CN_SITE}`,
     `RULE-SET,cn,${BIZ.CN_SITE}`,
     `RULE-SET,cn-ip,${BIZ.CN_SITE},no-resolve`,
     `DOMAIN-SUFFIX,alimama.com,${BIZ.CN_SITE}`,
     `DOMAIN-SUFFIX,zxtdjy.com,${BIZ.CN_SITE}`,
+    `DOMAIN-SUFFIX,zhihu.co,${BIZ.CN_SITE}`,
     `RULE-SET,acc-chinamax,${BIZ.CN_SITE}`,
     // v5.4.4 FIX#144: bbys.app 视频播放走直连
     `DOMAIN-SUFFIX,bbys.app,DIRECT`,

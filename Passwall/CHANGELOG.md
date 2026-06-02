@@ -7,6 +7,10 @@
 
 ---
 
+## v5.4.23-pw.1 (2026-06-02)
+
+- ★ FIX#161：`27-cn-site.list` 增 `domain:zhimg.com` + `domain:zhihu.co` → direct shunt（知乎图片 CDN + 短链，同步基线）。
+
 ## v5.4.22-pw.1 (2026-05-31)
 
 - ★ GeTui(个推)推送 SDK `getui.com` / `getui.net` / `gepush.com` 加入 `27-cn-site.list`（review 后补；延续 #2，归 direct shunt；owner 选放行保 App 推送如米家）。
