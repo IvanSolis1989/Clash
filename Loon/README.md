@@ -1,9 +1,9 @@
-# Loon 使用教程（对齐 Clash Party v5.4.22）
+# Loon 使用教程（对齐 Clash Party v5.4.23）
 
 > 配置文件：`Loon/Loon.conf`
-> 版本：**v5.4.22-Loon.1**（Build 2026-05-31，详见 `Loon/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连 + 批 D #4 DoH-over-IP bootstrap；DNS 按 Loon 原生字段映射，UDP/443 仍按 `disable-udp-ports` 屏蔽）
+> 版本：**v5.4.23-Loon.2**（Build 2026-06-02，详见 `Loon/CHANGELOG.md`；修复 #162 失效远程规则 URL）
 > 目标：**Loon iOS（App Store 付费正版）**
-> 架构：22 区域 url-test 组（11 全部 + 11 家宽，[Remote Filter] NameRegex）+ 32 业务策略组 + 288 [Remote Rule] 订阅规则集
+> 架构：22 区域 url-test 组（11 全部 + 11 家宽，[Remote Filter] NameRegex）+ 32 业务策略组 + 286 [Remote Rule] 订阅规则集
 
 ---
 
@@ -114,7 +114,7 @@ Loon 必须从 URL 安装配置（和 Surge 一样）：
 3. 右上角 **⊕** → 粘贴 URL → **下载**。
 4. 点击新下载的配置 → **启用**。
 
-首次启用时 Loon 会拉取 **约 288 个 RULE-SET**（blackmatrix7 Loon 版 `.list` 格式），根据网络情况约 **2–5 分钟**。**务必先开代理再下载**，否则 GitHub 访问不稳定会导致部分 RULE-SET 404。
+首次启用时 Loon 会拉取 **约 286 个 RULE-SET**（blackmatrix7 Loon 版 `.list` 格式），根据网络情况约 **2–5 分钟**。**务必先开代理再下载**，否则 GitHub 访问不稳定会导致部分 RULE-SET 404。
 
 ---
 
@@ -199,7 +199,7 @@ Loon 启动时会自动下载这份 Loyalsoldier 加强版 MMDB（含 cloudflare
 | 在配置里设置 MMDB URL | ❌ 只能 UI 下载 | ✅ `geoip-maxmind-url` |
 | macOS 版本 | ❌ 仅 iOS | ✅ Surge Mac |
 
-**本配置从 v5.2.4-Loon.4 起把 288 条 RULE-SET 全部放在 `[Remote Rule]` 段内**（Loon 原生语法）：
+**本配置从 v5.2.4-Loon.4 起把远程 RULE-SET 全部放在 `[Remote Rule]` 段内**（Loon 原生语法；当前 286 条）：
 
 ```
 [Remote Rule]
@@ -210,7 +210,7 @@ https://example.com/rule.list, policy=POLICY, tag=rule.list, enabled=true
 > Loon 的 `[Rule]` 段只接受内联规则（DOMAIN / IP-CIDR / GEOIP / FINAL 等），写了 Surge 风格的远程 RULE-SET
 > 会导致 Loon 在每一行都报"语法错误"弹窗。v5.2.3-Loon.1 → v5.2.4-Loon.3 都犯了这个错，直到 v5.2.4-Loon.4 才修。
 
-好处：在 Loon「规则」面板可以看到 288 条独立的订阅规则集条目，每条都能单独启用/禁用/查看命中数。
+好处：在 Loon「规则」面板可以看到 286 条独立的订阅规则集条目，每条都能单独启用/禁用/查看命中数。
 
 ---
 
@@ -247,7 +247,7 @@ Parsec / Zoom / Pornhub / Wayback）：
 
 ## 九、验证
 
-1. Loon → **首页** → 应显示 `Loon Smart v5.2.4-Loon.4`，协议已启用。
+1. Loon → **首页** → 应显示 `Loon Smart v5.4.23-Loon.2`，协议已启用。
 2. **策略组** 面板应出现 54 组（22 区域 + 32 业务）。
 3. **过滤器** 面板应出现 9 个 Filter（GLOBAL_Filter / HK_Filter / TW_Filter / JPKR_Filter / APAC_Filter / US_Filter / EU_Filter / AM_Filter / AF_Filter）。
 4. 测试分流：

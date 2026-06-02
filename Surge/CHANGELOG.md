@@ -4,6 +4,14 @@
 
 ---
 
+## v5.4.23-Surge.2 (2026-06-02)
+
+- ★ FIX#162：修复远程规则列表加载失败风险：
+  - 移除已失效的 HaGeZi `share/surge-tif-medium.txt`（jsDelivr 403；当前 HaGeZi 无 Surge RULE-SET 等价格式）。
+  - 移除上游已不存在的 `Surge/RemoteDesktop/RemoteDesktop.list`（仅 Clash 端仍有进程名规则，Surge iOS/macOS 规则集不适用）。
+  - `BiliIntl/BiliIntl.list` 路径改为当前上游 `BiliBiliIntl/BiliBiliIntl.list`。
+  - Sukka phishing 继续使用 Surge 原生可加载的 `List/domainset/reject_phishing.conf`。
+
 ## v5.4.23-Surge.1 (2026-06-02)
 
 - ★ FIX#161：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。

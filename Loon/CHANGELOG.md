@@ -4,6 +4,14 @@
 
 ---
 
+## v5.4.23-Loon.2 (2026-06-02)
+
+- ★ FIX#162：修复 Loon 远程规则列表加载失败风险：
+  - `ruleset.skk.moe/List/non_ip/reject_phishing.conf` 已 404，Loon 继续避开 Surge `domainset`，改用同为 non_ip 通用格式的 `reject.conf`。
+  - 移除已失效的 HaGeZi `share/surge-tif-medium.txt`（jsDelivr 403；当前 HaGeZi 无 Loon RULE-SET 等价格式）。
+  - 移除上游已不存在的 `Loon/RemoteDesktop/RemoteDesktop.list`（仅 Clash 端仍有进程名规则，Loon 不适用）。
+  - `BiliIntl/BiliIntl.list` 路径改为当前上游 `BiliBiliIntl/BiliBiliIntl.list`。
+
 ## v5.4.23-Loon.1 (2026-06-02)
 
 - ★ FIX#161：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。

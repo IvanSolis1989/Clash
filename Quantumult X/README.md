@@ -1,9 +1,9 @@
-# Quantumult X 使用教程（对齐 Clash Party v5.4.22）
+# Quantumult X 使用教程（对齐 Clash Party v5.4.23）
 
 > 配置文件：`Quantumult X/QuantumultX.conf`
-> 版本：**v5.4.22-QX.1**（Build 2026-05-31，详见 `Quantumult X/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连 + 批 D #4 DoH-over-IP bootstrap；jpush/umeng 前置于 jiguang/youmeng 拦截）
+> 版本：**v5.4.23-QX.2**（Build 2026-06-02，详见 `Quantumult X/CHANGELOG.md`；修复 #162 失效远程规则 URL）
 > 目标：**Quantumult X iOS（App Store 付费正版）**
-> 架构：22 区域 `url-latency-benchmark` 组（11 全部 + 11 家宽）+ 32 业务 `static` 组 + ~290 filter_remote + 568 filter_local 规则
+> 架构：22 区域 `url-latency-benchmark` 组（11 全部 + 11 家宽）+ 32 业务 `static` 组 + 286 filter_remote + 568 filter_local 规则
 
 ---
 
@@ -111,7 +111,7 @@ QX 从 URL 导入配置（不支持本地文件直接打开）：
 3. 粘贴 URL → 点击 **下载**。
 4. 下载完成后 QX 会自动切换到新配置。
 
-首次启用时 QX 会拉取 **360 个 filter_remote**（blackmatrix7 QX 专用 `.list` 格式），根据网络情况约 **2–5 分钟**。**务必先开代理再下载**。
+首次启用时 QX 会拉取 **286 个 filter_remote**（blackmatrix7 QX 专用 `.list` 格式），根据网络情况约 **2–5 分钟**。**务必先开代理再下载**。
 
 ---
 
@@ -231,7 +231,7 @@ QX 的真正优势是 **`resource_parser_url`（通用资源解析器）+ `rewri
 
 ## 八、验证
 
-1. QX → **设置** → **配置** → 查看当前配置名称，应显示 `Quantumult X Smart v5.2.5-QX.2`。
+1. QX → **设置** → **配置** → 查看当前配置名称，应显示 `Quantumult X Smart v5.4.23-QX.2`。
 2. **策略（Policy）** 面板应出现 54 组（22 `url-latency-benchmark` + 32 `static`）。
 3. **日志（Log）** 查看 filter_remote 下载状态，无 404 / timeout 即成功。
 4. 访问测试：
@@ -280,7 +280,7 @@ python3 /tmp/srk_to_qx.py
 # 输出:
 # Generated: Quantumult X/QuantumultX.conf
 #   policies: 34
-#   filter_remote: 360
+#   filter_remote: 286
 #   filter_local: 568 rules + 167 comments
 ```
 
