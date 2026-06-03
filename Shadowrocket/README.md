@@ -1,5 +1,7 @@
 # Shadowrocket（小火箭）使用教程
 
+> 目录简介：这里维护 Shadowrocket 小火箭配置和使用教程，覆盖 iOS/macOS 私有 conf 语法下的分流实现。
+>
 > 配置文件：`Shadowrocket.conf`
 > 版本：**v5.4.23-SR.2**（Build 2026-06-02，跟随 Clash Party v5.4.23 基线；修复 #162 失效远程规则 URL）
 > 目标：**Shadowrocket iOS（App Store 正版）** / macOS 通用

@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> 目录简介：这里是 Smart-Config-Kit 的主维护手册，定义仓库定位、产物同步规则、平台陷阱和自检命令。
+
 ## 仓库维护契约（AI 必读）
 
 > 本文件是 Smart-Config-Kit 仓库的**强约束维护契约**，所有自动化代理（Claude Code、Codex、Copilot 等）在修改本仓库前**必须完整阅读并遵守**。

@@ -1,5 +1,7 @@
 # Maintenance tools
 
+> 目录简介：这里存放仓库维护脚本和一致性校验工具，用于验证覆写脚本与跨客户端产物契约。
+
 This directory contains repository-maintainer checks. These tools do not change
 published client artifacts.
 

@@ -7,6 +7,19 @@
 
 ---
 
+## v5.4.24 / v5.4.24-normal.1 (2026-06-03)
+
+- ★ CLEAN：清除 21 条冗余规则 + 3 个未引用 rule-provider（深度审查验证，下载上游原始文件逐条对比）。
+  - **删除 4 条 Binance DOMAIN-SUFFIX**：`binance.com` / `binance.cloud` / `binance.me` / `binancefuture.com`（Binance RULE-SET 已包含；保留 `binance.vision` / `binance.info` / `binance.org` 不在 RULE-SET 中）
+  - **删除 3 个 Google 子 RULE-SET 引用**：`googlesearch` / `googledrive` / `googleearth`（Google 元集 `DOMAIN-SUFFIX,google.com` + `DOMAIN-KEYWORD,google` 已完全覆盖；同时删除对应 3 个 provider 声明）
+  - **删除 3 条 ProtonMail DOMAIN-SUFFIX**：`protonmail.com` / `proton.me` / `pm.me`（ProtonMail RULE-SET 已包含；保留 `tutanota.com` / `tuta.com` 不在该 RULE-SET 中）
+  - **删除 5 条音乐流媒体 DOMAIN-SUFFIX**：`soundcloud.com` / `sndcdn.com` / `pandora.com` / `deezer.com` / `tidal.com`（各自 RULE-SET 已包含）
+  - **删除 2 条社交媒体 DOMAIN-SUFFIX**：`tumblr.com` / `clubhouse.com`（各自 RULE-SET 已包含）
+  - **删除 2 条流媒体 DOMAIN-SUFFIX**：`vimeo.com` / `dailymotion.com`（各自 RULE-SET 已包含）
+  - **删除 1 条 GEOIP 重复**：`GEOIP,ID,🌐 国外网站`（与国外网站区块内同名规则完全重复）
+  - ✅ 验证确认 Apple 子 RULE-SET（appstore/appletv/siri 等 11 个）**非冗余**：Apple.yaml 元集仅含 IP-CIDR + PROCESS-NAME + DOMAIN-KEYWORD，零 DOMAIN-SUFFIX
+  - ✅ 验证确认 Mail RULE-SET **非冗余**：仅含 IMAP/SMTP/POP 服务器主机名，不含消费者域名
+
 ## v5.4.23 / v5.4.23-normal.1 (2026-06-02)
 
 - ★ FIX#161：知乎图片 CDN `zhimg.com` + 短链 `zhihu.co` 加入 🏠 国内网站 直连（此前 `pica.zhimg.com` 未被 geosite:cn / ChinaMax 覆盖，流量落入 FINAL 被代理导致知乎图片加载失败）。

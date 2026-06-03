@@ -1,5 +1,7 @@
 # Quantumult X 使用教程（对齐 Clash Party v5.4.23）
 
+> 目录简介：这里维护 Quantumult X iOS 配置和导入教程，按 QX 的 policy/filter 语法对齐 Clash Party 基线。
+>
 > 配置文件：`Quantumult X/QuantumultX.conf`
 > 版本：**v5.4.23-QX.2**（Build 2026-06-02，详见 `Quantumult X/CHANGELOG.md`；修复 #162 失效远程规则 URL）
 > 目标：**Quantumult X iOS（App Store 付费正版）**

@@ -1,7 +1,7 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v5.4.23-flclash.1 (2026-06-02)
-// 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 32 业务策略组（含 14 流媒体平台组）+ 385 rule-providers 100%+ 服务覆盖
-// 基线：Clash Party Normal v5.4.23-normal.1（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
+// 版本：v5.4.24-flclash.1 (2026-06-03)
+// 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 32 业务策略组（含 14 流媒体平台组）+ 382 rule-providers 100%+ 服务覆盖
+// 基线：Clash Party Normal v5.4.24-normal.1（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -35,7 +35,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.23-flclash.1'
+const VERSION = 'v5.4.24-flclash.1'
 
 // v5.4.9 FEAT#LOCAL-TOOLS: desktop local-tool direct whitelist.
 const LOCAL_TOOL_DIRECT_PROCESS_NAMES = [
@@ -541,7 +541,6 @@ function injectRuleProviders(config) {
   metaDomain('google', 'google')
   metaIpCidr('google-ip', 'google')
   bm7('bing', 'Bing')
-  bm7('googlesearch', 'GoogleSearch')
 
   // ============ #30~41 美国流媒体 ============
   metaDomain('youtube', 'youtube')
@@ -772,8 +771,6 @@ function injectRuleProviders(config) {
     bm7('wildrift', 'WildRift')
     bm7('sony', 'Sony')
     bm7('yandex', 'Yandex')
-    bm7('googledrive', 'GoogleDrive')
-    bm7('googleearth', 'GoogleEarth')
     bm7('naver', 'Naver')
     bm7('scholar', 'Scholar')
     bm7('developer', 'Developer')
@@ -1370,12 +1367,8 @@ function injectRules(config) {
     // v5.2.0 CLEAN#2: Binance 精确 DOMAIN 规则已清理（全部被同组 DOMAIN-SUFFIX 覆盖）
     // 保留 fake-ip-filter 中的精确域名（DNS 层独立于规则层，不受影响）
     `DOMAIN-SUFFIX,binance.vision,${BIZ.CRYPTO}`,
-    `DOMAIN-SUFFIX,binance.com,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.info,${BIZ.CRYPTO}`,
-    `DOMAIN-SUFFIX,binance.cloud,${BIZ.CRYPTO}`,
-    `DOMAIN-SUFFIX,binance.me,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.org,${BIZ.CRYPTO}`,
-    `DOMAIN-SUFFIX,binancefuture.com,${BIZ.CRYPTO}`,
     // v5.1.8 FIX#11-P0: dns.google 是 DoH 服务，前置拦截防止 szkane-ai 宽规则吞入 AI 组
     // v5.2.10 FIX#39: 由 ☁️ 云与CDN 改路由到 🚫 受限网站——dns.google 在境内被封，
     //                 若用户把 CDN 组误设直连，DoH 必失败；放在 GFW 组语义更准确
@@ -1455,9 +1448,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,android.clients.google.com,${BIZ.DOWNLOAD}`,
     `RULE-SET,googlefcm,${BIZ.DOWNLOAD}`,
     // ── Google 搜索引擎（兜底：MetaCubeX geosite:google 覆盖 google.com/co.*/com.*）──
-    `RULE-SET,googlesearch,${BIZ.TOOLS}`,
-    `RULE-SET,googledrive,${BIZ.TOOLS}`,
-    `RULE-SET,googleearth,${BIZ.TOOLS}`,
     `RULE-SET,google,${BIZ.TOOLS}`,
     `RULE-SET,google-ip,${BIZ.TOOLS},no-resolve`,
     // ════════════════════════════════════════════════════════════════
@@ -1527,9 +1517,6 @@ function injectRules(config) {
     `DOMAIN,outlook.office.com,${BIZ.INTL_SITE}`,
     `DOMAIN,mail.yahoo.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,ymail.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,protonmail.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,proton.me,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,pm.me,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tutanota.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tuta.com,${BIZ.INTL_SITE}`,
     // v5.1.3 FIX#7: Zoho 宽域名收窄为邮件专用子域名（防止吞掉 RULE-SET,zoho 会议协作规则）
@@ -1596,11 +1583,9 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,threads.net,${BIZ.SOCIAL}`,
     `DOMAIN-SUFFIX,bsky.app,${BIZ.SOCIAL}`,
     `DOMAIN-SUFFIX,bsky.social,${BIZ.SOCIAL}`,
-    `DOMAIN-SUFFIX,tumblr.com,${BIZ.SOCIAL}`,
     `DOMAIN-SUFFIX,quora.com,${BIZ.SOCIAL}`,
     `DOMAIN-SUFFIX,medium.com,${BIZ.SOCIAL}`,
     `DOMAIN-SUFFIX,flickr.com,${BIZ.SOCIAL}`,
-    `DOMAIN-SUFFIX,clubhouse.com,${BIZ.SOCIAL}`,
     `DOMAIN-SUFFIX,lemon8-app.com,${BIZ.SOCIAL}`,
     `RULE-SET,tumblr,${BIZ.SOCIAL}`,
     `RULE-SET,clubhouse,${BIZ.SOCIAL}`,
@@ -1678,11 +1663,6 @@ function injectRules(config) {
     `RULE-SET,amazon,${BIZ.PRIME}`,
     // ── 音乐流媒体 ──
     `RULE-SET,spotify,${BIZ.MUSIC}`,
-    `DOMAIN-SUFFIX,soundcloud.com,${BIZ.MUSIC}`,
-    `DOMAIN-SUFFIX,sndcdn.com,${BIZ.MUSIC}`,
-    `DOMAIN-SUFFIX,pandora.com,${BIZ.MUSIC}`,
-    `DOMAIN-SUFFIX,deezer.com,${BIZ.MUSIC}`,
-    `DOMAIN-SUFFIX,tidal.com,${BIZ.MUSIC}`,
     `RULE-SET,soundcloud,${BIZ.MUSIC}`,
     `RULE-SET,pandora,${BIZ.MUSIC}`,
     `RULE-SET,pandoratv,${BIZ.MUSIC}`,
@@ -1857,8 +1837,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,fubo.tv,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,discoveryplus.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,appletv.com,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,vimeo.com,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,dailymotion.com,${BIZ.STREAM_OTHER}`,
     `RULE-SET,cbs,${BIZ.STREAM_OTHER}`,
     `RULE-SET,nbc,${BIZ.STREAM_OTHER}`,
     `RULE-SET,pbs,${BIZ.STREAM_OTHER}`,
@@ -2330,7 +2308,6 @@ function injectRules(config) {
     `RULE-SET,acc-geo-ip-asia-china,${BIZ.CN_SITE},no-resolve`,
 
     // ============ GEOIP 标签路由 ============
-    `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,telegram,${BIZ.IM},no-resolve`,
     `GEOIP,netflix,${BIZ.NFLX},no-resolve`,

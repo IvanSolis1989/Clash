@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.4.23-sing.1';
-const BUILD = '2026-06-02'; // v5.4.23
-const BASELINE = 'Clash Party v5.4.23';
+const VERSION = 'v5.4.24-sing.2';
+const BUILD = '2026-06-03'; // v5.4.24
+const BASELINE = 'Clash Party v5.4.24';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -492,11 +492,47 @@ function uniqueRuleSets(items) {
 
 const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...extraGeoSiteTags, ...dnsRouteRuleSets]);
 const availableRuleSets = new Set(allRouteRuleSets.map((item) => item.tag));
-const convertedRules = rules.map((rule) => toSingRule(rule, availableRuleSets)).filter(Boolean);
+let convertedRules = rules.map((rule) => toSingRule(rule, availableRuleSets)).filter(Boolean);
 const skippedProviders = Object.keys(providers).length - ruleSet.length;
 // v5.4.22: AND/QUIC rules handled out-of-band (not through toSingRule), don't count as skipped
 const QUIC_AND_RULES = 5;
 const skippedRules = rules.length - convertedRules.length - QUIC_AND_RULES;
+
+// v5.4.23-sing.2: Remove redundant domain_suffix rules that are fully covered by
+// a corresponding rule_set pointing to the same outbound.  The "root" domain suffix
+// (e.g. binance.com) is already included inside the rule_set list (e.g. RULE-SET,binance),
+// so a standalone DOMAIN-SUFFIX entry for the same domain is a no-op duplicate.
+// Defence-in-depth: even though the generator replaces rules entirely from Clash output
+// (which never emits these duplicates), this filter protects against manual JSON edits.
+const DOMAIN_SUFFIX_RULE_SET_PAIRS = [
+  { domain: 'binance.com',       ruleSetTag: 'binance' },
+  { domain: 'protonmail.com',    ruleSetTag: 'protonmail' },
+  { domain: 'tumblr.com',        ruleSetTag: 'tumblr' },
+  { domain: 'clubhouse.com',     ruleSetTag: 'clubhouse' },
+  { domain: 'soundcloud.com',    ruleSetTag: 'soundcloud' },
+  { domain: 'sndcdn.com',        ruleSetTag: 'soundcloud' },
+  { domain: 'pandora.com',       ruleSetTag: 'pandora' },
+  { domain: 'deezer.com',        ruleSetTag: 'deezer' },
+  { domain: 'tidal.com',         ruleSetTag: 'tidal' },
+  { domain: 'vimeo.com',         ruleSetTag: 'vimeo' },
+  { domain: 'dailymotion.com',   ruleSetTag: 'dailymotion' },
+];
+const redundantDomainSet = new Set(
+  DOMAIN_SUFFIX_RULE_SET_PAIRS
+    .filter((pair) => availableRuleSets.has(pair.ruleSetTag))
+    .map((pair) => pair.domain)
+);
+if (redundantDomainSet.size > 0) {
+  const before = convertedRules.length;
+  convertedRules = convertedRules.filter((rule) => {
+    if (!rule.domain_suffix || rule.rule_set) return true;
+    // Keep if none of the domain_suffix entries are in the redundant set
+    return !rule.domain_suffix.some((d) => redundantDomainSet.has(d));
+  });
+  if (before !== convertedRules.length) {
+    console.log(`removed ${before - convertedRules.length} redundant domain_suffix rules`);
+  }
+}
 
 baseConfig._meta = {
   name: 'SingBox Smart Full',
@@ -579,7 +615,29 @@ baseConfig.dns = {
 };
 
 baseConfig.outbounds = buildOutbounds();
-baseConfig.route.rule_set = allRouteRuleSets;
+
+// v5.4.23-sing.2: Remove redundant Google sub-service rule_sets (googlesearch, googledrive,
+// googleearth) — these are fully covered by the unified 'google' rule_set.
+const REDUNDANT_GOOGLE_TAGS = new Set(['googlesearch', 'googledrive', 'googleearth']);
+const filteredRuleSets = allRouteRuleSets.filter((rs) => !REDUNDANT_GOOGLE_TAGS.has(rs.tag));
+if (filteredRuleSets.length < allRouteRuleSets.length) {
+  console.log(`removed ${allRouteRuleSets.length - filteredRuleSets.length} redundant google sub-service rule_sets`);
+}
+baseConfig.route.rule_set = filteredRuleSets;
+
+// v5.4.23-sing.2: Remove duplicate GEOIP,ID route rule if present (defence-in-depth).
+let seenGeoipId = false;
+convertedRules = convertedRules.filter((rule) => {
+  // Drop route rules referencing removed google sub-service rule_sets
+  if (rule.rule_set && rule.rule_set.some((t) => REDUNDANT_GOOGLE_TAGS.has(t))) return false;
+  // Drop duplicate GEOIP,ID
+  if (rule.geoip && rule.geoip.includes('id')) {
+    if (seenGeoipId) return false; // drop duplicate
+    seenGeoipId = true;
+  }
+  return true;
+});
+
 // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配
 // YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT
 const quicRules = [

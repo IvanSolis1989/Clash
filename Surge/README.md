@@ -1,5 +1,7 @@
 # Surge 使用教程（对齐 Clash Party v5.4.23）
 
+> 目录简介：这里维护 Surge iOS/macOS 配置和导入教程，按 Surge 语法对齐 Clash Party 分流策略。
+>
 > 配置文件：`Surge/Surge.conf`
 > 版本：**v5.4.23-Surge.2**（Build 2026-06-02，详见 `Surge/CHANGELOG.md`；修复 #162 失效远程规则 URL）
 > 目标：**Surge 5 / Surge Mac**（付费正版；iOS + macOS 通用）

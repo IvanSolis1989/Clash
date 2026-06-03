@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v5.4.23-sing.1",
-    "build": "2026-06-02",
-    "baseline": "Clash Party v5.4.23",
+    "version": "v5.4.24-sing.2",
+    "build": "2026-06-03",
+    "baseline": "Clash Party v5.4.24",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {
@@ -2708,13 +2708,6 @@
       },
       {
         "domain_suffix": [
-          "binance.com"
-        ],
-        "action": "route",
-        "outbound": "💰 加密货币"
-      },
-      {
-        "domain_suffix": [
           "binance.info"
         ],
         "action": "route",
@@ -2722,28 +2715,7 @@
       },
       {
         "domain_suffix": [
-          "binance.cloud"
-        ],
-        "action": "route",
-        "outbound": "💰 加密货币"
-      },
-      {
-        "domain_suffix": [
-          "binance.me"
-        ],
-        "action": "route",
-        "outbound": "💰 加密货币"
-      },
-      {
-        "domain_suffix": [
           "binance.org"
-        ],
-        "action": "route",
-        "outbound": "💰 加密货币"
-      },
-      {
-        "domain_suffix": [
-          "binancefuture.com"
         ],
         "action": "route",
         "outbound": "💰 加密货币"
@@ -3436,27 +3408,6 @@
       },
       {
         "domain_suffix": [
-          "protonmail.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "domain_suffix": [
-          "proton.me"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "domain_suffix": [
-          "pm.me"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "domain_suffix": [
           "tutanota.com"
         ],
         "action": "route",
@@ -3758,13 +3709,6 @@
       },
       {
         "domain_suffix": [
-          "tumblr.com"
-        ],
-        "action": "route",
-        "outbound": "📱 社交媒体"
-      },
-      {
-        "domain_suffix": [
           "quora.com"
         ],
         "action": "route",
@@ -3780,13 +3724,6 @@
       {
         "domain_suffix": [
           "flickr.com"
-        ],
-        "action": "route",
-        "outbound": "📱 社交媒体"
-      },
-      {
-        "domain_suffix": [
-          "clubhouse.com"
         ],
         "action": "route",
         "outbound": "📱 社交媒体"
@@ -4060,41 +3997,6 @@
       {
         "rule_set": [
           "spotify"
-        ],
-        "action": "route",
-        "outbound": "🎵 音乐流媒体"
-      },
-      {
-        "domain_suffix": [
-          "soundcloud.com"
-        ],
-        "action": "route",
-        "outbound": "🎵 音乐流媒体"
-      },
-      {
-        "domain_suffix": [
-          "sndcdn.com"
-        ],
-        "action": "route",
-        "outbound": "🎵 音乐流媒体"
-      },
-      {
-        "domain_suffix": [
-          "pandora.com"
-        ],
-        "action": "route",
-        "outbound": "🎵 音乐流媒体"
-      },
-      {
-        "domain_suffix": [
-          "deezer.com"
-        ],
-        "action": "route",
-        "outbound": "🎵 音乐流媒体"
-      },
-      {
-        "domain_suffix": [
-          "tidal.com"
         ],
         "action": "route",
         "outbound": "🎵 音乐流媒体"
@@ -4924,20 +4826,6 @@
       {
         "domain_suffix": [
           "appletv.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
-          "vimeo.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
-          "dailymotion.com"
         ],
         "action": "route",
         "outbound": "🌐 其他国外流媒体"
@@ -6901,13 +6789,6 @@
         ],
         "action": "route",
         "outbound": "DIRECT"
-      },
-      {
-        "geoip": [
-          "ID"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
       },
       {
         "geoip": [

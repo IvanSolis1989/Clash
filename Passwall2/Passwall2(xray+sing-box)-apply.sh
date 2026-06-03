@@ -1,11 +1,12 @@
 #!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for Passwall / Passwall2 — UCI batch helper
-# Version: v5.4.23-pw2.1 | Build 2026-06-02
+# Version: v5.4.24-pw2.1 | Build 2026-06-03
 #
 # 用途：一次性在 Passwall2 中创建 32 条 shunt rule（含域名列表 + IP 列表），
 #       每条目标节点留空（NEED_CONFIG），用户之后到 LuCI 里手工选节点。
 #
+# 变更：v5.4.23-pw2.2 — 音乐流媒体：移除 tidal/deezer/soundcloud/pandora 冗余 domain 规则（已由 rule-set 覆盖）
 # 变更：v5.4.23-pw2.1 — FIX#161：27-cn-site.list 增 zhimg.com / zhihu.co 直连（知乎图片 CDN + 短链）
 # 变更：v5.4.22-pw2.1 — N/A#1 QUIC 精细化：Passwall2 不承载 QUIC 阻断，仅版本对齐；v5.4.21: #4/#6
 # 变更：v5.4.19-pw2.1 — 借鉴 Proxy-override #2：27-cn-site.list 增国内推送 SDK(jpush/umeng) + 前端 CDN(baomitu/bootcss/staticfile/upaiyun) 直连
@@ -220,10 +221,6 @@ uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 SEC="$(uci add ${CONFIG_NAME} shunt_rules)"
 uci set ${CONFIG_NAME}.${SEC}.remarks='🎵 音乐流媒体'
 uci add_list ${CONFIG_NAME}.${SEC}.domain_list='geosite:spotify'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:tidal.com'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:deezer.com'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:soundcloud.com'
-uci add_list ${CONFIG_NAME}.${SEC}.domain_list='domain:pandora.com'
 uci set ${CONFIG_NAME}.${SEC}.network='tcp,udp'
 # uci set ${CONFIG_NAME}.${SEC}.node='NEED_CONFIG_IN_LUCI'
 

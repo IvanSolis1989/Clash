@@ -5,6 +5,16 @@
 
 ---
 
+## v5.4.24-flclash.1 (2026-06-03)
+
+- ★ CLEAN：清除 18 条冗余规则 + 3 个未引用 provider（同步基线 v5.4.24，下载上游文件逐条验证）。
+  - 删除 4 条 Binance DOMAIN-SUFFIX（binance.com/cloud/me/future.com，RULE-SET 已含）
+  - 删除 3 个 Google 子 RULE-SET 引用 + provider（googlesearch/googledrive/googleearth，Google 元集已覆盖）
+  - 删除 3 条 ProtonMail DOMAIN-SUFFIX（protonmail.com/proton.me/pm.me，RULE-SET 已含）
+  - 删除 5 条音乐流媒体 DOMAIN-SUFFIX（soundcloud/sndcdn/pandora/deezer/tidal，各自 RULE-SET 已含）
+  - 删除 2 条社交媒体 DOMAIN-SUFFIX（tumblr/clubhouse，各自 RULE-SET 已含）
+  - 删除 2 条流媒体 DOMAIN-SUFFIX（vimeo/dailymotion，各自 RULE-SET 已含）
+
 ## v5.4.23-flclash.1 (2026-06-02)
 
 - ★ FIX#161：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。

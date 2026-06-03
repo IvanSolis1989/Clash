@@ -1,5 +1,7 @@
 # OpenClash 使用说明（Smart / Normal 双版本）
 
+> 目录简介：这里提供 OpenWrt OpenClash 的 Smart/Normal 覆写脚本、UI 配置快照和部署排障说明。
+>
 > 本目录提供「同规则量、不同内核能力」的两份覆写脚本，外加一份 OpenClash UI 配置快照（`.conf`）。
 >
 > - Smart 版：`OpenClash(mihomo-smart).sh`（`type: smart` + `uselightgbm`）

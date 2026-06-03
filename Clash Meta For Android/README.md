@@ -1,5 +1,7 @@
 # Clash Meta For Android（CMFA）使用教程
 
+> 目录简介：这里提供 CMFA/mihomo 原生 YAML 配置和 Android/ClashMi 导入教程，用于复用 Clash Party 基线策略的静态版本。
+>
 > 配置文件：`CMFA(mihomo).yaml`
 > 适用客户端：**Clash Meta For Android（CMFA）** / **FlClash** / **mihomo-party-android**（Android 原生）· **[ClashMi](https://github.com/KaringX/clashmi)**（跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，复用同一 YAML；详见 §九）
 > 内核要求：**Mihomo**（原生 YAML 导入；区域组用 `url-test`，**不含 Smart + LightGBM**——CMFA 的静态 YAML 不支持 JS 覆写）

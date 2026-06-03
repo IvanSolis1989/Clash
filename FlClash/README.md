@@ -1,5 +1,7 @@
 # FlClash 使用教程 — 覆写脚本版
 
+> 目录简介：这里提供 FlClash 专用 JS 覆写脚本和导入教程，用动态节点分类复刻 Clash Party Normal 语义。
+>
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**

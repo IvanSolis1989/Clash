@@ -1,5 +1,7 @@
 # SubStore
 
+> 目录简介：这里是 Sub-Store 辅助资料库，放订阅处理说明、脚本模板和常见用法索引。
+
 这个目录是 Smart-Config-Kit 的 Sub-Store 辅助资料库：放使用说明、可复用脚本模板，以及从 GitHub 常见用法里整理出来的索引。
 
 它不修改任何正式产物的规则、策略组、DNS、嗅探、GeoX 或 rule-provider。实际分流基线仍以 `Clash Party/ClashParty(mihomo-smart).js` 为准。
@@ -65,4 +67,3 @@ Sub-Store 的脚本参数通常可以放在脚本 URL 的 `#` 后面；官方链
 - [Sub-Store 链接参数说明](https://github.com/sub-store-org/Sub-Store/wiki/%E9%93%BE%E6%8E%A5%E5%8F%82%E6%95%B0%E8%AF%B4%E6%98%8E)：下载链接、`target`、`url`、`content`、`$options` 等参数说明。
 - [dahaha-365/YaNet](https://github.com/dahaha-365/YaNet)：把 SubStore 作为自建订阅管理入口，并提供 Mihomo 动态覆写思路。
 - [powerfullz/override-rules](https://github.com/powerfullz/override-rules)：使用 `#landing=true&loadbalance=true` 一类参数控制动态脚本行为。
-

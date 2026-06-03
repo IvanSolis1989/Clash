@@ -1,5 +1,7 @@
 # v2rayN 使用教程（对齐 Clash Party v5.4.22）
 
+> 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON 兜底产物说明。
+>
 > 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.22-v2n.1（详见 `v2rayN/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连；#4 DoH N/A；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
 
 > 本目录提供 Windows 客户端 **v2rayN** 的接入说明。

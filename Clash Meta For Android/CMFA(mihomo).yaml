@@ -1,8 +1,8 @@
 # ================================================================
-# Clash Smart v5.4.23-cmfa.1 - CMFA (Clash Meta for Android) 配置
-# Build: 2026-06-02
+# Clash Smart v5.4.24-cmfa.1 - CMFA (Clash Meta for Android) 配置
+# Build: 2026-06-03
 # 架构：proxy-providers 订阅 + 22 url-test 区域组（11 全部 + 11 家宽，家宽 filter 新增 IEPL/IPLC/专线识别）+ 32 业务策略组（含 14 流媒体平台组）+ 384+ rule-providers
-# 基线：Clash Party v5.4.23（唯一主线）
+# 基线：Clash Party v5.4.24（唯一主线）
 # 变更历史：见 `Clash Meta For Android/CHANGELOG.md`
 # ================================================================
 # ★ 快速上手：
@@ -1021,13 +1021,6 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Bing/Bing.yaml'
     path: ./ruleset/bm7-Bing.yaml
     interval: 85905
-    proxy: '🚫 受限网站'
-  googlesearch:
-    type: http
-    behavior: classical
-    url: 'https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleSearch/GoogleSearch.yaml'
-    path: ./ruleset/bm7-GoogleSearch.yaml
-    interval: 85942
     proxy: '🚫 受限网站'
   youtube:
     type: http
@@ -2442,20 +2435,6 @@ rule-providers:
     path: ./ruleset/bm7-Yandex.yaml
     interval: 88953
     proxy: '🚫 受限网站'
-  googledrive:
-    type: http
-    behavior: classical
-    url: 'https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleDrive/GoogleDrive.yaml'
-    path: ./ruleset/bm7-GoogleDrive.yaml
-    interval: 88961
-    proxy: '🚫 受限网站'
-  googleearth:
-    type: http
-    behavior: classical
-    url: 'https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleEarth/GoogleEarth.yaml'
-    path: ./ruleset/bm7-GoogleEarth.yaml
-    interval: 88959
-    proxy: '🚫 受限网站'
   naver:
     type: http
     behavior: classical
@@ -3719,7 +3698,6 @@ rules:
 - DOMAIN-SUFFIX,iwipwedabay.com,DIRECT
 - DOMAIN-SUFFIX,cdn.weixin.qq.com,DIRECT
 - 'DOMAIN-SUFFIX,binance.vision,💰 加密货币'
-- 'DOMAIN-SUFFIX,binance.com,💰 加密货币'
 - 'DOMAIN-SUFFIX,binance.info,💰 加密货币'
 - 'DOMAIN-SUFFIX,binance.cloud,💰 加密货币'
 - 'DOMAIN-SUFFIX,binance.me,💰 加密货币'
@@ -3783,9 +3761,6 @@ rules:
 - 'DOMAIN-SUFFIX,play.googleapis.com,📥 下载更新'
 - 'DOMAIN-SUFFIX,android.clients.google.com,📥 下载更新'
 - 'RULE-SET,googlefcm,📥 下载更新'
-- 'RULE-SET,googlesearch,🔧 工具与服务'
-- 'RULE-SET,googledrive,🔧 工具与服务'
-- 'RULE-SET,googleearth,🔧 工具与服务'
 - 'RULE-SET,google,🔧 工具与服务'
 - 'RULE-SET,google-ip,🔧 工具与服务,no-resolve'
 - 'RULE-SET,szkane-ai,🤖 AI 服务'
@@ -3860,7 +3835,6 @@ rules:
 - 'DOMAIN,outlook.office.com,🌐 国外网站'
 - 'DOMAIN,mail.yahoo.com,🌐 国外网站'
 - 'DOMAIN-SUFFIX,ymail.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,protonmail.com,🌐 国外网站'
 - 'DOMAIN-SUFFIX,proton.me,🌐 国外网站'
 - 'DOMAIN-SUFFIX,pm.me,🌐 国外网站'
 - 'DOMAIN-SUFFIX,tutanota.com,🌐 国外网站'
@@ -3925,11 +3899,9 @@ rules:
 - 'DOMAIN-SUFFIX,threads.net,📱 社交媒体'
 - 'DOMAIN-SUFFIX,bsky.app,📱 社交媒体'
 - 'DOMAIN-SUFFIX,bsky.social,📱 社交媒体'
-- 'DOMAIN-SUFFIX,tumblr.com,📱 社交媒体'
 - 'DOMAIN-SUFFIX,quora.com,📱 社交媒体'
 - 'DOMAIN-SUFFIX,medium.com,📱 社交媒体'
 - 'DOMAIN-SUFFIX,flickr.com,📱 社交媒体'
-- 'DOMAIN-SUFFIX,clubhouse.com,📱 社交媒体'
 - 'DOMAIN-SUFFIX,lemon8-app.com,📱 社交媒体'
 - 'RULE-SET,tumblr,📱 社交媒体'
 - 'RULE-SET,clubhouse,📱 社交媒体'
@@ -3998,11 +3970,6 @@ rules:
 - 'DOMAIN-SUFFIX,happyon.jp,📺 Hulu'
 - 'RULE-SET,primevideo,🎬 Prime Video'
 - 'RULE-SET,spotify,🎵 音乐流媒体'
-- 'DOMAIN-SUFFIX,soundcloud.com,🎵 音乐流媒体'
-- 'DOMAIN-SUFFIX,sndcdn.com,🎵 音乐流媒体'
-- 'DOMAIN-SUFFIX,pandora.com,🎵 音乐流媒体'
-- 'DOMAIN-SUFFIX,deezer.com,🎵 音乐流媒体'
-- 'DOMAIN-SUFFIX,tidal.com,🎵 音乐流媒体'
 - 'RULE-SET,soundcloud,🎵 音乐流媒体'
 - 'RULE-SET,pandora,🎵 音乐流媒体'
 - 'RULE-SET,tidal,🎵 音乐流媒体'
@@ -4176,8 +4143,6 @@ rules:
 - 'DOMAIN-SUFFIX,fubo.tv,🌐 其他国外流媒体'
 - 'DOMAIN-SUFFIX,discoveryplus.com,🌐 其他国外流媒体'
 - 'DOMAIN-SUFFIX,appletv.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,vimeo.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,dailymotion.com,🌐 其他国外流媒体'
 - 'RULE-SET,cbs,🌐 其他国外流媒体'
 - 'RULE-SET,nbc,🌐 其他国外流媒体'
 - 'RULE-SET,pbs,🌐 其他国外流媒体'

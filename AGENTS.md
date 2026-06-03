@@ -1,5 +1,7 @@
 # AGENTS.md — 多代理协作契约
 
+> 目录简介：这里是 Smart-Config-Kit 的多代理维护契约，说明跨客户端配置同步、审查和验收规则。
+
 > 本文件与 `CLAUDE.md` 是**同一套规则的孪生副本**，面向所有 AI 代理（Claude Code / Codex / Copilot / Gemini / Cursor / 其他自动化工具）。
 > **任何在本仓库执行修改的代理，无论身份，开始工作前必须先完整读取 `CLAUDE.md` 与本文件。**
 > 若两份文件描述冲突（例如未来分支修改），以 `CLAUDE.md` 为准。

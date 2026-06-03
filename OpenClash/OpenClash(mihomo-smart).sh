@@ -2,10 +2,10 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.4.23-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
-# Build: 2026-06-02
+# Clash Smart v5.4.24-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Build: 2026-06-03
 # ============================================================================
-# 定位：对齐 Clash Party v5.4.23 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
+# 定位：对齐 Clash Party v5.4.24 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
 #         - Normal 面向稳定版 mihomo / 经典 url-test
 #         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
@@ -16,14 +16,14 @@
 #   • ~990 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
-# 基线：Clash Party v5.4.23（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v5.4.24（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v5.4.23-oc-smart.1"
+VERSION_TAG="v5.4.24-oc-smart.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -689,13 +689,6 @@ rule-providers:
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Bing/Bing.yaml
     path: "./ruleset/bm7-Bing.yaml"
     interval: 85933
-    proxy: "\U0001F6AB 受限网站"
-  googlesearch:
-    type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleSearch/GoogleSearch.yaml
-    path: "./ruleset/bm7-GoogleSearch.yaml"
-    interval: 85953
     proxy: "\U0001F6AB 受限网站"
   youtube:
     type: http
@@ -2103,20 +2096,6 @@ rule-providers:
     path: "./ruleset/bm7-Yandex.yaml"
     interval: 88922
     proxy: "\U0001F6AB 受限网站"
-  googledrive:
-    type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleDrive/GoogleDrive.yaml
-    path: "./ruleset/bm7-GoogleDrive.yaml"
-    interval: 88966
-    proxy: "\U0001F6AB 受限网站"
-  googleearth:
-    type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleEarth/GoogleEarth.yaml
-    path: "./ruleset/bm7-GoogleEarth.yaml"
-    interval: 88989
-    proxy: "\U0001F6AB 受限网站"
   naver:
     type: http
     behavior: classical
@@ -3382,7 +3361,6 @@ rules:
 - DOMAIN-SUFFIX,iwipwedabay.com,DIRECT
 - DOMAIN-SUFFIX,cdn.weixin.qq.com,DIRECT
 - "DOMAIN-SUFFIX,binance.vision,\U0001F4B0 加密货币"
-- "DOMAIN-SUFFIX,binance.com,\U0001F4B0 加密货币"
 - "DOMAIN-SUFFIX,binance.info,\U0001F4B0 加密货币"
 - "DOMAIN-SUFFIX,binance.cloud,\U0001F4B0 加密货币"
 - "DOMAIN-SUFFIX,binance.me,\U0001F4B0 加密货币"
@@ -3446,9 +3424,6 @@ rules:
 - "DOMAIN-SUFFIX,play.googleapis.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,android.clients.google.com,\U0001F4E5 下载更新"
 - "RULE-SET,googlefcm,\U0001F4E5 下载更新"
-- "RULE-SET,googlesearch,\U0001F527 工具与服务"
-- "RULE-SET,googledrive,\U0001F527 工具与服务"
-- "RULE-SET,googleearth,\U0001F527 工具与服务"
 - "RULE-SET,google,\U0001F527 工具与服务"
 - "RULE-SET,google-ip,\U0001F527 工具与服务,no-resolve"
 - "RULE-SET,szkane-ai,\U0001F916 AI 服务"
@@ -3523,7 +3498,6 @@ rules:
 - "DOMAIN,outlook.office.com,\U0001F310 国外网站"
 - "DOMAIN,mail.yahoo.com,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,ymail.com,\U0001F310 国外网站"
-- "DOMAIN-SUFFIX,protonmail.com,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,proton.me,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,pm.me,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,tutanota.com,\U0001F310 国外网站"
@@ -3588,11 +3562,9 @@ rules:
 - "DOMAIN-SUFFIX,threads.net,\U0001F4F1 社交媒体"
 - "DOMAIN-SUFFIX,bsky.app,\U0001F4F1 社交媒体"
 - "DOMAIN-SUFFIX,bsky.social,\U0001F4F1 社交媒体"
-- "DOMAIN-SUFFIX,tumblr.com,\U0001F4F1 社交媒体"
 - "DOMAIN-SUFFIX,quora.com,\U0001F4F1 社交媒体"
 - "DOMAIN-SUFFIX,medium.com,\U0001F4F1 社交媒体"
 - "DOMAIN-SUFFIX,flickr.com,\U0001F4F1 社交媒体"
-- "DOMAIN-SUFFIX,clubhouse.com,\U0001F4F1 社交媒体"
 - "DOMAIN-SUFFIX,lemon8-app.com,\U0001F4F1 社交媒体"
 - "RULE-SET,tumblr,\U0001F4F1 社交媒体"
 - "RULE-SET,clubhouse,\U0001F4F1 社交媒体"
@@ -3663,11 +3635,6 @@ rules:
 - "RULE-SET,primevideo,\U0001F3AC Prime Video"
 - "RULE-SET,amazon,\U0001F3AC Prime Video"
 - "RULE-SET,spotify,\U0001F3B5 音乐流媒体"
-- "DOMAIN-SUFFIX,soundcloud.com,\U0001F3B5 音乐流媒体"
-- "DOMAIN-SUFFIX,sndcdn.com,\U0001F3B5 音乐流媒体"
-- "DOMAIN-SUFFIX,pandora.com,\U0001F3B5 音乐流媒体"
-- "DOMAIN-SUFFIX,deezer.com,\U0001F3B5 音乐流媒体"
-- "DOMAIN-SUFFIX,tidal.com,\U0001F3B5 音乐流媒体"
 - "RULE-SET,soundcloud,\U0001F3B5 音乐流媒体"
 - "RULE-SET,pandora,\U0001F3B5 音乐流媒体"
 - "RULE-SET,pandoratv,\U0001F3B5 音乐流媒体"
@@ -3842,8 +3809,6 @@ rules:
 - "DOMAIN-SUFFIX,fubo.tv,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,discoveryplus.com,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,appletv.com,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,vimeo.com,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,dailymotion.com,\U0001F310 其他国外流媒体"
 - "RULE-SET,cbs,\U0001F310 其他国外流媒体"
 - "RULE-SET,nbc,\U0001F310 其他国外流媒体"
 - "RULE-SET,pbs,\U0001F310 其他国外流媒体"
@@ -4372,7 +4337,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.4.23-oc-smart.1"
+VERSION = "v5.4.24-oc-smart.1"
 
 STATUS_LOG = "/tmp/clash_smart_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
