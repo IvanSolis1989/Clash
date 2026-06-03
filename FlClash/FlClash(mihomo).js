@@ -1,7 +1,7 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v5.4.24-flclash.1 (2026-06-03)
+// 版本：v5.4.25-flclash.1 (2026-06-03)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 32 业务策略组（含 14 流媒体平台组）+ 382 rule-providers 100%+ 服务覆盖
-// 基线：Clash Party Normal v5.4.24-normal.1（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
+// 基线：Clash Party v5.4.25（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -35,7 +35,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.24-flclash.1'
+const VERSION = 'v5.4.25-flclash.1'
 
 // v5.4.9 FEAT#LOCAL-TOOLS: desktop local-tool direct whitelist.
 const LOCAL_TOOL_DIRECT_PROCESS_NAMES = [
@@ -1651,7 +1651,6 @@ function injectRules(config) {
     `RULE-SET,netflix,${BIZ.NFLX}`,
     `RULE-SET,netflix-ip,${BIZ.NFLX},no-resolve`,
     `RULE-SET,szkane-netflixip,${BIZ.NFLX},no-resolve`,
-    `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
     // ── Disney+/HBO/Hulu/Prime Video ──
     `RULE-SET,disney,${BIZ.DSNP}`,
     `RULE-SET,hbo,${BIZ.HBO}`,
@@ -1929,7 +1928,6 @@ function injectRules(config) {
     `RULE-SET,oracle,${BIZ.TOOLS}`,
     `RULE-SET,unity,${BIZ.TOOLS}`,
     `RULE-SET,szkane-developer,${BIZ.TOOLS}`,
-    `GEOIP,google,${BIZ.TOOLS},no-resolve`,
 
     // ============ Ⓜ️ 微软服务 ============
     `RULE-SET,onedrive,${BIZ.MS}`,

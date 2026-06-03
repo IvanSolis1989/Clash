@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.25 / v5.4.25-normal.1 (2026-06-03)
+
+- ★ 审查修复：GEOIP 重复规则去重（`GEOIP,netflix` / `GEOIP,google` 各出现 2 次 → 保留 GEOIP 标签路由集中区块，删除散落在业务区块的冗余；延续 v5.4.24 GEOIP,ID 清理）
+- ★ 审查修复：Accademia GeoRouting 34 providers（Domain×17 + IP×17）interval 从 `nextInterval()`（~24h）提升到 7 天（604800s）——区域路由规则变化极慢，减少并发刷新频率
+
 ## v5.4.24 / v5.4.24-normal.1 (2026-06-03)
 
 - ★ CLEAN：清除 21 条冗余规则 + 3 个未引用 rule-provider（深度审查验证，下载上游原始文件逐条对比）。

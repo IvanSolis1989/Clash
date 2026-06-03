@@ -1,14 +1,14 @@
 ﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.24 (2026-06-03)
+// 版本：v5.4.25 (2026-06-03)
 // 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 32 业务策略组（含 14 流媒体平台组）+ 382 rule-providers 100%+ 服务覆盖
-// v5.4.24: CLEAN：清除 21 条冗余规则 + 3 个未引用 provider（DOMAIN-SUFFIX 子集 / GEOIP 重复）· v5.4.23: FIX#161 zhimg.com/zhihu.co 直连
+// v5.4.25: 审查修复 GEOIP 去重（netflix/google）+ GeoRouting interval 7d · v5.4.24: CLEAN 冗余规则 · v5.4.23: FIX#161
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.24'
+const VERSION = 'v5.4.25'
 
 // v5.4.9 FEAT#LOCAL-TOOLS:
 // Desktop-capable local tools that should not be routed through proxy nodes.
@@ -1232,13 +1232,15 @@ function injectRuleProviders(config) {
     }
 
     // ── GeoRouting Domain × 17 区域（原 acc-georouting-domain 404 → 按区域拆分，Domain版=作者推荐🔥）──
+    // 区域路由规则变化极慢，interval 用 7 天（604800s）减少 34 providers 的并发刷新频率
+    const GEO_INTERVAL = 604800
     for (const region of GEO_REGIONS_ALL) {
       const slug = region.toLowerCase().replace(/_/g, '-')
       config['rule-providers'][`acc-geo-d-${slug}`] = {
         type: 'http', behavior: 'domain',
         url: `${ACC}/GeoRouting_For_Domain/GeoRouting_${region}_ccTLD_Domain.yaml`,
         path: `./ruleset/acc-GeoD-${region}.yaml`,
-        interval: nextInterval(),
+        interval: GEO_INTERVAL,
         proxy: RP_PROXY
       }
     }
@@ -1249,7 +1251,7 @@ function injectRuleProviders(config) {
         type: 'http', behavior: 'classical',
         url: `${ACC}/GeoRouting_For_IP/GeoRouting_${region}_GeoIP.yaml`,
         path: `./ruleset/acc-GeoIP-${region}.yaml`,
-        interval: nextInterval(),
+        interval: GEO_INTERVAL,
         proxy: RP_PROXY
       }
     }
@@ -1625,7 +1627,6 @@ function injectRules(config) {
     `RULE-SET,netflix,${BIZ.NFLX}`,
     `RULE-SET,netflix-ip,${BIZ.NFLX},no-resolve`,
     `RULE-SET,szkane-netflixip,${BIZ.NFLX},no-resolve`,
-    `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
     // ── Disney+/HBO/Hulu/Prime Video ──
     `RULE-SET,disney,${BIZ.DSNP}`,
     `RULE-SET,hbo,${BIZ.HBO}`,
@@ -1907,7 +1908,6 @@ function injectRules(config) {
     `RULE-SET,oracle,${BIZ.TOOLS}`,
     `RULE-SET,unity,${BIZ.TOOLS}`,
     `RULE-SET,szkane-developer,${BIZ.TOOLS}`,
-    `GEOIP,google,${BIZ.TOOLS},no-resolve`,
 
     // ============ Ⓜ️ 微软服务 ============
     `RULE-SET,onedrive,${BIZ.MS}`,

@@ -2,10 +2,10 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.4.24-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Clash Smart v5.4.25-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
 # Build: 2026-06-03
 # ============================================================================
-# 定位：对齐 Clash Party v5.4.24 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
+# 定位：对齐 Clash Party v5.4.25 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
 #         - Normal 面向稳定版 mihomo / 经典 url-test
 #         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
@@ -23,7 +23,7 @@
 
 
 
-VERSION_TAG="v5.4.24-oc-smart.1"
+VERSION_TAG="v5.4.25-oc-smart.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -3626,7 +3626,6 @@ rules:
 - "RULE-SET,netflix,\U0001F3A5 Netflix"
 - "RULE-SET,netflix-ip,\U0001F3A5 Netflix,no-resolve"
 - "RULE-SET,szkane-netflixip,\U0001F3A5 Netflix,no-resolve"
-- "GEOIP,netflix,\U0001F3A5 Netflix,no-resolve"
 - "RULE-SET,disney,\U0001F3AC Disney+"
 - "RULE-SET,hbo,\U0001F4E1 HBO/Max"
 - "DOMAIN-SUFFIX,max.com,\U0001F4E1 HBO/Max"
@@ -3901,7 +3900,6 @@ rules:
 - "RULE-SET,oracle,\U0001F527 工具与服务"
 - "RULE-SET,unity,\U0001F527 工具与服务"
 - "RULE-SET,szkane-developer,\U0001F527 工具与服务"
-- "GEOIP,google,\U0001F527 工具与服务,no-resolve"
 
   # ============ 微软服务 ============
 - RULE-SET,onedrive,Ⓜ️ 微软服务
@@ -4337,7 +4335,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.4.24-oc-smart.1"
+VERSION = "v5.4.25-oc-smart.1"
 
 STATUS_LOG = "/tmp/clash_smart_status.log"
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

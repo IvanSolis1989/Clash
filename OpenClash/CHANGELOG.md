@@ -7,6 +7,10 @@
 
 ---
 
+## v5.4.25-oc-normal.1 / v5.4.25-oc-smart.1 (2026-06-03)
+
+- ★ 审查修复：GEOIP 重复规则去重（`GEOIP,netflix` / `GEOIP,google` 各出现 2 次 → 保留 GEOIP 标签路由集中区块）
+
 ## v5.4.23-oc-normal.1 / v5.4.23-oc-smart.1 (2026-06-02)
 
 - ★ FIX#161：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。

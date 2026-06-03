@@ -5,6 +5,10 @@
 
 ---
 
+## v5.4.25-cmfa.1 (2026-06-03)
+
+- ★ 审查修复：`GEOIP,CN` 重复规则去重（规则区块末尾出现 2 次 → 保留 1 条）
+
 ## v5.4.23-cmfa.1 (2026-06-02)
 
 - ★ FIX#161：`DOMAIN-SUFFIX,zhimg.com` + `DOMAIN-SUFFIX,zhihu.co` → 🏠 国内网站 直连（知乎图片 CDN + 短链，同步基线）。

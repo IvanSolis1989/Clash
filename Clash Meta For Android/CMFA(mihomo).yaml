@@ -1,8 +1,8 @@
 # ================================================================
-# Clash Smart v5.4.24-cmfa.1 - CMFA (Clash Meta for Android) 配置
+# Clash Smart v5.4.25-cmfa.1 - CMFA (Clash Meta for Android) 配置
 # Build: 2026-06-03
 # 架构：proxy-providers 订阅 + 22 url-test 区域组（11 全部 + 11 家宽，家宽 filter 新增 IEPL/IPLC/专线识别）+ 32 业务策略组（含 14 流媒体平台组）+ 384+ rule-providers
-# 基线：Clash Party v5.4.24（唯一主线）
+# 基线：Clash Party v5.4.25（唯一主线）
 # 变更历史：见 `Clash Meta For Android/CHANGELOG.md`
 # ================================================================
 # ★ 快速上手：
@@ -4646,8 +4646,6 @@ rules:
 - 'RULE-SET,acc-aqara-cn,🏠 国内网站'
 - 'RULE-SET,acc-geo-d-asia-china,🏠 国内网站'
 - 'RULE-SET,acc-geo-ip-asia-china,🏠 国内网站,no-resolve'
-- 'GEOIP,CN,🏠 国内网站,no-resolve'
-
 - 'GEOIP,CN,🏠 国内网站,no-resolve'
 
 - 'MATCH,🐟 漏网之鱼'

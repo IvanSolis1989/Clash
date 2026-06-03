@@ -5,6 +5,10 @@
 
 ---
 
+## v5.4.25-flclash.1 (2026-06-03)
+
+- ★ 审查修复：GEOIP 重复规则去重（`GEOIP,netflix` / `GEOIP,google` / `GEOIP,ID` 各出现 2 次 → 保留 GEOIP 标签路由集中区块）
+
 ## v5.4.24-flclash.1 (2026-06-03)
 
 - ★ CLEAN：清除 18 条冗余规则 + 3 个未引用 provider（同步基线 v5.4.24，下载上游文件逐条验证）。

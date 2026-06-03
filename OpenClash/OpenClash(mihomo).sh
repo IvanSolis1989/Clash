@@ -2,12 +2,12 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.4.24-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Clash Smart v5.4.25-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
 # Build: 2026-06-03
 # ============================================================================
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：22 个区域组（11 全部 + 11 家宽）从 type: smart（uselightgbm）换成 type: url-test。
-#       对齐 Clash Party v5.4.24 JS 基线。
+#       对齐 Clash Party v5.4.25 JS 基线。
 #       适用场景：
 #         - OpenClash 内核选的是 Meta(mihomo 稳定版) 而非 Meta Alpha，不支持 smart + LightGBM
 #         - 或者明确想关闭 LightGBM ML 评估、只靠经典 url-test 延迟选路
@@ -26,7 +26,7 @@
 
 
 
-VERSION_TAG="v5.4.24-oc-normal.1"
+VERSION_TAG="v5.4.25-oc-normal.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -3629,7 +3629,6 @@ rules:
 - "RULE-SET,netflix,\U0001F3A5 Netflix"
 - "RULE-SET,netflix-ip,\U0001F3A5 Netflix,no-resolve"
 - "RULE-SET,szkane-netflixip,\U0001F3A5 Netflix,no-resolve"
-- "GEOIP,netflix,\U0001F3A5 Netflix,no-resolve"
 - "RULE-SET,disney,\U0001F3AC Disney+"
 - "RULE-SET,hbo,\U0001F4E1 HBO/Max"
 - "DOMAIN-SUFFIX,max.com,\U0001F4E1 HBO/Max"
@@ -3904,7 +3903,6 @@ rules:
 - "RULE-SET,oracle,\U0001F527 工具与服务"
 - "RULE-SET,unity,\U0001F527 工具与服务"
 - "RULE-SET,szkane-developer,\U0001F527 工具与服务"
-- "GEOIP,google,\U0001F527 工具与服务,no-resolve"
 
   # ============ 微软服务 ============
 - RULE-SET,onedrive,Ⓜ️ 微软服务
