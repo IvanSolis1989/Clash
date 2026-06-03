@@ -8,6 +8,8 @@
 > **FlClash 用户**：推荐使用 [FlClash 覆写脚本](../FlClash/FlClash(mihomo).js)（动态节点分类 + 家宽识别 + 订阅清理）。详见 [`FlClash/README.md`](../FlClash/README.md)。
 > 当前版本：**v5.4.22-cmfa.1**（跟随 Clash Party v5.4.22 主线；含借鉴 Proxy-override 批 A+B+C+D：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy + 节点过滤 junk 关键词补充 + QUIC 精细化 + DoH-over-IP bootstrap）
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 ---
 
 ## 🚀 零基础 5 分钟快速开始
@@ -423,3 +425,9 @@ ClashMi App 首页菜单 → **我的配置** → 右上角 **＋** → 选择�
 - 规则集：[blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) · [MetaCubeX/meta-rules-dat](https://github.com/MetaCubeX/meta-rules-dat)
 - GeoIP：[Loyalsoldier/geoip](https://github.com/Loyalsoldier/geoip)
 - 兼容客户端：[KaringX/clashmi](https://github.com/KaringX/clashmi) · [ClashMi 官方 FAQ](https://clashmi.app/guide/faq)
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)

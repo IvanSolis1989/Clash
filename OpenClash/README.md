@@ -10,6 +10,8 @@
 > - `PROCESS-NAME` 清单已语法同步；RustDesk 进程改走 `🧑‍💼 会议协作`，路由器端通常看不到局域网客户端进程名，主要用于保持 mihomo 规则形态一致。
 > - v5.4.17 起 DNS 固定为 split-bootstrap：`default-nameserver` 纯 IP，其它 resolver 全部 DoH，并开启 `respect-rules: true`、关闭 `prefer-h3`；v5.4.16 起 `paddle.com` 前置命中 `🏦 金融支付`，覆盖 anti-AD 对 `analytics.paddle.com` 的误拦截；v5.4.15 起新增 GEOSITE 覆盖台账与 anti-ad 误伤白名单模块化说明；v5.4.14 起 `cloudflarestorage.com` 前置命中 `🌐 国外网站`，覆盖上游 phishing 规则源误拦截；v5.4.13 起在 `fake-ip-filter` 中让 STUN/TURN 与 RustDesk 域名返回真实 IP；标准 STUN/TURN 端口直连，UDP/443 TURN 仍受 QUIC 屏蔽策略控制。
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 ---
 
 ## 1. 三件套定位（先搞清楚每个文件干嘛的）
@@ -270,3 +272,9 @@ LuCI → **配置订阅** → 添加订阅链接 → 下载 → **全局设置**
 | `OpenClash(mihomo).sh` | 覆写脚本（Normal 内核） |
 | `OpenClash(mihomo).conf` | OpenClash UI 配置快照（一次性导入） |
 | `CHANGELOG.md` | 两份脚本的变更日志（Smart 段 + Normal 段） |
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)

@@ -4,6 +4,8 @@
 >
 > 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.22-v2n.1（详见 `v2rayN/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连；#4 DoH N/A；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 > 本目录提供 Windows 客户端 **v2rayN** 的接入说明。
 > v2rayN 本身不是内核，它是一个「多核心调度器」——可以切换到 **mihomo（推荐）/ sing-box / Xray** 三种核心。
 > 因此这里给出 **三条导入路径**，按功能完整度从高到低排列，你任选一条即可。
@@ -309,3 +311,9 @@ Happ 有自有的路由 Profile JSON 格式（`happ://routing/...` deep link 下
 - [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
 - [XTLS/Xray-core](https://github.com/XTLS/Xray-core)
 - 所有本仓库上游规则维护者（MetaCubeX / blackmatrix7 / Loyalsoldier / szkane / Accademia 等）
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)

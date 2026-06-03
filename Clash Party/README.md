@@ -14,6 +14,8 @@
 > - **Clash Nyanpasu**（桌面端）
 > - 任何支持 Mihomo **JavaScript 覆写引擎**的客户端
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 ---
 
 ## 📌 Smart 版 vs 普通版：怎么选？
@@ -208,7 +210,6 @@ DNS：
 <img width="811" height="698" alt="image" src="https://github.com/user-attachments/assets/c6ad3051-17c3-43e2-8dfa-e9721bd305f8" />
 <img width="811" height="698" alt="image" src="https://github.com/user-attachments/assets/d2cbbbb3-ed2c-45d7-86cc-832edfbdb365" />
 
-
 ```yaml
 dns:
   use-hosts: false
@@ -252,7 +253,6 @@ dns:
 Sniffer：
 
 <img width="811" height="698" alt="image" src="https://github.com/user-attachments/assets/76bb6490-3dee-43f5-a863-96bc99546b52" />
-
 
 ```yaml
 sniffer:
@@ -391,3 +391,9 @@ sniffer:
 - [clash-verge-rev](https://github.com/clash-verge-rev/clash-verge-rev) - 桌面客户端
 - [sub-store-org/Sub-Store](https://github.com/sub-store-org/Sub-Store) - 多机场融合工具
 - 所有上游规则集维护者（bm7 / MetaCubeX / Loyalsoldier / blackmatrix7 等）
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)

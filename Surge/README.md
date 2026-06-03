@@ -7,6 +7,8 @@
 > 目标：**Surge 5 / Surge Mac**（付费正版；iOS + macOS 通用）
 > 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 32 业务策略组 + 286 RULE-SET
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 ---
 
 ## 🚀 零基础快速开始
@@ -310,3 +312,9 @@ Surge 订阅默认**每次启动轮询更新**规则集。可在 **配置 → �
 - [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) - Surge `.list` 规则源
 - [Loyalsoldier/geoip](https://github.com/Loyalsoldier/geoip) - GeoIP MMDB
 - 原版 Clash Party v5.2.6 所有参考作者
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)

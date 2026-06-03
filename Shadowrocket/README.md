@@ -7,6 +7,8 @@
 > 目标：**Shadowrocket iOS（App Store 正版）** / macOS 通用
 > 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 32 业务策略组 + 286 rule-set
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 ---
 
 ## 🚀 零基础 5 分钟快速开始
@@ -315,3 +317,9 @@ tun-excluded-routes = 10.0.0.0/8, 100.64.0.0/10, 127.0.0.0/8, 169.254.0.0/16, ..
 - [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script) - Shadowrocket `.list` 规则源
 - [szkane](https://github.com/szkane) - 补充规则
 - 原版 Clash Party v5.2.2 所有参考作者
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)

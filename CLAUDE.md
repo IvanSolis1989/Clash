@@ -220,6 +220,20 @@ node "SingBox/SingBox(sing-box)-generator.js"
 
 **若发现配置文件头版本号与 CHANGELOG.md 不一致：** 当前 PR 必须顺手修正，不得留作 TODO。
 
+**CHANGELOG 不得出现在 README 中 ⚠️：**
+
+- `README.md`（根目录 + 各子目录）的定位是**项目介绍 / 使用指南 / 导入说明**。
+- **严禁**在 README 中写版本变更历史（如「v5.4.X 修复了…」「近期 DNS 加固」等），这类内容只属于 `CHANGELOG.md`。
+- 若在 README 中发现 changelog 内容，必须立即移到对应 `CHANGELOG.md` 并从 README 删除。
+
+**每次更新必须同步所有 CHANGELOG ⚠️：**
+
+- 每次发版（任何版本号 bump）必须同时更新以下所有 CHANGELOG 文件：
+  1. 根 `CHANGELOG.md`（仓库级摘要）
+  2. `Clash Party/CHANGELOG.md`（主线详细日志）
+  3. 每个被改动的产物对应的 `<子目录>/CHANGELOG.md`
+- 根 CHANGELOG.md 只记录仓库级摘要（一行说明 + 详见链接），不重复子目录 CHANGELOG 的全部细节。
+
 ---
 
 ### 1.4 允许的「不同步」例外

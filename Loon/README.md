@@ -7,6 +7,8 @@
 > 目标：**Loon iOS（App Store 付费正版）**
 > 架构：22 区域 url-test 组（11 全部 + 11 家宽，[Remote Filter] NameRegex）+ 32 业务策略组 + 286 [Remote Rule] 订阅规则集
 
+<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
 ---
 
 ## 🚀 零基础快速开始
@@ -286,3 +288,9 @@ Parsec / Zoom / Pornhub / Wayback）：
 - [Loyalsoldier/geoip](https://github.com/Loyalsoldier/geoip) - GeoIP MMDB
 - Clash Party v5.2.4 主线基线
 - [YueChan/Loon](https://github.com/YueChan/Loon) / [Loon0x00/LoonExampleConfig](https://github.com/Loon0x00/LoonExampleConfig) / [fmz200/wool_scripts](https://github.com/fmz200/wool_scripts) — 三份 Loon 官方/权威示例，v5.2.4-Loon.2 语法对齐的对照来源
+
+---
+
+## 💖 支持本项目
+
+→ [捐赠 / Star / PR](../docs/donate.md)
