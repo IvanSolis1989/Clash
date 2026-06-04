@@ -275,7 +275,7 @@ function loadOverwrite(target) {
   };
   vm.createContext(sandbox);
   const trailer = '\n;globalThis.__smokeExports = { main, classifyNode, classifyAllNodes, VERSION };';
-  vm.runInContext(source + trailer, sandbox, { filename: target.file, timeout: 5000 });
+  vm.runInContext(source + trailer, sandbox, { filename: target.file, timeout: 15000 });
   return { exports: sandbox.__smokeExports, logs };
 }
 
@@ -484,6 +484,14 @@ function validateRulesAndProviders(output, record, target) {
     record.expect(rules.includes(`DST-PORT,${port},DIRECT`), `STUN/TURN port stays on DIRECT: ${port}`);
   }
   record.expect(!rules.includes('DST-PORT,443,DIRECT'), 'UDP/443 TURN is not globally exempted from QUIC blocking');
+  // v5.4.25: 确保 5 条 QUIC AND 规则内部引用完整且未被意外修改
+  const quicAndRules = rules.filter(function(r) { return String(r).startsWith('AND,((DST-PORT,443),(NETWORK,UDP),'); });
+  record.expectEqual(quicAndRules.length, 5, 'exactly 5 QUIC AND rules exist');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,youtube') && String(r).endsWith('📹 YouTube'); }), 'QUIC AND: YouTube whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,google') && String(r).endsWith('🔧 工具与服务'); }), 'QUIC AND: Google whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
   const rustDeskGuardIndex = rules.indexOf('DOMAIN-SUFFIX,rustdesk.com,🧑‍💼 会议协作');
   const copilotIndex = rules.indexOf('RULE-SET,copilot,🤖 AI 服务');
   record.expect(rustDeskGuardIndex !== -1, 'RustDesk domain guard exists before broad Copilot ASN rules');

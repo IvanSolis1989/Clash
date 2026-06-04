@@ -216,6 +216,7 @@ function classifyAllNodes(proxies) {
   var result = {
     HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], OTHER: [], ALL: [],
     HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_OTHER: [], HOME_ALL: [],
+    UNCLASSIFIED: [], HOME_UNCLASSIFIED: [],
   }
   for (var i = 0; i < proxies.length; i++) {
     var p = proxies[i]
@@ -273,6 +274,10 @@ const BIZ = {
   GFW: '🚫 受限网站', INTL_SITE: '🌐 国外网站',
   FINAL: '🐟 漏网之鱼', AD: '🛑 广告拦截',
 }
+
+const ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
+const ACC_VF_RULES = ['paypal','wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
+const ACC_FAKE_LOCATION_RULES = ['bilibili','douyin','kuaishou','xiaohongshu','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
 
 const AD_FALSE_POSITIVE_ALLOWLIST = [
   // v5.4.2 P0-FIX#41: 小米核心服务 DIRECT 白名单——前置 miuiprivacy/advertisingmitv。
@@ -380,7 +385,7 @@ const GEO_REGIONS_INTL = GEO_REGIONS_ALL.filter(r => r !== 'Asia_China')
 //  模块 E：区域组创建（url-test，非 Smart 内核等价写法）
 // ================================================================
 
-function upsertSmartGroup(config, name, proxies) {
+function upsertUrlTestGroup(config, name, proxies) {
   var group = { name: name, type: 'url-test', url: 'https://www.gstatic.com/generate_204', interval: 180, tolerance: 10, lazy: false, proxies: proxies.slice() }
   var idx = config['proxy-groups'].findIndex(function(g) { return g && g.name === name })
   if (idx !== -1) { config['proxy-groups'][idx] = group } else { config['proxy-groups'].push(group) }
@@ -1503,8 +1508,8 @@ function injectRules(config) {
     `RULE-SET,visa,${BIZ.PAYMENTS}`,
     `RULE-SET,tigerfintech,${BIZ.PAYMENTS}`,
     // v5.1.1: Accademia 银行 × 10国 + 虚拟金融 × 4
-    ...['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(cc => `RULE-SET,acc-bank-${cc.toLowerCase()},${BIZ.PAYMENTS}`),
-    ...['paypal','wise','monzo','revolut'].map(svc => `RULE-SET,acc-vf-${svc},${BIZ.PAYMENTS}`),
+    ...ACC_BANK_RULES,
+    ...ACC_VF_RULES,
     `DOMAIN,login.live.com,${BIZ.MS}`,
     `DOMAIN,g.live.com,${BIZ.MS}`,
     `DOMAIN-SUFFIX,officeapps.live.com,${BIZ.MS}`,
@@ -2279,8 +2284,7 @@ function injectRules(config) {
     `RULE-SET,acc-baidunetdisk,${BIZ.CNMEDIA}`,
     `RULE-SET,acc-weiyun,${BIZ.CNMEDIA}`,
     // v5.1.1: Accademia FakeLocation × 10 平台（国内APP IP归属地伪装）
-    ...['bilibili','douyin','kuaishou','xiaohongshu','xigua',
-        'weibo','zhihu','tieba','douban','xianyu'].map(app => `RULE-SET,acc-fl-${app},${BIZ.CNMEDIA}`),
+    ...ACC_FAKE_LOCATION_RULES,
 
     // ============ 🏠 国内网站 ============
     `DOMAIN-SUFFIX,163.com,${BIZ.CN_SITE}`,
@@ -2547,42 +2551,39 @@ function main(config) {
     var c = classifyAllNodes(config.proxies)
     log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} OTHER=${c.OTHER.length}/${c.HOME_OTHER.length}`)
     var jpkrNodes = c.JP.concat(c.KR)
-    var sgNodes = c.SG
     // v5.4.1 FIX: SG 同时存在于狮城组（独立）和亚太组（对标 US 在 美洲组）
     var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR, c.SG)
     var americasNodes = c.US.concat(c.AM)
     var homeJpkrNodes = c.HOME_JP.concat(c.HOME_KR)
-    var homeSgNodes = c.HOME_SG
     var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG)
     var homeAmericasNodes = c.HOME_US.concat(c.HOME_AM)
-    upsertSmartGroup(config, SMART.GLOBAL, c.ALL)
-    if (c.HOME_ALL.length > 0) upsertSmartGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)
+    upsertUrlTestGroup(config, SMART.GLOBAL, c.ALL)
+    if (c.HOME_ALL.length > 0) upsertUrlTestGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)
     // v5.2.8-normal.2: 全部/家宽区域统一空组不创建，避免静默回退污染家宽或地区语义
     //   （与 Smart 版同步修复。SMART.GLOBAL 始终存在兜底）
-    if (c.HK.length > 0) upsertSmartGroup(config, SMART.HK, c.HK)
-    if (c.HOME_HK.length > 0) upsertSmartGroup(config, SMART.HK_HOME, c.HOME_HK)
-    if (c.TW.length > 0) upsertSmartGroup(config, SMART.TW, c.TW)
-    if (c.HOME_TW.length > 0) upsertSmartGroup(config, SMART.TW_HOME, c.HOME_TW)
-    if (c.SG.length > 0) upsertSmartGroup(config, SMART.SG, c.SG)
-    if (c.HOME_SG.length > 0) upsertSmartGroup(config, SMART.SG_HOME, c.HOME_SG)
-    if (jpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR, jpkrNodes)
-    if (homeJpkrNodes.length > 0) upsertSmartGroup(config, SMART.JPKR_HOME, homeJpkrNodes)
-    if (apacNodes.length > 0) upsertSmartGroup(config, SMART.APAC, apacNodes)
-    if (homeApacNodes.length > 0) upsertSmartGroup(config, SMART.APAC_HOME, homeApacNodes)
-    if (c.US.length > 0) upsertSmartGroup(config, SMART.US, c.US)
-    if (c.HOME_US.length > 0) upsertSmartGroup(config, SMART.US_HOME, c.HOME_US)
-    if (c.EU.length > 0) upsertSmartGroup(config, SMART.EU, c.EU)
-    if (c.HOME_EU.length > 0) upsertSmartGroup(config, SMART.EU_HOME, c.HOME_EU)
-    if (americasNodes.length > 0) upsertSmartGroup(config, SMART.AMERICAS, americasNodes)
-    if (homeAmericasNodes.length > 0) upsertSmartGroup(config, SMART.AMERICAS_HOME, homeAmericasNodes)
-    if (c.AF.length > 0) upsertSmartGroup(config, SMART.AFRICA, c.AF)
-    if (c.HOME_AF.length > 0) upsertSmartGroup(config, SMART.AFRICA_HOME, c.HOME_AF)
-    if (c.OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER, c.OTHER)
-    if (c.HOME_OTHER.length > 0) upsertSmartGroup(config, SMART.OTHER_HOME, c.HOME_OTHER)
+    if (c.HK.length > 0) upsertUrlTestGroup(config, SMART.HK, c.HK)
+    if (c.HOME_HK.length > 0) upsertUrlTestGroup(config, SMART.HK_HOME, c.HOME_HK)
+    if (c.TW.length > 0) upsertUrlTestGroup(config, SMART.TW, c.TW)
+    if (c.HOME_TW.length > 0) upsertUrlTestGroup(config, SMART.TW_HOME, c.HOME_TW)
+    if (c.SG.length > 0) upsertUrlTestGroup(config, SMART.SG, c.SG)
+    if (c.HOME_SG.length > 0) upsertUrlTestGroup(config, SMART.SG_HOME, c.HOME_SG)
+    if (jpkrNodes.length > 0) upsertUrlTestGroup(config, SMART.JPKR, jpkrNodes)
+    if (homeJpkrNodes.length > 0) upsertUrlTestGroup(config, SMART.JPKR_HOME, homeJpkrNodes)
+    if (apacNodes.length > 0) upsertUrlTestGroup(config, SMART.APAC, apacNodes)
+    if (homeApacNodes.length > 0) upsertUrlTestGroup(config, SMART.APAC_HOME, homeApacNodes)
+    if (c.US.length > 0) upsertUrlTestGroup(config, SMART.US, c.US)
+    if (c.HOME_US.length > 0) upsertUrlTestGroup(config, SMART.US_HOME, c.HOME_US)
+    if (c.EU.length > 0) upsertUrlTestGroup(config, SMART.EU, c.EU)
+    if (c.HOME_EU.length > 0) upsertUrlTestGroup(config, SMART.EU_HOME, c.HOME_EU)
+    if (americasNodes.length > 0) upsertUrlTestGroup(config, SMART.AMERICAS, americasNodes)
+    if (homeAmericasNodes.length > 0) upsertUrlTestGroup(config, SMART.AMERICAS_HOME, homeAmericasNodes)
+    if (c.AF.length > 0) upsertUrlTestGroup(config, SMART.AFRICA, c.AF)
+    if (c.HOME_AF.length > 0) upsertUrlTestGroup(config, SMART.AFRICA_HOME, c.HOME_AF)
+    if (c.OTHER.length > 0) upsertUrlTestGroup(config, SMART.OTHER, c.OTHER)
+    if (c.HOME_OTHER.length > 0) upsertUrlTestGroup(config, SMART.OTHER_HOME, c.HOME_OTHER)
 
     // 收集实际创建的区域组名（按 SMART 常量名匹配），过滤业务组的 proxy 引用
-    var _regionNameSet = new Set(Object.values(SMART))
-    var activeSmartNames = new Set(config['proxy-groups'].filter(function(g) { return g && _regionNameSet.has(g.name) }).map(function(g) { return g.name }))
+    var activeSmartNames = new Set(config['proxy-groups'].filter(function(g) { return g && g.type === 'url-test' }).map(function(g) { return g.name }))
     activeSmartNames.add('DIRECT'); activeSmartNames.add('REJECT')
     log(`[${VERSION}] Active url-test region groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
 
@@ -2593,7 +2594,7 @@ function main(config) {
     log(`[${VERSION}] Done! Groups: ${config['proxy-groups'].length}, Rules: ${config.rules.length}, Providers: ${Object.keys(config['rule-providers']).length}`)
     return config
   } catch (e) {
-    console.error(`[${VERSION}] Error:`, e)
+    log(`[${VERSION}] Error:`, e)
     return config
   }
 }

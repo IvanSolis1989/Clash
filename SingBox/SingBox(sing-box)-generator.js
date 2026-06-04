@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.4.24-sing.2';
-const BUILD = '2026-06-03'; // v5.4.24
-const BASELINE = 'Clash Party v5.4.24';
+const VERSION = 'v5.4.25-sing.1';
+const BUILD = '2026-06-04';
+const BASELINE = 'Clash Party v5.4.25';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -125,7 +125,7 @@ const REGION_PLACEHOLDERS = [
 const clashScript = fs.readFileSync('Clash Party/ClashParty(mihomo-smart).js', 'utf8');
 const baseConfig = JSON.parse(fs.readFileSync('SingBox/SingBox(sing-box)-full.json', 'utf8'));
 
-const sandbox = { console };
+const sandbox = { console: { log: function(){}, error: function(){}, warn: function(){} } };
 vm.createContext(sandbox);
 vm.runInContext(clashScript + '\nthis.__main = main;', sandbox);
 if (typeof sandbox.__main !== 'function') throw new Error('main() not found');

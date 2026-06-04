@@ -1,7 +1,7 @@
 ﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.25 (2026-06-03)
+// 版本：v5.4.25 (2026-06-04)
 // 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 32 业务策略组（含 14 流媒体平台组）+ 382 rule-providers 100%+ 服务覆盖
-// v5.4.25: 审查修复 GEOIP 去重（netflix/google）+ GeoRouting interval 7d · v5.4.24: CLEAN 冗余规则 · v5.4.23: FIX#161
+// v5.4.25: 代码审查修复（分类器防御初始化 + 静态数组提升 + AND 规则校验 + GEOIP 去重 + GeoRouting interval 7d）· v5.4.24: CLEAN 冗余规则
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
@@ -157,7 +157,8 @@ function _getWordBoundaryRegex(keyword, caseSensitive) {
   _regexCache.set(key, re)
   return re
 }
-function _isChinese(str) { return /[\u4e00-\u9fa5]/.test(str) }
+const _CHINESE_RE = /[\u4e00-\u9fa5]/
+function _isChinese(str) { return _CHINESE_RE.test(str) }
 
 const _compiledRegions = REGION_DB.map(function(region) {
   var matchers = []
@@ -190,6 +191,7 @@ function classifyAllNodes(proxies) {
   var result = {
     HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], OTHER: [], ALL: [],
     HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_OTHER: [], HOME_ALL: [],
+    UNCLASSIFIED: [], HOME_UNCLASSIFIED: [],
   }
   for (var i = 0; i < proxies.length; i++) {
     var p = proxies[i]
@@ -248,6 +250,10 @@ const BIZ = {
   FINAL: '🐟 漏网之鱼', AD: '🛑 广告拦截',
 }
 
+// v5.4.25: 预计算静态规则数组，避免 injectRules() 每次调用重建
+const ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
+const ACC_VF_RULES = ['paypal','wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
+const ACC_FAKE_LOCATION_RULES = ['bilibili','douyin','kuaishou','xiaohongshu','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
 const AD_FALSE_POSITIVE_ALLOWLIST = [
   // v5.4.2 P0-FIX#41: 小米核心服务 DIRECT 白名单——前置 miuiprivacy/advertisingmitv。
   // 小米账号认证安全域名（auth.be.sec.miui.com / idm.api.io.mi.com 在 miuiprivacy 中被误杀导致登录"网络错误"）。
@@ -349,6 +355,8 @@ const GEO_REGIONS_ALL = [
   'Africa_North', 'Africa_South', 'Africa_West', 'Africa_East', 'Africa_Central'
 ]
 const GEO_REGIONS_INTL = GEO_REGIONS_ALL.filter(r => r !== 'Asia_China')
+const GEO_REGIONS_INTL_D_RULES = GEO_REGIONS_INTL.map(function(r) { return 'RULE-SET,acc-geo-d-' + r.toLowerCase().replace(/_/g,'-') + ',' + BIZ.INTL_SITE })
+const GEO_REGIONS_INTL_IP_RULES = GEO_REGIONS_INTL.map(function(r) { return 'RULE-SET,acc-geo-ip-' + r.toLowerCase().replace(/_/g,'-') + ',' + BIZ.INTL_SITE + ',no-resolve' })
 
 // ================================================================
 //  模块 E：Smart 组创建
@@ -1478,8 +1486,8 @@ function injectRules(config) {
     `RULE-SET,visa,${BIZ.PAYMENTS}`,
     `RULE-SET,tigerfintech,${BIZ.PAYMENTS}`,
     // v5.1.1: Accademia 银行 × 10国 + 虚拟金融 × 4
-    ...['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(cc => `RULE-SET,acc-bank-${cc.toLowerCase()},${BIZ.PAYMENTS}`),
-    ...['paypal','wise','monzo','revolut'].map(svc => `RULE-SET,acc-vf-${svc},${BIZ.PAYMENTS}`),
+    ...ACC_BANK_RULES,
+    ...ACC_VF_RULES,
     `DOMAIN,login.live.com,${BIZ.MS}`,
     `DOMAIN,g.live.com,${BIZ.MS}`,
     `DOMAIN-SUFFIX,officeapps.live.com,${BIZ.MS}`,
@@ -2123,8 +2131,8 @@ function injectRules(config) {
     `RULE-SET,szkane-edutools,${BIZ.INTL_SITE}`,
     `RULE-SET,naver,${BIZ.INTL_SITE}`,
     `RULE-SET,ehgallery,${BIZ.INTL_SITE}`,
-    ...GEO_REGIONS_INTL.map(r => `RULE-SET,acc-geo-d-${r.toLowerCase().replace(/_/g,'-')},${BIZ.INTL_SITE}`),
-    ...GEO_REGIONS_INTL.map(r => `RULE-SET,acc-geo-ip-${r.toLowerCase().replace(/_/g,'-')},${BIZ.INTL_SITE},no-resolve`),
+    ...GEO_REGIONS_INTL_D_RULES,
+    ...GEO_REGIONS_INTL_IP_RULES,
     `DOMAIN-SUFFIX,archive.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,udemy.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,udemycdn.com,${BIZ.INTL_SITE}`,
@@ -2258,8 +2266,7 @@ function injectRules(config) {
     `RULE-SET,acc-baidunetdisk,${BIZ.CNMEDIA}`,
     `RULE-SET,acc-weiyun,${BIZ.CNMEDIA}`,
     // v5.1.1: Accademia FakeLocation × 10 平台（国内APP IP归属地伪装）
-    ...['bilibili','douyin','kuaishou','xiaohongshu','xigua',
-        'weibo','zhihu','tieba','douban','xianyu'].map(app => `RULE-SET,acc-fl-${app},${BIZ.CNMEDIA}`),
+    ...ACC_FAKE_LOCATION_RULES,
 
     // ============ 🏠 国内网站 ============
     `DOMAIN-SUFFIX,163.com,${BIZ.CN_SITE}`,
@@ -2562,12 +2569,10 @@ function main(config) {
     injectSmartFingerprint(config)
     var c = classifyAllNodes(config.proxies)
     console.log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} OTHER=${c.OTHER.length}/${c.HOME_OTHER.length}`)
-    var sgNodes = c.SG
     var jpkrNodes = c.JP.concat(c.KR)
     // v5.4.1 FIX: SG 同时存在于狮城组（独立）和亚太组（对标 US 在 美洲组）
     var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR, c.SG)
     var americasNodes = c.US.concat(c.AM)
-    var homeSgNodes = c.HOME_SG
     var homeJpkrNodes = c.HOME_JP.concat(c.HOME_KR)
     var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG)
     var homeAmericasNodes = c.HOME_US.concat(c.HOME_AM)
