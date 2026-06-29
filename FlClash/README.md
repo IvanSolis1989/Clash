@@ -92,11 +92,13 @@ dns:
   use-system-hosts: false
   respect-rules: true
   prefer-h3: false
+  # v5.4.21: default-nameserver 升级为 DoH-over-IP（消除 bootstrap 阶段明文 DNS 泄漏）
   default-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://223.6.6.6/dns-query
+    - https://8.8.8.8/dns-query
+    - https://1.1.1.1/dns-query
     - 223.5.5.5
-    - 119.29.29.29
-    - 1.1.1.1
-    - 8.8.8.8
   nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
@@ -108,6 +110,7 @@ dns:
   direct-nameserver:
     - https://dns.alidns.com/dns-query
     - https://doh.pub/dns-query
+  direct-nameserver-follow-policy: true
   fallback:
     - https://cloudflare-dns.com/dns-query
     - https://dns.google/dns-query
@@ -136,6 +139,15 @@ dns:
       - 10.0.0.0/8
       - 192.168.0.0/16
     domain: []
+```
+
+# hosts: DoH 域名预解析，消除 fake-ip 冷启动循环依赖
+```yaml
+hosts:
+  dns.alidns.com: [223.5.5.5, 223.6.6.6]
+  doh.pub: [119.29.29.29]
+  dns.google: [8.8.8.8, 8.8.4.4]
+  cloudflare-dns.com: [1.1.1.1, 1.0.0.1]
 ```
 
 ---
