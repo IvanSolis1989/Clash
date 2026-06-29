@@ -2330,9 +2330,12 @@ function overwriteGeneral(config) {
     if (!config.dns['nameserver-policy'][host]) config.dns['nameserver-policy'][host] = foreignDoH.slice()
   })
   // Safety net: .cn TLD patterns → domestic DoH, in case respect-rules doesn't route them to direct-nameserver
-  ['+.cn', '+.com.cn', '+.org.cn', '+.net.cn', '+.gov.cn', '+.edu.cn', '+.mil.cn'].forEach(function(host) {
-    if (!config.dns['nameserver-policy'][host]) config.dns['nameserver-policy'][host] = domesticDoH.slice()
-  })
+  var nsPolicy = config.dns['nameserver-policy']
+  if (nsPolicy && typeof nsPolicy === 'object' && !Array.isArray(nsPolicy)) {
+    ['+.cn', '+.com.cn', '+.org.cn', '+.net.cn', '+.gov.cn', '+.edu.cn', '+.mil.cn'].forEach(function(host) {
+      if (!nsPolicy[host]) nsPolicy[host] = domesticDoH.slice()
+    })
+  }
   if (!config.dns['fallback-filter'] || typeof config.dns['fallback-filter'] !== 'object' || Array.isArray(config.dns['fallback-filter'])) {
     config.dns['fallback-filter'] = {}
   }
