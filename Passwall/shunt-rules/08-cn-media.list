@@ -11,5 +11,15 @@ geosite:youku
 geosite:tencentvideo
 geosite:mgtv
 geosite:douyin
+domain:douyin.com
+domain:douyincdn.com
+domain:douyinpic.com
+domain:douyinstatic.com
+domain:douyinvod.com
+domain:idouyinvod.com
+domain:iesdouyin.com
+domain:iesdouyin.net
+domain:amemv.com
+domain:zjcdn.com
 geosite:netease-music
 geosite:qqmusic

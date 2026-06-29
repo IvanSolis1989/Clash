@@ -5,7 +5,7 @@
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
-> 当前版本：**v5.4.22-flclash.1**（22 url-test 区域组 + 32 业务策略组；含借鉴 Proxy-override 批 A+B+C+D：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy + 节点过滤 junk 关键词补充 + QUIC 精细化 + DoH-over-IP bootstrap）
+> 当前版本：**v5.4.36-flclash.1**（22 url-test 区域组 + 33 业务策略组；标准 Mihomo 内核动态分流；变更历史见 `FlClash/CHANGELOG.md`）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -52,7 +52,7 @@
 
 点「代理」标签，应看到：
 - **最多 22 个区域组**（11 全部 + 11 家宽；空区域自动跳过）：🌍 全球节点、🇭🇰 香港节点、🇸🇬 狮城节点、🌏 其他节点……
-- **32 业务组**：🤖 AI 服务、🎵 TikTok、🎥 Netflix、📱 社交媒体……
+- **33 业务组**（新增 🔍 Google 服务）：🤖 AI 服务、🎵 TikTok、🎥 Netflix、📱 社交媒体……
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
 ---

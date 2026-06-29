@@ -7,9 +7,69 @@
 
 ---
 
-## v5.4.25-oc-normal.1 / v5.4.25-oc-smart.1 (2026-06-03)
+## v5.4.36-oc-normal.1 / v5.4.36-oc-smart.1 (2026-06-29)
+
+- CLEAN#171-DIRECT：Normal / Smart 同步删除 22 条经逐条确认的冗余直写规则，provider 保持 376，规则语义与 Clash Party v5.4.36 对齐。
+- `OpenClash(mihomo).conf` 参考快照同步到 v5.4.36；AI / Binance / Microsoft login 候选因不同策略 `.mrs` 前置阻断，继续保留。
+
+## v5.4.35-oc-normal.1 / v5.4.35-oc-smart.1 (2026-06-28)
+
+- ★ CLEAN#170-UPSTREAM：Normal / Smart 同步删除 8 个冗余 rule-provider 及对应 `RULE-SET` 行：`marketing`、`acc-vf-paypal`、`encoretvb`、`findmy`、`wildrift`、`acfun`、`acc-fl-douyin`、`acc-fl-xiaohongshu`。
+- CLEAN#170-DIRECT：删除 3 条已被前置 Douyin 国内流媒体守卫同目标覆盖的后置直写规则：`douyin.com`、`douyinpic.com`、`douyinvod.com`。
+- Provider 数 384 → 376；两份 `.sh` 的规则顺序保持与 Clash Party v5.4.35 对齐。
+- `OpenClash(mihomo).conf` 参考快照元数据对齐 v5.4.35。
+
+## v5.4.34-oc-normal.1 / v5.4.34-oc-smart.1 (2026-06-28)
+
+- ★ FIX#169-AMAP：Normal / Smart 同步新增 MetaCubeX `amap.mrs` provider，下载代理保持 `🚫 受限网站`。
+- 规则顺序：`RULE-SET,amap,🏠 国内网站` 位于广告/威胁规则之后、`proxy` / `geolocation-!cn` 国外兜底之前，避免 `webapi.amap.com` 依赖尾部 CN 兜底。
+- `OpenClash(mihomo).conf` 参考快照元数据对齐 v5.4.34。
+
+## v5.4.33-oc-normal.1 / v5.4.33-oc-smart.1 (2026-06-27)
+
+- ★ FEAT#169-AI-CODING：Normal / Smart 同步新增 `vpsdance-ai-coding` provider 与 AI 服务规则命中。
+- 保留 v5.4.32 国内游戏优先级修复。
+
+## v5.4.32-oc-normal.1 / v5.4.32-oc-smart.1 (2026-06-25)
+
+- ★ FIX#168-CN-GAME：Normal / Smart heredoc YAML 同步将国内游戏块前置到国外游戏块之前，防止 HoYoverse / Game / category-games 先命中代理。
+- `OpenClash(mihomo).conf` 参考快照元数据对齐 v5.4.32。
+
+## v5.4.31-oc-normal.1 / v5.4.31-oc-smart.1 (2026-06-20)
+
+- ★ FIX#167-DOUYIN：Normal 与 Smart 同步在广告/TikTok/国外尾部规则前增加抖音 Web 国内流媒体守卫，覆盖 `douyin.com` 与 `zjcdn.com` 等视频 CDN 域名。
+- `OpenClash(mihomo).conf` 参考快照元数据对齐 v5.4.31。
+
+## v5.4.30-oc-normal.1 / v5.4.30-oc-smart.1 (2026-06-17)
+
+- ★ FEAT#166-GOOGLE：Normal 与 Smart 同步新增 `🔍 Google 服务` 业务组，位置在 `🔧 工具与服务` 之前。
+- Scholar、Google 基础服务、Google IP 与 Google QUIC 规则改投新组；Ruby/静态片段的业务组计数同步为 33。
+
+## v5.4.29-oc-normal.1 / v5.4.29-oc-smart.1 (2026-06-10)
+
+- ★ PERF#165-LATENCY：OpenClash Normal / Smart 两份 Ruby 覆写生成逻辑统一把区域自动测速 `interval` 设为 300s。
+- 保持 rule-provider 下载代理为 `🚫 受限网站`；本轮不改变 FINAL 兜底语义。
+- `OpenClash(mihomo).conf` 参考快照元数据对齐 v5.4.29。
+
+## v5.4.27-oc-normal.1 / v5.4.27-oc-smart.1 (2026-06-07)
+
+- ★ CLEAN#165：两份覆写脚本同步基线清理 Claude / PayPal / HBO / Hulu / Xbox 上游 rule-provider 已覆盖的直写域名。
+- 额外修正：删除此前 OpenClash 中位于 `RULE-SET,hulu` 之后、实际不可达的 `hulu.jp` / `happyon.jp` 日韩流媒体兜底；删除后首个命中仍为 `RULE-SET,hulu → 📺 Hulu`。
+
+## v5.4.26-oc-normal.1 / v5.4.26-oc-smart.1 (2026-06-07)
+
+- ★ FIX#164：腾讯 WorkBuddy `copilot.tencent.com` 国内直连防吞——szkane `AiDomain.list` 的 `DOMAIN-KEYWORD,copilot` 子串会把它误吞到 `🤖 AI 服务`（国外代理）导致对话报错；两份覆写脚本均在 `RULE-SET,openai` 等 AI rule-set 之前前置 `DOMAIN-SUFFIX,copilot.tencent.com,\U0001F3E0 国内网站`。基线 Clash Party v5.4.26。
+
+## v5.4.25-oc-normal.2 / v5.4.25-oc-smart.2 (2026-06-05)
+
+- ★ SECURITY#OC-TMP：两份覆写脚本改用 `mktemp` 私有临时文件 + `trap` 清理，避免固定 `/tmp/clash_*` 在并发运行时互相覆盖或被符号链接预置。
+- ★ SYNC#FAKE-IP-FILTER：补齐 `+.pub.3gppnetwork.org` / `+.bing.com` / `+.miwifi.com` 以及 Apple Push / 小米 / 个推真实 IP 条目，与 JS 三端 fake-ip-filter 保持 57 条一致。
+- ★ VERIFY：合同验证新增 OpenClash fake-ip-filter 必需条目校验。
+
+## v5.4.25-oc-normal.1 / v5.4.25-oc-smart.1 (2026-06-04)
 
 - ★ 审查修复：GEOIP 重复规则去重（`GEOIP,netflix` / `GEOIP,google` 各出现 2 次 → 保留 GEOIP 标签路由集中区块）
+- ★ SYNC：`OpenClash(mihomo).conf` 参考快照头部 metadata 对齐 Clash Party v5.4.25；权威运行产物仍为 Normal/Smart 两份 `.sh`。
 
 ## v5.4.23-oc-normal.1 / v5.4.23-oc-smart.1 (2026-06-02)
 

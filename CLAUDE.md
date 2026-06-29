@@ -95,7 +95,7 @@ node "SingBox/SingBox(sing-box)-generator.js"
 > **关于 Surge / Loon / Quantumult X：** 这三款 iOS/macOS 付费客户端各自使用私有 `.conf` 语法，与 Shadowrocket 部分兼容但不完全一致，因此每个都是独立产物。其中：
 > - Surge 与 Shadowrocket 语法最接近（~90% 兼容），从 Shadowrocket 迁移改动最小
 > - Loon 兼容 Surge 的 `[Rule] RULE-SET` 语法，但 [General] DNS 字段和 MMDB 配置方式不同
-> - Quantumult X 使用完全独立的 `[policy]` / `[filter_remote]` / `[filter_local]` 结构，由 `tools/srk_to_qx.py` 或等价脚本从 Shadowrocket 自动转换生成
+> - Quantumult X 使用完全独立的 `[policy]` / `[filter_remote]` / `[filter_local]` 结构；当前作为独立产物手工维护，仓库无 `tools/srk_to_qx.py`，恢复自动转换前必须先提交并验证脚本
 
 ### 0.1 辅助目录（不影响产物同步）
 
@@ -117,7 +117,7 @@ node "SingBox/SingBox(sing-box)-generator.js"
 
 ### 1.1 触发条件（任一满足即必须全版本联动）
 
-- 新增/删除/重命名**任何代理组**（含 22 个区域组〔11 全部 + 11 家宽〕与 32 个业务组）
+- 新增/删除/重命名**任何代理组**（含 22 个区域组〔11 全部 + 11 家宽〕与 33 个业务组）
 - 新增/删除/修改**任何 rule-provider**（含 URL、behavior、format、interval、proxy 字段）
 - 修改**规则条目的目标组**（例如把 `RULE-SET,tiktok` 从 `📱 社交媒体` 改到其他组）
 - 修改**规则顺序**中影响命中优先级的段（特别是广告拦截、GFW、FINAL 前置关系）
@@ -139,7 +139,7 @@ node "SingBox/SingBox(sing-box)-generator.js"
    - `v2rayN/v2rayN(xray).json`（仅当业务组/规则类别发生变化时需同步；Xray 只有 proxy/direct/block 三出站，单纯区域选择/LightGBM 调整可豁免）
    - `Surge/Surge.conf`（与 Shadowrocket 保持 ~1:1 规则行；仅 [General] DNS/MMDB 不同）
    - `Loon/Loon.conf`（从 Surge 迁移；头部 + [General] 不同，[Rule] 段基本同 Surge）
-   - `Quantumult X/QuantumultX.conf`（Shadowrocket → QX 转换；policy / filter_remote / filter_local 三段结构；可由等价脚本重新生成）
+   - `Quantumult X/QuantumultX.conf`（独立 QX 产物；policy / filter_remote / filter_local 三段结构；当前手工维护并由合同验证覆盖）
    - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（展平降级参考；仅当业务组/规则类别变化时需同步）
    - `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list`（同上；与 Passwall 同步联动）
    - `FlClash/FlClash(mihomo).js`（Clash Party Normal JS 的 FlClash 移植版；规则/组/DNS 与主线对齐，overwriteGeneral 裁剪 TUN/端口）
@@ -169,7 +169,7 @@ node "SingBox/SingBox(sing-box)-generator.js"
 
 1. 产物名称 + 版本号（与 Clash Party 主版本对齐，加平台后缀）
 2. Build 日期（YYYY-MM-DD）
-3. 架构一句话（例如「22 区域〔11 全部 + 11 家宽〕 + 32 业务（含 14 流媒体平台组）+ 385+ RULE-SET」）
+3. 架构一句话（例如「22 区域〔11 全部 + 11 家宽〕 + 33 业务（含 14 流媒体平台组）+ 376+ RULE-SET」）
 4. 基线声明（「基线：Clash Party vX.Y.Z（唯一主线）」）
 5. 指向 CHANGELOG：「变更历史：见 `<子目录>/CHANGELOG.md`」
 6. 若有风险或代价，一行标注（OOM / 首次延迟 / iOS 限制）
@@ -394,7 +394,7 @@ done
 
 ## 3. 跨平台一致性矩阵（强制对齐项）
 
-### 3.1 代理组命名（22 区域〔11 全部 + 11 家宽〕 + 32 业务，共 54 组）
+### 3.1 代理组命名（22 区域〔11 全部 + 11 家宽〕 + 33 业务，共 55 组）
 
 区域组名称（emoji 必须逐字节一致，包含 RGI 旗帜序列）：
 
@@ -415,12 +415,12 @@ done
 📹 YouTube · 🎵 音乐流媒体
 🇭🇰 香港流媒体 · 🇹🇼 台湾流媒体 · 🇯🇵 日韩流媒体 · 🇪🇺 欧洲流媒体
 🌐 其他国外流媒体
-🕹️ 国内游戏 · 🎮 国外游戏 · 🔧 工具与服务
+🕹️ 国内游戏 · 🎮 国外游戏 · 🔍 Google 服务 · 🔧 工具与服务
 Ⓜ️ 微软服务 · 🍎 苹果服务 · 📥 下载更新 · 🛰️ BT/PT Tracker
 🏠 国内网站 · 🚫 受限网站 · 🌐 国外网站 · 🐟 漏网之鱼 · 🛑 广告拦截
 ```
 
-**禁止**新增/删除/改名这 54 个组；若业务确有需要，必须先在 PR 描述里说明并先改 Clash Party 基线。
+**禁止**新增/删除/改名这 55 个组；若业务确有需要，必须先在 PR 描述里说明并先改 Clash Party 基线。
 
 ### 3.2 Rule-provider 下载代理（`RP_PROXY`）
 
@@ -520,9 +520,9 @@ done
 
 ## 4. 发版与版本号规则
 
-- Clash Party JS 顶部 VERSION 注释是**唯一主版本号**（目前 `v5.2.2`）。
-- 其他 5 份产物使用同主版本号 + 平台后缀：
-  - `v5.2.2-cmfa.X`、`v5.3.X-oc-normal`、`v5.2.2-oc-smart`、`v5.2.2-SR.X`、`v5.2.2-sing.X`
+- Clash Party JS 顶部 VERSION 注释是**唯一主版本号**（目前 `v5.4.25`）。
+- 其他产物使用同主版本号 + 平台后缀：
+  - `v5.4.25-cmfa.X`、`v5.4.25-oc-normal.X`、`v5.4.25-oc-smart.X`、`v5.4.25-SR.X`、`v5.4.25-Surge.X`、`v5.4.25-Loon.X`、`v5.4.25-QX.X`、`v5.4.25-sing.X`、`v5.4.25-v2n.X`、`v5.4.25-pw.X`、`v5.4.25-pw2.X`、`v5.4.25-flclash.X`
 - 平台后缀内部可独立递增，但主版本号必须与 Clash Party 对齐；若不对齐，必须在对应子目录 `README.md` 开头标明原因。
 
 ---
@@ -530,24 +530,24 @@ done
 ## 5. 自检脚本（提交前必须本地跑一遍）
 
 ```bash
-# 1) 数代理组数（必须为 32 业务组 + 22 区域组；sing-box 另加 1 个顶层节点选择）
+# 1) 数代理组数（必须为 33 业务组 + 22 区域组；sing-box 另加 1 个顶层节点选择）
 #    CMFA：业务组用 "- name:"、区域组用 "- type: url-test" + 缩进 "  name:"，需两种模式
-grep -cE "^- name: |^  name: " "Clash Meta For Android/CMFA(mihomo).yaml"  # 期望 54
-#    OpenClash：32 业务组是静态 "- name:"；22 区域组由 Ruby make_smart_group() 动态生成，静态 grep 只能数到 32
-grep -cE "^- name: " "OpenClash/OpenClash(mihomo).sh"                  # 期望 32（静态业务组）
-grep -cE "^- name: " "OpenClash/OpenClash(mihomo-smart).sh"             # 期望 32（静态业务组）
-grep -cE " = select,|= url-test," "Shadowrocket/Shadowrocket.conf"        # 期望 54
-grep -cE " = select,|= url-test," "Surge/Surge.conf"                      # 期望 54
-grep -cE " = select,|= url-test," "Loon/Loon.conf"                        # 期望 54
-grep -cE "^(url-latency-benchmark|static)=" "Quantumult X/QuantumultX.conf"        # 期望 54
-node -e "const d=JSON.parse(require('fs').readFileSync('SingBox/SingBox(sing-box)-full.json','utf8'));const n=d.outbounds.filter(o=>o.type==='selector'||o.type==='urltest').length;console.log(n);process.exit(n===53?0:1)"  # 期望 53（无「其他」区域组）
+grep -cE "^- name: |^  name: " "Clash Meta For Android/CMFA(mihomo).yaml"  # 期望 55
+#    OpenClash：33 业务组是静态 "- name:"；22 区域组由 Ruby make_smart_group() 动态生成，静态 grep 只能数到 33
+grep -cE "^- name: " "OpenClash/OpenClash(mihomo).sh"                  # 期望 33（静态业务组）
+grep -cE "^- name: " "OpenClash/OpenClash(mihomo-smart).sh"             # 期望 33（静态业务组）
+grep -cE " = select,|= url-test," "Shadowrocket/Shadowrocket.conf"        # 期望 55
+grep -cE " = select,|= url-test," "Surge/Surge.conf"                      # 期望 55
+grep -cE " = select,|= url-test," "Loon/Loon.conf"                        # 期望 55
+grep -cE "^(url-latency-benchmark|static)=" "Quantumult X/QuantumultX.conf"        # 期望 55
+node -e "const d=JSON.parse(require('fs').readFileSync('SingBox/SingBox(sing-box)-full.json','utf8'));const n=d.outbounds.filter(o=>o.type==='selector'||o.type==='urltest').length;console.log(n);process.exit(n===54?0:1)"  # 期望 54（无「其他」区域组）
 
 # 2) RP 代理字段
 grep -c "proxy: DIRECT" "OpenClash/OpenClash(mihomo).sh"                    # 期望 0
 grep -c "proxy: '☁️ 云与CDN'" "Clash Meta For Android/CMFA(mihomo).yaml"         # 期望 0
 grep -c "proxy: '🚫 受限网站'" "Clash Meta For Android/CMFA(mihomo).yaml"        # 期望 ≥ 300
 grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo).sh"               # 期望 ≥ 130
-grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo-smart).sh"  # 期望 ≥ 380
+grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo-smart).sh"  # 期望 ≥ 376
 
 # 3) 禁止死引用（旗帜 emoji 与组名 emoji 必须匹配；忽略注释行）
 grep -nE "^[^#].*🇸🇬 亚太节点" "Shadowrocket/Shadowrocket.conf"                  # 必须无输出
@@ -569,13 +569,17 @@ grep -cE "^rule-providers:$" /tmp/oc_full_override_probe.yaml   # 期望 1
 grep -cE "^rules:$" /tmp/oc_full_override_probe.yaml             # 期望 1
 ruby -ryaml -e '
   d = YAML.load_file("/tmp/oc_full_override_probe.yaml", permitted_classes: [Symbol], aliases: true)
-  raise "providers < 380" if (d["rule-providers"] || {}).size < 380   # full 期望 ≈384
+  raise "providers < 376" if (d["rule-providers"] || {}).size < 376   # full 期望 ≈376
   raise "rules    < 900" if (d["rules"]         || []).size < 900     # full 期望 ≈975
   puts "OC full override yaml: providers=#{d["rule-providers"].size} rules=#{d["rules"].size}"
 '
 
-# 5) YAML 合法性（可选，需 pyyaml 或 node）
-node -e "const yaml=require('yaml'||'js-yaml');console.log('YAML parse: OK')" 2>/dev/null || echo "跳过 YAML 校验（无 yaml 模块）"
+# 5) 产物合同验证（--strict-ruby 会实际解析 CMFA/OpenClash YAML）
+node tools/validate-artifact-contracts.js --strict-ruby
+
+# 6) JS 覆写与 PROCESS-NAME 合同
+node tools/validate-js-overwrites.js
+node tools/validate-process-name-direct.js
 ```
 
 若任一检查失败，PR 不得合入。
@@ -588,7 +592,7 @@ node -e "const yaml=require('yaml'||'js-yaml');console.log('YAML parse: OK')" 2>
 ① 读 Clash Party JS（基线）→ 搞清楚要改什么
 ② 读目标 APP 官方文档 → 确认新字段/新组在每个产物上的等价写法
 ③ 改 Clash Party JS → 主线先落地
-④ 同步 CMFA → OpenClash(Normal+Smart) → Shadowrocket → SingBox Full
+④ 同步 CMFA → OpenClash(Normal+Smart) → Shadowrocket → Surge → Loon → QX → SingBox Full → v2rayN → Passwall/Passwall2 → FlClash（按适用性说明豁免）
 ⑤ 跑 §5 自检命令
 ⑥ 更新根 README.md + 各子目录 README.md
 ⑦ PR 描述里写：改动摘要 / 影响矩阵 / 官方文档链接 / 自检输出

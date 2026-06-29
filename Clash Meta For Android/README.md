@@ -6,7 +6,7 @@
 > 适用客户端：**Clash Meta For Android（CMFA）** / **FlClash** / **mihomo-party-android**（Android 原生）· **[ClashMi](https://github.com/KaringX/clashmi)**（跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，复用同一 YAML；详见 §九）
 > 内核要求：**Mihomo**（原生 YAML 导入；区域组用 `url-test`，**不含 Smart + LightGBM**——CMFA 的静态 YAML 不支持 JS 覆写）
 > **FlClash 用户**：推荐使用 [FlClash 覆写脚本](../FlClash/FlClash(mihomo).js)（动态节点分类 + 家宽识别 + 订阅清理）。详见 [`FlClash/README.md`](../FlClash/README.md)。
-> 当前版本：**v5.4.22-cmfa.1**（跟随 Clash Party v5.4.22 主线；含借鉴 Proxy-override 批 A+B+C+D：国内 SDK/CDN 直连 + fake-ip-filter 补全 + direct-nameserver-follow-policy + 节点过滤 junk 关键词补充 + QUIC 精细化 + DoH-over-IP bootstrap）
+> 当前版本：**v5.4.36-cmfa.1**（Build 2026-06-29，跟随 Clash Party v5.4.36 主线；区域 url-test 与 provider health-check 默认 300s）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -39,14 +39,14 @@
 
 ### 跑起来之后怎么验证？
 - 浏览器打开 `https://www.google.com` 能打开 = 代理通了。
-- CMFA 点底部「代理」，应看到 **22 区域组（11 全部 + 11 家宽）+ 32 业务组**。
+- CMFA 点底部「代理」，应看到 **22 区域组（11 全部 + 11 家宽）+ 33 业务组**。
 - 点底部「连接」能看到每次访问走了哪个组/节点。
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
 ### 最常见踩坑
 - ❌ **APK 装不上**：没允许"来自未知来源的应用"。设置 → 安全 → 允许安装未知来源。
 - ❌ **导入后节点列表是空的**：订阅链接返回的格式不对。换链接加 `?flag=clash.meta` 后缀；或用 Sub-Store 做格式转换。
-- ❌ **首次启动卡在"加载规则"**：CMFA 要下 375+ 条规则约 15–30 MB。**必须在 WiFi + 已开代理**（可以先用随便一个能用的节点启动，等规则下完再切到本配置），否则 GitHub/jsdelivr 在国内会 404。
+- ❌ **首次启动卡在"加载规则"**：CMFA 要下 376 条规则源约 15–30 MB。**必须在 WiFi + 已开代理**（可以先用随便一个能用的节点启动，等规则下完再切到本配置），否则 GitHub/jsdelivr 在国内会 404。
 - ❌ **打开支付宝/银行 App 卡死**：已在配置里把 `+.alipay.com` / 主流银行域名排除了代理。如果你用的银行没排除，在 CMFA 的「应用 → 分应用代理」里把那个银行 App 设为"不走代理"。
 - ❌ **LightGBM 自动择优不生效**：CMFA YAML 用的是 `url-test`（按延迟择优），**不是** Mihomo Smart 组。Smart + LightGBM 需要 Mihomo Smart Alpha 内核，**目前仅桌面端 Clash Verge Rev / Mihomo Party + Clash Party Smart JS 支持**。FlClash 覆写脚本 (`../FlClash/FlClash(mihomo).js`) 也是 url-test（标准 Mihomo 内核限制），但提供动态节点分类/家宽识别/订阅清理等 YAML 没有的能力。
 
@@ -253,7 +253,7 @@ proxy-providers:
 1. 在 CMFA 首页选择刚导入的配置，点击「**启动**」按钮。
 2. 首次启动 CMFA 会自动完成以下动作（需保持网络畅通）：
    - 下载机场节点列表（`subscribe.yaml`）
-   - 下载 **375+ rule-providers**（`blackmatrix7 / MetaCubeX` 等规则集）
+   - 下载 **376 rule-providers**（`blackmatrix7 / MetaCubeX` 等规则集）
    - 下载 **Loyalsoldier 增强版** `geoip.dat` / `Country.mmdb` / `GeoLite2-ASN.mmdb`
    - 下载 **MetaCubeX** `geosite.dat`
    - 下载 **LightGBM 模型** `Model.bin`（用于 Smart 组自动择优）
@@ -265,7 +265,7 @@ proxy-providers:
 
 ## 五、代理组说明
 
-本配置共 **22 区域组（11 全部 + 11 家宽）+ 32 业务组**，进入 CMFA「**代理（Proxies）**」页面可见：
+本配置共 **22 区域组（11 全部 + 11 家宽）+ 33 业务组**，进入 CMFA「**代理（Proxies）**」页面可见：
 
 ### 区域组（自动择优）
 
@@ -304,6 +304,7 @@ proxy-providers:
 | 🌐 其他国外流媒体 | 🌍 全球节点 |
 | 🕹️ 国内游戏 | DIRECT |
 | 🎮 国外游戏 | 🌍 全球节点 或 🇯🇵 日韩节点（低延迟） |
+| 🔍 Google 服务 | 🌍 全球节点 |
 | 🔧 工具与服务 | 🌍 全球节点 |
 | Ⓜ️ 微软服务 | 🌍 全球节点 |
 | 🍎 苹果服务 | DIRECT（境内） |
@@ -396,8 +397,8 @@ ClashMi App 首页菜单 → **我的配置** → 右上角 **＋** → 选择�
 
 ### 与 CMFA 行为一致的部分
 
-- ✅ 54 代理组（22 区域 + 32 业务）结构 1:1 加载。
-- ✅ 385 条 `RULE-SET` + 384 `rule-providers` 全部走同一 MetaCubeX / blackmatrix7 / Loyalsoldier / szkane / Accademia 源。
+- ✅ 54 代理组（22 区域 + 33 业务）结构 1:1 加载。
+- ✅ 376 条 `RULE-SET` + 376 `rule-providers` 全部走同一 MetaCubeX / blackmatrix7 / Loyalsoldier / szkane / Accademia 源。
 - ✅ fake-ip DNS / sniffer / `proxy-providers.filter` / `exclude-filter` 行为与 CMFA 等价。
 - ✅ 22 区域组使用 `type: url-test`（按延迟择优）—— 与 CMFA 完全相同。
 
@@ -405,7 +406,7 @@ ClashMi App 首页菜单 → **我的配置** → 右上角 **＋** → 选择�
 
 | 项 | ClashMi 行为 | 本 YAML 的影响 |
 |---|---|---|
-| **GEOIP / GEOSITE 规则** | 启动时强制转换为对应 geo rule-set（内核定制） | **零触发**。本 YAML 使用 **385 条 `RULE-SET`**，**0 条 `GEOIP,`**，**0 条 `GEOSITE,`**（已在仓库自检）|
+| **GEOIP / GEOSITE 规则** | 启动时强制转换为对应 geo rule-set（内核定制） | **零触发**。本 YAML 使用 **376 条 `RULE-SET`**，**0 条 `GEOIP,`**，**0 条 `GEOSITE,`**（已在仓库自检）|
 | **`GEOIP,<ASN>` ASN 规则** | iOS 版本不支持 IP-ASN 数据库 | **未使用** ASN 规则 |
 | **iOS VPN Extension 50 MB 内存硬顶** | 超出即被系统杀进程 | 本 YAML 全部走 `.mrs` 二进制 ruleset + 懒加载，**不会触发** OOM |
 | **`tun:` YAML 字段块** | 由 App UI 托管 TUN 开关，不建议 YAML 手写 | 本 YAML **未写** `tun:` 段（交 App 设置），对 ClashMi 天然友好 |

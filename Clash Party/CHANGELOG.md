@@ -1,13 +1,96 @@
 # Clash Party — 变更日志
 
 > 本文件是 `Clash Party/ClashParty(mihomo-smart).js` 的完整变更日志。
-> 本 JS 覆写脚本是仓库的**主线基线**，其它所有产物（CMFA YAML / OpenClash Normal+Smart / Shadowrocket / SingBox / Surge / Loon / Quantumult X / v2rayN）跟随本版本。
+> 本 JS 覆写脚本是仓库的**主线基线**，其它所有产物（CMFA YAML / OpenClash Normal+Smart / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash）跟随本版本。
 >
-> 主版本号 `v5.3.X`；主版本变更必须同步传递到所有 9 份产物的子版本号。
+> 主版本号 `v5.4.X`；主版本变更必须同步传递到所有受影响产物的子版本号。
 
 ---
 
-## v5.4.25 / v5.4.25-normal.1 (2026-06-03)
+## v5.4.36 / v5.4.36-normal.1 (2026-06-29)
+
+- CLEAN#171-DIRECT：删除 22 条经逐条确认的冗余直写规则：`video.unext.jp` / `dl.delivery.mp.microsoft.com` 两条为本地前序覆盖，另 20 条为 provider 前序同策略覆盖。
+- 已删除候选：`stripe.com` / `stripe.network` / `stripecdn.com` / `stripe.dev`、`outlook.office365.com`、`notion.so` / `notion.site` / `atlassian.com` / `trello.com` / `bitbucket.org`、`channel4.com` / `channel5.com` / `sky.com`、`yandex.com` / `yandex.ru` / `pypi.org` / `pythonhosted.org`、`download.mozilla.org` / `archive.mozilla.org` / `releases.ubuntu.com`。
+- 已保留候选：AI 7 条、Binance 3 条、Microsoft login 2 条；保留原因是同目标证明之前存在不同策略 `.mrs` 规则集。
+- 规则数量从 1023 降到 1001，provider 保持 376。
+
+## v5.4.35 / v5.4.35-normal.1 (2026-06-28)
+
+- ★ CLEAN#170-UPSTREAM：删除 8 个已被前序同目标规则覆盖的冗余上游规则集：`marketing`、`acc-vf-paypal`、`encoretvb`、`findmy`、`wildrift`、`acfun`、`acc-fl-douyin`、`acc-fl-xiaohongshu`。
+- CLEAN#170-DIRECT：删除 3 条已被前置 Douyin 国内流媒体守卫同目标覆盖的后置直写规则：`douyin.com`、`douyinpic.com`、`douyinvod.com`。
+- Provider 生成同步缩减：`VirtualFinance` 由 4 个降为 3 个（移除 PayPal 补充源），`FakeLocation` 由 10 个降为 8 个（移除 DouYin / XiaoHongShu 补充源）。
+- 验证：全量 provider 数 384 → 376；匹配顺序不变，`privacy` 保留。
+
+## v5.4.34 / v5.4.34-normal.1 (2026-06-28)
+
+- ★ FIX#169-AMAP：新增 MetaCubeX `amap` rule-provider，并在广告/威胁规则之后、TikTok/GFW/geolocation-!cn 宽规则之前加入 `RULE-SET,amap,🏠 国内网站`。
+- 覆盖重点：`webapi.amap.com`、`amap.com`、`autonavi.com`、`gaode.com` 等高德地图 / AMap 国内 API 不再依赖尾部 `RULE-SET,cn` 才直连。
+- 验证：`tools/validate-js-overwrites.js` 新增 provider 存在与顺序断言，防止后续把 AMap 守卫挪到国外兜底之后。
+
+## v5.4.33 / v5.4.33-normal.1 (2026-06-27)
+
+- ★ FEAT#169-AI-CODING：新增 `vpsdance-ai-coding` rule-provider，来源为 `VPSDance/ai-proxy-rules` 的 `rules/clash/coding.yaml`。
+- 覆盖重点：Codex / Claude Code / Cursor / Zed / Windsurf / Replit / Sourcegraph / Amazon Q / Augment / Lovable / Bolt 等 AI 编程工具；规则仍命中现有 `🤖 AI 服务`，不新增策略组。
+- 保留 v5.4.32 的国内游戏优先级修复顺序。
+
+## v5.4.32 / v5.4.32-normal.1 (2026-06-25)
+
+- ★ FIX#168-CN-GAME：将 `🕹️ 国内游戏` 块提升到 `🎮 国外游戏` 块之前，确保 `yuanshen.com` / `mihoyo.com` / 网易 / WeGame / SteamCN 等国内游戏域名先于 `RULE-SET,hoyoverse`、`RULE-SET,game`、`GEOSITE,category-games` 命中直连策略。
+- 覆盖样例：`www.yuanshen.com`、`api-takumi.mihoyo.com`、`game.163.com`。
+- FlClash 同步同构修复；新增 JS 覆写回归断言防止后续顺序回退。
+
+## v5.4.31 / v5.4.31-normal.1 (2026-06-20)
+
+- ★ FIX#167-DOUYIN：新增抖音 Web 国内流媒体前置守卫，`douyin.com` / `zjcdn.com` 等视频 CDN 域名在 TikTok、广告和国外兜底规则前命中 `📺 国内流媒体`。
+- 覆盖样例：`www.douyin.com`、`v5-dy-o.zjcdn.com`、`v5-dy-ov-experiment.zjcdn.com`。
+- FlClash 同步同构修复；新增 JS 覆写回归断言防止后续顺序回退。
+
+## v5.4.30 / v5.4.30-normal.1 (2026-06-17)
+
+- ★ FEAT#166-GOOGLE：新增 `🔍 Google 服务` 业务组，位于 `🔧 工具与服务` 之前，语义为从工具组拆出的独立平台服务。
+- Google 基础服务、`RULE-SET,scholar`、`RULE-SET,google`、`RULE-SET,google-ip`、`GEOIP,google` 与 Google QUIC 规则改投 `🔍 Google 服务`。
+- `🔧 工具与服务` 保留 Bing / Yandex / GitHub / Docker / GitLab / Python / developer 等非 Google 搜索和开发者服务。
+
+## v5.4.29 / v5.4.29-normal.1 (2026-06-10)
+
+- ★ PERF#165-LATENCY：区域自动测速间隔统一到 300s。
+  - Smart 主线：22 个 `type: smart` 区域组 `interval: 120 -> 300`，减少 LightGBM/健康检查触发频率。
+  - Normal 版：22 个 `type: url-test` 区域组 `interval: 180 -> 300`，与 CMFA/OpenClash/iOS 端对齐。
+- FINAL 兜底策略保持 `🐟 漏网之鱼`，不改为 DIRECT；本轮只处理 issue #165 的测速频率问题。
+
+## v5.4.28 / v5.4.28-normal.1 (2026-06-07)
+
+- ★ CLEAN#165 P2：大规模清理已被上游同策略规则集覆盖的流媒体/游戏直写域名（-38 行，6 段）：
+  - **🇭🇰 香港流媒体** (4): `mytvsuper.com`/`nowe.com`/`rthk.hk`/`cabletv.com.hk` → 各对应 RULE-SET
+  - **🇹🇼 台湾流媒体** (5): `litv.tv`/`friday.tw`/`linetv.tw`/`hamivideo.hinet.net` → 各对应 RULE-SET
+  - **🇯🇵 日韩流媒体** (6): `tver.jp`/`dmm.com`/`dmm.co.jp`/`nicovideo.jp`/`nicovideo.me`/`dmc.nico` → 各对应 RULE-SET
+  - **🇪🇺 欧洲流媒体** (3): `itv.com`/`itvstatic.com`/`britbox.com` → 各对应 RULE-SET
+  - **🌐 其他国外流媒体** (6): `wetv.vip`/`wetvinfo.com`/`viki.com`/`viki.io`/`mewatch.sg`/`discoveryplus.com` → 各对应 RULE-SET
+  - **🎮 国外游戏** (12): `ubisoft.com`/`ubi.com`/`riotgames.com`/`leagueoflegends.com`/`valorant.com`/`rockstargames.com`/`gog.com`/`gogalaxy.com`/`supercell.com`/`garena.com`/`hoyoverse.com`/`hoyolab.com` → 各对应 RULE-SET
+- **审计排除**：`viu.com/.tv`（RULE-SET,viu 目标 STREAM_OTHER ≠ 直写 STREAM_HK）、`appletv.com`（RULE-SET,appletv 目标 APPLE ≠ 直写 STREAM_OTHER）、163/126/126.net（geosite:cn 为宽泛 geo 规则集，非服务专属 RULE-SET，语义不同），以上均保留直写。
+- **跨产物联动**：FlClash JS / CMFA YAML / OpenClash Normal+Smart / Shadowrocket / Surge / Loon / Quantumult X 同步清理（SingBox 为生成产物需修改生成器，本轮豁免；v2rayN 无此冗余；Passwall/Passwall2 规则语法不同，不适用）。
+- **规则数变动**：Clash Party ~1020 → ~982；CMFA ~1400+ → ~1360+；Shadowrocket ~1200+ → ~1160+；QX [filter_local] 568 → 513
+
+## v5.4.27 / v5.4.27-normal.1 (2026-06-07)
+
+- ★ CLEAN#165 P1：清理已被上游同策略规则集覆盖的 7 条直写域名：
+  - `anthropic.com` → `RULE-SET,claude`
+  - `braintreegateway.com` / `venmo.com` → `RULE-SET,paypal`
+  - `max.com` → `RULE-SET,hbo`
+  - `hulu.jp` / `happyon.jp` → `RULE-SET,hulu`
+  - `bethesda.net` → `RULE-SET,xbox`
+- 审计边界：`archive.org` 虽与上游重叠，但删除后首个命中会变成其他策略，保留；`video.unext.jp` 仅被本地 `unext.jp` 覆盖，不属于上游规则集重复，本轮保留。
+
+## v5.4.26 / v5.4.26-normal.1 (2026-06-07)
+
+- ★ FIX#164：腾讯 WorkBuddy/智能助手 `copilot.tencent.com` 国内直连防吞（issue [#164](https://github.com/IvanSolis1989/Smart-Config-Kit/issues/164)）
+  - **根因**：szkane `AiDomain.list` 含 `DOMAIN-KEYWORD,copilot`（子串匹配），`copilot.tencent.com` 含 "copilot" 子串被 `RULE-SET,szkane-ai` 误吞到 `🤖 AI 服务`（国外代理）；该 AI rule-set 在 `RULE-SET,cn`（国内）之前 → WorkBuddy 对话报错，关闭系统代理即恢复。
+  - **修复**：在所有 AI rule-set 之前前置 `DOMAIN-SUFFIX,copilot.tencent.com,🏠 国内网站`（与既有 `deepseek.com → 国内网站` 国内 AI 惯例一致；置于段首以防任何宽规则抢匹配）。
+  - **回归守卫**：`tools/validate-js-overwrites.js` 新增断言——guard 存在且排在 `RULE-SET,szkane-ai` 之前（覆盖 Smart/Normal/FlClash 三个 JS 产物）。
+  - **同构核查**（CLAUDE.md §1）：blackmatrix7 `Copilot.list` / Accademia `Copilot.yaml` 经核实均无 copilot 子串关键词（仅精确域名 `copilot.microsoft.com`），不会误伤；唯一元凶是 szkane AiDomain.list。
+  - **全产物联动**：CMFA / OpenClash Normal+Smart / Shadowrocket / Surge / Loon / Quantumult X / FlClash 同步前置防吞规则；SingBox / v2rayN / Passwall / Passwall2 经核实不受影响（`geosite:copilot`/`geosite:openai` 均无 copilot 子串关键词，`copilot.tencent.com` 顺流到 `geosite:cn`（含 `+.tencent.com`）→ 国内直连），仅对齐版本号。
+
+## v5.4.25 / v5.4.25-normal.1 (2026-06-04)
 
 - ★ 审查修复：GEOIP 重复规则去重（`GEOIP,netflix` / `GEOIP,google` 各出现 2 次 → 保留 GEOIP 标签路由集中区块，删除散落在业务区块的冗余；延续 v5.4.24 GEOIP,ID 清理）
 - ★ 审查修复：Accademia GeoRouting 34 providers（Domain×17 + IP×17）interval 从 `nextInterval()`（~24h）提升到 7 天（604800s）——区域路由规则变化极慢，减少并发刷新频率

@@ -2,30 +2,55 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v5.4.25-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
-# Build: 2026-06-03
+# Clash Smart v5.4.36-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Build: 2026-06-29
 # ============================================================================
-# 定位：对齐 Clash Party v5.4.25 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
+# v5.4.36: CLEAN#171-DIRECT 删除 22 条严格确认冗余直写规则 · v5.4.35: CLEAN#170-UPSTREAM 删除冗余上游规则集
+# v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
+# v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
+# 定位：对齐 Clash Party v5.4.36 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
 #         - Normal 面向稳定版 mihomo / 经典 url-test
 #         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
 # 架构：
 #   • 22 Smart 区域组（11 全部 + 11 家宽；全部 uselightgbm: true）
-#   • 32 业务策略组（流媒体按平台拆分：TikTok / Netflix / Disney+ / HBO/Max / Hulu / Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体）
-#   • 384 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
-#   • ~990 条 rules
+#   • 33 业务策略组（流媒体按平台拆分：TikTok / Netflix / Disney+ / HBO/Max / Hulu / Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体）
+#   • 376 rule-providers（全部 proxy: "🚫 受限网站"，对齐 Clash Party FIX#17-P0）
+#   • 1020+ 条 rules
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
-# 基线：Clash Party v5.4.24（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v5.4.36（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v5.4.25-oc-smart.1"
+VERSION_TAG="v5.4.36-oc-smart.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
+
+umask 077
+TMP_DIR="${TMPDIR:-/tmp}"
+make_temp_file() {
+  local prefix="$1"
+  local temp_file=""
+  temp_file="$(mktemp "$TMP_DIR/${prefix}.XXXXXX" 2>/dev/null)" && {
+    printf '%s\n' "$temp_file"
+    return 0
+  }
+  temp_file="$TMP_DIR/${prefix}.$$"
+  ( set -C; : > "$temp_file" ) || exit 1
+  printf '%s\n' "$temp_file"
+}
+
+OVERRIDE_YAML="$(make_temp_file clash_smart_override)"
+RUBY_SCRIPT="$(make_temp_file clash_smart_ruby)"
+STATUS_LOG="$(make_temp_file clash_smart_status)"
+cleanup_temp_files() {
+  rm -f "$OVERRIDE_YAML" "$RUBY_SCRIPT" "$STATUS_LOG"
+}
+trap cleanup_temp_files EXIT INT TERM
 
 LOG_OUT "Info" "[Clash-Smart] $VERSION_TAG overwrite starting..."
 LOG_OUT "Info" "[Clash-Smart] Processing: $CONFIG_FILE"
@@ -34,7 +59,6 @@ LOG_OUT "Info" "[Clash-Smart] Full-rule build (Clash Party parity)"
 # ============================================================================
 # OVERRIDE YAML
 # ============================================================================
-OVERRIDE_YAML="/tmp/clash_smart_override.yaml"
 cat > "$OVERRIDE_YAML" << 'OVERRIDE_EOF'
 hosts:
   one.one.one.one:
@@ -103,6 +127,15 @@ dns:
   - +.wggames.cn
   - +.wowsgame.cn
   - +.mcdn.bilivideo.cn
+  - +.pub.3gppnetwork.org
+  - +.bing.com
+  - +.miwifi.com
+  - +.courier.push.apple.com
+  - +.miui.com
+  - +.xiaomi.com
+  - +.xiaomi.net
+  - +.mijia.tech
+  - +.gotui.com
   cache-algorithm: arc
   # 对齐 Clash Party v5.4.17 基线：default-nameserver 纯 IP，其它 resolver 固定 DoH
   # FIX#HOSTS-ALIGN: use-hosts 改 true（对齐主线启用 hosts 预解析，消除 fake-ip 冷启动循环依赖）
@@ -423,6 +456,9 @@ proxy-groups:
 - name: 🎮 国外游戏
   type: select
   proxies: *id002
+- name: 🔍 Google 服务
+  type: select
+  proxies: *id002
 - name: 🔧 工具与服务
   type: select
   proxies: *id002
@@ -466,11 +502,11 @@ proxy-groups:
 OVERRIDE_EOF
 
 # ============================================================================
-# OVERRIDE YAML (续) — Rule-Providers：384 项，对齐 Clash Party v5.2.8 主线
+# OVERRIDE YAML (续) — Rule-Providers：376 项，对齐 Clash Party v5.4.36 主线
 # 策略：
 #   ✓ 与 Clash Party 主线（BIZ.GFW = '🚫 受限网站'）一致：所有 provider 都走 GFW 组
 #     下载，在中国走代理、在印尼走 DIRECT，规避 jsdelivr/GitHub 冷启动死锁。
-#   ✓ 9 Smart 区域组 + 28 业务组 + 384 rule-providers + ~975 条规则
+#   ✓ 22 Smart 区域组 + 33 业务组 + 376 rule-providers + 1040+ 条规则
 #   ✓ Smart 组统一 uselightgbm: true + include-all-proxies: true
 #   ✓ TLS 指纹注入（Ruby 阶段 _simple_hash 分配）
 # ============================================================================
@@ -987,6 +1023,14 @@ rule-providers:
     path: "./ruleset/meta-biliintl.mrs"
     interval: 86565
     proxy: "\U0001F6AB 受限网站"
+  amap:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/amap.mrs
+    path: "./ruleset/meta-amap.mrs"
+    interval: 86532
+    proxy: "\U0001F6AB 受限网站"
   cn:
     type: http
     behavior: domain
@@ -1059,13 +1103,6 @@ rule-providers:
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/JiGuangTuiSong/JiGuangTuiSong.yaml
     path: "./ruleset/bm7-JiGuangTuiSong.yaml"
     interval: 86712
-    proxy: "\U0001F6AB 受限网站"
-  marketing:
-    type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Marketing/Marketing.yaml
-    path: "./ruleset/bm7-Marketing.yaml"
-    interval: 86688
     proxy: "\U0001F6AB 受限网站"
   miuiprivacy:
     type: http
@@ -1395,13 +1432,6 @@ rule-providers:
     url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Sohu/Sohu.yaml
     path: "./ruleset/bm7-Sohu.yaml"
     interval: 87402
-    proxy: "\U0001F6AB 受限网站"
-  acfun:
-    type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AcFun/AcFun.yaml
-    path: "./ruleset/bm7-AcFun.yaml"
-    interval: 87455
     proxy: "\U0001F6AB 受限网站"
   douyu:
     type: http
@@ -1823,13 +1853,6 @@ rule-providers:
     path: "./ruleset/bm7-TVB.yaml"
     interval: 88367
     proxy: "\U0001F6AB 受限网站"
-  encoretvb:
-    type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/EncoreTVB/EncoreTVB.yaml
-    path: "./ruleset/bm7-EncoreTVB.yaml"
-    interval: 88375
-    proxy: "\U0001F6AB 受限网站"
   nowe:
     type: http
     behavior: classical
@@ -2075,13 +2098,6 @@ rule-providers:
     path: "./ruleset/bm7-UBI.yaml"
     interval: 88883
     proxy: "\U0001F6AB 受限网站"
-  wildrift:
-    type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WildRift/WildRift.yaml
-    path: "./ruleset/bm7-WildRift.yaml"
-    interval: 88900
-    proxy: "\U0001F6AB 受限网站"
   sony:
     type: http
     behavior: classical
@@ -2249,13 +2265,6 @@ rule-providers:
     url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleFirmware/AppleFirmware.yaml
     path: "./ruleset/bm7-AppleFirmware.yaml"
     interval: 89305
-    proxy: "\U0001F6AB 受限网站"
-  findmy:
-    type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/FindMy/FindMy.yaml
-    path: "./ruleset/bm7-FindMy.yaml"
-    interval: 89291
     proxy: "\U0001F6AB 受限网站"
   download:
     type: http
@@ -2630,6 +2639,13 @@ rule-providers:
     path: "./ruleset/acc-Copilot.yaml"
     interval: 90038
     proxy: "\U0001F6AB 受限网站"
+  vpsdance-ai-coding:
+    type: http
+    behavior: classical
+    url: https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml
+    path: "./ruleset/vpsdance-ai-coding.yaml"
+    interval: 90131
+    proxy: "\U0001F6AB 受限网站"
   acc-bank-us:
     type: http
     behavior: classical
@@ -2699,13 +2715,6 @@ rule-providers:
     url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankFR.yaml
     path: "./ruleset/acc-BankFR.yaml"
     interval: 90205
-    proxy: "\U0001F6AB 受限网站"
-  acc-vf-paypal:
-    type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Paypal.yaml
-    path: "./ruleset/acc-Paypal.yaml"
-    interval: 90220
     proxy: "\U0001F6AB 受限网站"
   acc-vf-wise:
     type: http
@@ -2805,26 +2814,12 @@ rule-providers:
     path: "./ruleset/acc-FakeLocationBiliBili.yaml"
     interval: 90405
     proxy: "\U0001F6AB 受限网站"
-  acc-fl-douyin:
-    type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationDouYin.yaml
-    path: "./ruleset/acc-FakeLocationDouYin.yaml"
-    interval: 90450
-    proxy: "\U0001F6AB 受限网站"
   acc-fl-kuaishou:
     type: http
     behavior: classical
     url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationKuaiShou.yaml
     path: "./ruleset/acc-FakeLocationKuaiShou.yaml"
     interval: 90489
-    proxy: "\U0001F6AB 受限网站"
-  acc-fl-xiaohongshu:
-    type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationXiaoHongShu.yaml
-    path: "./ruleset/acc-FakeLocationXiaoHongShu.yaml"
-    interval: 90482
     proxy: "\U0001F6AB 受限网站"
   acc-fl-xigua:
     type: http
@@ -3231,6 +3226,17 @@ rules:
 - "DOMAIN-SUFFIX,getui.com,DIRECT"
 - "DOMAIN-SUFFIX,getui.net,DIRECT"
 - "DOMAIN-SUFFIX,gepush.com,DIRECT"
+# v5.4.32 FIX#167-DOUYIN：Douyin Web 视频域名先锁到国内流媒体，避免被 TikTok / geolocation-!cn 宽规则抢先命中。
+- "DOMAIN-SUFFIX,douyin.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,douyincdn.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,douyinpic.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,douyinstatic.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,douyinvod.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,idouyinvod.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,iesdouyin.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,iesdouyin.net,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,amemv.com,\U0001F4FA 国内流媒体"
+- "DOMAIN-SUFFIX,zjcdn.com,\U0001F4FA 国内流媒体"
 - "RULE-SET,anti-ad,\U0001F6D1 广告拦截"
 - "RULE-SET,sukka-phishing,\U0001F6D1 广告拦截"
 - "RULE-SET,hagezi-tif,\U0001F6D1 广告拦截"
@@ -3246,13 +3252,15 @@ rules:
 - "RULE-SET,domob,\U0001F6D1 广告拦截"
 - "RULE-SET,hijacking,\U0001F6D1 广告拦截"
 - "RULE-SET,jiguangtuisong,\U0001F6D1 广告拦截"
-- "RULE-SET,marketing,\U0001F6D1 广告拦截"
 - "RULE-SET,miuiprivacy,\U0001F6D1 广告拦截"
 - "RULE-SET,privacy,\U0001F6D1 广告拦截"
 - "RULE-SET,youmengchuangxiang,\U0001F6D1 广告拦截"
+  # v5.4.35 FIX#169-AMAP: webapi.amap.com 属高德地图国内 API。专用 amap 规则放在广告/威胁规则之后、
+  #   TikTok/GFW/geolocation-!cn 宽规则之前，避免依赖尾部 RULE-SET,cn 才直连。
+- "RULE-SET,amap,\U0001F3E0 国内网站"
   # v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——YouTube/Google/MS/Apple 白名单豁免，其余海外 QUIC REJECT
 - "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),\U0001F4F9 YouTube"
-- "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),\U0001F527 工具与服务"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),\U0001F50D Google 服务"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),\U0001F34E 苹果服务"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT"
@@ -3281,9 +3289,10 @@ rules:
 - DST-PORT,19302,DIRECT
 - DST-PORT,19305,DIRECT
 - DST-PORT,19307,DIRECT
-- "PROCESS-NAME,QQ.exe,\U0001F3E0 国内网站"
-- "PROCESS-NAME,Weixin.exe,\U0001F3E0 国内网站"
-- "PROCESS-NAME,WeChat.exe,\U0001F3E0 国内网站"
+- PROCESS-NAME,QQ.exe,DIRECT
+- PROCESS-NAME,Weixin.exe,DIRECT
+- PROCESS-NAME,WeChat.exe,DIRECT
+- PROCESS-NAME,WeChatAppEx.exe,DIRECT
 - PROCESS-NAME,Oray.exe,DIRECT
 - PROCESS-NAME,OrayService.exe,DIRECT
 - PROCESS-NAME,SunloginClient.exe,DIRECT
@@ -3375,6 +3384,8 @@ rules:
 - "DOMAIN-SUFFIX,ggpht.com,\U0001F4F9 YouTube"
 - "DOMAIN-SUFFIX,youtube-nocookie.com,\U0001F4F9 YouTube"
 - "DOMAIN-SUFFIX,youtubekids.com,\U0001F4F9 YouTube"
+# v5.4.26 FIX#164: 腾讯 WorkBuddy copilot.tencent.com 国内直连防吞——szkane AiDomain.list 的 DOMAIN-KEYWORD,copilot 子串会误吞到 AI 服务（国外代理）；前置精准国内规则
+- "DOMAIN-SUFFIX,copilot.tencent.com,\U0001F3E0 国内网站"
 - "RULE-SET,openai,\U0001F916 AI 服务"
 - "RULE-SET,claude,\U0001F916 AI 服务"
 - "RULE-SET,gemini,\U0001F916 AI 服务"
@@ -3393,7 +3404,6 @@ rules:
 - "DOMAIN-SUFFIX,cohere.com,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,midjourney.com,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,stability.ai,\U0001F916 AI 服务"
-- "DOMAIN-SUFFIX,anthropic.com,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,cursor.com,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,cursor.sh,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,v0.dev,\U0001F916 AI 服务"
@@ -3424,8 +3434,8 @@ rules:
 - "DOMAIN-SUFFIX,play.googleapis.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,android.clients.google.com,\U0001F4E5 下载更新"
 - "RULE-SET,googlefcm,\U0001F4E5 下载更新"
-- "RULE-SET,google,\U0001F527 工具与服务"
-- "RULE-SET,google-ip,\U0001F527 工具与服务,no-resolve"
+- "RULE-SET,google,\U0001F50D Google 服务"
+- "RULE-SET,google-ip,\U0001F50D Google 服务,no-resolve"
 - "RULE-SET,szkane-ai,\U0001F916 AI 服务"
 - "RULE-SET,szkane-ciciai,\U0001F916 AI 服务"
 - "RULE-SET,acc-appleai,\U0001F916 AI 服务"
@@ -3433,6 +3443,7 @@ rules:
 - "RULE-SET,acc-gemini,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,do.dsp.mp.microsoft.com,\U0001F4E5 下载更新"
 - "RULE-SET,acc-copilot,\U0001F916 AI 服务"
+- "RULE-SET,vpsdance-ai-coding,\U0001F916 AI 服务"
 - "DOMAIN-SUFFIX,tradingview.com,\U0001F4B0 加密货币"
 - "DOMAIN-SUFFIX,tvcdn.com,\U0001F4B0 加密货币"
 - "DOMAIN-SUFFIX,coinglass.com,\U0001F4B0 加密货币"
@@ -3444,17 +3455,11 @@ rules:
 - "RULE-SET,binance,\U0001F4B0 加密货币"
 - "RULE-SET,szkane-web3,\U0001F4B0 加密货币"
 - "RULE-SET,paypal,\U0001F3E6 金融支付"
-- "DOMAIN-SUFFIX,stripe.com,\U0001F3E6 金融支付"
-- "DOMAIN-SUFFIX,stripe.network,\U0001F3E6 金融支付"
-- "DOMAIN-SUFFIX,stripecdn.com,\U0001F3E6 金融支付"
-- "DOMAIN-SUFFIX,stripe.dev,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,wise.com,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,transferwise.com,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,revolut.com,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,revolut.me,\U0001F3E6 金融支付"
-- "DOMAIN-SUFFIX,braintreegateway.com,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,braintree-api.com,\U0001F3E6 金融支付"
-- "DOMAIN-SUFFIX,venmo.com,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,cash.app,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,squareup.com,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,square.com,\U0001F3E6 金融支付"
@@ -3483,7 +3488,6 @@ rules:
 - "RULE-SET,acc-bank-de,\U0001F3E6 金融支付"
 - "RULE-SET,acc-bank-nl,\U0001F3E6 金融支付"
 - "RULE-SET,acc-bank-fr,\U0001F3E6 金融支付"
-- "RULE-SET,acc-vf-paypal,\U0001F3E6 金融支付"
 - "RULE-SET,acc-vf-wise,\U0001F3E6 金融支付"
 - "RULE-SET,acc-vf-monzo,\U0001F3E6 金融支付"
 - "RULE-SET,acc-vf-revolut,\U0001F3E6 金融支付"
@@ -3494,7 +3498,6 @@ rules:
 - "DOMAIN-SUFFIX,outlook.live.com,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,hotmail.com,\U0001F310 国外网站"
 - "DOMAIN,mail.live.com,\U0001F310 国外网站"
-- "DOMAIN,outlook.office365.com,\U0001F310 国外网站"
 - "DOMAIN,outlook.office.com,\U0001F310 国外网站"
 - "DOMAIN,mail.yahoo.com,\U0001F310 国外网站"
 - "DOMAIN-SUFFIX,ymail.com,\U0001F310 国外网站"
@@ -3582,14 +3585,9 @@ rules:
 - "DOMAIN-SUFFIX,webex.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,wbx2.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,ciscospark.com,\U0001F9D1‍\U0001F4BC 会议协作"
-- "DOMAIN-SUFFIX,notion.so,\U0001F9D1‍\U0001F4BC 会议协作"
-- "DOMAIN-SUFFIX,notion.site,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,figma.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,linear.app,\U0001F9D1‍\U0001F4BC 会议协作"
-- "DOMAIN-SUFFIX,atlassian.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,jira.com,\U0001F9D1‍\U0001F4BC 会议协作"
-- "DOMAIN-SUFFIX,trello.com,\U0001F9D1‍\U0001F4BC 会议协作"
-- "DOMAIN-SUFFIX,bitbucket.org,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,asana.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,monday.com,\U0001F9D1‍\U0001F4BC 会议协作"
 - "DOMAIN-SUFFIX,clickup.com,\U0001F9D1‍\U0001F4BC 会议协作"
@@ -3628,9 +3626,7 @@ rules:
 - "RULE-SET,szkane-netflixip,\U0001F3A5 Netflix,no-resolve"
 - "RULE-SET,disney,\U0001F3AC Disney+"
 - "RULE-SET,hbo,\U0001F4E1 HBO/Max"
-- "DOMAIN-SUFFIX,max.com,\U0001F4E1 HBO/Max"
 - "RULE-SET,hulu,\U0001F4FA Hulu"
-- "DOMAIN-SUFFIX,hulu.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "RULE-SET,primevideo,\U0001F3AC Prime Video"
 - "RULE-SET,amazon,\U0001F3AC Prime Video"
 - "RULE-SET,spotify,\U0001F3B5 音乐流媒体"
@@ -3643,36 +3639,28 @@ rules:
 - "RULE-SET,lastfm,\U0001F3B5 音乐流媒体"
 
   # ============ 🇭🇰 香港流媒体 ============
+  # CLEAN#165: mytvsuper.com / nowe.com / rthk.hk / cabletv.com.hk 已被同策略 RULE-SET 覆盖
 - "RULE-SET,szkane-bilihmt,\U0001F1ED\U0001F1F0 香港流媒体"
-- "DOMAIN-SUFFIX,mytvsuper.com,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,mytv.com.hk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,viu.com,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,viu.tv,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,hktv.com.hk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,hktvmall.com,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,nowtv.com,\U0001F1ED\U0001F1F0 香港流媒体"
-- "DOMAIN-SUFFIX,nowe.com,\U0001F1ED\U0001F1F0 香港流媒体"
-- "DOMAIN-SUFFIX,rthk.hk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,icable.com,\U0001F1ED\U0001F1F0 香港流媒体"
-- "DOMAIN-SUFFIX,cabletv.com.hk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "DOMAIN-SUFFIX,hmvod.com.hk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "RULE-SET,mytvsuper,\U0001F1ED\U0001F1F0 香港流媒体"
 - "RULE-SET,tvb,\U0001F1ED\U0001F1F0 香港流媒体"
-- "RULE-SET,encoretvb,\U0001F1ED\U0001F1F0 香港流媒体"
 - "RULE-SET,nowe,\U0001F1ED\U0001F1F0 香港流媒体"
 - "RULE-SET,rthk,\U0001F1ED\U0001F1F0 香港流媒体"
 - "RULE-SET,cabletv,\U0001F1ED\U0001F1F0 香港流媒体"
 - "RULE-SET,moov,\U0001F1ED\U0001F1F0 香港流媒体"
   # ============ 🇹🇼 台湾流媒体 ============
+  # CLEAN#165: litv.tv / video.friday.tw / friday.tw / linetv.tw / hamivideo.hinet.net 已被同策略 RULE-SET 覆盖
 - "RULE-SET,bahamut,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "RULE-SET,kktv,\U0001F1F9\U0001F1FC 台湾流媒体"
-- "DOMAIN-SUFFIX,litv.tv,\U0001F1F9\U0001F1FC 台湾流媒体"
-- "DOMAIN-SUFFIX,video.friday.tw,\U0001F1F9\U0001F1FC 台湾流媒体"
-- "DOMAIN-SUFFIX,friday.tw,\U0001F1F9\U0001F1FC 台湾流媒体"
-- "DOMAIN-SUFFIX,linetv.tw,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "DOMAIN-SUFFIX,elta.tv,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "DOMAIN-SUFFIX,mod.cht.com.tw,\U0001F1F9\U0001F1FC 台湾流媒体"
-- "DOMAIN-SUFFIX,hamivideo.hinet.net,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "DOMAIN-SUFFIX,ofiii.com,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "DOMAIN-SUFFIX,pts.org.tw,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "DOMAIN-SUFFIX,4gtv.tv,\U0001F1F9\U0001F1FC 台湾流媒体"
@@ -3684,26 +3672,18 @@ rules:
 - "RULE-SET,taiwangood,\U0001F1F9\U0001F1FC 台湾流媒体"
 - "RULE-SET,cht,\U0001F1F9\U0001F1FC 台湾流媒体"
   # ============ 🇯🇵 日韩流媒体 ============
+  # CLEAN#165: tver.jp / dmm.com / dmm.co.jp / nicovideo.jp / nicovideo.me / dmc.nico 已被同策略 RULE-SET 覆盖
 - "RULE-SET,abema,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "RULE-SET,dazn,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,tver.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,unext.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,video.unext.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,nhk.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,nhk.or.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,dmm.com,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,dmm.co.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,dtv.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,paravi.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,videomarket.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,fod.fujitv.co.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,hulu.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,happyon.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,gyao.yahoo.co.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,music.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,nicovideo.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,nicovideo.me,\U0001F1EF\U0001F1F5 日韩流媒体"
-- "DOMAIN-SUFFIX,dmc.nico,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,radiko.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,lemino.docomo.ne.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
 - "DOMAIN-SUFFIX,wowow.co.jp,\U0001F1EF\U0001F1F5 日韩流媒体"
@@ -3731,14 +3711,9 @@ rules:
 - "RULE-SET,nikkei,\U0001F1EF\U0001F1F5 日韩流媒体"
 
   # ============ 欧洲流媒体 ============
+  # CLEAN#165: itv.com / itvstatic.com / britbox.com 已被同策略 RULE-SET 覆盖
 - "RULE-SET,bbc,\U0001F1EA\U0001F1FA 欧洲流媒体"
-- "DOMAIN-SUFFIX,itv.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
-- "DOMAIN-SUFFIX,itvstatic.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
-- "DOMAIN-SUFFIX,channel4.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
-- "DOMAIN-SUFFIX,channel5.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
-- "DOMAIN-SUFFIX,sky.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
 - "DOMAIN-SUFFIX,nowtv.co.uk,\U0001F1EA\U0001F1FA 欧洲流媒体"
-- "DOMAIN-SUFFIX,britbox.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
 - "DOMAIN-SUFFIX,canalplus.com,\U0001F1EA\U0001F1FA 欧洲流媒体"
 - "DOMAIN-SUFFIX,mycanal.fr,\U0001F1EA\U0001F1FA 欧洲流媒体"
 - "DOMAIN-SUFFIX,france.tv,\U0001F1EA\U0001F1FA 欧洲流媒体"
@@ -3771,9 +3746,8 @@ rules:
 - "RULE-SET,szkane-uk,\U0001F1EA\U0001F1FA 欧洲流媒体"
 
   # ============ 其他国外流媒体 ============
+  # CLEAN#165: wetv.vip / wetvinfo.com / viki.com / viki.io / mewatch.sg / discoveryplus.com 已被同策略 RULE-SET 覆盖
 - "RULE-SET,viu,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,wetv.vip,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,wetvinfo.com,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,iq.com,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,vidio.com,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,vidio.static6.com,\U0001F310 其他国外流媒体"
@@ -3783,11 +3757,8 @@ rules:
 - "DOMAIN-SUFFIX,goplay.co.id,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,maxstream.tv,\U0001F310 其他国外流媒体"
 - "RULE-SET,biliintl,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,viki.com,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,viki.io,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,iflix.com,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,catchplay.com,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,mewatch.sg,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,trueid.net,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,dimsum.my,\U0001F310 其他国外流媒体"
 - "RULE-SET,asianmedia,\U0001F310 其他国外流媒体"
@@ -3806,7 +3777,6 @@ rules:
 - "DOMAIN-SUFFIX,pluto.tv,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,tubi.tv,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,fubo.tv,\U0001F310 其他国外流媒体"
-- "DOMAIN-SUFFIX,discoveryplus.com,\U0001F310 其他国外流媒体"
 - "DOMAIN-SUFFIX,appletv.com,\U0001F310 其他国外流媒体"
 - "RULE-SET,cbs,\U0001F310 其他国外流媒体"
 - "RULE-SET,nbc,\U0001F310 其他国外流媒体"
@@ -3832,13 +3802,11 @@ rules:
 - "DOMAIN-SUFFIX,duckduckgo.com,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,ddg.co,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,brave.com,\U0001F527 工具与服务"
-- "DOMAIN-SUFFIX,yandex.com,\U0001F527 工具与服务"
-- "DOMAIN-SUFFIX,yandex.ru,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,ecosia.org,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,startpage.com,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,you.com,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,search.naver.com,\U0001F527 工具与服务"
-- "RULE-SET,scholar,\U0001F527 工具与服务"
+- "RULE-SET,scholar,\U0001F50D Google 服务"
 - "RULE-SET,yandex,\U0001F527 工具与服务"
 - "RULE-SET,github,\U0001F527 工具与服务"
 - "RULE-SET,docker,\U0001F527 工具与服务"
@@ -3847,8 +3815,6 @@ rules:
 - "DOMAIN-SUFFIX,npmjs.com,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,npmjs.org,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,yarnpkg.com,\U0001F527 工具与服务"
-- "DOMAIN-SUFFIX,pypi.org,\U0001F527 工具与服务"
-- "DOMAIN-SUFFIX,pythonhosted.org,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,crates.io,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,rubygems.org,\U0001F527 工具与服务"
 - "DOMAIN-SUFFIX,packagist.org,\U0001F527 工具与服务"
@@ -3919,7 +3885,6 @@ rules:
 - "RULE-SET,siri,\U0001F34E 苹果服务"
 - "RULE-SET,testflight,\U0001F34E 苹果服务"
 - "RULE-SET,applefirmware,\U0001F34E 苹果服务"
-- "RULE-SET,findmy,\U0001F34E 苹果服务"
 - "RULE-SET,acc-applenews,\U0001F34E 苹果服务"
 - "RULE-SET,acc-apple,\U0001F34E 苹果服务"
 
@@ -3929,12 +3894,8 @@ rules:
 - "DOMAIN-SUFFIX,update.microsoft.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,download.microsoft.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,delivery.mp.microsoft.com,\U0001F4E5 下载更新"
-- "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,officecdn.microsoft.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,officecdn.microsoft.com.edgesuite.net,\U0001F4E5 下载更新"
-- "DOMAIN-SUFFIX,download.mozilla.org,\U0001F4E5 下载更新"
-- "DOMAIN-SUFFIX,archive.mozilla.org,\U0001F4E5 下载更新"
-- "DOMAIN-SUFFIX,releases.ubuntu.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,archive.ubuntu.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,security.ubuntu.com,\U0001F4E5 下载更新"
 - "DOMAIN-SUFFIX,mirrors.kernel.org,\U0001F4E5 下载更新"
@@ -3983,7 +3944,37 @@ rules:
 - "RULE-SET,loyalsoldier-greatfire,\U0001F6AB 受限网站"
 - "RULE-SET,szkane-proxygfw,\U0001F6AB 受限网站"
 
+  # ============ 国内游戏 ============
+- "DOMAIN-SUFFIX,mihoyo.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,miyoushe.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,yuanshen.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,bhsr.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,zenlesszonezero.com,\U0001F579️ 国内游戏"
+- "DOMAIN,game.163.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,gm.163.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,ds.163.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,nie.163.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,nie.netease.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,update.netease.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,netease.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,wegame.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,wegame.com.cn,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,perfect-world.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,wanmei.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,xd.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,taptap.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,taptap.io,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,papegames.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,hypergryph.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,gryphline.com,\U0001F579️ 国内游戏"
+- "DOMAIN-SUFFIX,lilith.com,\U0001F579️ 国内游戏"
+- "RULE-SET,steamcn,\U0001F579️ 国内游戏"
+- "RULE-SET,wanmeishijie,\U0001F579️ 国内游戏"
+- "RULE-SET,wankahuanju,\U0001F579️ 国内游戏"
+- "RULE-SET,majsoul,\U0001F579️ 国内游戏"
+
   # ============ 国外游戏 ============
+  # CLEAN#165: ubisoft.com / ubi.com / riotgames.com / leagueoflegends.com / valorant.com / rockstargames.com / gog.com / gogalaxy.com / supercell.com / garena.com / hoyoverse.com / hoyolab.com 已被同策略 RULE-SET 覆盖
 - "RULE-SET,steam,\U0001F3AE 国外游戏"
 - "RULE-SET,epic,\U0001F3AE 国外游戏"
 - "RULE-SET,playstation,\U0001F3AE 国外游戏"
@@ -3992,19 +3983,6 @@ rules:
 - "RULE-SET,ea,\U0001F3AE 国外游戏"
 - "RULE-SET,blizzard,\U0001F3AE 国外游戏"
 - "GEOSITE,category-games,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,ubisoft.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,ubi.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,riotgames.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,leagueoflegends.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,valorant.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,rockstargames.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,gog.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,gogalaxy.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,bethesda.net,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,supercell.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,garena.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,hoyoverse.com,\U0001F3AE 国外游戏"
-- "DOMAIN-SUFFIX,hoyolab.com,\U0001F3AE 国外游戏"
 - "RULE-SET,rockstar,\U0001F3AE 国外游戏"
 - "RULE-SET,riot,\U0001F3AE 国外游戏"
 - "RULE-SET,gog,\U0001F3AE 国外游戏"
@@ -4012,7 +3990,6 @@ rules:
 - "RULE-SET,garena,\U0001F3AE 国外游戏"
 - "RULE-SET,hoyoverse,\U0001F3AE 国外游戏"
 - "RULE-SET,ubi,\U0001F3AE 国外游戏"
-- "RULE-SET,wildrift,\U0001F3AE 国外游戏"
 - "RULE-SET,sony,\U0001F3AE 国外游戏"
 
   # ============ 国外网站 ============
@@ -4173,35 +4150,6 @@ rules:
 - "DOMAIN-SUFFIX,idx.co.id,\U0001F3E6 金融支付"
 - "DOMAIN-SUFFIX,ksei.co.id,\U0001F3E6 金融支付"
 
-  # ============ 国内游戏 ============
-- "DOMAIN-SUFFIX,mihoyo.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,miyoushe.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,yuanshen.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,bhsr.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,zenlesszonezero.com,\U0001F579️ 国内游戏"
-- "DOMAIN,game.163.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,gm.163.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,ds.163.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,nie.163.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,nie.netease.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,update.netease.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,netease.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,wegame.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,wegame.com.cn,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,perfect-world.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,wanmei.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,xd.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,taptap.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,taptap.io,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,papegames.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,hypergryph.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,gryphline.com,\U0001F579️ 国内游戏"
-- "DOMAIN-SUFFIX,lilith.com,\U0001F579️ 国内游戏"
-- "RULE-SET,steamcn,\U0001F579️ 国内游戏"
-- "RULE-SET,wanmeishijie,\U0001F579️ 国内游戏"
-- "RULE-SET,wankahuanju,\U0001F579️ 国内游戏"
-- "RULE-SET,majsoul,\U0001F579️ 国内游戏"
-
   # ============ 国内流媒体 ============
 - "RULE-SET,bilibili,\U0001F4FA 国内流媒体"
 - "DOMAIN-SUFFIX,iqiyi.com,\U0001F4FA 国内流媒体"
@@ -4216,9 +4164,6 @@ rules:
 - "DOMAIN-SUFFIX,mgtv.com,\U0001F4FA 国内流媒体"
 - "DOMAIN-SUFFIX,hitv.com,\U0001F4FA 国内流媒体"
 - "DOMAIN-SUFFIX,hunantv.com,\U0001F4FA 国内流媒体"
-- "DOMAIN-SUFFIX,douyin.com,\U0001F4FA 国内流媒体"
-- "DOMAIN-SUFFIX,douyinpic.com,\U0001F4FA 国内流媒体"
-- "DOMAIN-SUFFIX,douyinvod.com,\U0001F4FA 国内流媒体"
 - "DOMAIN-SUFFIX,ixigua.com,\U0001F4FA 国内流媒体"
 - "DOMAIN-SUFFIX,pstatp.com,\U0001F4FA 国内流媒体"
 - "DOMAIN-SUFFIX,snssdk.com,\U0001F4FA 国内流媒体"
@@ -4247,7 +4192,6 @@ rules:
 - "RULE-SET,neteasemusic,\U0001F4FA 国内流媒体"
 - "RULE-SET,kugoukuwo,\U0001F4FA 国内流媒体"
 - "RULE-SET,sohu,\U0001F4FA 国内流媒体"
-- "RULE-SET,acfun,\U0001F4FA 国内流媒体"
 - "RULE-SET,douyu,\U0001F4FA 国内流媒体"
 - "RULE-SET,huya,\U0001F4FA 国内流媒体"
 - "RULE-SET,himalaya,\U0001F4FA 国内流媒体"
@@ -4282,9 +4226,7 @@ rules:
 - "RULE-SET,acc-baidunetdisk,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-weiyun,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-fl-bilibili,\U0001F4FA 国内流媒体"
-- "RULE-SET,acc-fl-douyin,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-fl-kuaishou,\U0001F4FA 国内流媒体"
-- "RULE-SET,acc-fl-xiaohongshu,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-fl-xigua,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-fl-weibo,\U0001F4FA 国内流媒体"
 - "RULE-SET,acc-fl-zhihu,\U0001F4FA 国内流媒体"
@@ -4319,7 +4261,7 @@ rules:
 - "GEOIP,netflix,\U0001F3A5 Netflix,no-resolve"
 - "GEOIP,facebook,\U0001F4F1 社交媒体,no-resolve"
 - "GEOIP,twitter,\U0001F4F1 社交媒体,no-resolve"
-- "GEOIP,google,\U0001F527 工具与服务,no-resolve"
+- "GEOIP,google,\U0001F50D Google 服务,no-resolve"
 - "MATCH,\U0001F41F 漏网之鱼"
 OVERRIDE_EOF
 
@@ -4328,16 +4270,15 @@ OVERRIDE_EOF
 # Ruby Script — 节点过滤、区域分类、Smart 组生成、TLS 指纹注入
 # ★ 核心架构不变：22 个 Smart 区域组（11 全部 + 11 家宽）全部按需创建；命中后均带 uselightgbm: true + include-all-proxies: true ★
 # ============================================================================
-RUBY_SCRIPT="/tmp/clash_smart_ruby.rb"
 cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 #!/usr/bin/env ruby
 # encoding: utf-8
 require 'yaml'
 require 'digest'
 
-VERSION = "v5.4.25-oc-smart.1"
+VERSION = "v5.4.36-oc-smart.1"
 
-STATUS_LOG = "/tmp/clash_smart_status.log"
+STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
 def status(msg); File.open(STATUS_LOG, 'a') { |f| f.puts(msg) }; end
 
@@ -4386,6 +4327,8 @@ status "[filter] raw=#{raw_proxies.size} filtered=#{filtered_proxies.size} remov
 REGIONS = {
   "HK"  => /香港|港|\bHK\b|HKG|Hong\s?Kong|🇭🇰/i,
   "TW"  => /台湾|台灣|\bTW\b|TWN|Taiwan|🇹🇼/i,
+  # v5.4.26 FIX#CN-APAC: 加入 CN 区域（对齐 Clash Party JS 基线 c.CN → apacNodes）
+  "CN"  => /中国|大陸|大陆|国内|回国|\bCN\b|CHN|China|mainland/i,
   "JP"  => /日本|\bJP\b|JPN|Japan|🇯🇵|Tokyo|Osaka/i,
   # v5.2.6-oc-full FIX#24-P0: 补 KOR（KOR 不是 KR 的子串，原始 /KR/ 无法匹配 "KOR 01"）
   #   HK/TW/JP/KR/SG 使用 \b 防误匹配，显式补充 alpha-3 码 HKG/TWN/JPN/KOR/SGP
@@ -4437,9 +4380,10 @@ REGIONS = {
 #   原实现每个 code 只落入 GROUP_MAP 的首个命中条目（下方 each/break），导致：
 #     • HK/TW/JP/KR 只进香港/台湾/日韩子组，永远进不了 🌏 亚太节点
 #     • US 只进美国子组，永远进不了 🌎 美洲节点
-#   Clash Party JS 主线语义：区域大组 = 子区域并集（apacNodes = HK+TW+CN+JP+KR+APAC_OTHER；SG 已独立为 🇸🇬 狮城节点）；
-#   americasNodes = US+AM）。修复：APAC 扩充至涵盖 HK/TW/JP/KR + 原 APAC_OTHER 集；AM 扩充至
+#   Clash Party JS 主线语义：区域大组 = 子区域并集（apacNodes = HK+TW+CN+JP+KR+SG+APAC_OTHER）；
+#   americasNodes = US+AM）。修复：APAC 扩充至涵盖 HK+TW+CN+JP+KR+SG + 原 APAC_OTHER 集；AM 扩充至
 #   包含 US；分类循环移除 break，同一节点可同时进入子区域组与所属大洲组。
+#   v5.4.26 FIX#CN-APAC: APAC 加入 "CN"（对齐 Clash Party JS 基线 apacNodes 包含 c.CN）
 GROUP_MAP = {
   "HK"     => ["HK"],
   "TW"     => ["TW"],
@@ -4449,7 +4393,7 @@ GROUP_MAP = {
   "EU"     => ["UK", "DE", "FR", "NL", "CH", "IT", "ES", "PT", "GR", "AT", "BE", "IE", "DK", "SE", "FI", "NO", "PL", "CZ", "RO", "HU", "RU"],
   "AM"     => ["US", "CA", "MX", "BR", "AR"],
   "AF"     => ["ZA", "EG", "NG"],
-  "APAC"   => ["HK", "TW", "JP", "KR", "SG", "IN", "TH", "VN", "MY", "ID", "PH", "AU", "NZ", "TR", "AE"],
+  "APAC"   => ["HK", "TW", "CN", "JP", "KR", "SG", "IN", "TH", "VN", "MY", "ID", "PH", "AU", "NZ", "TR", "AE"],
   "OTHER"  => ["OTHER"],
 }
 GROUP_NAMES = {
@@ -4517,7 +4461,7 @@ def make_smart_group(name, proxies_filter_mode:, explicit_proxies: nil)
     "collectdata"        => false,
     "strategy"           => "sticky-sessions",
     "url"                => "https://cp.cloudflare.com/generate_204",
-    "interval"           => 180,
+    "interval"           => 300,
     "tolerance"          => 10,
     "lazy"               => false,
   }
@@ -4605,17 +4549,17 @@ RUBY_EOF
 LOG_OUT "Info" "[Clash-Smart] Executing Ruby processor..."
 
 # 清理状态日志，准备接收 Ruby 输出
-rm -f /tmp/clash_smart_status.log
+: > "$STATUS_LOG"
 
 # 执行 Ruby 处理脚本
-ruby "$RUBY_SCRIPT" "$CONFIG_FILE" "$OVERRIDE_YAML" 2>> "$LOG_FILE"
+ruby "$RUBY_SCRIPT" "$CONFIG_FILE" "$OVERRIDE_YAML" "$STATUS_LOG" 2>> "$LOG_FILE"
 RC=$?
 
 # 将 Ruby 的状态日志逐行回显到 OpenClash 日志
-if [ -f /tmp/clash_smart_status.log ]; then
+if [ -f "$STATUS_LOG" ]; then
   while IFS= read -r line; do
     LOG_OUT "Info" "[Clash-Smart] $line"
-  done < /tmp/clash_smart_status.log
+  done < "$STATUS_LOG"
 fi
 
 if [ $RC -eq 0 ]; then
@@ -4624,8 +4568,5 @@ else
   LOG_OUT "Error" "[Clash-Smart] $VERSION_TAG overwrite FAILED with exit code $RC."
   LOG_OUT "Error" "[Clash-Smart] Check $LOG_FILE for Ruby traceback."
 fi
-
-# 清理临时文件
-rm -f "$OVERRIDE_YAML" "$RUBY_SCRIPT" /tmp/clash_smart_status.log
 
 exit $RC

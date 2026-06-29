@@ -2,10 +2,67 @@
 
 > `Passwall/` 目录的变更日志（Passwall 全功能版专属参考；四列表 + shunt_rules + ACL 三层架构）。
 > 与 `Passwall2/` 目录（精简分流版参考）内容互通——两者共用 `shunt_rules.lua` 解析器，同一份 `.list` 互通。
-> 本目录提供把 Clash Party 两层结构（业务组 → 区域组）**手工展平**为 32 条 shunt rule 的降级参考。
+> 本目录提供把 Clash Party 两层结构（业务组 → 区域组）**手工展平**为 33 条 shunt rule 的降级参考。
 > 主版本号跟随 Clash Party 主线；尾段 `-pw.N` 独立递增。
 
 ---
+
+## v5.4.36-pw.1 (2026-06-29)
+
+- CLEAN#171-DIRECT：跟随 Clash Party v5.4.36 清理结果，删除展平规则 `channel4.com` / `sky.com`，其余候选不适用于 Passwall 展平层或需继续保留。
+- 版本元数据同步；shunt 规则数量相应减少。
+
+## v5.4.35-pw.1 (2026-06-28)
+
+- ★ CLEAN#170-UPSTREAM：跟随 Clash Party v5.4.35 基线更新版本元数据。
+- N/A：Passwall 展平降级参考不消费 Mihomo rule-provider；`domain:encoretvb.com` 仍作为香港流媒体静态覆盖保留，33 条 shunt rule 语义不变。
+
+## v5.4.34-pw.1 (2026-06-28)
+
+- ★ FIX#169-AMAP：`27-cn-site.list`、apply 脚本与参考 `.conf` 补充高德地图 / AMap 核心域名直连兜底。
+- 覆盖 `a-map.cn` / `amap.com` / `amapauto.com` / `anav.com` / `autonavi.com` / `gaode.com` 等，避免 `webapi.amap.com` 依赖宽泛 CN 分类。
+
+## v5.4.33-pw.1 (2026-06-27)
+
+- ★ FEAT#169-AI-CODING：`02-ai-service.list`、apply 脚本与参考 `.conf` 补充 AI 编程工具域名兜底。
+- N/A：VPSDance 暂无 sing-box `.srs` 输出，Passwall 降级参考不直接使用 `rule-set:remote`。
+
+## v5.4.32-pw.1 (2026-06-25)
+
+- ★ FIX#168-CN-GAME：Passwall shunt rule 创建顺序调整为国内游戏早于国外游戏/国外网站，并补齐米哈游、网易、WeGame、完美世界、TapTap 等国内游戏域名。
+- `shunt-rules/21-cn-game.list` / `22-intl-game.list` 与 Passwall2 保持同源；`domain:mihoyo.com` 从国外游戏移入国内游戏。
+
+## v5.4.31-pw.1 (2026-06-20)
+
+- ★ FIX#167-DOUYIN：`08-cn-media.list`、apply 脚本与参考 `.conf` 补齐抖音 Web / `zjcdn.com` 视频 CDN 明确 `domain:` 兜底。
+- Passwall 降级参考继续使用展平 shunt rules，不承载客户端规则顺序；本轮只补国内流媒体域名覆盖。
+
+## v5.4.30-pw.1 (2026-06-17)
+
+- ★ FEAT#166-GOOGLE：新增 `30-google.list` 与第 20 条 `🔍 Google 服务` shunt rule，承载 `geosite:google` / `geoip:google` / `domain:scholar.google.com`。
+- 工具组重命名为 `31-tools.list`，仅保留非 Google 搜索和开发者服务；兜底列表顺延为 `32-final.list`，展平 shunt rules 总数调整为 33。
+
+## v5.4.29-pw.1 (2026-06-10)
+
+- N/A#165-LATENCY：Passwall 降级参考使用展平 shunt rules，不承载区域自动测速/健康检查字段；本轮仅元数据与 README 对齐 Clash Party v5.4.29。
+
+## v5.4.27-pw.1 (2026-06-07)
+
+- ★ CLEAN#165：`11-hbo-max.list` / apply 脚本删除已被 `geosite:hbo` 覆盖的 `domain:max.com` 与 `domain:hbomax.com` 本地兜底；v2fly domain-list-community 与 MetaCubeX geosite hbo 当前均包含这两个域名。
+
+## v5.4.26-pw.1 (2026-06-07)
+
+- 对齐基线 v5.4.26（FIX#164）。本产物**不受** `copilot.tencent.com` 误吞影响：Passwall AI 分流用 `geosite:copilot`（无 copilot 子串关键词，不会命中 `copilot.tencent.com`），且不消费 szkane `AiDomain.list`；`copilot.tencent.com` 顺流到国内直连规则，无需 `.list`/`.sh` 改动。仅 bump 版本。
+
+## v5.4.25-pw.2 (2026-06-05)
+
+- ★ MAINT#HEADER-LITE：apply 脚本头部移除多版本变更历史，仅保留轻量元信息并指向 `Passwall/CHANGELOG.md`，对齐仓库 CLAUDE.md §1.3 维护契约。
+
+## v5.4.25-pw.1 (2026-06-04)
+
+- ★ FIX#PW-KAKAO-P1：将 active Passwall 规则中的无效 `geosite:kakaotalk` 改为 `geosite:kakao`，并补 `domain:kakao.com` / `domain:kakaocorp.com` / `domain:kakaotalk.com` 兜底。
+- ★ FIX#PW-IDEMPOTENT-P3：apply 脚本默认 `--replace`，运行前删除同名 Smart-Config-Kit shunt rules，避免重复运行追加 32 条副本；保留 `--append` 作为显式追加模式。
+- ★ SYNC：版本头和参考 `.conf` 对齐 Clash Party v5.4.25。
 
 ## v5.4.23-pw.1 (2026-06-02)
 

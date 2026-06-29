@@ -1,11 +1,11 @@
-# Passwall 使用教程（对齐 Clash Party v5.4.22 简化版）
+# Passwall 使用教程（对齐 Clash Party v5.4.36 简化版）
 
 > 目录简介：这里提供 Passwall 全功能版的展平分流参考、shunt rule 列表和 OpenWrt 导入教程。
 >
 > 配置参考：`Passwall/` 目录  
-> 版本：**v5.4.22-pw.1**（Build 2026-05-31；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连 + 批 D #4 版本对齐；Passwall 不承载 DNS resolver，N/A）
+> 版本：**v5.4.36-pw.1**（Build 2026-06-29；基线：Clash Party v5.4.36；变更历史：见 `Passwall/CHANGELOG.md`；无自动区域测速字段）
 > 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）—— [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已迁入）维护。与 [Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)（精简分流版）**并行维护**（非新旧关系），规则语法同源（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
-> 架构：32 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
+> 架构：33 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -15,7 +15,7 @@
 
 | 能力 | Passwall（全功能版，本文档目标） | Passwall2（精简分流版） |
 |---|:-:|:-:|
-| shunt rule 分流 | ✅ 32 条 | ✅ 32 条 |
+| shunt rule 分流 | ✅ 33 条 | ✅ 33 条 |
 | 四列表（直连/屏蔽/GFW/代理） | ✅ 内置 | ❌ 无 |
 | TCP/UDP 节点分开选 | ✅ `tcp_node` + `udp_node` | ❌ 统一 `node` |
 | ACL（按客户端/MAC） | ✅ `acl_rule` | ❌ 无 |
@@ -34,15 +34,15 @@
 ## 🚀 零基础 5 分钟快速开始
 
 ### 这是什么？
-一份面向 **Passwall（全功能版）** 的 **shunt rule（分流规则）参考清单**。**不是** Clash Party 那种自动生成的 YAML——Passwall 没有 proxy-groups 嵌套层级，所以这里把基线的"32 业务组 → 区域组"两层结构**手工展平成 32 条 shunt rule**，每条对应一个业务类别，用户手动指定目标 TCP 节点或负载均衡组。
+一份面向 **Passwall（全功能版）** 的 **shunt rule（分流规则）参考清单**。**不是** Clash Party 那种自动生成的 YAML——Passwall 没有 proxy-groups 嵌套层级，所以这里把基线的"33 业务组 → 区域组"两层结构**手工展平成 33 条 shunt rule**，每条对应一个业务类别，用户手动指定目标 TCP 节点或负载均衡组。
 
 ### 能和不能（诚实对比）
 | 能力 | Passwall（用本参考） | OpenClash（本仓库完整支持） |
 |---|:-:|:-:|
 | 基础分流（AI / 流媒体 / 支付 / GFW） | ✅ | ✅ |
-| 32 业务分类 | ✅（手工配置）| ✅（自动）|
+| 33 业务分类 | ✅（手工配置）| ✅（自动）|
 | 11 区域组自动 url-test 选最低延迟 | ⚠️ 用负载均衡组近似 | ✅ 原生 |
-| 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 32 条规则的目标** | ✅ 自动 |
+| 机场换节点自动归位到区域组 | ❌ **每次换机场要重新改 33 条规则的目标** | ✅ 自动 |
 | Smart + LightGBM 机器学习择优 | ❌ | ✅ 原生 |
 | JS 覆写 / 订阅预处理 | ❌ | ✅ |
 | 广告拦截（纵深多源）| ⚠️ 只能导 1-2 个 list | ✅ 20+ 源 |
@@ -56,21 +56,21 @@
 1. **OpenWrt / iStoreOS / ImmortalWrt** 路由器已刷好
 2. **已安装 Passwall 插件**（LuCI → 系统 → 软件包 → 搜索 `luci-app-passwall`）
 3. **一个机场订阅 URL**
-4. **本文档的 32 条 shunt rule 参考**（往下看）
+4. **本文档的 33 条 shunt rule 参考**（往下看）
 
 ### 本目录交付的 3 种配置文件（按你的偏好选一种）
 
 | 文件 | 适合谁 | 用法 |
 |---|---|---|
 | **`shunt-rules/*.list`**（32 个 `.list` 文件）| 不熟 SSH 的用户 | Passwall LuCI → 分流控制 → 新增 → 把对应 `.list` 里的域名/IP 列表粘贴进字段 |
-| **`Passwall(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 32 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
-| **`Passwall(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall(xray+sing-box)-apply.sh'` → 一次性创建 32 条空节点规则 → 再到 LuCI 逐条指定 `tcp_node` |
+| **`Passwall(xray+sing-box).conf`**（单文件合并版）| 想一眼看完 33 条规则全貌 | 同上，但全部规则在一个文件里，方便参考对比 |
+| **`Passwall(xray+sing-box)-apply.sh`**（UCI 批量脚本）| 会 SSH 登录路由器的用户 | `scp` 到路由器 → `sh 'Passwall(xray+sing-box)-apply.sh'` → 一次性创建 33 条空节点规则 → 再到 LuCI 逐条指定 `tcp_node` |
 
 ### 3 步走完
 1. **Passwall LuCI → 节点列表 → 添加订阅**：粘贴机场订阅 URL → 下载节点 → **按地区手动创建 TCP 负载均衡组**（如"🇺🇸 美国-LB"把所有 US 节点加进来）
 2. **选一种方式导入 shunt rule**（见上表）：
    - 方式 A（手工）：为每个业务类别点「新增」→ 粘贴对应 `.list` 文件的内容 → 选择目标 `tcp_node`
-   - 方式 B（脚本）：`sh 'Passwall(xray+sing-box)-apply.sh'` 一次性创建 32 条空节点规则 → 在 LuCI 里给每条指定 `tcp_node`
+   - 方式 B（脚本）：`sh 'Passwall(xray+sing-box)-apply.sh'` 一次性创建 33 条空节点规则 → 在 LuCI 里给每条指定 `tcp_node`
 3. **回首页 → 基本设置**：
    - 确认 `tcp_node` 指向你创建的负载均衡组
    - `udp_node` 根据需要选择（国内游戏 / BT 场景可指 direct）
@@ -122,9 +122,9 @@ Passwall 根据你选的核提供不同协议：
 
 ---
 
-## 📋 32 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall(xray+sing-box).conf` 内容一致）
+## 📋 33 条 shunt rule 参考清单（和 `shunt-rules/` 目录 + `Passwall(xray+sing-box).conf` 内容一致）
 
-> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 32 条的单文件版本：`Passwall/Passwall(xray+sing-box).conf`。
+> 下方的每一条规则也以独立 `.list` 文件形式存放于 `Passwall/shunt-rules/`（如 `02-ai-service.list` / `07-social.list`），方便逐条复制。想一次性看全部 33 条的单文件版本：`Passwall/Passwall(xray+sing-box).conf`。
 
 每一条 = Passwall「分流控制」面板里点一次「新增」。按顺序添加。**第 1 条必须是 🛑 广告拦截**（否则会被后续规则吞掉），**国内/受限/国外/FINAL 段保持末尾**。
 
@@ -225,7 +225,10 @@ geosite:discord
 geosite:whatsapp
 geosite:line
 geosite:signal
-geosite:kakaotalk
+geosite:kakao
+domain:kakao.com
+domain:kakaocorp.com
+domain:kakaotalk.com
 ```
 
 **IP 列表**：
@@ -364,9 +367,7 @@ domain:rakuten.tv
 ```
 geosite:bbc
 domain:itv.com
-domain:channel4.com
 domain:my5.tv
-domain:sky.com
 domain:skygo.com
 domain:britbox.co.uk
 ```
@@ -377,7 +378,29 @@ domain:britbox.co.uk
 **域名列表**：
 ```
 geosite:steamcn
+domain:mihoyo.com
+domain:miyoushe.com
+domain:yuanshen.com
+domain:bhsr.com
+domain:zenlesszonezero.com
+domain:game.163.com
+domain:gm.163.com
+domain:ds.163.com
+domain:nie.163.com
+domain:nie.netease.com
+domain:update.netease.com
+domain:netease.com
+domain:wegame.com
+domain:wegame.com.cn
+domain:perfect-world.com
 domain:wanmei.com
+domain:xd.com
+domain:taptap.com
+domain:taptap.io
+domain:papegames.com
+domain:hypergryph.com
+domain:gryphline.com
+domain:lilith.com
 domain:majsoul.com
 domain:battlenet.com.cn
 ```
@@ -396,7 +419,6 @@ domain:riotgames.com
 domain:ea.com
 domain:blizzard.com
 domain:hoyoverse.com
-domain:mihoyo.com
 ```
 
 ### 1️⃣7️⃣ Ⓜ️ 微软服务
@@ -505,17 +527,25 @@ geoip:cloudflare
 geoip:fastly
 ```
 
-### 2️⃣4️⃣ 🔧 工具与服务（新设，合并自原搜索引擎 + 开发者服务）
+### 🔍 Google 服务（从工具组拆出的独立平台服务）
+**推荐节点**：🌍 全球节点 / 可按需锁定 🇺🇸 美国节点
+
+**域名列表**：
+```
+```
+
+**IP 列表**：
+```
+```
+### 2️⃣4️⃣ 🔧 工具与服务（非 Google 搜索引擎 + 开发者服务）
 **推荐节点**：🌍 全球
 
 **域名列表**：
 ```
 # 原 🔍 搜索引擎
-geosite:google
 geosite:bing
 geosite:duckduckgo
 geosite:yandex
-domain:scholar.google.com
 # 原 📟 开发者服务
 geosite:github
 geosite:gitlab
@@ -530,7 +560,6 @@ domain:stackexchange.com
 
 **IP 列表**：
 ```
-geoip:google
 ```
 
 ### 2️⃣5️⃣ 🐟 漏网之鱼 FINAL
@@ -560,7 +589,7 @@ Passwall 在「代理」标签页提供四列表开关：
 
 **推荐使用方式**：
 - 四列表放"粗粒度"规则（如 `geosite:cn` 直连、`geosite:gfw` 代理）
-- shunt rule 放"细粒度"业务规则（32 条业务分类）
+- shunt rule 放"细粒度"业务规则（33 条业务分类）
 - 两者互补，减少手工维护量
 
 ### TCP/UDP 节点分选
@@ -594,7 +623,7 @@ Passwall 允许 TCP 和 UDP 流量走**不同节点**：
 # 停 Passwall2，换 Passwall
 /etc/init.d/passwall2 stop
 /etc/init.d/passwall2 disable
-# 导入配置到 Passwall（32 条 shunt rule 可用本目录 apply.sh 重建）
+# 导入配置到 Passwall（33 条 shunt rule 可用本目录 apply.sh 重建）
 /etc/init.d/passwall enable
 /etc/init.d/passwall start
 ```
@@ -609,7 +638,7 @@ Passwall 允许 TCP 和 UDP 流量走**不同节点**：
 
 想换回另一个反过来就行。配置互相独立保留，切换无数据丢失。
 
-**想要 mihomo 的 proxy-groups 嵌套（业务组 → 区域组）+ Smart/LightGBM 自动择优？请改用 OpenClash**（本仓库 `OpenClash/`）。Passwall / Passwall2 架构上都**没有**嵌套选择器（Lua CBI 表单式 UI，无 YAML 嵌套组语义），也**都不打包** mihomo（只有 xray + sing-box 双栈）——本目录的 32 条 shunt rule 是**把两层结构手工展平**的降级方案，适合坚持用 Passwall 系的用户。
+**想要 mihomo 的 proxy-groups 嵌套（业务组 → 区域组）+ Smart/LightGBM 自动择优？请改用 OpenClash**（本仓库 `OpenClash/`）。Passwall / Passwall2 架构上都**没有**嵌套选择器（Lua CBI 表单式 UI，无 YAML 嵌套组语义），也**都不打包** mihomo（只有 xray + sing-box 双栈）——本目录的 33 条 shunt rule 是**把两层结构手工展平**的降级方案，适合坚持用 Passwall 系的用户。
 
 ---
 

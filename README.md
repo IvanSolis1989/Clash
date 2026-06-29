@@ -2,7 +2,7 @@
 
 > 一套以 **Mihomo Smart 内核 JS 覆写脚本**为基线、同步产出 12 种客户端等价配置的分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免”设备 A 可用、设备 B 抽风”。
 >
-> - 🧩 **22 区域组 + 32 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），385+ rule-provider 全覆盖
+> - 🧩 **22 区域组 + 33 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），376 rule-provider 全覆盖
 > - ⚡ **Smart / Normal 双内核**：同规则量，按内核能力选 `smart`（LightGBM ML 择路）或经典 `url-test`
 > - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
 > - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
@@ -42,7 +42,7 @@ flowchart TB
 
 ---
 
-## 🧩 Smart 分流规则：32 代理组速览（含 14 流媒体平台组）
+## 🧩 Smart 分流规则：33 业务组速览（含 14 流媒体平台组）
 
 为了让结构更清晰，下面用”**分层卡片 + 关系图**”展示 32 个代理组，而不是单一大表。
 
@@ -60,19 +60,19 @@ flowchart LR
     style E fill:#FFEFF0,stroke:#E74C3C,stroke-width:1px
 ```
 
-### 🗂️ 代理组与主要 Rule-Providers 对照（Clash Party 实际 32 业务组）
+### 🗂️ 代理组与主要 Rule-Providers 对照（Clash Party 实际 33 业务组）
 
 > 只列“主要/高频命中”项，并标明规则来源仓库；不再混入节点组（HK/US/全球节点等）。
 
 | 代理组（与脚本一致） | 主要 rule-providers（示例） | 主要来源仓库 |
 |---|---|---|
-| 🤖 AI 服务 | `openai` `claude` `gemini` `copilot` `szkane-ai` `acc-copilot` | MetaCubeX / blackmatrix7 / szkane / Accademia |
+| 🤖 AI 服务 | `openai` `claude` `gemini` `copilot` `szkane-ai` `acc-copilot` `vpsdance-ai-coding` | MetaCubeX / blackmatrix7 / szkane / Accademia / VPSDance |
 | 💰 加密货币 | `cryptocurrency` `binance` `szkane-web3` | blackmatrix7 / szkane |
 | 🏦 金融支付 | `paypal` `stripe` `paddle.com` `visa` `tigerfintech` `acc-bank-*` `acc-vf-*` | blackmatrix7 / Accademia / 本地误伤白名单 |
 | 💬 即时通讯 | `telegram` `telegram-ip` `discord` `whatsapp` `line` `kakaotalk` `acc-signal` | MetaCubeX / blackmatrix7 / Accademia |
 | 📱 社交媒体 | `twitter` `twitter-ip` `tiktok` `facebook` `instagram` `snapchat` `reddit` | MetaCubeX / blackmatrix7 |
 | 🧑‍💼 会议协作 | `zoom` `slack` `teams` `atlassian` `notion` `remotedesktop` `acc-rustdesk` `domain-suffix:rustdesk.com` | ACL4SSR / blackmatrix7 / Accademia |
-| 📺 国内流媒体 | `bilibili` `iqiyi` `youku` `tencentvideo` `douyin` `neteasemusic` | blackmatrix7 |
+| 📺 国内流媒体 | `bilibili` `iqiyi` `youku` `tencentvideo` `douyin` `zjcdn.com` `neteasemusic` | blackmatrix7 / 本地前置守卫 |
 | 🎵 TikTok | `tiktok` | MetaCubeX |
 | 🎥 Netflix | `netflix` `netflix-ip` `szkane-netflixip` | MetaCubeX / szkane |
 | 🎬 Disney+ | `disney` | blackmatrix7 |
@@ -81,19 +81,20 @@ flowchart LR
 | 🎬 Prime Video | `primevideo` `amazon` | blackmatrix7 |
 | 📹 YouTube | `youtube` | MetaCubeX |
 | 🎵 音乐流媒体 | `spotify` `tidal` `deezer` `soundcloud` `pandora` `lastfm` `qobuz` `overcast` | blackmatrix7 |
-| 🇭🇰 香港流媒体 | `mytvsuper` `tvb` `encoretvb` `nowe` `rthk` `szkane-bilihmt` | blackmatrix7 / szkane |
+| 🇭🇰 香港流媒体 | `mytvsuper` `tvb` `nowe` `rthk` `szkane-bilihmt` | blackmatrix7 / szkane |
 | 🇹🇼 台湾流媒体 | `bahamut` `kktv` `litv` `hamivideo` `linetv` `friday` | blackmatrix7 |
 | 🇯🇵 日韩流媒体 | `abema` `dazn` `dmm` `tver` `niconico` `rakuten` | blackmatrix7 |
 | 🇪🇺 欧洲流媒体 | `bbc` `itv` `all4` `my5` `skygo` `britboxuk` `szkane-uk` | MetaCubeX / blackmatrix7 / szkane |
 | 🌐 其他国外流媒体 | `viu` `biliintl` `iqiyiintl` `wetv` `viki` `paramount` `peacock` `twitch` `vimeo` `dailymotion` `acc-kwai` | blackmatrix7 / Accademia |
-| 🕹️ 国内游戏 | `steamcn` `wanmeishijie` `wankahuanju` `majsoul` | blackmatrix7 |
-| 🎮 国外游戏 | `steam` `epic` `playstation` `xbox` `riot` `ea` `hoyoverse` | blackmatrix7 |
-| 🔧 工具与服务 | `google` `google-ip` `googlesearch` `bing` `scholar` `yandex` `github` `docker` `gitlab` `python` `developer` `szkane-developer` | MetaCubeX / blackmatrix7 / szkane |
+| 🕹️ 国内游戏 | `mihoyo/yuanshen` `netease` `wegame` `steamcn` `majsoul` | 本地前置 + blackmatrix7 |
+| 🎮 国外游戏 | `steam` `epic` `playstation` `xbox` `riot` `ea` `hoyoverse` | blackmatrix7（宽规则在国内游戏之后） |
+| 🔍 Google 服务 | `google` `google-ip` `scholar`（Apple 端另含 `GoogleSearch` `GoogleDrive` `GoogleEarth`） | MetaCubeX / blackmatrix7 |
+| 🔧 工具与服务 | `bing` `yandex` `github` `docker` `gitlab` `python` `developer` `szkane-developer` | blackmatrix7 / szkane |
 | Ⓜ️ 微软服务 | `onedrive` `microsoft` `microsoftedge` `acc-microsoftapps` | blackmatrix7 / Accademia |
 | 🍎 苹果服务 | `apple` `icloud` `appstore` `appletv` `applemusic` `acc-apple` `acc-applenews` | blackmatrix7 / Accademia |
 | 📥 下载更新 | `googlefcm` `systemota` `download` `ubuntu` `mozilla` `android` `acc-macappupgrade` | blackmatrix7 / Accademia |
 | 🛰️ BT/PT Tracker | `privatetracker` `acc-emuleserver` | blackmatrix7 / Accademia |
-| 🏠 国内网站 | `cn` `cn-ip` `acc-geositecn` `acc-chinamax` `acc-china` `acc-geo-d-asia-china` | MetaCubeX / blackmatrix7 / Accademia |
+| 🏠 国内网站 | `amap` / `GaoDe` `cn` `cn-ip` `acc-geositecn` `acc-chinamax` `acc-china` `acc-geo-d-asia-china` | MetaCubeX / blackmatrix7 / Accademia |
 | 🚫 受限网站 | `loyalsoldier-gfw` `loyalsoldier-greatfire` `szkane-proxygfw` | Loyalsoldier / szkane |
 | 🌐 国外网站 | `proxy` `cnn` `nytimes` `bloomberg` `ebay` `wikipedia` `acc-waybackmachine` `mail` `protonmail` `cloudflare` `fastly` `akamai` | blackmatrix7 / Accademia / szkane / MetaCubeX |
 | 🐟 漏网之鱼 | 以 GEOSITE/GEOIP/FINAL 兜底为主（非单一固定 provider） | MetaCubeX（geo 规则） |
@@ -110,7 +111,7 @@ flowchart LR
 
 | 类型 | geosite 做不到的事 | 本仓库怎么补 | 典型例子 |
 |---|---|---|---|
-| **① 新兴服务** | 新 AI / Web3 上线后 2–4 周才收录 | `szkane-ai` / `acc-grok` + 手工 `DOMAIN-SUFFIX` | cursor.com · character.ai · openrouter.ai · CiciAI |
+| **① 新兴服务** | 新 AI / Web3 上线后 2–4 周才收录 | `szkane-ai` / `vpsdance-ai-coding` / `acc-grok` + 手工 `DOMAIN-SUFFIX` | cursor.com · zed.dev · windsurf.com · openrouter.ai |
 | **② 子类拆分** | `geosite:apple` 是一个整体，无法让 AppStore 直连 + TestFlight 走代理 | bm7 拆成 12 个独立 provider | Apple / Google / Microsoft 家族各子服务独立决策 |
 | **③ 安全纵深** | `category-ads-all` 只管广告，不管钓鱼 / 恶意软件 / SDK 埋点 / DNS 劫持 | 9 个来源互补覆盖不同威胁类型 | anti-AD（广告）+ sukka-phishing（13 万钓鱼）+ hagezi-tif（malware/C2） |
 | **④ 地区长尾** | 国际社区不维护中国特有 SDK / 港澳台细分 / IoT ASN | szkane / Accademia 补充 | B 站港澳台版 · 绿米 IoT · 美日住宅 IP 段 |
@@ -173,7 +174,7 @@ flowchart TB
 
 导入任一端产物后，先看这 6 件事，能快速判断是配置问题、规则下载问题，还是节点质量问题。
 
-1. **节点与策略组存在**：Mihomo / Apple 系客户端应看到 22 区域组 + 32 业务组；sing-box Full 应看到 53 个出站；v2rayN Xray 路径没有业务策略组是正常限制。
+1. **节点与策略组存在**：Mihomo / Apple 系客户端应看到 22 区域组 + 33 业务组；sing-box Full 应看到 54 个出站；v2rayN Xray 路径没有业务策略组是正常限制。
 2. **规则源下载完成**：Clash / OpenClash / CMFA / FlClash 里 `rule-providers` 不应有大面积 403 / 404；Surge / Loon / QX 看远程规则列表是否下载成功；sing-box 看 `rule_set` 是否全部可用。
 3. **广告误伤安全阀生效**：访问或规则测试 `paddle.com` 应命中 `🏦 金融支付`，`cloudflarestorage.com` 应命中 `🌐 国外网站`，都不是 `🛑 广告拦截`；小米账号/云服务域名应走 `DIRECT`。
 4. **GEOSITE 基础命中正常**：`geosite:private` / 局域网应直连，`geosite:gfw` 应进入 `🚫 受限网站`，`geosite:category-ads-all` 应进入广告拦截。
@@ -238,7 +239,7 @@ flowchart TB
 
 **📚 规则库**：[geosite](https://github.com/MetaCubeX/meta-rules-dat) / [geoip](https://github.com/Loyalsoldier/geoip) / [clash-rules](https://github.com/Loyalsoldier/clash-rules) / [v2ray-rules-dat](https://github.com/Loyalsoldier/v2ray-rules-dat)
 
-**📦 规则集**：[bm7](https://github.com/blackmatrix7/ios_rule_script) / [Accademia](https://github.com/Accademia/Additional_Rule_For_Clash) / [DustinWin](https://github.com/DustinWin/ruleset_geodata) / [ACL4SSR](https://github.com/ACL4SSR/ACL4SSR) / [SukkaW](https://github.com/SukkaW/Surge) / [Hagezi](https://github.com/hagezi/dns-blocklists) / [MiHomo-Hagezi](https://github.com/MiHomoer/MiHomo-Hagezi) / [szkane](https://github.com/szkane/Rules) / [anti-AD](https://github.com/privacy-protection-tools/anti-AD)
+**📦 规则集**：[bm7](https://github.com/blackmatrix7/ios_rule_script) / [Accademia](https://github.com/Accademia/Additional_Rule_For_Clash) / [DustinWin](https://github.com/DustinWin/ruleset_geodata) / [ACL4SSR](https://github.com/ACL4SSR/ACL4SSR) / [SukkaW](https://github.com/SukkaW/Surge) / [Hagezi](https://github.com/hagezi/dns-blocklists) / [MiHomo-Hagezi](https://github.com/MiHomoer/MiHomo-Hagezi) / [szkane](https://github.com/szkane/Rules) / [VPSDance AI Rules](https://github.com/VPSDance/ai-proxy-rules) / [anti-AD](https://github.com/privacy-protection-tools/anti-AD)
 
 **🛠️ 工具**：[Sub-Store](https://github.com/sub-store-org/Sub-Store) / [PROCESS-NAME 兼容清单](./docs/process-name-compatibility.md) / [QX 脚本](https://github.com/KOP-XIAO/QuantumultX) / [Qure 图标](https://github.com/Koolson/Qure) / [domain-list-community](https://github.com/v2fly/domain-list-community)
 

@@ -7,6 +7,7 @@ const vm = require('node:vm');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const RESTRICTED_SITE = '🚫 受限网站';
+const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 
 const TARGETS = [
   {
@@ -83,6 +84,7 @@ const BIZ_GROUPS = [
   '🌐 其他国外流媒体',
   '🕹️ 国内游戏',
   '🎮 国外游戏',
+  '🔍 Google 服务',
   '🔧 工具与服务',
   'Ⓜ️ 微软服务',
   '🍎 苹果服务',
@@ -120,6 +122,19 @@ const STUN_FAKE_IP_FILTER_ENTRIES = [
   'stun3.l.google.com',
   'stun4.l.google.com',
   'global.turn.twilio.com',
+];
+const DOUYIN_CNMEDIA_GUARD_RULES = [
+  'DOMAIN-SUFFIX,douyin.com,📺 国内流媒体',
+  'DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体',
+];
+const CN_GAME_GUARD_RULES = [
+  'DOMAIN-SUFFIX,mihoyo.com,🕹️ 国内游戏',
+  'DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏',
+  'DOMAIN,game.163.com,🕹️ 国内游戏',
+];
+const INTL_GAME_WIDE_RULES = [
+  'GEOSITE,category-games,🎮 国外游戏',
+  'RULE-SET,hoyoverse,🎮 国外游戏',
 ];
 
 const CLASSIFICATION_CASES = [
@@ -382,6 +397,7 @@ function validateGroups(target, output, record) {
     const group = groupsByName.get(name);
     record.expect(!!group, `region group exists: ${name}`);
     if (group) record.expectEqual(group.type, target.regionType, `region group type is ${target.regionType}: ${name}`);
+    if (group) record.expectEqual(group.interval, EXPECTED_REGION_TEST_INTERVAL_SECONDS, `region group interval is 300s: ${name}`);
   }
 
   record.expect(!groupsByName.has('机场自动选择'), 'subscription-native proxy-groups are removed');
@@ -415,7 +431,7 @@ function validateRulesAndProviders(output, record, target) {
   const groupNames = new Set((output['proxy-groups'] || []).map((group) => group.name));
 
   record.expect(rules.length >= 900, `injects a full ruleset, got ${rules.length}`);
-  record.expect(providerNames.size >= 380, `injects the full rule-provider set, got ${providerNames.size}`);
+  record.expect(providerNames.size >= 376, `injects the full rule-provider set, got ${providerNames.size}`);
   record.expectEqual(rules[rules.length - 1], 'MATCH,🐟 漏网之鱼', 'keeps MATCH as the final fallback');
   record.expect(!rules.slice(0, -1).some((rule) => String(rule).startsWith('MATCH,')), 'does not place MATCH before the final rule');
   record.expect(!rules.some((rule) => String(rule).includes('机场自动选择')), 'subscription-native rules are removed');
@@ -436,6 +452,43 @@ function validateRulesAndProviders(output, record, target) {
     cloudflareR2Index !== -1 && antiAdIndex !== -1 && cloudflareR2Index < antiAdIndex,
     'Cloudflare R2 storage domain is evaluated before ad/phishing reject rules',
   );
+  const tiktokIndex = rules.indexOf('RULE-SET,tiktok,🎵 TikTok');
+  const proxyIndex = rules.indexOf('RULE-SET,proxy,🌐 国外网站');
+  const amapIndex = rules.indexOf('RULE-SET,amap,🏠 国内网站');
+  record.expect(providerNames.has('amap'), 'MetaCubeX amap provider exists for GaoDe domestic routing');
+  record.expect(amapIndex !== -1, 'AMap/GaoDe dedicated rule routes to CN site');
+  record.expect(
+    amapIndex !== -1 && antiAdIndex !== -1 && antiAdIndex < amapIndex,
+    'AMap/GaoDe guard stays after ad/phishing rules so ad subdomains can still be rejected',
+  );
+  record.expect(
+    amapIndex !== -1 && proxyIndex !== -1 && amapIndex < proxyIndex,
+    'AMap/GaoDe guard is evaluated before foreign-site tail',
+  );
+  for (const guardRule of DOUYIN_CNMEDIA_GUARD_RULES) {
+    const guardIndex = rules.indexOf(guardRule);
+    record.expect(guardIndex !== -1, `Douyin Web CN media guard exists: ${guardRule}`);
+    record.expect(
+      guardIndex !== -1 && tiktokIndex !== -1 && guardIndex < tiktokIndex,
+      `Douyin Web CN media guard is evaluated before TikTok: ${guardRule}`,
+    );
+    record.expect(
+      guardIndex !== -1 && proxyIndex !== -1 && guardIndex < proxyIndex,
+      `Douyin Web CN media guard is evaluated before foreign-site tail: ${guardRule}`,
+    );
+  }
+  for (const guardRule of CN_GAME_GUARD_RULES) {
+    const guardIndex = rules.indexOf(guardRule);
+    record.expect(guardIndex !== -1, `CN game guard exists: ${guardRule}`);
+    for (const wideRule of INTL_GAME_WIDE_RULES) {
+      const wideIndex = rules.indexOf(wideRule);
+      record.expect(wideIndex !== -1, `wide intl game rule exists: ${wideRule}`);
+      record.expect(
+        guardIndex !== -1 && wideIndex !== -1 && guardIndex < wideIndex,
+        `CN game guard is evaluated before wide intl game rule: ${guardRule} before ${wideRule}`,
+      );
+    }
+  }
 
   for (const [providerName, provider] of Object.entries(providers)) {
     if (provider && provider.type === 'http') {
@@ -460,6 +513,14 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(
     rules.some((rule) => /^RULE-SET,tiktok,🎵 TikTok/.test(String(rule))),
     'TikTok has its dedicated rule target',
+  );
+  record.expect(
+    rules.includes('RULE-SET,scholar,🔍 Google 服务'),
+    'Google Scholar is split from tools into Google service target',
+  );
+  record.expect(
+    !rules.includes('RULE-SET,scholar,🔧 工具与服务'),
+    'Google Scholar does not regress to tools target',
   );
   for (const processName of DIRECT_PROCESS_RULES) {
     record.expect(
@@ -488,7 +549,7 @@ function validateRulesAndProviders(output, record, target) {
   const quicAndRules = rules.filter(function(r) { return String(r).startsWith('AND,((DST-PORT,443),(NETWORK,UDP),'); });
   record.expectEqual(quicAndRules.length, 5, 'exactly 5 QUIC AND rules exist');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,youtube') && String(r).endsWith('📹 YouTube'); }), 'QUIC AND: YouTube whitelist intact');
-  record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,google') && String(r).endsWith('🔧 工具与服务'); }), 'QUIC AND: Google whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,google') && String(r).endsWith('🔍 Google 服务'); }), 'QUIC AND: Google service whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
@@ -498,6 +559,15 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(
     rustDeskGuardIndex !== -1 && copilotIndex !== -1 && rustDeskGuardIndex < copilotIndex,
     'RustDesk domain guard is evaluated before RuleSet/copilot',
+  );
+  // v5.4.26 FIX#164: 腾讯 WorkBuddy copilot.tencent.com 必须在 szkane AiDomain.list
+  // （含 DOMAIN-KEYWORD,copilot 子串）之前锁定国内直连，否则被误吞到 🤖 AI 服务（国外代理）。
+  const copilotTencentGuardIndex = rules.indexOf('DOMAIN-SUFFIX,copilot.tencent.com,🏠 国内网站');
+  const szkaneAiIndex = rules.indexOf('RULE-SET,szkane-ai,🤖 AI 服务');
+  record.expect(copilotTencentGuardIndex !== -1, 'copilot.tencent.com domestic guard exists (FIX#164)');
+  record.expect(
+    copilotTencentGuardIndex !== -1 && szkaneAiIndex !== -1 && copilotTencentGuardIndex < szkaneAiIndex,
+    'copilot.tencent.com domestic guard is evaluated before RuleSet/szkane-ai (FIX#164)',
   );
 
   if (target.requireTunExcludes) {

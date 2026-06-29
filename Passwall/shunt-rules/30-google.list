@@ -1,0 +1,10 @@
+# 🔍 Google 服务
+# 推荐出站: 🌍 全球 / 可按需锁定 🇺🇸 美国节点
+# 建议目标策略: proxy
+# ───────────────────────────────
+# [Domain List] — Google 基础服务
+geosite:google
+domain:scholar.google.com
+
+# [IP List]
+geoip:google

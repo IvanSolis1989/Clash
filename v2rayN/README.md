@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v5.4.22）
+# v2rayN 使用教程（对齐 Clash Party v5.4.36）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON 兜底产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.22-v2n.1（详见 `v2rayN/CHANGELOG.md`；含借鉴 Proxy-override 批 A #2 国内 SDK/CDN 直连；#4 DoH N/A；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.36-v2n.1（详见 `v2rayN/CHANGELOG.md`；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -28,7 +28,7 @@ v2rayN 是 Windows 上最流行的代理客户端，**免费、开源、中文�
 
 ### 一句话决定走哪条路径
 - **想要 Smart + LightGBM 自动择优** → **不要用 v2rayN**（做不到），用 **Clash Verge Rev / Mihomo Party**（看仓库 `Clash Party/README.md`）
-- **想要 32 业务组 + 区域组的完整体验** → **路径 A**（mihomo 核）或 **路径 B**（sing-box 核）
+- **想要 33 业务组 + 区域组的完整体验** → **路径 A**（mihomo 核）或 **路径 B**（sing-box 核）
 - **只要基础上网，节点池共用一个** → **路径 C**（Xray 核，导入本目录的路由 JSON）
 
 ### 3 条路径的 3 分钟速览
@@ -38,7 +38,7 @@ v2rayN 是 Windows 上最流行的代理客户端，**免费、开源、中文�
 | 1. 换核心 | 设置 → 核心基础设置 → mihomo | 设置 → 核心基础设置 → sing-box | （保持默认 Xray）|
 | 2. 导入配置 | 订阅 → 新增 Clash 订阅，URL 填 CMFA YAML | 自定义配置服务器 → 导入 `SingBox(sing-box)-full.json` | 路由设置 → 导入 `v2rayN(xray).json` |
 | 3. 加节点 | Clash 订阅会自动带节点 | JSON 里占位节点替换成你机场的 | 正常通过 v2rayN 订阅加节点 |
-| 规则数 | 385 providers | 39 remote rule_set + 697 route rules | 33 启用规则 |
+| 规则数 | 376 providers | 41 remote rule_set + 684 route rules | 40 启用规则 |
 | 业务组 | 25 | 25 | ❌ 只有 proxy/direct/block |
 
 详见下面的「🎯 三条路径总览」和各路径详解。
@@ -92,8 +92,8 @@ v2rayN → 菜单 **设置 → 参数设置 → 核心基础设置** → 勾选�
 
 | 路径 | 核心 | 使用文件 | 业务组 | 区域组 | LightGBM 自动择优 | 推荐度 |
 |---|---|---|---:|---|---|---|
-| **A（强烈推荐）** | mihomo (Clash.Meta) | `Clash Meta For Android/CMFA(mihomo).yaml` | 32 业务 select | 22 区域 `url-test` | ❌（YAML 不含 `type: smart`） | ★★★★★ |
-| **B** | sing-box | `SingBox/SingBox(sing-box)-full.json` | 32 业务 selector | 20 区域 selector/urltest | ❌（sing-box 无此特性） | ★★★★ |
+| **A（强烈推荐）** | mihomo (Clash.Meta) | `Clash Meta For Android/CMFA(mihomo).yaml` | 33 业务 select | 22 区域 `url-test` | ❌（YAML 不含 `type: smart`） | ★★★★★ |
+| **B** | sing-box | `SingBox/SingBox(sing-box)-full.json` | 33 业务 selector | 20 区域 selector/urltest | ❌（sing-box 无此特性） | ★★★★ |
 | **C（仅兜底）** | Xray | `v2rayN/v2rayN(xray).json` | **只有 3 出站** | — | ❌ | ★★ |
 
 **v2rayN 不能直接加载 Clash Party 的 JS 覆写脚本**（这是本节最关键的事实）：
@@ -106,7 +106,7 @@ v2rayN → 菜单 **设置 → 参数设置 → 核心基础设置** → 勾选�
 - 想在 Windows 上获得完整的「Smart + LightGBM」体验，正确做法是**换客户端**：用 **Clash Verge Rev / Mihomo Party / Clash Party**（都原生支持 JS 覆写 + mihomo Alpha 内核）直接加载 `Clash Party/ClashParty(mihomo-smart).js`。v2rayN 的路径 A / B / C 都达不到这个能力。
 
 **为什么路径 C 最弱？**
-Xray 核心的路由规则只能指向 `proxy / direct / block` 三个出站，无法表达 32 业务 + 区域组两层结构，更不能 LightGBM 择优。仅适合不想换核心、只需要基础分流的用户。
+Xray 核心的路由规则只能指向 `proxy / direct / block` 三个出站，无法表达 33 业务 + 区域组两层结构，更不能 LightGBM 择优。仅适合不想换核心、只需要基础分流的用户。
 
 ### 多机场订阅合并（所有路径通用）
 
@@ -126,7 +126,7 @@ Xray 核心的路由规则只能指向 `proxy / direct / block` 三个出站，�
 
 ## 路径 A：mihomo 核心 + Clash YAML（推荐）
 
-这是 v2rayN 路径里**最接近 Clash Party 主线**的方案：32 业务组、22 区域 `url-test` 组、375+ rule-provider 全部原样生效，策略结构和 CMFA 完全一致。
+这是 v2rayN 路径里**最接近 Clash Party 主线**的方案：33 业务组、22 区域 `url-test` 组、383 rule-provider 全部原样生效，策略结构和 CMFA 完全一致。
 > ⚠️ 注意：`CMFA(mihomo).yaml` 是静态 YAML，区域组是 `type: url-test`（延迟择优），**不含 `type: smart` / `uselightgbm: true`**。LightGBM 自动择优不会启用；若需要此特性，请参见文首「关于 LightGBM / Smart 组的重要说明」。
 
 ### 1. 在 v2rayN 里启用 mihomo 核心
@@ -163,7 +163,7 @@ Xray 核心的路由规则只能指向 `proxy / direct / block` 三个出站，�
 
 在 v2rayN 的 **代理组/策略组** 面板里应看到：
 - 22 区域 `url-test` 组（11 全部 + 11 家宽），延迟最低的节点自动被选中；无 LightGBM 自动择优
-- 32 业务组（🤖 AI 服务、💰 加密货币、…、🛑 广告拦截）
+- 33 业务组（🤖 AI 服务、💰 加密货币、…、🛑 广告拦截）
 
 然后按 `Clash Party/README.md` 第七节「业务组推荐配置」给每个业务组指定一个区域组即可。
 
@@ -179,7 +179,7 @@ mihomo 会读取 YAML 里写的 dns/sniffer 块。但 v2rayN 默认用系统 DNS
 
 ## 路径 B：sing-box 核心 + JSON
 
-适合「想把 v2rayN 当 sing-box 前端」的用户。支持 32 业务组 + 20 区域组，靠 sing-box 原生 `selector` / `urltest` 实现；但没有 LightGBM 自动择优（sing-box 无此特性）。
+适合「想把 v2rayN 当 sing-box 前端」的用户。支持 33 业务组 + 20 区域组，靠 sing-box 原生 `selector` / `urltest` 实现；但没有 LightGBM 自动择优（sing-box 无此特性）。
 
 ### 1. 启用 sing-box 核心
 
@@ -192,7 +192,7 @@ mihomo 会读取 YAML 里写的 dns/sniffer 块。但 v2rayN 默认用系统 DNS
 
 | 文件 | 规则量 | 适合 |
 |---|---:|---|
-| `SingBox/SingBox(sing-box)-full.json`（推荐） | 39 remote rule_set + 697 route rules | 与 Clash Party 关键路径对齐且保证 SRS 兼容 |
+| `SingBox/SingBox(sing-box)-full.json`（推荐） | 40 remote rule_set + 686 route rules | 与 Clash Party 关键路径对齐且保证 SRS/source 兼容 |
 
 打开 JSON，找到 `outbounds` 里 `"type": "trojan"` / `"type": "vless"` 的占位节点，替换成你自己的节点配置。
 
@@ -204,7 +204,7 @@ mihomo 会读取 YAML 里写的 dns/sniffer 块。但 v2rayN 默认用系统 DNS
 
 ### 4. 验证
 
-v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1:9090/ui`（若启用了 clash dashboard）可看到 20 区域 + 32 业务组。
+v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1:9090/ui`（若启用了 clash dashboard）可看到 20 区域 + 33 业务组。
 
 ---
 
@@ -230,10 +230,10 @@ v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1
 
 ### 3. 已知限制（相对于 Clash Party 主线）
 
-- ❌ 无 32 业务组 → 区域组的两层结构。所有 `proxy` 规则指向同一个节点。
+- ❌ 无 33 业务组 → 区域组的两层结构。所有 `proxy` 规则指向同一个节点。
 - ❌ 无 LightGBM 自动择优。
 - ❌ 无 Smart 组 `uselightgbm: true`。
-- ❌ 无 385 rule-provider 自动更新（Xray 依赖 `geosite.dat` / `geoip.dat` 数据库，不是 rule-provider）。
+- ❌ 无 383 rule-provider 自动更新（Xray 依赖 `geosite.dat` / `geoip.dat` 数据库，不是 rule-provider）。
 - ⚠️ `geosite:xxx` 关键字依赖 v2rayN 集成的 geosite 数据库；少量我们在 Clash 里用的分类可能在 v2fly 的 geosite 里叫别的名字（例如 `geosite:openai` 对应 v2fly 的 `category-ai-!cn`）。
 
 **结论：路径 C 适合作为「还没准备好换核心的用户」的过渡方案。条件允许请切到路径 A 或 B。**
@@ -242,7 +242,7 @@ v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1
 
 ## 常见问题（FAQ）
 
-### Q1：v2rayN 启动后没有 32 业务组？
+### Q1：v2rayN 启动后没有 33 业务组？
 - 路径 A / B：确认核心选对了（mihomo 或 sing-box），而不是默认的 Xray。
 - 路径 C：Xray 本身不支持多业务组，这是设计限制。
 
@@ -267,7 +267,7 @@ v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1
 
 ### Q5：路径 A 下，jsdelivr rule-provider 冷启动下载失败？
 - CMFA YAML 的 `rule-providers.proxy` 已统一改为 `'🚫 受限网站'`（与 Clash Party FIX#17-P0 一致）。
-- 确保你第一次导入时 **已经连上代理**，否则 373 个 rule-provider 会卡在 403/超时。
+- 确保你第一次导入时 **已经连上代理**，否则 383 个 rule-provider 会卡在 403/超时。
 - 若仍失败，把 YAML 顶部 `geox-url` 段的 jsdelivr 换成 cdn.jsdelivr.net 或自建镜像。
 
 ---
@@ -284,7 +284,7 @@ Happ 支持 **"原始 JSON 导入"模式**——将标准 Xray JSON 1:1 直通�
 
 ### Happ 不能做什么？
 
-- ❌ **不能表达完整嵌套策略体系**：Xray-core 路由只支持 `proxy / direct / block` 三出站，无法表达 32 业务组 + 区域组的两层 `select` / `url-test` 结构。
+- ❌ **不能表达完整嵌套策略体系**：Xray-core 路由只支持 `proxy / direct / block` 三出站，无法表达 33 业务组 + 区域组的两层 `select` / `url-test` 结构。
 - ❌ **无 LightGBM 自动择优**。
 - ❌ **无 rule-provider 自动更新**（依赖 `geosite.dat` / `geoip.dat` 数据库）。
 

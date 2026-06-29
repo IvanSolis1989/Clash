@@ -7,6 +7,56 @@
 
 ---
 
+## v5.4.36-v2n.1 (2026-06-29)
+
+- META#171-DIRECT：跟随 Clash Party v5.4.36 更新版本元数据。
+- Xray 产物不承载这 22 条 mihomo 直写规则，本产物规则语义不变。
+
+## v5.4.35-v2n.1 (2026-06-28)
+
+- ★ CLEAN#170-UPSTREAM：跟随 Clash Party v5.4.35 基线更新版本元数据。
+- N/A：Xray 路由 JSON 不消费 Mihomo rule-provider；本次清理不改变 40 条启用规则。
+
+## v5.4.34-v2n.1 (2026-06-28)
+
+- ★ FIX#169-AMAP：新增 `scki-000e-amap-direct`，显式直连 `a-map.cn` / `amap.com` / `autonavi.com` / `gaode.com` 等高德地图 / AMap 核心域名。
+- 说明：v2rayN Xray 路由 JSON 不消费 Mihomo `rule-provider`，因此使用域名兜底与主线 `amap` provider 保持语义等价。
+
+## v5.4.33-v2n.1 (2026-06-27)
+
+- ★ FEAT#169-AI-CODING：Xray 降级参考在 `scki-010-ai` 补充 AI 编程工具域名兜底，覆盖 Augment / Amazon Q / Bolt / Continue / Devin / Kiro / Lovable / Replit / Sourcegraph / Tabnine / Windsurf / Zed 等。
+
+## v5.4.32-v2n.1 (2026-06-25)
+
+- ★ FIX#168-CN-GAME：Xray 路由中的 `scki-025-cn-game` 补齐米哈游、网易、WeGame、完美世界、TapTap、鹰角、莉莉丝等国内游戏域名，并保持在国外游戏规则之前。
+- 元数据对齐 Clash Party v5.4.32；mihomo / sing-box 路径继续复用对应主产物。
+
+## v5.4.31-v2n.1 (2026-06-20)
+
+- ★ FIX#167-DOUYIN：Xray 降级参考新增 `scki-000d-douyin-web-cnmedia`，将抖音 Web / `zjcdn.com` 视频 CDN 明确前置直连。
+- 元数据对齐 Clash Party v5.4.31；mihomo / sing-box 路径继续复用对应主产物。
+
+## v5.4.30-v2n.1 (2026-06-17)
+
+- ★ FEAT#166-GOOGLE：Xray 降级参考新增 `scki-027-google`，承载 `geosite:google` / `geoip:google` / `domain:scholar.google.com`。
+- 原搜索引擎参考拆为 `scki-027b-search`，仅保留 Bing / DuckDuckGo / Yandex 等非 Google 搜索。
+
+## v5.4.29-v2n.1 (2026-06-10)
+
+- N/A#165-LATENCY：v2rayN Xray 路由 JSON 不承载区域自动测速/健康检查字段；本轮仅元数据与 README 对齐 Clash Party v5.4.29。
+
+## v5.4.27-v2n.1 (2026-06-07)
+
+- 对齐基线 v5.4.27（CLEAN#165）。Xray 路由使用 `geosite:anthropic` / `geosite:paypal` / `geosite:hbo` / `geosite:hulu` / `geosite:xbox` 聚合项，未包含本轮可删除的直写域名；仅更新元数据版本。
+
+## v5.4.26-v2n.1 (2026-06-07)
+
+- 对齐基线 v5.4.26（FIX#164）。本产物**不受** `copilot.tencent.com` 误吞影响：Xray 路由 AI 类用 `geosite:copilot`（仅含微软/GitHub Copilot 精确域名，无 copilot 子串关键词），`copilot.tencent.com` 顺流到 `geosite:cn`（含 `tencent.com`）→ direct，无需规则改动。仅 bump 元数据版本。
+
+## v5.4.25-v2n.1 (2026-06-04)
+
+- ★ SYNC：Xray 路由 JSON 元数据对齐 Clash Party v5.4.25；业务/规则类别未变化，路由语义延续 v5.4.23-v2n.1。
+
 ## v5.4.23-v2n.1 (2026-06-02)
 
 - ★ FIX#161：`domain:zhimg.com` + `domain:zhihu.co` 加入 direct 路由规则（知乎图片 CDN + 短链，同步基线）。

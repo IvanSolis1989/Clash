@@ -1,0 +1,16 @@
+{
+  "target": "Smart-Config-Kit 全量代码审查 — 跨产物一致性、语法正确性、规则对齐",
+  "status": "in_progress",
+  "flags": {
+    "security_focus": false,
+    "performance_critical": false,
+    "strict_mode": false,
+    "framework": "mihomo-multi-client"
+  },
+  "current_step": 2,
+  "current_phase": 2,
+  "completed_steps": ["0-scope", "1A-code-quality", "1B-architecture"],
+  "files_created": ["00-scope.md", "01-quality-architecture.md"],
+  "started_at": "2026-06-10T00:00:00Z",
+  "last_updated": "2026-06-10T16:30:00Z"
+}

@@ -1,11 +1,11 @@
-# Quantumult X 使用教程（对齐 Clash Party v5.4.23）
+# Quantumult X 使用教程（对齐 Clash Party v5.4.36）
 
 > 目录简介：这里维护 Quantumult X iOS 配置和导入教程，按 QX 的 policy/filter 语法对齐 Clash Party 基线。
 >
 > 配置文件：`Quantumult X/QuantumultX.conf`
-> 版本：**v5.4.23-QX.2**（Build 2026-06-02，详见 `Quantumult X/CHANGELOG.md`；修复 #162 失效远程规则 URL）
+> 版本：**v5.4.36-QX.1**（Build 2026-06-29，详见 `Quantumult X/CHANGELOG.md`；跟随 Clash Party v5.4.36 基线）
 > 目标：**Quantumult X iOS（App Store 付费正版）**
-> 架构：22 区域 `url-latency-benchmark` 组（11 全部 + 11 家宽）+ 32 业务 `static` 组 + 286 filter_remote + 568 filter_local 规则
+> 架构：22 区域 `url-latency-benchmark` 组（11 全部 + 11 家宽）+ 33 业务 `static` 组 + 280 filter_remote + 553 filter_local 规则
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -45,7 +45,7 @@
 
 ### 跑起来验证？
 - 浏览器打开 `https://www.google.com` 能打开
-- QX「策略」面板应看到 54 组（22 url-latency-benchmark + 32 static）
+- QX「策略」面板应看到 55 组（22 url-latency-benchmark + 33 static）
 - QX「日志」面板看 filter_remote 下载成功无 404
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
@@ -115,7 +115,7 @@ QX 从 URL 导入配置（不支持本地文件直接打开）：
 3. 粘贴 URL → 点击 **下载**。
 4. 下载完成后 QX 会自动切换到新配置。
 
-首次启用时 QX 会拉取 **286 个 filter_remote**（blackmatrix7 QX 专用 `.list` 格式），根据网络情况约 **2–5 分钟**。**务必先开代理再下载**。
+首次启用时 QX 会拉取 **280 个 filter_remote**（blackmatrix7 QX 专用 `.list` 格式），根据网络情况约 **2–5 分钟**。**务必先开代理再下载**。
 
 ---
 
@@ -157,17 +157,17 @@ QX 首页 → ➕ → 扫描 QR / 手动添加。这种方式节点单独管理�
 
 ---
 
-## 四、11 区域 × 32 业务组结构
+## 四、11 区域 × 33 业务组结构
 
 结构与 Surge / Shadowrocket 一致，但 QX 使用自家的 policy 类型名：
 
 ### 11 区域组（QX: `url-latency-benchmark`）
 - 使用 `server-tag-regex=<正则>` 按节点 tag 自动匹配
-- `check-interval=600` 每 10 分钟重测延迟
+- `check-interval=300` 每 5 分钟重测延迟
 - `tolerance=100` ms 防抖
 - 选最低延迟
 
-### 32 业务组（QX: `static`）
+### 33 业务组（QX: `static`）
 - 手动选择候选项（包含 11 区域组 + direct + reject）
 - 首次导入后建议在 QX UI 里逐组指定偏好区域
 
@@ -235,8 +235,8 @@ QX 的真正优势是 **`resource_parser_url`（通用资源解析器）+ `rewri
 
 ## 八、验证
 
-1. QX → **设置** → **配置** → 查看当前配置名称，应显示 `Quantumult X Smart v5.4.23-QX.2`。
-2. **策略（Policy）** 面板应出现 54 组（22 `url-latency-benchmark` + 32 `static`）。
+1. QX → **设置** → **配置** → 查看当前配置名称，应显示 `Quantumult X Smart v5.4.36-QX.1`。
+2. **策略（Policy）** 面板应出现 55 组（22 `url-latency-benchmark` + 32 `static`）。
 3. **日志（Log）** 查看 filter_remote 下载状态，无 404 / timeout 即成功。
 4. 访问测试：
    - `chat.openai.com` → 🤖 AI 服务
@@ -275,20 +275,11 @@ QX 的真正优势是 **`resource_parser_url`（通用资源解析器）+ `rewri
 
 ---
 
-## 十、转换脚本（如何自己从 Shadowrocket 重新生成 QX 配置）
+## 十、维护状态
 
-`/tmp/srk_to_qx.py`（仓库内未提交的辅助脚本）可以把 `Shadowrocket/Shadowrocket.conf` 重新生成 QX 配置：
+当前仓库没有提交 `tools/srk_to_qx.py`。`QuantumultX.conf` 作为独立 QX 产物维护，并由 `tools/validate-artifact-contracts.js` 校验组数、DNS 字段、端口规则和基线版本。
 
-```python
-python3 /tmp/srk_to_qx.py
-# 输出:
-# Generated: Quantumult X/QuantumultX.conf
-#   policies: 34
-#   filter_remote: 286
-#   filter_local: 568 rules + 167 comments
-```
-
-转换规则摘要：
+如后续恢复 Shadowrocket → QX 自动转换，转换器至少需要覆盖：
 - `[Proxy Group]` url-test → `[policy]` `url-latency-benchmark`
 - `[Proxy Group]` select → `[policy]` `static`
 - `RULE-SET,<URL>,<POLICY>` → `[filter_remote]` 条目（自动改写 `/rule/Shadowrocket/` → `/rule/QuantumultX/`）

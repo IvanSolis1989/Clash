@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v5.4.24-sing.2",
-    "build": "2026-06-03",
-    "baseline": "Clash Party v5.4.24",
+    "version": "v5.4.36-sing.1",
+    "build": "2026-06-29",
+    "baseline": "Clash Party v5.4.36",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {
@@ -140,7 +140,7 @@
         "🌎 美洲节点",
         "🌍 非洲节点"
       ],
-      "interval": "3m",
+      "interval": "5m",
       "tolerance": 10
     },
     {
@@ -565,34 +565,6 @@
     },
     {
       "type": "selector",
-      "tag": "🌐 其他国外流媒体",
-      "outbounds": [
-        "🌍 全球节点",
-        "🏡 全球家宽",
-        "🇭🇰 香港节点",
-        "🏡 香港家宽",
-        "🇹🇼 台湾节点",
-        "🏡 台湾家宽",
-        "🇯🇵 日韩节点",
-        "🏡 日韩家宽",
-        "🇸🇬 狮城节点",
-        "🏡 狮城家宽",
-        "🌏 亚太节点",
-        "🏡 亚太家宽",
-        "🇺🇸 美国节点",
-        "🏡 美国家宽",
-        "🇪🇺 欧洲节点",
-        "🏡 欧洲家宽",
-        "🌎 美洲节点",
-        "🏡 美洲家宽",
-        "🌍 非洲节点",
-        "🏡 非洲家宽",
-        "DIRECT"
-      ],
-      "default": "🌍 全球节点"
-    },
-    {
-      "type": "selector",
       "tag": "🇭🇰 香港流媒体",
       "outbounds": [
         "🇭🇰 香港节点",
@@ -705,6 +677,34 @@
     },
     {
       "type": "selector",
+      "tag": "🌐 其他国外流媒体",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🇸🇬 狮城节点",
+        "🏡 狮城家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
       "tag": "🕹️ 国内游戏",
       "outbounds": [
         "DIRECT",
@@ -734,6 +734,34 @@
     {
       "type": "selector",
       "tag": "🎮 国外游戏",
+      "outbounds": [
+        "🌍 全球节点",
+        "🏡 全球家宽",
+        "🇭🇰 香港节点",
+        "🏡 香港家宽",
+        "🇹🇼 台湾节点",
+        "🏡 台湾家宽",
+        "🇯🇵 日韩节点",
+        "🏡 日韩家宽",
+        "🇸🇬 狮城节点",
+        "🏡 狮城家宽",
+        "🌏 亚太节点",
+        "🏡 亚太家宽",
+        "🇺🇸 美国节点",
+        "🏡 美国家宽",
+        "🇪🇺 欧洲节点",
+        "🏡 欧洲家宽",
+        "🌎 美洲节点",
+        "🏡 美洲家宽",
+        "🌍 非洲节点",
+        "🏡 非洲家宽",
+        "DIRECT"
+      ],
+      "default": "🌍 全球节点"
+    },
+    {
+      "type": "selector",
+      "tag": "🔍 Google 服务",
       "outbounds": [
         "🌍 全球节点",
         "🏡 全球家宽",
@@ -1023,7 +1051,7 @@
         "🏡 美洲家宽",
         "🏡 非洲家宽"
       ],
-      "interval": "3m",
+      "interval": "5m",
       "tolerance": 10
     },
     {
@@ -1726,6 +1754,16 @@
       },
       {
         "type": "remote",
+        "tag": "amap",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/amap.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
         "tag": "cn",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
@@ -1769,6 +1807,16 @@
         "tag": "loyalsoldier-greatfire",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/greatfire.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "vpsdance-ai-coding",
+        "format": "source",
+        "url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/sing-box/coding.json",
         "http_client": {
           "detour": "🌍 全球节点"
         },
@@ -1970,6 +2018,76 @@
         "outbound": "DIRECT"
       },
       {
+        "domain_suffix": [
+          "douyin.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "douyincdn.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "douyinpic.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "douyinstatic.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "douyinvod.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "idouyinvod.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "iesdouyin.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "iesdouyin.net"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "amemv.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
+        "domain_suffix": [
+          "zjcdn.com"
+        ],
+        "action": "route",
+        "outbound": "📺 国内流媒体"
+      },
+      {
         "rule_set": [
           "anti-ad"
         ],
@@ -1979,6 +2097,75 @@
         "rule_set": [
           "geosite-category-ads-all"
         ],
+        "action": "reject"
+      },
+      {
+        "rule_set": [
+          "amap"
+        ],
+        "action": "route",
+        "outbound": "🏠 国内网站"
+      },
+      {
+        "rule_set": [
+          "youtube"
+        ],
+        "port": [
+          443
+        ],
+        "network": "udp",
+        "action": "route",
+        "outbound": "📹 YouTube"
+      },
+      {
+        "rule_set": [
+          "google"
+        ],
+        "port": [
+          443
+        ],
+        "network": "udp",
+        "action": "route",
+        "outbound": "🔍 Google 服务"
+      },
+      {
+        "rule_set": [
+          "microsoft"
+        ],
+        "port": [
+          443
+        ],
+        "network": "udp",
+        "action": "route",
+        "outbound": "Ⓜ️ 微软服务"
+      },
+      {
+        "rule_set": [
+          "apple"
+        ],
+        "port": [
+          443
+        ],
+        "network": "udp",
+        "action": "route",
+        "outbound": "🍎 苹果服务"
+      },
+      {
+        "rule_set": [
+          "cn"
+        ],
+        "port": [
+          443
+        ],
+        "network": "udp",
+        "action": "route",
+        "outbound": "DIRECT"
+      },
+      {
+        "port": [
+          443
+        ],
+        "network": "udp",
         "action": "reject"
       },
       {
@@ -2784,6 +2971,13 @@
         "outbound": "📹 YouTube"
       },
       {
+        "domain_suffix": [
+          "copilot.tencent.com"
+        ],
+        "action": "route",
+        "outbound": "🏠 国内网站"
+      },
+      {
         "rule_set": [
           "openai"
         ],
@@ -2877,13 +3071,6 @@
       {
         "domain_suffix": [
           "stability.ai"
-        ],
-        "action": "route",
-        "outbound": "🤖 AI 服务"
-      },
-      {
-        "domain_suffix": [
-          "anthropic.com"
         ],
         "action": "route",
         "outbound": "🤖 AI 服务"
@@ -3082,14 +3269,14 @@
           "google"
         ],
         "action": "route",
-        "outbound": "🔧 工具与服务"
+        "outbound": "🔍 Google 服务"
       },
       {
         "rule_set": [
           "google-ip"
         ],
         "action": "route",
-        "outbound": "🔧 工具与服务"
+        "outbound": "🔍 Google 服务"
       },
       {
         "domain_suffix": [
@@ -3097,6 +3284,13 @@
         ],
         "action": "route",
         "outbound": "📥 下载更新"
+      },
+      {
+        "rule_set": [
+          "vpsdance-ai-coding"
+        ],
+        "action": "route",
+        "outbound": "🤖 AI 服务"
       },
       {
         "domain_suffix": [
@@ -3149,34 +3343,6 @@
       },
       {
         "domain_suffix": [
-          "stripe.com"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
-          "stripe.network"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
-          "stripecdn.com"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
-          "stripe.dev"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
           "wise.com"
         ],
         "action": "route",
@@ -3205,21 +3371,7 @@
       },
       {
         "domain_suffix": [
-          "braintreegateway.com"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
           "braintree-api.com"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
-          "venmo.com"
         ],
         "action": "route",
         "outbound": "🏦 金融支付"
@@ -3374,13 +3526,6 @@
       {
         "domain": [
           "mail.live.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "domain": [
-          "outlook.office365.com"
         ],
         "action": "route",
         "outbound": "🌐 国外网站"
@@ -3758,20 +3903,6 @@
       },
       {
         "domain_suffix": [
-          "notion.so"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "domain_suffix": [
-          "notion.site"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "domain_suffix": [
           "figma.com"
         ],
         "action": "route",
@@ -3786,28 +3917,7 @@
       },
       {
         "domain_suffix": [
-          "atlassian.com"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "domain_suffix": [
           "jira.com"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "domain_suffix": [
-          "trello.com"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "domain_suffix": [
-          "bitbucket.org"
         ],
         "action": "route",
         "outbound": "🧑‍💼 会议协作"
@@ -3967,34 +4077,6 @@
         "outbound": "🎥 Netflix"
       },
       {
-        "geoip": [
-          "netflix"
-        ],
-        "action": "route",
-        "outbound": "🎥 Netflix"
-      },
-      {
-        "domain_suffix": [
-          "max.com"
-        ],
-        "action": "route",
-        "outbound": "📡 HBO/Max"
-      },
-      {
-        "domain_suffix": [
-          "hulu.jp"
-        ],
-        "action": "route",
-        "outbound": "📺 Hulu"
-      },
-      {
-        "domain_suffix": [
-          "happyon.jp"
-        ],
-        "action": "route",
-        "outbound": "📺 Hulu"
-      },
-      {
         "rule_set": [
           "spotify"
         ],
@@ -4028,13 +4110,6 @@
           "203.107.1.34/32",
           "203.107.1.65/32",
           "203.107.1.66/32"
-        ],
-        "action": "route",
-        "outbound": "🇭🇰 香港流媒体"
-      },
-      {
-        "domain_suffix": [
-          "mytvsuper.com"
         ],
         "action": "route",
         "outbound": "🇭🇰 香港流媒体"
@@ -4083,28 +4158,7 @@
       },
       {
         "domain_suffix": [
-          "nowe.com"
-        ],
-        "action": "route",
-        "outbound": "🇭🇰 香港流媒体"
-      },
-      {
-        "domain_suffix": [
-          "rthk.hk"
-        ],
-        "action": "route",
-        "outbound": "🇭🇰 香港流媒体"
-      },
-      {
-        "domain_suffix": [
           "icable.com"
-        ],
-        "action": "route",
-        "outbound": "🇭🇰 香港流媒体"
-      },
-      {
-        "domain_suffix": [
-          "cabletv.com.hk"
         ],
         "action": "route",
         "outbound": "🇭🇰 香港流媒体"
@@ -4125,34 +4179,6 @@
       },
       {
         "domain_suffix": [
-          "litv.tv"
-        ],
-        "action": "route",
-        "outbound": "🇹🇼 台湾流媒体"
-      },
-      {
-        "domain_suffix": [
-          "video.friday.tw"
-        ],
-        "action": "route",
-        "outbound": "🇹🇼 台湾流媒体"
-      },
-      {
-        "domain_suffix": [
-          "friday.tw"
-        ],
-        "action": "route",
-        "outbound": "🇹🇼 台湾流媒体"
-      },
-      {
-        "domain_suffix": [
-          "linetv.tw"
-        ],
-        "action": "route",
-        "outbound": "🇹🇼 台湾流媒体"
-      },
-      {
-        "domain_suffix": [
           "elta.tv"
         ],
         "action": "route",
@@ -4161,13 +4187,6 @@
       {
         "domain_suffix": [
           "mod.cht.com.tw"
-        ],
-        "action": "route",
-        "outbound": "🇹🇼 台湾流媒体"
-      },
-      {
-        "domain_suffix": [
-          "hamivideo.hinet.net"
         ],
         "action": "route",
         "outbound": "🇹🇼 台湾流媒体"
@@ -4202,21 +4221,7 @@
       },
       {
         "domain_suffix": [
-          "tver.jp"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
           "unext.jp"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
-          "video.unext.jp"
         ],
         "action": "route",
         "outbound": "🇯🇵 日韩流媒体"
@@ -4231,20 +4236,6 @@
       {
         "domain_suffix": [
           "nhk.or.jp"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
-          "dmm.com"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
-          "dmm.co.jp"
         ],
         "action": "route",
         "outbound": "🇯🇵 日韩流媒体"
@@ -4287,27 +4278,6 @@
       {
         "domain_suffix": [
           "music.jp"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
-          "nicovideo.jp"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
-          "nicovideo.me"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "domain_suffix": [
-          "dmc.nico"
         ],
         "action": "route",
         "outbound": "🇯🇵 日韩流媒体"
@@ -4454,49 +4424,7 @@
       },
       {
         "domain_suffix": [
-          "itv.com"
-        ],
-        "action": "route",
-        "outbound": "🇪🇺 欧洲流媒体"
-      },
-      {
-        "domain_suffix": [
-          "itvstatic.com"
-        ],
-        "action": "route",
-        "outbound": "🇪🇺 欧洲流媒体"
-      },
-      {
-        "domain_suffix": [
-          "channel4.com"
-        ],
-        "action": "route",
-        "outbound": "🇪🇺 欧洲流媒体"
-      },
-      {
-        "domain_suffix": [
-          "channel5.com"
-        ],
-        "action": "route",
-        "outbound": "🇪🇺 欧洲流媒体"
-      },
-      {
-        "domain_suffix": [
-          "sky.com"
-        ],
-        "action": "route",
-        "outbound": "🇪🇺 欧洲流媒体"
-      },
-      {
-        "domain_suffix": [
           "nowtv.co.uk"
-        ],
-        "action": "route",
-        "outbound": "🇪🇺 欧洲流媒体"
-      },
-      {
-        "domain_suffix": [
-          "britbox.com"
         ],
         "action": "route",
         "outbound": "🇪🇺 欧洲流媒体"
@@ -4657,20 +4585,6 @@
       },
       {
         "domain_suffix": [
-          "wetv.vip"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
-          "wetvinfo.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
           "iq.com"
         ],
         "action": "route",
@@ -4734,20 +4648,6 @@
       },
       {
         "domain_suffix": [
-          "viki.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
-          "viki.io"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
           "iflix.com"
         ],
         "action": "route",
@@ -4756,13 +4656,6 @@
       {
         "domain_suffix": [
           "catchplay.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
-          "mewatch.sg"
         ],
         "action": "route",
         "outbound": "🌐 其他国外流媒体"
@@ -4812,13 +4705,6 @@
       {
         "domain_suffix": [
           "fubo.tv"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "domain_suffix": [
-          "discoveryplus.com"
         ],
         "action": "route",
         "outbound": "🌐 其他国外流媒体"
@@ -4881,20 +4767,6 @@
       },
       {
         "domain_suffix": [
-          "yandex.com"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "domain_suffix": [
-          "yandex.ru"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "domain_suffix": [
           "ecosia.org"
         ],
         "action": "route",
@@ -4920,6 +4792,13 @@
         ],
         "action": "route",
         "outbound": "🔧 工具与服务"
+      },
+      {
+        "domain": [
+          "scholar.google.com"
+        ],
+        "action": "route",
+        "outbound": "🔍 Google 服务"
       },
       {
         "rule_set": [
@@ -4952,20 +4831,6 @@
       {
         "domain_suffix": [
           "yarnpkg.com"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "domain_suffix": [
-          "pypi.org"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "domain_suffix": [
-          "pythonhosted.org"
         ],
         "action": "route",
         "outbound": "🔧 工具与服务"
@@ -5244,13 +5109,6 @@
         "outbound": "🔧 工具与服务"
       },
       {
-        "geoip": [
-          "google"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
         "rule_set": [
           "onedrive"
         ],
@@ -5308,13 +5166,6 @@
       },
       {
         "domain_suffix": [
-          "dl.delivery.mp.microsoft.com"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "domain_suffix": [
           "officecdn.microsoft.com"
         ],
         "action": "route",
@@ -5323,27 +5174,6 @@
       {
         "domain_suffix": [
           "officecdn.microsoft.com.edgesuite.net"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "domain_suffix": [
-          "download.mozilla.org"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "domain_suffix": [
-          "archive.mozilla.org"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "domain_suffix": [
-          "releases.ubuntu.com"
         ],
         "action": "route",
         "outbound": "📥 下载更新"
@@ -5545,99 +5375,169 @@
         "outbound": "🚫 受限网站"
       },
       {
+        "domain_suffix": [
+          "mihoyo.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "miyoushe.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "yuanshen.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "bhsr.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "zenlesszonezero.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain": [
+          "game.163.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "gm.163.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "ds.163.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "nie.163.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "nie.netease.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "update.netease.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "netease.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "wegame.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "wegame.com.cn"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "perfect-world.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "wanmei.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "xd.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "taptap.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "taptap.io"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "papegames.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "hypergryph.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "gryphline.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
+        "domain_suffix": [
+          "lilith.com"
+        ],
+        "action": "route",
+        "outbound": "🕹️ 国内游戏"
+      },
+      {
         "rule_set": [
           "geosite-category-games"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "ubisoft.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "ubi.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "riotgames.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "leagueoflegends.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "valorant.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "rockstargames.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "gog.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "gogalaxy.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "bethesda.net"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "supercell.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "garena.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "hoyoverse.com"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "domain_suffix": [
-          "hoyolab.com"
         ],
         "action": "route",
         "outbound": "🎮 国外游戏"
@@ -6302,167 +6202,6 @@
       },
       {
         "domain_suffix": [
-          "mihoyo.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "miyoushe.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "yuanshen.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "bhsr.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "zenlesszonezero.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain": [
-          "game.163.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "gm.163.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "ds.163.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "nie.163.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "nie.netease.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "update.netease.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "netease.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "wegame.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "wegame.com.cn"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "perfect-world.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "wanmei.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "xd.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "taptap.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "taptap.io"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "papegames.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "hypergryph.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "gryphline.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
-          "lilith.com"
-        ],
-        "action": "route",
-        "outbound": "🕹️ 国内游戏"
-      },
-      {
-        "domain_suffix": [
           "iqiyi.com"
         ],
         "action": "route",
@@ -6541,27 +6280,6 @@
       {
         "domain_suffix": [
           "hunantv.com"
-        ],
-        "action": "route",
-        "outbound": "📺 国内流媒体"
-      },
-      {
-        "domain_suffix": [
-          "douyin.com"
-        ],
-        "action": "route",
-        "outbound": "📺 国内流媒体"
-      },
-      {
-        "domain_suffix": [
-          "douyinpic.com"
-        ],
-        "action": "route",
-        "outbound": "📺 国内流媒体"
-      },
-      {
-        "domain_suffix": [
-          "douyinvod.com"
         ],
         "action": "route",
         "outbound": "📺 国内流媒体"
@@ -6830,7 +6548,7 @@
           "google"
         ],
         "action": "route",
-        "outbound": "🔧 工具与服务"
+        "outbound": "🔍 Google 服务"
       },
       {
         "geoip": [
@@ -6838,72 +6556,6 @@
         ],
         "action": "route",
         "outbound": "🏠 国内网站"
-      },
-      {
-        "action": "route",
-        "outbound": "🐟 漏网之鱼"
-      },
-      {
-        "rule_set": [
-          "geosite-youtube"
-        ],
-        "port": [
-          443
-        ],
-        "network": "udp",
-        "action": "route",
-        "outbound": "📹 YouTube"
-      },
-      {
-        "rule_set": [
-          "geosite-google"
-        ],
-        "port": [
-          443
-        ],
-        "network": "udp",
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "rule_set": [
-          "microsoft"
-        ],
-        "port": [
-          443
-        ],
-        "network": "udp",
-        "action": "route",
-        "outbound": "Ⓜ️ 微软服务"
-      },
-      {
-        "rule_set": [
-          "apple"
-        ],
-        "port": [
-          443
-        ],
-        "network": "udp",
-        "action": "route",
-        "outbound": "🍎 苹果服务"
-      },
-      {
-        "rule_set": [
-          "geosite-cn"
-        ],
-        "port": [
-          443
-        ],
-        "network": "udp",
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "port": [
-          443
-        ],
-        "network": "udp",
-        "action": "reject"
       }
     ]
   }

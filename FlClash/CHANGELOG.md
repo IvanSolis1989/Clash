@@ -5,6 +5,54 @@
 
 ---
 
+## v5.4.36-flclash.1 (2026-06-29)
+
+- CLEAN#171-DIRECT：同步删除 22 条经逐条确认的冗余直写规则。
+- 与 Clash Party Normal 保持 100% 规则等价；AI / Binance / Microsoft login 候选因不同策略 `.mrs` 前置阻断，继续保留。
+
+## v5.4.35-flclash.1 (2026-06-28)
+
+- ★ CLEAN#170-UPSTREAM：同步 Clash Party v5.4.35，删除 8 个已被前序同目标规则覆盖的冗余上游规则集。
+- CLEAN#170-DIRECT：删除 3 条已被前置 Douyin 国内流媒体守卫同目标覆盖的后置直写规则：`douyin.com`、`douyinpic.com`、`douyinvod.com`。
+- Provider 生成同步缩减到 376；匹配顺序不变，FlClash 仍使用标准 Mihomo `url-test` 区域组。
+
+## v5.4.34-flclash.1 (2026-06-28)
+
+- ★ FIX#169-AMAP：同步 Clash Party v5.4.34，新增 MetaCubeX `amap` rule-provider 与 `RULE-SET,amap,🏠 国内网站`。
+- 规则放在广告/威胁规则之后、TikTok/GFW/geolocation-!cn 宽规则之前，修复 `webapi.amap.com` 误走国外的首匹配风险。
+
+## v5.4.33-flclash.1 (2026-06-27)
+
+- ★ FEAT#169-AI-CODING：新增 `vpsdance-ai-coding` rule-provider，来源为 VPSDance `rules/clash/coding.yaml`，归入 `🤖 AI 服务`。
+
+## v5.4.32-flclash.1 (2026-06-25)
+
+- ★ FIX#168-CN-GAME：同步 Clash Party Normal v5.4.32，将国内游戏块前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理国内游戏域名。
+- 新增 JS 覆写回归断言覆盖国内游戏优先级。
+
+## v5.4.31-flclash.1 (2026-06-20)
+
+- ★ FIX#167-DOUYIN：同步 Clash Party Normal v5.4.31，新增抖音 Web 国内流媒体前置守卫，`douyin.com` / `zjcdn.com` 等域名先于 TikTok 和国外兜底规则命中 `📺 国内流媒体`。
+- 新增 JS 覆写回归断言，防止前置顺序回退。
+
+## v5.4.30-flclash.1 (2026-06-17)
+
+- ★ FEAT#166-GOOGLE：同步 Clash Party v5.4.30，新增 `🔍 Google 服务` 业务组并置于 `🔧 工具与服务` 之前。
+- Google 基础服务、Scholar、Google IP 与 Google QUIC 规则从工具组拆出；业务组数量调整为 33。
+
+## v5.4.29-flclash.1 (2026-06-10)
+
+- ★ PERF#165-LATENCY：22 个区域 `url-test` 组 `interval: 180 -> 300`，与 Clash Party Normal / CMFA 对齐。
+- 规则、DNS、节点过滤与业务策略组语义不变。
+
+## v5.4.27-flclash.1 (2026-06-07)
+
+- ★ CLEAN#165：同步 Clash Party Normal 清理 7 条已由 `claude` / `paypal` / `hbo` / `hulu` / `xbox` rule-provider 先行覆盖的直写域名，规则命中策略不变。
+
+## v5.4.26-flclash.1 (2026-06-07)
+
+- ★ FIX#164：腾讯 WorkBuddy `copilot.tencent.com` 国内直连防吞——szkane `AiDomain.list` 的 `DOMAIN-KEYWORD,copilot` 子串会把它误吞到 `🤖 AI 服务`（国外代理）导致对话报错；在所有 AI rule-set 之前前置 `DOMAIN-SUFFIX,copilot.tencent.com,🏠 国内网站`。基线 Clash Party v5.4.26。
+
 ## v5.4.25-flclash.1 (2026-06-03)
 
 - ★ 审查修复：GEOIP 重复规则去重（`GEOIP,netflix` / `GEOIP,google` / `GEOIP,ID` 各出现 2 次 → 保留 GEOIP 标签路由集中区块）

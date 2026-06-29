@@ -1,11 +1,11 @@
-# Surge 使用教程（对齐 Clash Party v5.4.23）
+# Surge 使用教程（对齐 Clash Party v5.4.36）
 
 > 目录简介：这里维护 Surge iOS/macOS 配置和导入教程，按 Surge 语法对齐 Clash Party 分流策略。
 >
 > 配置文件：`Surge/Surge.conf`
-> 版本：**v5.4.23-Surge.2**（Build 2026-06-02，详见 `Surge/CHANGELOG.md`；修复 #162 失效远程规则 URL）
+> 版本：**v5.4.36-Surge.1**（Build 2026-06-29，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v5.4.36 基线）
 > 目标：**Surge 5 / Surge Mac**（付费正版；iOS + macOS 通用）
-> 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 32 业务策略组 + 286 RULE-SET
+> 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 33 业务策略组 + 283 RULE-SET
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -14,7 +14,7 @@
 ## 🚀 零基础快速开始
 
 ### 这是什么？
-**Surge 是 iOS / macOS 上最专业、最贵的付费代理客户端**。它的强项是稳定 + 脚本化 + MITM。本仓库提供一份 Surge `.conf`，让你无需手配 900+ 条规则就能享用 11 区域 + 32 业务分流。
+**Surge 是 iOS / macOS 上最专业、最贵的付费代理客户端**。它的强项是稳定 + 脚本化 + MITM。本仓库提供一份 Surge `.conf`，让你无需手配 900+ 条规则就能享用 11 区域 + 33 业务分流。
 
 ### 我要准备什么？
 1. **iPhone/iPad（iOS 15+）或 Mac**
@@ -40,7 +40,7 @@
 
 ### 跑起来验证？
 - 浏览器打开 `https://www.google.com` 能打开
-- Surge「策略组」面板应看到 **54 组**（22 区域 + 32 业务）
+- Surge「策略组」面板应看到 **55 组**（22 区域 + 33 业务）
 - Surge「活动」面板可看每条请求命中的规则和节点
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
@@ -118,7 +118,7 @@ https://cdn.jsdelivr.net/gh/<user>/<repo>@main/Surge/Surge.conf
 3. 粘贴托管 URL → **下载**。
 4. 下载完成后点击配置 → **启用**。
 
-首次启用时 Surge 会拉取 **286 个 RULE-SET**（blackmatrix7 Surge 专用 `.list` 格式），根据网络情况约 **1–3 分钟**。**这期间务必保持代理开启**，否则 GitHub 访问不稳定会导致部分 RULE-SET 下载失败。
+首次启用时 Surge 会拉取 **283 个 RULE-SET**（blackmatrix7 Surge 专用 `.list` 格式），根据网络情况约 **1–3 分钟**。**这期间务必保持代理开启**，否则 GitHub 访问不稳定会导致部分 RULE-SET 下载失败。
 
 ---
 
@@ -147,7 +147,7 @@ Surge 的节点来源有两种方式，任选其一：
 
 ---
 
-## 五、11 区域组 × 32 业务组说明
+## 五、11 区域组 × 33 业务组说明
 
 ### 区域组（url-test 自动择优）
 9 个组先用 `include-all-proxies=true` 引入候选节点，再按 `policy-regex-filter` 自动按节点名聚合：
@@ -155,7 +155,7 @@ Surge 的节点来源有两种方式，任选其一：
 - 🇭🇰 香港节点、🇹🇼 台湾节点、🇯🇵 日韩节点（JP+KR 合并）、🌏 亚太节点
 - 🇺🇸 美国节点、🇪🇺 欧洲节点、🌎 美洲节点、🌍 非洲节点
 
-测速间隔 **600s**（10 分钟），tolerance **50ms**（防抖动）。
+测速间隔 **300s**（5 分钟），tolerance **50ms**（防抖动）。
 
 ### 业务策略组（select 手动）
 31 个业务组，首次导入后建议为每个组手动指定一个首选区域：
@@ -183,6 +183,7 @@ Surge 的节点来源有两种方式，任选其一：
 | 🌐 其他国外流媒体 | 🌍 全球节点 |
 | 🕹️ 国内游戏 | DIRECT |
 | 🎮 国外游戏 | 🌍 全球 或 🇯🇵 日韩（低延迟） |
+| 🔍 Google 服务 | 🌍 全球 |
 | 🔧 工具与服务 | 🌍 全球 |
 | Ⓜ️ 微软服务 | 🌍 全球 |
 | 🍎 苹果服务 | DIRECT（境内）|
@@ -244,8 +245,8 @@ Surge 的节点来源有两种方式，任选其一：
 
 ## 九、验证
 
-1. Surge → **首页** → **已启用的配置**：应显示 `Surge Smart v5.4.23-Surge.2`。
-2. **策略组** 面板应出现 22 区域 + 32 业务共 54 组（不得少于 50 组）。
+1. Surge → **首页** → **已启用的配置**：应显示 `Surge Smart v5.4.36-Surge.1`。
+2. **策略组** 面板应出现 22 区域 + 33 业务共 55 组（不得少于 50 组）。
 3. 访问以下网站做功能验证：
    - `https://chat.openai.com` → 命中「🤖 AI 服务」
    - `https://www.netflix.com` → 命中「🎥 Netflix」

@@ -20,6 +20,8 @@ on:
       - 'Passwall2/**/*.conf'
       - 'Passwall2/shunt-rules/**/*.list'
       - 'tools/validate-artifact-contracts.js'
+      - 'tools/validate-process-name-direct.js'
+      - 'tools/fixtures/**'
       - '.github/workflows/validate-artifact-contracts.yml'
   push:
     branches: [main]
@@ -41,6 +43,8 @@ on:
       - 'Passwall2/**/*.conf'
       - 'Passwall2/shunt-rules/**/*.list'
       - 'tools/validate-artifact-contracts.js'
+      - 'tools/validate-process-name-direct.js'
+      - 'tools/fixtures/**'
       - '.github/workflows/validate-artifact-contracts.yml'
   workflow_dispatch:
 
@@ -71,3 +75,6 @@ jobs:
 
       - name: Validate cross-client artifact contracts
         run: node tools/validate-artifact-contracts.js --strict-ruby
+
+      - name: Validate PROCESS-NAME direct whitelist
+        run: node tools/validate-process-name-direct.js

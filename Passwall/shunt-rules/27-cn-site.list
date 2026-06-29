@@ -21,6 +21,17 @@ domain:staticfile.org
 domain:upaiyun.com
 domain:zhimg.com
 domain:zhihu.co
+# FIX#169-AMAP: GaoDe / AMap 国内 API 前置直连，避免 webapi.amap.com 依赖宽泛 CN 兜底
+domain:a-map.cn
+domain:a-map.co
+domain:a-map.link
+domain:a-map.vip
+domain:acloudrender.com
+domain:amap.com
+domain:amapauto.com
+domain:anav.com
+domain:autonavi.com
+domain:gaode.com
 geosite:cn
 
 # [IP List]

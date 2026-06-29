@@ -3,9 +3,9 @@
 > 目录简介：这里维护 Shadowrocket 小火箭配置和使用教程，覆盖 iOS/macOS 私有 conf 语法下的分流实现。
 >
 > 配置文件：`Shadowrocket.conf`
-> 版本：**v5.4.23-SR.2**（Build 2026-06-02，跟随 Clash Party v5.4.23 基线；修复 #162 失效远程规则 URL）
+> 版本：**v5.4.36-SR.1**（Build 2026-06-29，跟随 Clash Party v5.4.36 基线；区域 url-test 默认 300s）
 > 目标：**Shadowrocket iOS（App Store 正版）** / macOS 通用
-> 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 32 业务策略组 + 286 rule-set
+> 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 33 业务策略组 + 283 rule-set
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -49,13 +49,13 @@
 ### 跑起来之后怎么验证？
 - Safari 打开 `https://www.google.com` 能打开 = 代理通了。
 - SR「首页」最上方显示绿色的"Connected"。
-- SR「首页 → 代理组」应能看到 **22 区域 + 32 业务 = 54 个组**。
+- SR「首页 → 代理组」应能看到 **22 区域 + 33 业务 = 55 个组**。
 - SR「首页 → 连接信息（Connections）」能看到每次请求走了哪个组/节点。
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
 ### 最常见踩坑
 - ❌ **App Store 搜不到 SR**：你的 Apple ID 是中国区。换非中国区 Apple ID（注册需要一个非中国的地址 + 外国信用卡/礼品卡）。
-- ❌ **导入配置时规则下载失败一半**：首次导入时 SR 要从 GitHub 拉约 286 个规则包。**必须先开代理再下载配置**。可以先用一个简单的代理配置连上，再切到本配置。
+- ❌ **导入配置时规则下载失败一半**：首次导入时 SR 要从 GitHub 拉约 283 个规则包。**必须先开代理再下载配置**。可以先用一个简单的代理配置连上，再切到本配置。
 - ❌ **国内支付/银行 App 变卡 / 登不上**：配置里已把主流支付（支付宝/微信支付）+ 5 大国行（工行/建行/农行/交行/邮储）加到 skip-proxy。你遇到的那个 App 没被排除就加进去：SR 首页往下拉到「Skip Proxy」→ 追加 `*.你遇到的域名.com`。
 - ❌ **TikTok 海外版看不了**：在「📱 社交媒体」组里切到 🇯🇵 日韩节点或 🌏 亚太节点，对 TikTok 友好。
 - ❌ **后台刷新后规则没更新**：iOS 设置 → 通用 → 后台 App 刷新 → 确认 Shadowrocket 是开的。
@@ -132,7 +132,7 @@ Shadowrocket 不像桌面端那样支持本地脚本覆写；必须把配置文�
 3. 粘贴配置 URL，点击**下载**。
 4. 下载完成后，点击该配置行 → 选择「**使用配置（Use Config）**」。
 
-此时 Shadowrocket 会开始下载约 **286 个 rule-set**（blackmatrix7 Shadowrocket 专用 `.list` 格式），首次需要 **3–5 分钟**，期间请保持代理开启（否则 GitHub 访问不稳定会导致部分 rule-set 下载失败）。
+此时 Shadowrocket 会开始下载约 **283 个 rule-set**（blackmatrix7 Shadowrocket 专用 `.list` 格式），首次需要 **3–5 分钟**，期间请保持代理开启（否则 GitHub 访问不稳定会导致部分 rule-set 下载失败）。
 
 ---
 
@@ -159,7 +159,7 @@ Shadowrocket 的节点来源与 Clash 不同，需要在 **首页 → 子网**�
 
 ---
 
-## 五、11 区域组 × 32 业务组说明
+## 五、11 区域组 × 33 业务组说明
 
 Shadowrocket 不支持 JavaScript，改用 `policy-regex-filter` 在导入/编译时一次性匹配节点名：
 
@@ -174,11 +174,11 @@ Shadowrocket 不支持 JavaScript，改用 `policy-regex-filter` 在导入/编�
 - 📹 YouTube、🎵 音乐流媒体
 - 🇭🇰 香港流媒体、🇹🇼 台湾流媒体、🇯🇵 日韩流媒体、🇪🇺 欧洲流媒体
 - 🌐 其他国外流媒体、🕹️ 国内游戏、🎮 国外游戏
-- 🔧 工具与服务、Ⓜ️ 微软服务、🍎 Apple、📥 下载更新
+- 🔍 Google 服务、🔧 工具与服务、Ⓜ️ 微软服务、🍎 Apple、📥 下载更新
 - 🛰️ BT/PT Tracker、🏠 国内网站、🚫 受限网站、🌐 国外网站
 - 🐟 漏网之鱼、🛑 广告拦截
 
-首次导入后，建议在「**首页 → 代理组**」为 **32 个业务组**逐一选择一个默认上游节点或区域组。
+首次导入后，建议在「**首页 → 代理组**」为 **33 个业务组**逐一选择一个默认上游节点或区域组。
 
 ---
 

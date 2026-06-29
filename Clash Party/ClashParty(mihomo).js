@@ -1,7 +1,8 @@
 ﻿// Clash 覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.25-normal.1 (2026-06-03)
-// 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 32 业务策略组 + 385 rule-providers
-// 基线：Clash Party v5.4.24（与同目录 ClashParty(mihomo-smart).js 规则 100% 等价，仅区域组从 smart 改为 url-test）
+// 版本：v5.4.36-normal.1 (2026-06-29)
+// 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 376 rule-providers
+// 基线：Clash Party v5.4.36（与同目录 ClashParty(mihomo-smart).js 规则 100% 等价，仅区域组从 smart 改为 url-test）
+// v5.4.36: CLEAN#171-DIRECT 删除 22 条严格确认冗余直写规则 · v5.4.35: CLEAN#170-UPSTREAM 删除冗余上游规则集
 // 适用：Mihomo / Clash.Meta 稳定版内核、不支持 smart + LightGBM 的分支；也适用于想完全关闭 ML 评估的用户
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
@@ -9,7 +10,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.25-normal.1'
+const VERSION = 'v5.4.36-normal.1'
 
 // v5.4.9 FEAT#LOCAL-TOOLS: desktop local-tool direct whitelist.
 const LOCAL_TOOL_DIRECT_PROCESS_NAMES = [
@@ -186,9 +187,8 @@ function classifyNode(name) {
 
 function classifyAllNodes(proxies) {
   var result = {
-    HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], OTHER: [], ALL: [],
-    HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_OTHER: [], HOME_ALL: [],
-    UNCLASSIFIED: [], HOME_UNCLASSIFIED: [],
+    HK: [], TW: [], CN: [], JP: [], KR: [], SG: [], US: [], EU: [], AM: [], AF: [], APAC_OTHER: [], OTHER: [], ALL: [],
+    HOME_HK: [], HOME_TW: [], HOME_CN: [], HOME_JP: [], HOME_KR: [], HOME_SG: [], HOME_US: [], HOME_EU: [], HOME_AM: [], HOME_AF: [], HOME_APAC_OTHER: [], HOME_OTHER: [], HOME_ALL: [],
   }
   for (var i = 0; i < proxies.length; i++) {
     var p = proxies[i]
@@ -240,6 +240,7 @@ const BIZ = {
   STREAM_JP: '🇯🇵 日韩流媒体', STREAM_EU: '🇪🇺 欧洲流媒体',
   STREAM_OTHER: '🌐 其他国外流媒体',
   GAME_CN: '🕹️ 国内游戏', GAME_INTL: '🎮 国外游戏',
+  GOOGLE: '🔍 Google 服务',
   TOOLS: '🔧 工具与服务', MS: 'Ⓜ️ 微软服务', APPLE: '🍎 苹果服务',
   DOWNLOAD: '📥 下载更新', TRACKER: '🛰️ BT/PT Tracker',
   CN_SITE: '🏠 国内网站',
@@ -248,8 +249,8 @@ const BIZ = {
 }
 
 var ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
-var ACC_VF_RULES = ['paypal','wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
-var ACC_FAKE_LOCATION_RULES = ['bilibili','douyin','kuaishou','xiaohongshu','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
+var ACC_VF_RULES = ['wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
+var ACC_FAKE_LOCATION_RULES = ['bilibili','kuaishou','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
 
 const AD_FALSE_POSITIVE_ALLOWLIST = [
   // v5.4.2 P0-FIX#41: 小米核心服务 DIRECT 白名单——前置 miuiprivacy/advertisingmitv。
@@ -284,6 +285,20 @@ const AD_FALSE_POSITIVE_ALLOWLIST = [
   `DOMAIN-SUFFIX,getui.com,DIRECT`,
   `DOMAIN-SUFFIX,getui.net,DIRECT`,
   `DOMAIN-SUFFIX,gepush.com,DIRECT`,
+]
+const DOUYIN_CNMEDIA_GUARD_RULES = [
+  // v5.4.31 FIX#167-DOUYIN: Douyin Web 视频域名会被 TikTok / geolocation-!cn
+  // 等前置宽规则抢先命中；先锁到国内流媒体，确保 www.douyin.com 与 v5-dy-*.zjcdn.com 走国内链路。
+  `DOMAIN-SUFFIX,douyin.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,douyincdn.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,douyinpic.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,douyinstatic.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,douyinvod.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,idouyinvod.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,iesdouyin.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,iesdouyin.net,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,amemv.com,${BIZ.CNMEDIA}`,
+  `DOMAIN-SUFFIX,zjcdn.com,${BIZ.CNMEDIA}`,
 ]
 
 const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'SG', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA', 'OTHER']
@@ -358,14 +373,14 @@ const GEO_REGIONS_INTL = GEO_REGIONS_ALL.filter(r => r !== 'Asia_China')
 // ================================================================
 
 function upsertUrlTestGroup(config, name, proxies) {
-  var group = { name: name, type: 'url-test', url: 'https://www.gstatic.com/generate_204', interval: 180, tolerance: 10, lazy: false, proxies: proxies.slice() }
+  var group = { name: name, type: 'url-test', url: 'https://www.gstatic.com/generate_204', interval: 300, tolerance: 10, lazy: false, proxies: proxies.slice() }
   var idx = config['proxy-groups'].findIndex(function(g) { return g && g.name === name })
   if (idx !== -1) { config['proxy-groups'][idx] = group } else { config['proxy-groups'].push(group) }
   console.log(`[${VERSION}] url-test: "${name}" -> ${proxies.length} nodes`)
 }
 
 // ================================================================
-//  模块 F：业务策略组注入（32组）
+//  模块 F：业务策略组注入（33组）
 // ================================================================
 
 function injectBusinessGroups(config, activeSmartNames) {
@@ -406,6 +421,7 @@ function injectBusinessGroups(config, activeSmartNames) {
     { name: BIZ.STREAM_OTHER, type: 'select', proxies: standardProxies.slice() },
     { name: BIZ.GAME_CN, type: 'select', proxies: directFirstProxies.slice() },
     { name: BIZ.GAME_INTL, type: 'select', proxies: standardProxies.slice() },
+    { name: BIZ.GOOGLE, type: 'select', proxies: standardProxies.slice() },
     { name: BIZ.TOOLS, type: 'select', proxies: standardProxies.slice() },
     { name: BIZ.MS, type: 'select', proxies: standardProxies.slice() },
     { name: BIZ.APPLE, type: 'select', proxies: directFirstProxies.slice() },
@@ -586,7 +602,10 @@ function injectRuleProviders(config) {
   metaDomain('bilibili', 'bilibili')
   metaDomain('biliintl', 'biliintl')
 
-  // ============ #70~72 国内/国外兜底 ============
+  // ============ #70 高德地图国内站点 ============
+  metaDomain('amap', 'amap')
+
+  // ============ #71~73 国内/国外兜底 ============
   metaDomain('cn', 'cn')
   metaIpCidr('cn-ip', 'cn')
   metaDomain('proxy', 'geolocation-!cn')
@@ -599,7 +618,6 @@ function injectRuleProviders(config) {
     bm7('domob', 'Domob')
     bm7('hijacking', 'Hijacking')
     bm7('jiguangtuisong', 'JiGuangTuiSong')
-    bm7('marketing', 'Marketing')
     bm7('miuiprivacy', 'MIUIPrivacy')
     bm7('privacy', 'Privacy')
     bm7('youmengchuangxiang', 'YouMengChuangXiang')
@@ -647,7 +665,6 @@ function injectRuleProviders(config) {
     bm7('neteasemusic', 'NetEaseMusic')
     bm7('kugoukuwo', 'KugouKuwo')
     bm7('sohu', 'Sohu')
-    bm7('acfun', 'AcFun')
     bm7('douyu', 'Douyu')
     bm7('huya', 'HuYa')
     bm7('himalaya', 'Himalaya')
@@ -709,7 +726,6 @@ function injectRuleProviders(config) {
     bm7('emby', 'Emby')
     bm7('mytvsuper', 'myTVSUPER')
     bm7('tvb', 'TVB')
-    bm7('encoretvb', 'EncoreTVB')
     bm7('nowe', 'NowE')
     bm7('rthk', 'RTHK')
     bm7('cabletv', 'CableTV')
@@ -745,7 +761,6 @@ function injectRuleProviders(config) {
     bm7('garena', 'Garena')
     bm7('hoyoverse', 'HoYoverse')
     bm7('ubi', 'UBI')
-    bm7('wildrift', 'WildRift')
     bm7('sony', 'Sony')
     bm7('yandex', 'Yandex')
     bm7('naver', 'Naver')
@@ -770,7 +785,6 @@ function injectRuleProviders(config) {
     bm7('siri', 'Siri')
     bm7('testflight', 'TestFlight')
     bm7('applefirmware', 'AppleFirmware')
-    bm7('findmy', 'FindMy')
     bm7('download', 'Download')
     bm7('ubuntu', 'Ubuntu')
     bm7('mozilla', 'Mozilla')
@@ -1005,6 +1019,7 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
+    config['rule-providers']['vpsdance-ai-coding'] = { type: 'http', behavior: 'classical', url: 'https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml', path: './ruleset/vpsdance-ai-coding.yaml', interval: nextInterval(), proxy: RP_PROXY }
 
     // ── 金融服务：Bank × 10国（原 acc-bank 404 → 拆分为子 provider）──
     for (const cc of ['US', 'UK', 'HK', 'SG', 'JP', 'AU', 'CA', 'DE', 'NL', 'FR']) {
@@ -1016,8 +1031,8 @@ function injectRuleProviders(config) {
         proxy: RP_PROXY
       }
     }
-    // ── 金融服务：VirtualFinance × 4（原 acc-virtualfinance 404 → 拆分）──
-    for (const svc of ['Paypal', 'Wise', 'Monzo', 'Revolut']) {
+    // ── 金融服务：VirtualFinance × 3（原 acc-virtualfinance 404 → 拆分；PayPal 被 paypal 主规则覆盖）──
+    for (const svc of ['Wise', 'Monzo', 'Revolut']) {
       config['rule-providers'][`acc-vf-${svc.toLowerCase()}`] = {
         type: 'http', behavior: 'classical',
         url: `${ACC}/VirtualFinance/${svc}.yaml`,
@@ -1106,9 +1121,9 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.1.1: FakeLocation × 10 平台（原 acc-fakelocation 404 → 拆分）
+    // v5.1.1: FakeLocation × 8 平台（原 acc-fakelocation 404 → 拆分；DouYin / XiaoHongShu 被主规则覆盖）
     for (const app of [
-      'BiliBili', 'DouYin', 'KuaiShou', 'XiaoHongShu', 'XiGua',
+      'BiliBili', 'KuaiShou', 'XiGua',
       'WeiBo', 'ZhiHu', 'TieBa', 'DouBan', 'XianYu'
     ]) {
       config['rule-providers'][`acc-fl-${app.toLowerCase()}`] = {
@@ -1236,13 +1251,14 @@ function injectRuleProviders(config) {
     }
 
     // ── GeoRouting Domain × 17 区域（原 acc-georouting-domain 404 → 按区域拆分，Domain版=作者推荐🔥）──
+    const GEO_INTERVAL = 604800
     for (const region of GEO_REGIONS_ALL) {
       const slug = region.toLowerCase().replace(/_/g, '-')
       config['rule-providers'][`acc-geo-d-${slug}`] = {
         type: 'http', behavior: 'domain',
         url: `${ACC}/GeoRouting_For_Domain/GeoRouting_${region}_ccTLD_Domain.yaml`,
         path: `./ruleset/acc-GeoD-${region}.yaml`,
-        interval: nextInterval(),
+        interval: GEO_INTERVAL,
         proxy: RP_PROXY
       }
     }
@@ -1253,7 +1269,7 @@ function injectRuleProviders(config) {
         type: 'http', behavior: 'classical',
         url: `${ACC}/GeoRouting_For_IP/GeoRouting_${region}_GeoIP.yaml`,
         path: `./ruleset/acc-GeoIP-${region}.yaml`,
-        interval: nextInterval(),
+        interval: GEO_INTERVAL,
         proxy: RP_PROXY
       }
     }
@@ -1271,6 +1287,7 @@ function injectRules(config) {
     // Anti-ad false-positive allowlist: keep before all ad/phishing/TIF providers.
     // See docs/GEOSITE_COVERAGE_LEDGER.md for ownership and update rules.
     ...AD_FALSE_POSITIVE_ALLOWLIST,
+    ...DOUYIN_CNMEDIA_GUARD_RULES,
     `RULE-SET,anti-ad,${BIZ.AD}`,
     // v5.1: P0 安全 - 钓鱼域名拦截（13万条，SukkaW）
     `RULE-SET,sukka-phishing,${BIZ.AD}`,
@@ -1290,13 +1307,15 @@ function injectRules(config) {
     `RULE-SET,domob,${BIZ.AD}`,
     `RULE-SET,hijacking,${BIZ.AD}`,
     `RULE-SET,jiguangtuisong,${BIZ.AD}`,
-    `RULE-SET,marketing,${BIZ.AD}`,
     `RULE-SET,miuiprivacy,${BIZ.AD}`,
     `RULE-SET,privacy,${BIZ.AD}`,
     `RULE-SET,youmengchuangxiang,${BIZ.AD}`,
+    // v5.4.34 FIX#169-AMAP: webapi.amap.com 属高德地图国内 API。专用 amap 规则放在广告/威胁规则之后、
+    //   TikTok/GFW/geolocation-!cn 宽规则之前，避免依赖尾部 RULE-SET,cn 才直连。
+    `RULE-SET,amap,${BIZ.CN_SITE}`,
     // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——YouTube/Google/MS/Apple 白名单豁免，其余海外 QUIC REJECT
     "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔧 工具与服务",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务",
     "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务",
     "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务",
     "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT",
@@ -1362,6 +1381,11 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,ggpht.com,${BIZ.YT}`,
     `DOMAIN-SUFFIX,youtube-nocookie.com,${BIZ.YT}`,
     `DOMAIN-SUFFIX,youtubekids.com,${BIZ.YT}`,
+    // v5.4.26 FIX#164: 腾讯 WorkBuddy/智能助手 copilot.tencent.com 属国内 AI 服务，但
+    //   szkane AiDomain.list 含 `DOMAIN-KEYWORD,copilot`（子串匹配，见下方 RULE-SET,szkane-ai），
+    //   会把它误吞到 🤖 AI 服务（国外代理）→ WorkBuddy 对话报错（issue #164）。
+    //   前置精准规则锁定国内直连；置于所有 AI rule-set 之前以防任何宽规则抢匹配。
+    `DOMAIN-SUFFIX,copilot.tencent.com,${BIZ.CN_SITE}`,
     `RULE-SET,openai,${BIZ.AI}`,
     `RULE-SET,claude,${BIZ.AI}`,
     `RULE-SET,gemini,${BIZ.AI}`,
@@ -1381,7 +1405,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,cohere.com,${BIZ.AI}`,
     `DOMAIN-SUFFIX,midjourney.com,${BIZ.AI}`,
     `DOMAIN-SUFFIX,stability.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,anthropic.com,${BIZ.AI}`,
     `DOMAIN-SUFFIX,cursor.com,${BIZ.AI}`,
     `DOMAIN-SUFFIX,cursor.sh,${BIZ.AI}`,
     `DOMAIN-SUFFIX,v0.dev,${BIZ.AI}`,
@@ -1424,9 +1447,9 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,play.googleapis.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,android.clients.google.com,${BIZ.DOWNLOAD}`,
     `RULE-SET,googlefcm,${BIZ.DOWNLOAD}`,
-    // ── Google 搜索引擎（兜底：MetaCubeX geosite:google 覆盖 google.com/co.*/com.*）──
-    `RULE-SET,google,${BIZ.TOOLS}`,
-    `RULE-SET,google-ip,${BIZ.TOOLS},no-resolve`,
+    // ── Google 基础服务（兜底：MetaCubeX geosite:google 覆盖 google.com/co.*/com.*）──
+    `RULE-SET,google,${BIZ.GOOGLE}`,
+    `RULE-SET,google-ip,${BIZ.GOOGLE},no-resolve`,
     // ════════════════════════════════════════════════════════════════
     // v5.1: szkane AI 综合 + Accademia AI 补充
     `RULE-SET,szkane-ai,${BIZ.AI}`,
@@ -1438,6 +1461,7 @@ function injectRules(config) {
     // 日志：match RuleSet/acc-copilot) --> geover.prod.do.dsp.mp.microsoft.com:443
     `DOMAIN-SUFFIX,do.dsp.mp.microsoft.com,${BIZ.DOWNLOAD}`,
     `RULE-SET,acc-copilot,${BIZ.AI}`,
+    `RULE-SET,vpsdance-ai-coding,${BIZ.AI}`,
     `DOMAIN-SUFFIX,tradingview.com,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,tvcdn.com,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,coinglass.com,${BIZ.CRYPTO}`,
@@ -1450,17 +1474,11 @@ function injectRules(config) {
     // v5.1: szkane Web3（DeFi/NFT/区块链RPC）★量化交易核心
     `RULE-SET,szkane-web3,${BIZ.CRYPTO}`,
     `RULE-SET,paypal,${BIZ.PAYMENTS}`,
-    `DOMAIN-SUFFIX,stripe.com,${BIZ.PAYMENTS}`,
-    `DOMAIN-SUFFIX,stripe.network,${BIZ.PAYMENTS}`,
-    `DOMAIN-SUFFIX,stripecdn.com,${BIZ.PAYMENTS}`,
-    `DOMAIN-SUFFIX,stripe.dev,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,wise.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,transferwise.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,revolut.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,revolut.me,${BIZ.PAYMENTS}`,
-    `DOMAIN-SUFFIX,braintreegateway.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,braintree-api.com,${BIZ.PAYMENTS}`,
-    `DOMAIN-SUFFIX,venmo.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,cash.app,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,squareup.com,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,square.com,${BIZ.PAYMENTS}`,
@@ -1479,7 +1497,7 @@ function injectRules(config) {
     `RULE-SET,stripe,${BIZ.PAYMENTS}`,
     `RULE-SET,visa,${BIZ.PAYMENTS}`,
     `RULE-SET,tigerfintech,${BIZ.PAYMENTS}`,
-    // v5.1.1: Accademia 银行 × 10国 + 虚拟金融 × 4
+    // v5.1.1: Accademia 银行 × 10国 + 虚拟金融 × 3
     ...ACC_BANK_RULES,
     ...ACC_VF_RULES,
     `DOMAIN,login.live.com,${BIZ.MS}`,
@@ -1490,7 +1508,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,outlook.live.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,hotmail.com,${BIZ.INTL_SITE}`,
     `DOMAIN,mail.live.com,${BIZ.INTL_SITE}`,
-    `DOMAIN,outlook.office365.com,${BIZ.INTL_SITE}`,
     `DOMAIN,outlook.office.com,${BIZ.INTL_SITE}`,
     `DOMAIN,mail.yahoo.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,ymail.com,${BIZ.INTL_SITE}`,
@@ -1580,14 +1597,9 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,webex.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,wbx2.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,ciscospark.com,${BIZ.WORK}`,
-    `DOMAIN-SUFFIX,notion.so,${BIZ.WORK}`,
-    `DOMAIN-SUFFIX,notion.site,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,figma.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,linear.app,${BIZ.WORK}`,
-    `DOMAIN-SUFFIX,atlassian.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,jira.com,${BIZ.WORK}`,
-    `DOMAIN-SUFFIX,trello.com,${BIZ.WORK}`,
-    `DOMAIN-SUFFIX,bitbucket.org,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,asana.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,monday.com,${BIZ.WORK}`,
     `DOMAIN-SUFFIX,clickup.com,${BIZ.WORK}`,
@@ -1632,10 +1644,7 @@ function injectRules(config) {
     // ── Disney+/HBO/Hulu/Prime Video ──
     `RULE-SET,disney,${BIZ.DSNP}`,
     `RULE-SET,hbo,${BIZ.HBO}`,
-    `DOMAIN-SUFFIX,max.com,${BIZ.HBO}`,
     `RULE-SET,hulu,${BIZ.HULU}`,
-    `DOMAIN-SUFFIX,hulu.jp,${BIZ.HULU}`,
-    `DOMAIN-SUFFIX,happyon.jp,${BIZ.HULU}`,
     `RULE-SET,primevideo,${BIZ.PRIME}`,
     `RULE-SET,amazon,${BIZ.PRIME}`,
     // ── 音乐流媒体 ──
@@ -1650,37 +1659,29 @@ function injectRules(config) {
     `RULE-SET,qobuz,${BIZ.MUSIC}`,
 
     // ============ 🇭🇰 香港流媒体 ============
+    // CLEAN#165: mytvsuper.com, nowe.com, rthk.hk, cabletv.com.hk 已被同策略 RULE-SET 覆盖
     `RULE-SET,szkane-bilihmt,${BIZ.STREAM_HK}`,
-    `DOMAIN-SUFFIX,mytvsuper.com,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,mytv.com.hk,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,viu.com,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,viu.tv,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,hktv.com.hk,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,hktvmall.com,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,nowtv.com,${BIZ.STREAM_HK}`,
-    `DOMAIN-SUFFIX,nowe.com,${BIZ.STREAM_HK}`,
-    `DOMAIN-SUFFIX,rthk.hk,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,icable.com,${BIZ.STREAM_HK}`,
-    `DOMAIN-SUFFIX,cabletv.com.hk,${BIZ.STREAM_HK}`,
     `DOMAIN-SUFFIX,hmvod.com.hk,${BIZ.STREAM_HK}`,
     `RULE-SET,mytvsuper,${BIZ.STREAM_HK}`,
     `RULE-SET,tvb,${BIZ.STREAM_HK}`,
-    `RULE-SET,encoretvb,${BIZ.STREAM_HK}`,
     `RULE-SET,nowe,${BIZ.STREAM_HK}`,
     `RULE-SET,rthk,${BIZ.STREAM_HK}`,
     `RULE-SET,cabletv,${BIZ.STREAM_HK}`,
     `RULE-SET,moov,${BIZ.STREAM_HK}`,
 
     // ============ 🇹🇼 台湾流媒体 ============
+    // CLEAN#165: litv.tv, video.friday.tw, friday.tw, linetv.tw, hamivideo.hinet.net 已被同策略 RULE-SET 覆盖
     `RULE-SET,bahamut,${BIZ.STREAM_TW}`,
     `RULE-SET,kktv,${BIZ.STREAM_TW}`,
-    `DOMAIN-SUFFIX,litv.tv,${BIZ.STREAM_TW}`,
-    `DOMAIN-SUFFIX,video.friday.tw,${BIZ.STREAM_TW}`,
-    `DOMAIN-SUFFIX,friday.tw,${BIZ.STREAM_TW}`,
-    `DOMAIN-SUFFIX,linetv.tw,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,elta.tv,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,mod.cht.com.tw,${BIZ.STREAM_TW}`,
-    `DOMAIN-SUFFIX,hamivideo.hinet.net,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,ofiii.com,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,pts.org.tw,${BIZ.STREAM_TW}`,
     `DOMAIN-SUFFIX,4gtv.tv,${BIZ.STREAM_TW}`,
@@ -1693,24 +1694,18 @@ function injectRules(config) {
     `RULE-SET,cht,${BIZ.STREAM_TW}`,
 
     // ============ 🇯🇵 日韩流媒体 ============
+    // CLEAN#165: tver.jp, dmm.com, dmm.co.jp, nicovideo.jp, nicovideo.me, dmc.nico 已被同策略 RULE-SET 覆盖
     `RULE-SET,abema,${BIZ.STREAM_JP}`,
     `RULE-SET,dazn,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,tver.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,unext.jp,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,video.unext.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,nhk.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,nhk.or.jp,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,dmm.com,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,dmm.co.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,dtv.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,paravi.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,videomarket.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,fod.fujitv.co.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,gyao.yahoo.co.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,music.jp,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,nicovideo.jp,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,nicovideo.me,${BIZ.STREAM_JP}`,
-    `DOMAIN-SUFFIX,dmc.nico,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,radiko.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,lemino.docomo.ne.jp,${BIZ.STREAM_JP}`,
     `DOMAIN-SUFFIX,wowow.co.jp,${BIZ.STREAM_JP}`,
@@ -1738,14 +1733,9 @@ function injectRules(config) {
     `RULE-SET,nikkei,${BIZ.STREAM_JP}`,
 
     // ============ 🇪🇺 欧洲流媒体 ============
+    // CLEAN#165: itv.com, itvstatic.com, britbox.com 已被同策略 RULE-SET 覆盖
     `RULE-SET,bbc,${BIZ.STREAM_EU}`,
-    `DOMAIN-SUFFIX,itv.com,${BIZ.STREAM_EU}`,
-    `DOMAIN-SUFFIX,itvstatic.com,${BIZ.STREAM_EU}`,
-    `DOMAIN-SUFFIX,channel4.com,${BIZ.STREAM_EU}`,
-    `DOMAIN-SUFFIX,channel5.com,${BIZ.STREAM_EU}`,
-    `DOMAIN-SUFFIX,sky.com,${BIZ.STREAM_EU}`,
     `DOMAIN-SUFFIX,nowtv.co.uk,${BIZ.STREAM_EU}`,
-    `DOMAIN-SUFFIX,britbox.com,${BIZ.STREAM_EU}`,
     `DOMAIN-SUFFIX,canalplus.com,${BIZ.STREAM_EU}`,
     `DOMAIN-SUFFIX,mycanal.fr,${BIZ.STREAM_EU}`,
     `DOMAIN-SUFFIX,france.tv,${BIZ.STREAM_EU}`,
@@ -1777,9 +1767,8 @@ function injectRules(config) {
     `RULE-SET,szkane-uk,${BIZ.STREAM_EU}`,
 
     // ============ 🌐 其他国外流媒体 ============
+    // CLEAN#165: wetv.vip, wetvinfo.com, viki.com, viki.io, mewatch.sg, discoveryplus.com 已被同策略 RULE-SET 覆盖
     `RULE-SET,viu,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,wetv.vip,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,wetvinfo.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,iq.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,vidio.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,vidio.static6.com,${BIZ.STREAM_OTHER}`,
@@ -1789,11 +1778,8 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,goplay.co.id,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,maxstream.tv,${BIZ.STREAM_OTHER}`,
     `RULE-SET,biliintl,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,viki.com,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,viki.io,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,iflix.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,catchplay.com,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,mewatch.sg,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,trueid.net,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,dimsum.my,${BIZ.STREAM_OTHER}`,
     `RULE-SET,asianmedia,${BIZ.STREAM_OTHER}`,
@@ -1812,7 +1798,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,pluto.tv,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,tubi.tv,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,fubo.tv,${BIZ.STREAM_OTHER}`,
-    `DOMAIN-SUFFIX,discoveryplus.com,${BIZ.STREAM_OTHER}`,
     `DOMAIN-SUFFIX,appletv.com,${BIZ.STREAM_OTHER}`,
     `RULE-SET,cbs,${BIZ.STREAM_OTHER}`,
     `RULE-SET,nbc,${BIZ.STREAM_OTHER}`,
@@ -1838,13 +1823,11 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,duckduckgo.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,ddg.co,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,brave.com,${BIZ.TOOLS}`,
-    `DOMAIN-SUFFIX,yandex.com,${BIZ.TOOLS}`,
-    `DOMAIN-SUFFIX,yandex.ru,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,ecosia.org,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,startpage.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,you.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,search.naver.com,${BIZ.TOOLS}`,
-    `RULE-SET,scholar,${BIZ.TOOLS}`,
+    `RULE-SET,scholar,${BIZ.GOOGLE}`,
     `RULE-SET,yandex,${BIZ.TOOLS}`,
     `RULE-SET,github,${BIZ.TOOLS}`,
     `RULE-SET,docker,${BIZ.TOOLS}`,
@@ -1853,8 +1836,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,npmjs.com,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,npmjs.org,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,yarnpkg.com,${BIZ.TOOLS}`,
-    `DOMAIN-SUFFIX,pypi.org,${BIZ.TOOLS}`,
-    `DOMAIN-SUFFIX,pythonhosted.org,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,crates.io,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,rubygems.org,${BIZ.TOOLS}`,
     `DOMAIN-SUFFIX,packagist.org,${BIZ.TOOLS}`,
@@ -1906,7 +1887,7 @@ function injectRules(config) {
     `RULE-SET,oracle,${BIZ.TOOLS}`,
     `RULE-SET,unity,${BIZ.TOOLS}`,
     `RULE-SET,szkane-developer,${BIZ.TOOLS}`,
-    `GEOIP,google,${BIZ.TOOLS},no-resolve`,
+    `GEOIP,google,${BIZ.GOOGLE},no-resolve`,
 
     // ============ Ⓜ️ 微软服务 ============
     `RULE-SET,onedrive,${BIZ.MS}`,
@@ -1926,7 +1907,6 @@ function injectRules(config) {
     `RULE-SET,siri,${BIZ.APPLE}`,
     `RULE-SET,testflight,${BIZ.APPLE}`,
     `RULE-SET,applefirmware,${BIZ.APPLE}`,
-    `RULE-SET,findmy,${BIZ.APPLE}`,
     `RULE-SET,acc-applenews,${BIZ.APPLE}`,
     `RULE-SET,acc-apple,${BIZ.APPLE}`,
 
@@ -1936,12 +1916,8 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,update.microsoft.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,download.microsoft.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,delivery.mp.microsoft.com,${BIZ.DOWNLOAD}`,
-    `DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,officecdn.microsoft.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,officecdn.microsoft.com.edgesuite.net,${BIZ.DOWNLOAD}`,
-    `DOMAIN-SUFFIX,download.mozilla.org,${BIZ.DOWNLOAD}`,
-    `DOMAIN-SUFFIX,archive.mozilla.org,${BIZ.DOWNLOAD}`,
-    `DOMAIN-SUFFIX,releases.ubuntu.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,archive.ubuntu.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,security.ubuntu.com,${BIZ.DOWNLOAD}`,
     `DOMAIN-SUFFIX,mirrors.kernel.org,${BIZ.DOWNLOAD}`,
@@ -1990,7 +1966,37 @@ function injectRules(config) {
     `RULE-SET,loyalsoldier-greatfire,${BIZ.GFW}`,
     `RULE-SET,szkane-proxygfw,${BIZ.GFW}`,
 
+    // ============ 🕹️ 国内游戏 ============
+    `DOMAIN-SUFFIX,mihoyo.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,miyoushe.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,yuanshen.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,bhsr.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,zenlesszonezero.com,${BIZ.GAME_CN}`,
+    `DOMAIN,game.163.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,gm.163.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,ds.163.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,nie.163.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,nie.netease.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,update.netease.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,netease.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,wegame.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,wegame.com.cn,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,perfect-world.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,wanmei.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,xd.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,taptap.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,taptap.io,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,papegames.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,hypergryph.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,gryphline.com,${BIZ.GAME_CN}`,
+    `DOMAIN-SUFFIX,lilith.com,${BIZ.GAME_CN}`,
+    `RULE-SET,steamcn,${BIZ.GAME_CN}`,
+    `RULE-SET,wanmeishijie,${BIZ.GAME_CN}`,
+    `RULE-SET,wankahuanju,${BIZ.GAME_CN}`,
+    `RULE-SET,majsoul,${BIZ.GAME_CN}`,
+
     // ============ 🎮 国外游戏 ============
+    // CLEAN#165: ubisoft.com, ubi.com, riotgames.com, leagueoflegends.com, valorant.com, rockstargames.com, gog.com, gogalaxy.com, supercell.com, garena.com, hoyoverse.com, hoyolab.com 已被同策略 RULE-SET 覆盖
     `RULE-SET,steam,${BIZ.GAME_INTL}`,
     `RULE-SET,epic,${BIZ.GAME_INTL}`,
     `RULE-SET,playstation,${BIZ.GAME_INTL}`,
@@ -1999,19 +2005,6 @@ function injectRules(config) {
     `RULE-SET,ea,${BIZ.GAME_INTL}`,
     `RULE-SET,blizzard,${BIZ.GAME_INTL}`,
     `GEOSITE,category-games,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,ubisoft.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,ubi.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,riotgames.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,leagueoflegends.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,valorant.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,rockstargames.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,gog.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,gogalaxy.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,bethesda.net,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,supercell.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,garena.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,hoyoverse.com,${BIZ.GAME_INTL}`,
-    `DOMAIN-SUFFIX,hoyolab.com,${BIZ.GAME_INTL}`,
     `RULE-SET,rockstar,${BIZ.GAME_INTL}`,
     `RULE-SET,riot,${BIZ.GAME_INTL}`,
     `RULE-SET,gog,${BIZ.GAME_INTL}`,
@@ -2019,7 +2012,6 @@ function injectRules(config) {
     `RULE-SET,garena,${BIZ.GAME_INTL}`,
     `RULE-SET,hoyoverse,${BIZ.GAME_INTL}`,
     `RULE-SET,ubi,${BIZ.GAME_INTL}`,
-    `RULE-SET,wildrift,${BIZ.GAME_INTL}`,
     `RULE-SET,sony,${BIZ.GAME_INTL}`,
 
     // ============ 🌐 国外网站 ============
@@ -2148,35 +2140,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,idx.co.id,${BIZ.PAYMENTS}`,
     `DOMAIN-SUFFIX,ksei.co.id,${BIZ.PAYMENTS}`,
 
-    // ============ 🕹️ 国内游戏 ============
-    `DOMAIN-SUFFIX,mihoyo.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,miyoushe.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,yuanshen.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,bhsr.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,zenlesszonezero.com,${BIZ.GAME_CN}`,
-    `DOMAIN,game.163.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,gm.163.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,ds.163.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,nie.163.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,nie.netease.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,update.netease.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,netease.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,wegame.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,wegame.com.cn,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,perfect-world.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,wanmei.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,xd.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,taptap.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,taptap.io,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,papegames.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,hypergryph.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,gryphline.com,${BIZ.GAME_CN}`,
-    `DOMAIN-SUFFIX,lilith.com,${BIZ.GAME_CN}`,
-    `RULE-SET,steamcn,${BIZ.GAME_CN}`,
-    `RULE-SET,wanmeishijie,${BIZ.GAME_CN}`,
-    `RULE-SET,wankahuanju,${BIZ.GAME_CN}`,
-    `RULE-SET,majsoul,${BIZ.GAME_CN}`,
-
     // ============ 📺 国内流媒体 ============
     `RULE-SET,bilibili,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,iqiyi.com,${BIZ.CNMEDIA}`,
@@ -2191,9 +2154,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,mgtv.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,hitv.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,hunantv.com,${BIZ.CNMEDIA}`,
-    `DOMAIN-SUFFIX,douyin.com,${BIZ.CNMEDIA}`,
-    `DOMAIN-SUFFIX,douyinpic.com,${BIZ.CNMEDIA}`,
-    `DOMAIN-SUFFIX,douyinvod.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,ixigua.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,pstatp.com,${BIZ.CNMEDIA}`,
     `DOMAIN-SUFFIX,snssdk.com,${BIZ.CNMEDIA}`,
@@ -2222,7 +2182,6 @@ function injectRules(config) {
     `RULE-SET,neteasemusic,${BIZ.CNMEDIA}`,
     `RULE-SET,kugoukuwo,${BIZ.CNMEDIA}`,
     `RULE-SET,sohu,${BIZ.CNMEDIA}`,
-    `RULE-SET,acfun,${BIZ.CNMEDIA}`,
     `RULE-SET,douyu,${BIZ.CNMEDIA}`,
     `RULE-SET,huya,${BIZ.CNMEDIA}`,
     `RULE-SET,himalaya,${BIZ.CNMEDIA}`,
@@ -2256,7 +2215,7 @@ function injectRules(config) {
     `RULE-SET,acc-alipan,${BIZ.CNMEDIA}`,
     `RULE-SET,acc-baidunetdisk,${BIZ.CNMEDIA}`,
     `RULE-SET,acc-weiyun,${BIZ.CNMEDIA}`,
-    // v5.1.1: Accademia FakeLocation × 10 平台（国内APP IP归属地伪装）
+    // v5.1.1: Accademia FakeLocation × 8 平台（国内APP IP归属地伪装）
     ...ACC_FAKE_LOCATION_RULES,
 
     // ============ 🏠 国内网站 ============
@@ -2286,10 +2245,8 @@ function injectRules(config) {
     `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`,
     `GEOIP,telegram,${BIZ.IM},no-resolve`,
-    `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
     `GEOIP,facebook,${BIZ.SOCIAL},no-resolve`,
     `GEOIP,twitter,${BIZ.SOCIAL},no-resolve`,
-    `GEOIP,google,${BIZ.TOOLS},no-resolve`,
     `GEOIP,CN,${BIZ.CN_SITE},no-resolve`,
 
     `MATCH,${BIZ.FINAL}`,
@@ -2344,7 +2301,7 @@ function overwriteGeneral(config) {
   if (!Array.isArray(config.dns['fallback-filter'].domain)) config.dns['fallback-filter'].domain = []
   // v5.4.1 P0+P2: fake-ip-filter 扩展 + Hosts DNS 预解析
   var currentFakeIpFilter = Array.isArray(config.dns['fake-ip-filter']) ? config.dns['fake-ip-filter'] : []
-  config.dns['fake-ip-filter'] = uniqList(currentFakeIpFilter.concat(['+.lan','+.local','+.localdomain','+.home.arpa','+.msftconnecttest.com','+.msftncsi.com','localhost.ptlogin2.qq.com','localhost.sec.qq.com','localhost.work.weixin.qq.com','+.in-addr.arpa','+.ip6.arpa','time.*.com','time.*.gov','ntp.*.com','pool.ntp.org','+.ntp.org','+.pool.ntp.org','+.market.xiaomi.com','+.stun.*.*','+.stun.*.*.*','+.turn.*.*','+.turn.*.*.*','+.n.n.srv.nintendo.net','+.stun.playstation.net','+.xboxlive.com','stun.l.google.com','stun1.l.google.com','stun2.l.google.com','stun3.l.google.com','stun4.l.google.com','global.turn.twilio.com','auth.docker.io','registry-1.docker.io','index.docker.io','hub.docker.com','production.cloudflare.docker.com','+.push.apple.com','+.pub.3gppnetwork.org','+.bing.com','+.rustdesk.com','+.todesk.com','+.oray.com','+.sunlogin.com','+.teamviewer.com','+.anydesk.com','+.battlenet.com.cn','+.wotgame.cn','+.wggames.cn','+.wowsgame.cn','+.mcdn.bilivideo.cn','+.miwifi.com']))
+  config.dns['fake-ip-filter'] = uniqList(currentFakeIpFilter.concat(['+.lan','+.local','+.localdomain','+.home.arpa','+.msftconnecttest.com','+.msftncsi.com','localhost.ptlogin2.qq.com','localhost.sec.qq.com','localhost.work.weixin.qq.com','+.in-addr.arpa','+.ip6.arpa','time.*.com','time.*.gov','ntp.*.com','pool.ntp.org','+.ntp.org','+.pool.ntp.org','+.market.xiaomi.com','+.stun.*.*','+.stun.*.*.*','+.turn.*.*','+.turn.*.*.*','+.n.n.srv.nintendo.net','+.stun.playstation.net','+.xboxlive.com','stun.l.google.com','stun1.l.google.com','stun2.l.google.com','stun3.l.google.com','stun4.l.google.com','global.turn.twilio.com','auth.docker.io','registry-1.docker.io','index.docker.io','hub.docker.com','production.cloudflare.docker.com','+.push.apple.com','+.pub.3gppnetwork.org','+.bing.com','+.rustdesk.com','+.todesk.com','+.oray.com','+.sunlogin.com','+.teamviewer.com','+.anydesk.com','+.battlenet.com.cn','+.wotgame.cn','+.wggames.cn','+.wowsgame.cn','+.mcdn.bilivideo.cn','+.miwifi.com','+.courier.push.apple.com','+.miui.com','+.xiaomi.com','+.xiaomi.net','+.mijia.tech','+.gotui.com']))
   if (!config.hosts) config.hosts = {}
   var dnsH = {'dns.alidns.com':['223.5.5.5','223.6.6.6'],'doh.pub':['119.29.29.29'],'dns.google':['8.8.8.8','8.8.4.4'],'cloudflare-dns.com':['1.1.1.1','1.0.0.1']}
   Object.keys(dnsH).forEach(function(k){if(!config.hosts[k])config.hosts[k]=dnsH[k]})
@@ -2479,13 +2436,13 @@ function main(config) {
     cleanupSubscription(config)
     injectSmartFingerprint(config)
     var c = classifyAllNodes(config.proxies)
-    console.log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} OTHER=${c.OTHER.length}/${c.HOME_OTHER.length}`)
+    console.log(`[${VERSION}] Classification: ALL=${c.ALL.length} HOME_ALL=${c.HOME_ALL.length} HK=${c.HK.length}/${c.HOME_HK.length} TW=${c.TW.length}/${c.HOME_TW.length} CN=${c.CN.length}/${c.HOME_CN.length} JP=${c.JP.length}/${c.HOME_JP.length} KR=${c.KR.length}/${c.HOME_KR.length} SG=${c.SG.length}/${c.HOME_SG.length} US=${c.US.length}/${c.HOME_US.length} EU=${c.EU.length}/${c.HOME_EU.length} AM=${c.AM.length}/${c.HOME_AM.length} AF=${c.AF.length}/${c.HOME_AF.length} APAC_OTHER=${c.APAC_OTHER.length}/${c.HOME_APAC_OTHER.length} OTHER=${c.OTHER.length}/${c.HOME_OTHER.length}`)
     var jpkrNodes = c.JP.concat(c.KR)
     // v5.4.1 FIX: SG 同时存在于狮城组（独立）和亚太组（对标 US 在 美洲组）
-    var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR, c.SG)
+    var apacNodes = c.HK.concat(c.TW, c.CN, c.JP, c.KR, c.SG, c.APAC_OTHER)
     var americasNodes = c.US.concat(c.AM)
     var homeJpkrNodes = c.HOME_JP.concat(c.HOME_KR)
-    var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG)
+    var homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, c.HOME_JP, c.HOME_KR, c.HOME_SG, c.HOME_APAC_OTHER)
     var homeAmericasNodes = c.HOME_US.concat(c.HOME_AM)
     upsertUrlTestGroup(config, SMART.GLOBAL, c.ALL)
     if (c.HOME_ALL.length > 0) upsertUrlTestGroup(config, SMART.GLOBAL_HOME, c.HOME_ALL)

@@ -5,6 +5,67 @@
 
 ---
 
+## v5.4.36-sing.1 (2026-06-29)
+
+- CLEAN#171-DIRECT：`SingBox(sing-box)-generator.js` 对齐 Clash Party v5.4.36 并重新生成 Full JSON。
+- route rules 删除 22 条经逐条确认的冗余 domain / domain_suffix 规则，remote rule_set 保持不变。
+
+## v5.4.35-sing.1 (2026-06-28)
+
+- ★ CLEAN#170-UPSTREAM：`SingBox(sing-box)-generator.js` 跟随 Clash Party v5.4.35 基线重新生成 Full JSON。
+- 说明：被删 8 个上游 provider 均不属于 SingBox remote rule_set 映射输出；后置 Douyin 重复直写规则清理后，route rules 687 → 684。
+
+## v5.4.34-sing.1 (2026-06-28)
+
+- ★ FIX#169-AMAP：`SingBox(sing-box)-generator.js` 跟随 Clash Party v5.4.34，将 MetaCubeX `amap` 映射为 sing-box `amap.srs` rule_set。
+- `SingBox(sing-box)-full.json` 已由 generator 重新生成，`amap` route 位于国外网站 `proxy` 宽兜底之前并输出到 `🏠 国内网站`。
+
+## v5.4.33-sing.1 (2026-06-27)
+
+- ★ FEAT#169-AI-CODING：`SingBox(sing-box)-generator.js` 将 `vpsdance-ai-coding` 映射到 VPSDance `rules/sing-box/coding.json`。
+- Full JSON 已由 generator 重新生成，新增 1 个 source JSON remote rule_set。
+
+## v5.4.32-sing.1 (2026-06-25)
+
+- ★ FIX#168-CN-GAME：`SingBox(sing-box)-generator.js` 跟随 Clash Party v5.4.32 生成国内游戏 route 早于 HoYoverse / Game / category-games 宽规则的 Full JSON。
+- Full JSON 由 generator 重新生成，保持 meta version/build/baseline 一致。
+
+## v5.4.31-sing.1 (2026-06-20)
+
+- ★ FIX#167-DOUYIN：`SingBox(sing-box)-generator.js` 跟随 Clash Party v5.4.31 生成抖音 Web 国内流媒体前置 route，`zjcdn.com` 等域名在 TikTok / 国外尾部前命中 `📺 国内流媒体`。
+- `SingBox(sing-box)-full.json` 已由 generator 重新生成。
+
+## v5.4.30-sing.1 (2026-06-17)
+
+- ★ FEAT#166-GOOGLE：`SingBox(sing-box)-generator.js` 新增 `🔍 Google 服务` selector，位置在 `🔧 工具与服务` 之前。
+- Scholar、Google 基础服务、Google IP 与 Google QUIC route 改投新组；`SingBox(sing-box)-full.json` 已由 generator 重新生成。
+
+## v5.4.29-sing.1 (2026-06-10)
+
+- ★ PERF#165-LATENCY：`SingBox(sing-box)-generator.js` 将所有 `urltest` 出站组（当前 2 个聚合组）`interval` 从官方默认/既有 `3m` 调整为 `5m`，对应 300s 全端统一。
+- `SingBox(sing-box)-full.json` 由 generator 重新生成，元数据对齐 Clash Party v5.4.29。
+
+## v5.4.27-sing.1 (2026-06-07)
+
+- ★ CLEAN#165：由 `SingBox(sing-box)-generator.js` 重新生成 Full JSON，同步基线去掉 Claude / PayPal / HBO / Hulu / Xbox 上游规则集已覆盖的直写域名 route rules。
+
+## v5.4.26-sing.1 (2026-06-07)
+
+- ★ FIX#164：腾讯 WorkBuddy `copilot.tencent.com` 国内直连防吞。SingBox Full 由 `SingBox(sing-box)-generator.js` 执行基线 Clash Party JS 自动生成——基线在所有 AI rule-set 之前新增的 `DOMAIN-SUFFIX,copilot.tencent.com,🏠 国内网站` 已随重新生成自动转译进 `route.rules`（`domain_suffix:["copilot.tencent.com"] → outbound:"🏠 国内网站"`，位于 `geosite:openai` rule_set 之前）。基线 Clash Party v5.4.26。
+
+## v5.4.25-sing.2 (2026-06-05)
+
+- ★ FIX#SING-QUIC-P0：generator 不再把 Clash `MATCH` 转成无条件 route rule；兜底由 `route.final` 承载，避免遮蔽后续 QUIC 精细化规则。
+- ★ FIX#SING-QUIC-ORDER：6 条 sing-box QUIC 规则插入到主线 5 条 AND/QUIC 规则位置，而不是追加到末尾。
+- ★ SYNC#GROUP-ORDER：业务组顺序调整为与 Clash Party 基线一致（香港/台湾/日韩/欧洲流媒体位于其他国外流媒体之前）。
+- ★ VERIFY：合同验证新增 SingBox 业务组顺序与无条件 FINAL route rule 检查；`SingBox(sing-box)-full.json` 已重新生成。
+
+## v5.4.25-sing.1 (2026-06-04)
+
+- ★ SYNC：`SingBox(sing-box)-full.json` 重新生成并对齐 Clash Party v5.4.25 元数据。
+- ★ CLEAN：同步基线去重，删除已由 route rule 集中区块覆盖的 `geoip:netflix` / `geoip:google` 重复路由。
+- ★ FIX#SING-GEN-P2：generator 不再读取旧的 `SingBox(sing-box)-full.json` 作为 base，改用干净内置 baseConfig，避免历史生成产物污染后续生成。
+
 ## v5.4.23-sing.1 (2026-06-02)
 
 - ★ FIX#161：generator 自动从主线派生 `domain_suffix: zhimg.com / zhihu.co` → 🏠 国内网站 route rule（知乎图片 CDN + 短链，重新生成 JSON）。

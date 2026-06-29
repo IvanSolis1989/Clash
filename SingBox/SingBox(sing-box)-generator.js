@@ -1,9 +1,9 @@
 const fs = require('fs');
 const vm = require('vm');
 
-const VERSION = 'v5.4.25-sing.1';
-const BUILD = '2026-06-04';
-const BASELINE = 'Clash Party v5.4.25';
+const VERSION = 'v5.4.36-sing.1';
+const BUILD = '2026-06-29';
+const BASELINE = 'Clash Party v5.4.36';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -44,13 +44,14 @@ const BIZ = {
   PRIME: '🎬 Prime Video',
   YT: '📹 YouTube',
   MUSIC: '🎵 音乐流媒体',
-  STREAM_OTHER: '🌐 其他国外流媒体',
   STREAM_HK: '🇭🇰 香港流媒体',
   STREAM_TW: '🇹🇼 台湾流媒体',
   STREAM_JP: '🇯🇵 日韩流媒体',
   STREAM_EU: '🇪🇺 欧洲流媒体',
+  STREAM_OTHER: '🌐 其他国外流媒体',
   GAME_CN: '🕹️ 国内游戏',
   GAME_INTL: '🎮 国外游戏',
+  GOOGLE: '🔍 Google 服务',
   TOOLS: '🔧 工具与服务',
   MS: 'Ⓜ️ 微软服务',
   APPLE: '🍎 苹果服务',
@@ -123,7 +124,26 @@ const REGION_PLACEHOLDERS = [
 ];
 
 const clashScript = fs.readFileSync('Clash Party/ClashParty(mihomo-smart).js', 'utf8');
-const baseConfig = JSON.parse(fs.readFileSync('SingBox/SingBox(sing-box)-full.json', 'utf8'));
+const baseConfig = {
+  log: {
+    level: 'info',
+    timestamp: true
+  },
+  _meta: {
+    name: 'SingBox Smart Full',
+    version: VERSION,
+    build: BUILD,
+    baseline: BASELINE,
+    changelog: '见 SingBox/CHANGELOG.md'
+  },
+  experimental: {
+    cache_file: {
+      enabled: true,
+      path: 'cache.db',
+      store_fakeip: true
+    }
+  }
+};
 
 const sandbox = { console: { log: function(){}, error: function(){}, warn: function(){} } };
 vm.createContext(sandbox);
@@ -217,7 +237,7 @@ function urltest(tag, outbounds) {
     type: 'urltest',
     tag,
     outbounds,
-    interval: '3m',
+    interval: '5m',
     tolerance: 10
   };
 }
@@ -253,13 +273,14 @@ function buildOutbounds() {
     selector(BIZ.PRIME, buildStandardProxies()),
     selector(BIZ.YT, buildStandardProxies()),
     selector(BIZ.MUSIC, buildStandardProxies()),
-    selector(BIZ.STREAM_OTHER, buildStandardProxies()),
     selector(BIZ.STREAM_HK, buildRegionPreferredProxies('HK')),
     selector(BIZ.STREAM_TW, buildRegionPreferredProxies('TW')),
     selector(BIZ.STREAM_JP, buildRegionPreferredProxies('JPKR')),
     selector(BIZ.STREAM_EU, buildRegionPreferredProxies('EU')),
+    selector(BIZ.STREAM_OTHER, buildStandardProxies()),
     selector(BIZ.GAME_CN, buildDirectFirstProxies()),
     selector(BIZ.GAME_INTL, buildStandardProxies()),
+    selector(BIZ.GOOGLE, buildStandardProxies()),
     selector(BIZ.TOOLS, buildStandardProxies()),
     selector(BIZ.MS, buildStandardProxies()),
     selector(BIZ.APPLE, buildDirectFirstProxies()),
@@ -371,6 +392,12 @@ function toSingRule(ruleText, availableRuleSets) {
       }
       return { ...SZKANE_BILIHMT_RULE, action: 'route', outbound: parts[2] };
     }
+    // blackmatrix7 Scholar is not published as sing-box .srs here; keep parity
+    // with Passwall/v2rayN by carrying the Google Scholar domain directly.
+    if (parts[1] === 'scholar') {
+      if (isRejectTarget(parts[2])) return { domain: ['scholar.google.com'], action: 'reject' };
+      return { domain: ['scholar.google.com'], action: 'route', outbound: parts[2] };
+    }
     if (!availableRuleSets.has(parts[1])) return null;
     if (isRejectTarget(parts[2])) return { rule_set: [parts[1]], action: 'reject' };
     return { rule_set: [parts[1]], action: 'route', outbound: parts[2] };
@@ -419,7 +446,7 @@ function toSingRule(ruleText, availableRuleSets) {
     return { network: parts[1], action: 'route', outbound: parts[2] };
   }
   if (type === 'MATCH') {
-    return { action: 'route', outbound: parts[1] };
+    return null;
   }
   return null;
 }
@@ -435,6 +462,14 @@ function toSrsUrl(url, tag) {
 
   if (tag === 'anti-ad' && /DustinWin\/ruleset_geodata@mihomo-ruleset\/ads\.mrs$/i.test(url)) {
     return 'https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/ads.srs';
+  }
+
+  const vpsdanceAiCoding = url.match(/^(https:\/\/(?:fastly\.|cdn\.)?jsdelivr\.net\/gh\/VPSDance\/ai-proxy-rules)@main\/rules\/clash\/coding\.yaml$/i);
+  if (tag === 'vpsdance-ai-coding' && vpsdanceAiCoding) {
+    return {
+      format: 'source',
+      url: `${vpsdanceAiCoding[1]}@main/rules/sing-box/coding.json`
+    };
   }
 
   return null;
@@ -455,13 +490,14 @@ const extraGeoSiteTags = Array.from(new Set(
 }));
 
 const ruleSet = Object.entries(providers).map(([tag, info]) => {
-  const url = toSrsUrl(info.url, tag);
-  if (!url) return null;
+  const mapped = toSrsUrl(info.url, tag);
+  if (!mapped) return null;
+  const ruleSetUrl = typeof mapped === 'string' ? { format: 'binary', url: mapped } : mapped;
   return {
     type: 'remote',
     tag,
-    format: 'binary',
-    url,
+    format: ruleSetUrl.format,
+    url: ruleSetUrl.url,
     http_client: { detour: SMART.GLOBAL },
     update_interval: '1d'
   };
@@ -492,11 +528,37 @@ function uniqueRuleSets(items) {
 
 const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...extraGeoSiteTags, ...dnsRouteRuleSets]);
 const availableRuleSets = new Set(allRouteRuleSets.map((item) => item.tag));
-let convertedRules = rules.map((rule) => toSingRule(rule, availableRuleSets)).filter(Boolean);
+// v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配。
+// 插入到 Clash 主线 5 条 AND/QUIC 规则所在位置，避免被后续普通规则或 route.final 改变语义。
+// YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT。
+const quicRules = [
+  { rule_set: ['youtube'], port: [443], network: 'udp', action: 'route', outbound: '📹 YouTube' },
+  { rule_set: ['google'], port: [443], network: 'udp', action: 'route', outbound: '🔍 Google 服务' },
+  { rule_set: ['microsoft'], port: [443], network: 'udp', action: 'route', outbound: 'Ⓜ️ 微软服务' },
+  { rule_set: ['apple'], port: [443], network: 'udp', action: 'route', outbound: '🍎 苹果服务' },
+  { rule_set: ['cn'], port: [443], network: 'udp', action: 'route', outbound: 'DIRECT' },
+  { port: [443], network: 'udp', action: 'reject' },
+];
+let convertedRules = [];
+let insertedQuicRules = false;
+for (const rule of rules) {
+  if (String(rule).startsWith('AND,((DST-PORT,443),(NETWORK,UDP),')) {
+    if (!insertedQuicRules) {
+      convertedRules.push(...quicRules);
+      insertedQuicRules = true;
+    }
+    continue;
+  }
+  const converted = toSingRule(rule, availableRuleSets);
+  if (converted) convertedRules.push(converted);
+}
+if (!insertedQuicRules) convertedRules.unshift(...quicRules);
 const skippedProviders = Object.keys(providers).length - ruleSet.length;
-// v5.4.22: AND/QUIC rules handled out-of-band (not through toSingRule), don't count as skipped
+// v5.4.22: AND/QUIC rules handled out-of-band；MATCH fallback is represented by route.final.
 const QUIC_AND_RULES = 5;
-const skippedRules = rules.length - convertedRules.length - QUIC_AND_RULES;
+const MATCH_FALLBACK_RULES = 1;
+const convertedClashRuleCount = convertedRules.length - quicRules.length;
+const skippedRules = rules.length - convertedClashRuleCount - QUIC_AND_RULES - MATCH_FALLBACK_RULES;
 
 // v5.4.23-sing.2: Remove redundant domain_suffix rules that are fully covered by
 // a corresponding rule_set pointing to the same outbound.  The "root" domain suffix
@@ -533,14 +595,6 @@ if (redundantDomainSet.size > 0) {
     console.log(`removed ${before - convertedRules.length} redundant domain_suffix rules`);
   }
 }
-
-baseConfig._meta = {
-  name: 'SingBox Smart Full',
-  version: VERSION,
-  build: BUILD,
-  baseline: BASELINE,
-  changelog: '见 SingBox/CHANGELOG.md'
-};
 
 baseConfig.dns = {
   servers: [
@@ -614,7 +668,25 @@ baseConfig.dns = {
   strategy: 'prefer_ipv4'
 };
 
+baseConfig.inbounds = [
+  {
+    type: 'tun',
+    tag: 'tun-in',
+    address: ['172.19.0.1/30'],
+    mtu: 9000,
+    auto_route: true,
+    strict_route: true,
+    sniff: true,
+    sniff_override_destination: true,
+    stack: 'mixed'
+  }
+];
+
 baseConfig.outbounds = buildOutbounds();
+baseConfig.route = {
+  auto_detect_interface: true,
+  final: BIZ.FINAL
+};
 
 // v5.4.23-sing.2: Remove redundant Google sub-service rule_sets (googlesearch, googledrive,
 // googleearth) — these are fully covered by the unified 'google' rule_set.
@@ -638,18 +710,7 @@ convertedRules = convertedRules.filter((rule) => {
   return true;
 });
 
-// v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配
-// YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT
-const quicRules = [
-  { rule_set: ['geosite-youtube'], port: [443], network: 'udp', action: 'route', outbound: '📹 YouTube' },
-  { rule_set: ['geosite-google'], port: [443], network: 'udp', action: 'route', outbound: '🔧 工具与服务' },
-  { rule_set: ['microsoft'], port: [443], network: 'udp', action: 'route', outbound: 'Ⓜ️ 微软服务' },
-  { rule_set: ['apple'], port: [443], network: 'udp', action: 'route', outbound: '🍎 苹果服务' },
-  { rule_set: ['geosite-cn'], port: [443], network: 'udp', action: 'route', outbound: 'DIRECT' },
-  { port: [443], network: 'udp', action: 'reject' },
-];
-baseConfig.route.rules = [...convertedRules, ...quicRules];
-baseConfig.route.final = BIZ.FINAL;
+baseConfig.route.rules = convertedRules;
 
 fs.writeFileSync('SingBox/SingBox(sing-box)-full.json', JSON.stringify(baseConfig, null, 2) + '\n');
 

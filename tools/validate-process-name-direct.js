@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -11,10 +14,13 @@ const surgeNames = fixture.surgeMacProcessNames;
 const surgeWorkNames = fixture.surgeWorkProcessNames || [];
 const WORK_POLICY = '🧑‍💼 会议协作';
 
-const mihomoTargets = [
+const mihomoJsTargets = [
   'Clash Party/ClashParty(mihomo-smart).js',
   'Clash Party/ClashParty(mihomo).js',
   'FlClash/FlClash(mihomo).js',
+];
+
+const mihomoRuleTextTargets = [
   'Clash Meta For Android/CMFA(mihomo).yaml',
   'OpenClash/OpenClash(mihomo).sh',
   'OpenClash/OpenClash(mihomo-smart).sh',
@@ -39,26 +45,25 @@ for (const dir of ['Passwall/shunt-rules', 'Passwall2/shunt-rules']) {
 
 const failures = [];
 
-for (const target of mihomoTargets) {
+for (const target of mihomoJsTargets) {
   const text = read(target);
-  const missing = mihomoNames.filter((name) => !hasMihomoProcessRule(text, name));
-  if (missing.length > 0) {
-    failures.push(`${target}: missing ${missing.length} desktop PROCESS-NAME rules: ${missing.join(', ')}`);
-  }
-  const missingWork = mihomoWorkNames.filter((name) => !hasMihomoWorkProcessRule(text, name));
-  if (missingWork.length > 0) {
-    failures.push(`${target}: missing ${missingWork.length} RustDesk WORK PROCESS-NAME rules: ${missingWork.join(', ')}`);
-  }
+  validateMihomoJsTarget(target, text);
+}
+
+for (const target of mihomoRuleTextTargets) {
+  const text = read(target);
+  validateMihomoRuleTextTarget(target, text);
 }
 
 {
   const target = 'Surge/Surge.conf';
   const text = read(target);
-  const missing = surgeNames.filter((name) => !text.includes(`PROCESS-NAME,${name},DIRECT`));
+  const activeRules = activeProcessRuleSet(text);
+  const missing = surgeNames.filter((name) => !activeRules.has(`PROCESS-NAME,${name},DIRECT`));
   if (missing.length > 0) {
     failures.push(`${target}: missing ${missing.length} Surge Mac PROCESS-NAME rules: ${missing.join(', ')}`);
   }
-  const missingWork = surgeWorkNames.filter((name) => !text.includes(`PROCESS-NAME,${name},${WORK_POLICY}`));
+  const missingWork = surgeWorkNames.filter((name) => !activeRules.has(`PROCESS-NAME,${name},${WORK_POLICY}`));
   if (missingWork.length > 0) {
     failures.push(`${target}: missing ${missingWork.length} Surge RustDesk WORK PROCESS-NAME rules: ${missingWork.join(', ')}`);
   }
@@ -105,23 +110,78 @@ if (failures.length > 0) {
 
 console.log(`PROCESS-NAME policy validation: OK (${mihomoNames.length} direct desktop names, ${mihomoWorkNames.length} RustDesk work names, ${surgeNames.length} Surge direct names)`);
 
+function validateMihomoJsTarget(target, text) {
+  const directNames = extractConstStringArray(text, 'LOCAL_TOOL_DIRECT_PROCESS_NAMES');
+  const workNames = extractConstStringArray(text, 'RUSTDESK_WORK_PROCESS_NAMES');
+  const missingDirect = mihomoNames.filter((name) => !directNames.includes(name));
+  const missingWork = mihomoWorkNames.filter((name) => !workNames.includes(name));
+
+  if (missingDirect.length > 0) {
+    failures.push(`${target}: missing ${missingDirect.length} names in LOCAL_TOOL_DIRECT_PROCESS_NAMES: ${missingDirect.join(', ')}`);
+  }
+  if (missingWork.length > 0) {
+    failures.push(`${target}: missing ${missingWork.length} names in RUSTDESK_WORK_PROCESS_NAMES: ${missingWork.join(', ')}`);
+  }
+
+  if (!text.includes('LOCAL_TOOL_DIRECT_PROCESS_NAMES.map(name => `PROCESS-NAME,${name},DIRECT`)')) {
+    failures.push(`${target}: LOCAL_TOOL_DIRECT_PROCESS_NAMES is not mapped to PROCESS-NAME,<name>,DIRECT rules`);
+  }
+  if (!text.includes('RUSTDESK_WORK_PROCESS_NAMES.map(name => `PROCESS-NAME,${name},${BIZ.WORK}`)')) {
+    failures.push(`${target}: RUSTDESK_WORK_PROCESS_NAMES is not mapped to WORK PROCESS-NAME rules`);
+  }
+}
+
+function validateMihomoRuleTextTarget(target, text) {
+  const activeRules = activeProcessRuleSet(text);
+  const missing = mihomoNames.filter((name) => !activeRules.has(`PROCESS-NAME,${name},DIRECT`));
+  if (missing.length > 0) {
+    failures.push(`${target}: missing ${missing.length} desktop PROCESS-NAME rules: ${missing.join(', ')}`);
+  }
+  const missingWork = mihomoWorkNames.filter((name) => !hasWorkProcessRule(activeRules, name));
+  if (missingWork.length > 0) {
+    failures.push(`${target}: missing ${missingWork.length} RustDesk WORK PROCESS-NAME rules: ${missingWork.join(', ')}`);
+  }
+}
+
 function read(relativePath) {
   return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
 }
 
-function hasMihomoProcessRule(text, name) {
-  return (
-    text.includes(`PROCESS-NAME,${name},DIRECT`) ||
-    text.includes(`'${name}'`) ||
-    text.includes(`"${name}"`)
-  );
+function extractConstStringArray(text, constName) {
+  const pattern = new RegExp(`const\\s+${constName}\\s*=\\s*\\[([\\s\\S]*?)\\]`);
+  const match = text.match(pattern);
+  if (!match) return [];
+  const values = [];
+  const stringPattern = /'((?:\\'|[^'])*)'|"((?:\\"|[^"])*)"/g;
+  let item;
+  while ((item = stringPattern.exec(match[1])) !== null) {
+    values.push((item[1] || item[2] || '').replace(/\\'/g, "'").replace(/\\"/g, '"'));
+  }
+  return values;
 }
 
-function hasMihomoWorkProcessRule(text, name) {
-  return (
-    text.includes(`PROCESS-NAME,${name},${WORK_POLICY}`) ||
-    text.includes(`PROCESS-NAME,${name},\\U0001F9D1`) ||
-    text.includes(`'${name}'`) ||
-    text.includes(`"${name}"`)
-  );
+function activeProcessRuleSet(text) {
+  return new Set(text
+    .split(/\r?\n/)
+    .map(normalizeRuleLine)
+    .filter((line) => line.startsWith('PROCESS-NAME,')));
+}
+
+function normalizeRuleLine(line) {
+  let value = String(line || '').trim();
+  if (!value || value.startsWith('#')) return '';
+  if (value.startsWith('-')) value = value.slice(1).trim();
+  if ((value.startsWith("'") && value.endsWith("'")) || (value.startsWith('"') && value.endsWith('"'))) {
+    value = value.slice(1, -1);
+  }
+  return value;
+}
+
+function hasWorkProcessRule(activeRules, name) {
+  const exact = `PROCESS-NAME,${name},${WORK_POLICY}`;
+  if (activeRules.has(exact)) return true;
+  for (const rule of activeRules) {
+    if (rule.startsWith(`PROCESS-NAME,${name},`) && rule.includes('会议协作')) return true;
+  }
+  return false;
 }

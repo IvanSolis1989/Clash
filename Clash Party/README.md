@@ -3,11 +3,11 @@
 > 目录简介：这里是 Mihomo Smart/Normal 覆写脚本的事实基线，面向 Clash Party、Clash Verge Rev、Mihomo Party 等桌面客户端。
 >
 > 覆写脚本：**两份二选一**，规则 100% 等价，仅 22 区域组（11 全部 + 11 家宽）的内核选路算法不同
-> - `ClashParty(mihomo-smart).js`（**v5.4.22**，2026-05-31）— Smart 内核 + LightGBM ML 评估
-> - `ClashParty(mihomo).js`（**v5.4.22-normal.1**，2026-05-31）— 普通内核 url-test 延迟选路
+> - `ClashParty(mihomo-smart).js`（**v5.4.36**，2026-06-29）— Smart 内核 + LightGBM ML 评估
+> - `ClashParty(mihomo).js`（**v5.4.36-normal.1**，2026-06-29）— 普通内核 url-test 延迟选路
 >
 > UI 补充配置：已整合到本文「四、粘贴 UI 补充配置」章节
-> 架构：**SUB-STORE 多机场融合** + 22 区域组（11 全部 + 11 家宽）+ 32 业务策略组 + **385 rule-providers**
+> 架构：**SUB-STORE 多机场融合** + 22 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + **376 rule-providers**
 > 适用客户端：
 > - **Mihomo Party**（桌面端，推荐，原生支持 JS 覆写；内置 Smart 内核）
 > - **Clash Verge Rev**（桌面端，支持 JS/YAML 双覆写）
@@ -72,13 +72,13 @@
 
 ### 跑起来之后怎么验证成功？
 - 浏览器打开 `https://www.google.com`，能打开说明代理通了。
-- 客户端左侧「代理」页面最多会看到 **54 个代理组**（22 区域 + 32 业务；空区域会自动不建组）。
+- 客户端左侧「代理」页面最多会看到 **55 个代理组**（22 区域 + 33 业务；空区域会自动不建组）。
 - 左侧「连接」页面可以看每条请求走了哪个组/哪个节点。
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
 ### 最常见的第一次踩坑
 - ❌ **订阅链接格式不对**：有些机场默认给的是 V2ray 格式。换链接时加 `?flag=clash.meta` 或 `?flag=meta` 后缀。
-- ❌ **首次下载 rule-provider 卡住**：脚本会下载 385 条规则源，约 15–30 MB。**必须在 WiFi 环境 + 已连接代理**（先连一个简单节点，再启动覆写），否则 GitHub/jsdelivr 在国内直连会 404。
+- ❌ **首次下载 rule-provider 卡住**：脚本会下载 376 条规则源，约 15–30 MB。**必须在 WiFi 环境 + 已连接代理**（先连一个简单节点，再启动覆写），否则 GitHub/jsdelivr 在国内直连会 404。
 - ❌ **LightGBM 模型没下载**（仅 Smart 版）：启动后若日志有 `Model.bin not found`，手动下 https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin 放到客户端的 mihomo 工作目录；或直接换成**普通版**脚本，不依赖 `Model.bin`。
 - ❌ **Smart 版提示内核不支持 `type: smart`**：你用的不是 mihomo Alpha。要么换内核（Clash Verge Rev → 设置 → Clash 内核 → Mihomo Alpha），要么直接改用**普通版**脚本。
 - ❌ **找不到业务组 / 区域组**：确认订阅返回的是 Mihomo / Clash.Meta 格式（不是 Surge / Quantumult）。
@@ -303,23 +303,7 @@ sniffer:
 
 ---
 
-## 六、版本亮点（v5.2.2，2026-04-13）
-
-- **FIX#17-P0**：`jsdelivr CDN` 永久直连
-  - `RP_PROXY` 从「云与CDN」改为「受限网站（GFW）」组
-  - 解决 04-06 单日 **4,931 条** jsdelivr 失败的 DNS 循环依赖问题
-  - 在印尼选 `DIRECT`，在中国选代理，灵活切换
-- **FIX#18-P1**：删除已死的 `ckrvxr` 规则源
-  - 移除 AntiPCDN / AntiAntiFraud（累计 221 次 404）
-- **FIX#19-P1**：`DST-PORT,7680,REJECT` 顺序修复
-  - 提前到 `GEOIP,private` 之前，确保 Windows Delivery Optimization 流量被正确拦截
-- **FIX#20-P2**：PI.ai 移入「🚫 受限网站（GFW）」组
-- **FIX#20-P2**：`GSCService.exe` 加入 TUN `exclude-process`（避免 fake-ip 下 `ip.cip.cc` DNS 解析失败）
-- **NOTE#2**：`BBC.yaml / Snap.yaml` 的 `USER-AGENT` warning 为无害提示，已由 `metaDomain('tiktok')` 独立覆盖
-
----
-
-## 七、业务组推荐配置
+## 六、业务组推荐配置
 
 建议首次导入后，按以下方式为每个业务组「指定首选」：
 
@@ -336,12 +320,13 @@ sniffer:
 | 🇭🇰 香港流媒体 | 🇭🇰 香港节点 |
 | 🇹🇼 台湾流媒体 | 🇹🇼 台湾节点 |
 | 🎮 游戏平台 | 🇯🇵 日韩节点（Steam/PSN） |
+| 🔍 Google 服务 | 🌍 全球节点 |
 | 🔧 工具与服务 | 🌍 全球节点 |
 | 🚫 受限网站（GFW） | 中国选代理 / 海外选 DIRECT |
 
 ---
 
-## 八、常见问题
+## 七、常见问题
 
 ### Q1：启用脚本后节点为空 / 区域组为空？
 - 确认订阅返回的是 **Mihomo / Clash.Meta** 格式（不是 Surge / Quantumult）。
@@ -349,7 +334,7 @@ sniffer:
 - 打开日志，查看是否有 `No node classified` 提示。
 
 ### Q2：首次连接特别慢？
-- 首次需下载 **385 rule-providers**，约 15–30 MB；
+- 首次需下载 **376 rule-providers**，约 15–30 MB；
 - 建议在 WiFi 环境下完成首次下载。
 
 ### Q3：如何升级到新版本？
@@ -373,7 +358,7 @@ sniffer:
 
 ---
 
-## 九、目录一览
+## 八、目录一览
 
 | 文件 | 用途 |
 |------|------|
@@ -384,7 +369,7 @@ sniffer:
 
 ---
 
-## 十、致谢
+## 九、致谢
 
 - [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo) - Smart 内核
 - [mihomo-party-org/mihomo-party](https://github.com/mihomo-party-org/mihomo-party) - 桌面客户端

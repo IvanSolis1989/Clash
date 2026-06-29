@@ -6,6 +6,96 @@
 
 ---
 
+## v5.4.36 (2026-06-29)
+
+- CLEAN#171-DIRECT：删除 22 条经逐条确认的冗余直写规则：2 条本地前序覆盖（`video.unext.jp` / `dl.delivery.mp.microsoft.com`）+ 20 条远程 provider 同策略前序覆盖。
+- CONFIRM：20 条确认可删候选覆盖 Stripe、Outlook mail、Notion/Atlassian 协作、英欧流媒体、Yandex/Python、Mozilla/Ubuntu；对应前序同策略 provider 为 `stripe`、`mail`、`notion` / `atlassian`、`all4` / `my5` / `skygo`、`yandex` / `python` / `developer`、`mozilla` / `ubuntu`。
+- KEEP：12 条候选保留（AI 7 条、Binance 3 条、Microsoft login 2 条），因为同目标证明之前存在不同策略 `.mrs` 规则集，无法证明严格无行为变化。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、Shadowrocket、Surge、Loon、Quantumult X、SingBox、FlClash 已同步；Passwall / Passwall2 同步删除展平规则 `channel4.com` / `sky.com`；v2rayN 仅更新版本元数据。
+
+## v5.4.35 (2026-06-28)
+
+- CLEAN#170-UPSTREAM：删除 8 个经 live upstream recheck 仍被前序同目标规则 100% 覆盖的冗余上游规则集：`marketing`、`acc-vf-paypal`、`encoretvb`、`findmy`、`wildrift`、`acfun`、`acc-fl-douyin`、`acc-fl-xiaohongshu`。
+- CLEAN#170-DIRECT：删除 3 条已被前置 Douyin 国内流媒体守卫同目标覆盖的后置直写规则：`douyin.com`、`douyinpic.com`、`douyinvod.com`。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2、FlClash 同步；SingBox Full 由 generator 重新生成。
+- SCOPE：`privacy` 不删，因仍有 `IP-CIDR,0.0.0.1/32` 未被前序覆盖；Passwall/Passwall2 保留展平静态 `domain:encoretvb.com`，仅做基线元数据对齐。
+- VERIFY：全量 Mihomo provider 数 384 → 376；SR/Surge/Loon 远程规则 288 → 283；QX `filter_remote` 285 → 280。
+
+## v5.4.34 (2026-06-28)
+
+- FIX#169-AMAP：新增高德地图 / AMap 专用国内规则前置，`webapi.amap.com` 等高德核心域名早于 `geolocation-!cn` / 国外兜底命中 `🏠 国内网站`。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2、FlClash 同步；SingBox Full 由 generator 重新生成。
+- VERIFY：新增 AMap/GaoDe 首匹配合同断言，确认广告/威胁规则仍在前，高德国内规则早于 foreign tail。
+
+## v5.4.33 (2026-06-27)
+
+- FEAT#169-AI-CODING：接入 `VPSDance/ai-proxy-rules` 的 `coding` 场景，补齐 Codex / Claude Code / Cursor / Zed / Windsurf / Replit / Sourcegraph / Amazon Q / Augment 等 AI 编程工具覆盖。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2、FlClash 同步；SingBox Full 由 generator 重新生成。
+- SCOPE：不新增业务组，仍归入 `🤖 AI 服务`；Passwall / Passwall2 因 VPSDance 暂无 `.srs`，使用手工域名兜底而非 `rule-set:remote`。
+
+## v5.4.32 (2026-06-25)
+
+- FIX#168-CN-GAME：国内游戏直连规则前置到 HoYoverse / Game / category-games 等国外游戏宽规则之前，避免国内游戏被先命中代理。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2、FlClash 同步；Passwall/v2rayN 补齐米哈游/网易/WeGame 等国内游戏域名集合。
+- VERIFY：新增国内游戏优先级合同断言，覆盖 `yuanshen.com` / `mihoyo.com` 早于 HoYoverse、Game、category-games 宽规则。
+
+## v5.4.31 (2026-06-20)
+
+- FIX#167-DOUYIN：抖音 Web / `zjcdn.com` 视频 CDN 前置到 `📺 国内流媒体`，避免被 TikTok、广告或国外兜底规则抢先命中。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2、FlClash 同步；SingBox Full 由 generator 重新生成。
+- VERIFY：新增 Douyin Web guard 回归断言，覆盖 `www.douyin.com`、`v5-dy-o.zjcdn.com`、`v5-dy-ov-experiment.zjcdn.com` 这类首匹配路径。
+
+## v5.4.30 (2026-06-17)
+
+- FEAT#166-GOOGLE：新增 `🔍 Google 服务` 业务组，插入在 `🔧 工具与服务` 之前；Google 基础服务、Scholar、Google IP 与 Google QUIC 从工具组拆出。
+- SYNC：业务组从 32 调整为 33，总组数从 54 调整为 55；SingBox selector/urltest 计数为 54；Passwall/Passwall2 展平 shunt rules 调整为 33 条。
+- SCOPE：YouTube、Gemini/NotebookLM、Gmail、Google Voice、Meet、FCM、下载更新等既有专属归属保持不变。
+
+## v5.4.29 (2026-06-10)
+
+- PERF#165-LATENCY：全端统一区域自动测速间隔为 300s，降低高频测速对机场订阅与低端设备的压力。
+- SYNC：Clash Party Smart `120s -> 300s`；Mihomo/url-test 家族、iOS 四件套与 OpenClash `180s -> 300s`；SingBox urltest `3m -> 5m`；CMFA proxy-provider health-check 保持/确认 300s。
+- N/A：v2rayN Xray、Passwall、Passwall2 不承载自动区域测速字段，仅元数据对齐 v5.4.29 基线。
+- VERIFY：新增 300s interval 合同守卫，防止后续产物回退到 120/180s。
+
+## v5.4.28 (2026-06-07)
+
+- ★ CLEAN#165 P2：全产物联动清理已被上游同策略规则集覆盖的直写域名（基线 -38 行，6 段）：
+  - **🇭🇰 香港流媒体** (4): mytvsuper.com/nowe.com/rthk.hk/cabletv.com.hk
+  - **🇹🇼 台湾流媒体** (5): litv.tv/friday.tw/linetv.tw/hamivideo.hinet.net
+  - **🇯🇵 日韩流媒体** (6): tver.jp/dmm.com/dmm.co.jp/nicovideo.jp/nicovideo.me/dmc.nico
+  - **🇪🇺 欧洲流媒体** (3): itv.com/itvstatic.com/britbox.com
+  - **🌐 其他国外流媒体** (6): wetv.vip/wetvinfo.com/viki.com/viki.io/mewatch.sg/discoveryplus.com
+  - **🎮 国外游戏** (12): ubisoft.com/ubi.com/riotgames.com/leagueoflegends.com/valorant.com/rockstargames.com/gog.com/gogalaxy.com/supercell.com/garena.com/hoyoverse.com/hoyolab.com
+- **全产物联动**：Clash Party / FlClash / CMFA / OpenClash Normal+Smart / Shadowrocket / Surge / Loon / Quantumult X 同步清理；SingBox（需修改生成器，本轮豁免）/ v2rayN（无此冗余）/ Passwall/Passwall2（规则语法不同，不适用）。
+- 详见 `Clash Party/CHANGELOG.md`。
+
+## v5.4.27 (2026-06-07)
+
+- CLEAN#165：全量下载 348 个可文本解析的上游规则集（`.mrs` 二进制仅计入覆盖来源、不作为删除证据），解析 244,417 条上游规则；发现 365 条直写域名/IP 与上游存在重叠。
+- 本轮只删除”移除后首个命中仍为同策略上游规则集”的冗余项：Clash/mihomo 家族 7 条直写域名（Claude/PayPal/HBO/Hulu/Xbox 覆盖）+ Passwall/Passwall2 2 条 HBO/Max `geosite:hbo` 本地兜底。
+- SYNC：Clash Party(Smart+Normal) / CMFA / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / FlClash 同步删除；SingBox Full 已由 generator 重新生成；v2rayN Xray 路由无本轮直写候选，仅元数据对齐。
+
+## v5.4.26 (2026-06-07)
+
+- FIX#164：腾讯 WorkBuddy `copilot.tencent.com` 被 szkane `AiDomain.list` 的 `DOMAIN-KEYWORD,copilot` 子串误吞到 `🤖 AI 服务`（国外代理）导致对话报错；在所有 AI rule-set 之前前置 `copilot.tencent.com → 🏠 国内网站` 防吞规则。详见各子目录 CHANGELOG。
+- SYNC：Clash Party(Smart+Normal) / CMFA / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / FlClash 同步前置规则并 bump 至 `v5.4.26-*`；SingBox / v2rayN / Passwall / Passwall2 经核实不受影响（geosite 路径无 copilot 子串关键词，顺流 `geosite:cn` 直连），仅对齐版本号。
+- VERIFY：`tools/validate-js-overwrites.js` 新增 FIX#164 回归守卫。
+
+## v5.4.25-review.1 (2026-06-05)
+
+- REVIEW：全仓代码审查修复 SingBox QUIC 规则不可达、业务组顺序偏差、QX 本地规则误放 `[filter_remote]`、OpenClash 固定 `/tmp` 临时文件风险、PROCESS-NAME 验证盲点与 CI 覆盖缺口。
+- SYNC：CMFA / OpenClash / QX / SingBox / Passwall / Passwall2 按平台尾号递增并补齐 CHANGELOG；SingBox Full 已重新生成。
+- VERIFY：扩展合同验证覆盖 SingBox 业务组顺序、无条件 FINAL 规则、fake-ip-filter 必需条目、QX 分段语法与 PROCESS-NAME CI 校验。
+
+## v5.4.25 (2026-06-04)
+
+- FIX：修复 CMFA `proxy-groups` 顶层 YAML 结构，补上 Ruby YAML 解析验证，防止导入/生成链路再次静默失效。
+- SYNC：SR / Surge / Loon / QX / SingBox / v2rayN / Passwall / Passwall2 元数据对齐 Clash Party v5.4.25。
+- FIX：Passwall active rules 将无效 `geosite:kakaotalk` 改为 `geosite:kakao` + Kakao 显式域名兜底，并让 apply 脚本默认 `--replace` 防重复追加。
+- HARDEN：AI responder 限制 `/ai-help` 写权限触发者，并校验 `AI_PATCH` 路径边界；QX 文档移除不存在的 `srk_to_qx.py` 生成声明。
+- VERIFY：扩展 `tools/validate-artifact-contracts.js` 覆盖 CMFA 解析、SingBox 生成器元数据、Passwall/Passwall2 规则同源性。
+
 ## v5.4.24 (2026-06-03)
 
 - CLEAN：清除全产物 21 条冗余规则 + 3 个未引用 rule-provider（深度审查验证，逐条对比上游原始文件）
