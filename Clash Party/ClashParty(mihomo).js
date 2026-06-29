@@ -2278,7 +2278,11 @@ function overwriteGeneral(config) {
   var foreignDoH = ['https://cloudflare-dns.com/dns-query', 'https://dns.google/dns-query']
   var proxyDoH = foreignDoH.concat(domesticDoH)
   config.dns['default-nameserver'] = bootstrapDns.slice()
-  config.dns.nameserver = domesticDoH.slice()
+  // v5.4.36 FIX#ECS-LEAK-R2: nameserver = foreign DoH (Cloudflare/Google) instead of domestic DoH.
+  //   Non-CN DNS queries never hit AliDNS/DNSPod, eliminating EDNS Client Subnet leak.
+  //   CN domains are split by respect-rules (DIRECT → direct-nameserver = domestic DoH)
+  //   and nameserver-policy with .cn TLD patterns as safety net.
+  config.dns.nameserver = foreignDoH.slice()
   config.dns['direct-nameserver'] = domesticDoH.slice()
   // v5.4.19 #5 借鉴 Proxy-override：让 direct-nameserver 也遵循 nameserver-policy（默认 false 会忽略它）。
   // 官方 use case 即"direct 用国内 DoH + policy 指定域名走指定 DNS"；本仓库 policy 仅含境外 CDN，零国内误伤。
@@ -2291,11 +2295,10 @@ function overwriteGeneral(config) {
   ['+.jsdelivr.net', '+.github.com', '+.githubusercontent.com', '+.githubassets.com', '+.fastly.net'].forEach(function(host) {
     if (!config.dns['nameserver-policy'][host]) config.dns['nameserver-policy'][host] = foreignDoH.slice()
   })
-  // v5.4.36 FIX#ECS-LEAK: geosite nameserver-policy — CN domains resolved via domestic DoH
-  //   (fast & local CDN), non-CN domains resolved via foreign DoH through proxy,
-  //   eliminating EDNS Client Subnet leak from AliDNS/DNSPod initial queries.
-  if (!config.dns['nameserver-policy']['geosite:cn']) config.dns['nameserver-policy']['geosite:cn'] = domesticDoH.slice()
-  if (!config.dns['nameserver-policy']['geosite:geolocation-!cn']) config.dns['nameserver-policy']['geosite:geolocation-!cn'] = foreignDoH.slice()
+  // Safety net: .cn TLD patterns → domestic DoH, in case respect-rules doesn't route them to direct-nameserver
+  ['+.cn', '+.com.cn', '+.org.cn', '+.net.cn', '+.gov.cn', '+.edu.cn', '+.mil.cn'].forEach(function(host) {
+    if (!config.dns['nameserver-policy'][host]) config.dns['nameserver-policy'][host] = domesticDoH.slice()
+  })
   if (!config.dns['fallback-filter'] || typeof config.dns['fallback-filter'] !== 'object' || Array.isArray(config.dns['fallback-filter'])) {
     config.dns['fallback-filter'] = {}
   }
