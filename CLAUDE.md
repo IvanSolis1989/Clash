@@ -45,13 +45,16 @@ node tools/validate-process-name-direct.js
 ```bash
 # 重新生成 SingBox Full JSON（禁止手工改）
 node "SingBox/SingBox(sing-box)-generator.js"
+
+# 重新生成 Stash YAML（禁止手工改 Stash/Stash.yaml）
+node tools/generate-stash-from-cmfa.js
 ```
 
 ---
 
 ## 0. 仓库定位
 
-本仓库维护「**同一套 Mihomo Smart 分流策略**」在 12 个客户端形态下的等价实现：
+本仓库维护「**同一套 Mihomo Smart 分流策略**」在 13 个客户端形态下的等价实现：
 
 | # | 形态 | 文件 | 角色 |
 |---|------|------|------|
@@ -68,6 +71,7 @@ node "SingBox/SingBox(sing-box)-generator.js"
 | 10 | Passwall（OpenWrt 全功能 LuCI） | `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list` | 从属（展平降级） |
 | 10B | Passwall2（OpenWrt 精简分流 LuCI） | `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list` | 从属（展平降级；与 #10 共享规则语法） |
 | 11 | FlClash（JS 覆写脚本） | `FlClash/FlClash(mihomo).js` | 从属（Clash Party Normal JS 的 FlClash 移植版；url-test 区域组，无 Smart+LightGBM） |
+| 12 | Stash（Clash Premium 兼容 YAML） | `Stash/Stash.yaml` + `tools/generate-stash-from-cmfa.js` | 从属（由 CMFA 自动裁剪生成；无 Smart+LightGBM） |
 
 **基线原则：** Clash Party JS 脚本是唯一的「**策略权威源**」。其他产物必须在语义上与其一致；仅在平台能力受限处允许差异（见 §3）。
 
@@ -82,6 +86,8 @@ node "SingBox/SingBox(sing-box)-generator.js"
 > **关于 HomeProxy（OpenWrt 官方 sing-box LuCI 插件）：** 内核就是 sing-box，直接导入 `SingBox/SingBox(sing-box)-full.json`，**不需要**独立产物；`SingBox/README.md §2b` 提供 HomeProxy 专用导入说明。
 >
 > **关于 FlClash（`chen08209/FlClash`，跨平台 Flutter GUI，覆盖 Android/Windows/macOS/Linux）：** 内核是标准 Mihomo（**非** Smart fork），自 v0.8.85 起支持 JS 覆写脚本。本仓库提供两条路径：（1）**覆写脚本** `FlClash/FlClash(mihomo).js`（推荐；动态节点分类 + 订阅垃圾清理 + 家宽识别）；（2）**静态 YAML** `Clash Meta For Android/CMFA(mihomo).yaml`（备选；直接导入无需脚本）。两者规则等价，仅区域组类型不同（url-test）。FlClash 覆写脚本与 Clash Party Normal JS 同构（同 REGION_DB + 同 rule-providers + 同 rules），差异仅在于 overwriteGeneral 裁剪（TUN/端口由 FlClash App UI 托管）和 console.log 条件包装（兼容 QuickJS）。
+>
+> **关于 Stash：** Stash 兼容 Clash Premium 配置，但不等于 Mihomo Smart，也不支持本仓库的 LightGBM Smart 择路。`Stash/Stash.yaml` 是从 CMFA 自动裁剪生成的独立 YAML 产物，必须通过 `node tools/generate-stash-from-cmfa.js` 重新生成，禁止手工改生成结果。裁剪规则见 `Stash/REFERENCE-Stash-wiki.md`：保留 `proxy-groups` / `rule-providers` / `rules` / `nameserver-policy`，删除 Stash Wiki 未确认的 Mihomo GeoX、sniffer、provider health-check / exclude-filter、rule-provider 下载 `proxy` 等字段。
 >
 > **关于 Passwall / Passwall2：** 这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已于 2025 年前后迁入该组织，访问旧 URL 会 301 跳转）**并行维护**的两款独立 OpenWrt 插件（**不是**新旧关系；2026-04 两者发版仅差 4 天）。**Passwall** = 全功能（直连/屏蔽/GFW/代理 4 列表 + 分流 + ACL + `trojan-plus` 节点 + TCP/UDP 节点分选）；**Passwall2** = 精简分流（砍掉四列表 + ACL，只保留 keyword/domain/geosite/geoip 匹配 + 统一节点选择）。两者底层都是 **xray-core + sing-box 双栈**（都**不打包** mihomo），都**没有** mihomo 的 proxy-groups 嵌套选择器（两级 `select`/`url-test` + Smart + LightGBM）——Lua CBI 表单式 UI 没有 YAML 嵌套组语义。**规则语法两者完全相同**（共用 [`shunt_rules.lua`](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua)：纯字符串 / `domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote|local:` / `geoip:` + CIDR；**不支持** Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` / `IP-CIDR,` 前缀）。**本仓库提供两个独立目录**：
 >
@@ -130,8 +136,9 @@ node "SingBox/SingBox(sing-box)-generator.js"
 若本次改动命中上述任一触发条件，PR 必须：
 
 1. **先改 Clash Party JS 主线**（`Clash Party/ClashParty(mihomo-smart).js`），作为唯一权威源。
-2. **同步修改全部 12 个目录产物**（或明确在 PR 说明里标注为何某个产物不受影响）：
+2. **同步修改全部 13 个目录产物**（或明确在 PR 说明里标注为何某个产物不受影响）：
    - `Clash Meta For Android/CMFA(mihomo).yaml`
+   - `Stash/Stash.yaml`（通过 `node tools/generate-stash-from-cmfa.js` 从 CMFA 重新生成，不允许手工改）
    - `OpenClash/OpenClash(mihomo).sh`
    - `OpenClash/OpenClash(mihomo-smart).sh`
    - `Shadowrocket/Shadowrocket.conf`
@@ -180,6 +187,7 @@ node "SingBox/SingBox(sing-box)-generator.js"
 |------|----------|---------------|--------------|
 | `Clash Party/ClashParty(mihomo-smart).js` | 顶部 `//` 注释 | JS 内 `const VERSION` | `Clash Party/CHANGELOG.md` |
 | `Clash Meta For Android/CMFA(mihomo).yaml` | 顶部 `#` 注释块 | 第一行 `# Clash Smart vX.Y.Z - CMFA` | `Clash Meta For Android/CHANGELOG.md` |
+| `Stash/Stash.yaml` | 顶部 `#` 注释块 | 第一行 `# Stash Smart vX.Y.Z-stash.N`（由生成器注入） | `Stash/CHANGELOG.md` |
 | `OpenClash/OpenClash(mihomo).sh` | `#!/bin/bash` 下方 `# ==` 块 | `VERSION_TAG="vX.Y.Z-oc-normal"` | `OpenClash/CHANGELOG.md` (Normal 段) |
 | `OpenClash/OpenClash(mihomo-smart).sh` | `#!/bin/bash` 下方 `# ==` 块 | `VERSION_TAG="vX.Y.Z-oc-smart"` + Ruby 脚本里 `VERSION` | `OpenClash/CHANGELOG.md` (Smart 段) |
 | `Shadowrocket/Shadowrocket.conf` | 顶部 `# ══…` 双线框 | 第 2 行 `# Shadowrocket Smart vX.Y.Z-SR.N` | `Shadowrocket/CHANGELOG.md` |
@@ -252,7 +260,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 
 ### 1.5 同构 bug 全产物审计（自 v5.2.6 起强制）⚠️
 
-**触发条件**：只要本次修复命中以下任一运行时逻辑点，**必须对全部 11 份产物做同构审计**：
+**触发条件**：只要本次修复命中以下任一运行时逻辑点，**必须对全部 13 份产物做同构审计**：
 
 1. **节点名 → 区域分类**：`REGION_DB` / `REGIONS` / `filter:` / `policy-regex-filter` / `server-tag-regex` / `NameRegex FilterKey`
 2. **区域组 fallback 链**：区域为空时回落到 `apacNodes` / `c.ALL` / 全局组
@@ -267,6 +275,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 | Clash Party Smart JS | `REGION_DB` 常量 + `classifyAllNodes` + `cleanupSubscription` |
 | Clash Party Normal JS | 同上（与 Smart 版几乎同构，差别仅 `type: smart` → `url-test`） |
 | Clash Meta For Android YAML | 各 `proxy-groups[].filter:` mihomo 正则（子串匹配，无 word boundary） |
+| Stash YAML | 由 CMFA 生成；各 `proxy-groups[].filter:` 继承 Clash/YAML 正则语义，必须重新生成并核对 |
 | OpenClash normal / full | Ruby `REGIONS` 哈希（子串匹配） + `make_smart_group` fallback + `config["proxy-groups"] = ...` 重建 |
 | Shadowrocket | `[Proxy Group] ... policy-regex-filter=...` 正则 |
 | Surge | 同上 |
@@ -315,6 +324,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 |------|--------------|
 | Clash Party JS | https://wiki.metacubex.one/ · https://wiki.metacubex.one/config/ · Mihomo Smart 内核（`lgbm-custom-url` 字段、`uselightgbm`、`include-all-proxies`） |
 | CMFA YAML | https://wiki.metacubex.one/config/proxy-groups · https://wiki.metacubex.one/config/dns · CMFA README（GitHub `MetaCubeX/ClashMetaForAndroid`） |
+| Stash YAML | https://stash.wiki/en/configuration/example-config · https://stash.wiki/en/proxy-protocols/proxy-groups · https://stash.wiki/en/rules/rule-set · https://stash.wiki/en/rules/rule-types · https://stash.wiki/en/configuration/override |
 | OpenClash（Normal + Smart）| https://github.com/vernesong/OpenClash/wiki · OpenClash 覆写脚本官方模板 · UCI 配置键 |
 | Shadowrocket | https://help.shadowrocket.net/ · `policy-regex-filter` / `RULE-SET` / `fallback-dns-server` 的官方文档或社区权威说明 |
 | SingBox（Full）| https://sing-box.sagernet.org/configuration/ · 特别是 `route.rule_set`、`outbounds/selector`、`outbounds/urltest`、`dns`、`inbounds.tun`、`experimental.cache_file` |
@@ -345,6 +355,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 |----------|-------------|--------|
 | `Clash Party/` | `REFERENCE-mihomo-wiki.md` | https://wiki.metacubex.one/ |
 | `Clash Meta For Android/` | `REFERENCE-mihomo-wiki.md` | https://wiki.metacubex.one/ |
+| `Stash/` | `REFERENCE-Stash-wiki.md` | https://stash.wiki/ |
 | `OpenClash/` | `REFERENCE-openclash.md` | https://github.com/vernesong/OpenClash/wiki |
 | `Surge/` | `REFERENCE-surge-manual.md` | https://manual.nssurge.com/ |
 | `Shadowrocket/` | `REFERENCE-shadowrocket.md` | https://help.shadowrocket.net/ |
@@ -426,6 +437,7 @@ done
 
 - 基线（Clash Party v5.2.2 起）：`RP_PROXY = BIZ.GFW = '🚫 受限网站'`
 - Clash 家族（CMFA / OpenClash Normal / OpenClash Smart）必须全部使用 `proxy: '🚫 受限网站'`。
+- Stash Wiki 未记录 rule-provider 下载代理字段；`Stash/Stash.yaml` 删除该字段并在 `Stash/REFERENCE-Stash-wiki.md` 说明风险，豁免。
 - Shadowrocket 不走 rule-provider，自动由 App 更新，豁免。
 - sing-box 通过 `route.rule_set` 远程拉取，其走的是全局默认出站，豁免。
 
@@ -455,6 +467,7 @@ done
 | **Surge** | `dns-server=223.5.5.5, system` | `encrypted-dns-server=https://doh.pub/dns-query`（**独立字段**，禁止混在 `dns-server=` 里） | `[Host]` 段 `*.apple.com = server:system` | DoH 字段与 SR 不同，与 Loon/QX 也不同——三家三种写法 |
 | **Loon** | `dns-server=system, 223.5.5.5` | `doh-server=https://doh.pub/dns-query`（**独立字段**，同 QX） | `[Host]` 段 `*.apple.com = server:system` | DoH 字段名同 QX，但 [Host] 段语法跟 Surge |
 | **Clash 家族（mihomo / CMFA / OpenClash）** | YAML `dns.nameserver: [223.5.5.5, 119.29.29.29]` | YAML `dns.nameserver: [https://doh.pub/dns-query, ...]`（与 IP 同一数组） | `dns.fake-ip-filter` / `hosts:` | 还有 `direct-nameserver` / `proxy-server-nameserver` / `nameserver-policy` 等多层 |
+| **Stash** | YAML `dns.default-nameserver` 只放 IP；`dns.nameserver` 可放 IP/DoH | DoH 放 `dns.nameserver` / `dns.nameserver-policy` | `dns.fake-ip-filter` / `hosts:` | 不复制 Mihomo `proxy-server-nameserver` / `direct-nameserver` / `fallback-filter`；见 `REFERENCE-Stash-wiki.md` |
 | **sing-box** | JSON `dns.servers[].address: "223.5.5.5"` | JSON `dns.servers[].address: "https://doh.pub/dns-query"`（与 IP 同一字段） | `dns.rules[]` 路由 | 1.11+ 引入新结构；老配置 `dns.servers[].address_resolver` 需手动迁移 |
 
 历史出处：
@@ -467,6 +480,7 @@ done
 | 产物 | 域名后缀 | IP CIDR | 端口 | 进程 | RULE-SET 引用 |
 |------|----------|---------|------|------|----------------|
 | **Clash 家族** | `DOMAIN-SUFFIX,example.com` | `IP-CIDR,1.2.3.0/24` | `DST-PORT,443` | `PROCESS-NAME,curl` | `RULE-SET,name` + 顶部 `rule-providers` |
+| **Stash** | `DOMAIN-SUFFIX,example.com` | `IP-CIDR,1.2.3.0/24` | `DST-PORT,443` | `PROCESS-NAME,curl` | `RULE-SET,name` + 顶部 `rule-providers` |
 | **Shadowrocket** | `DOMAIN-SUFFIX,example.com` | `IP-CIDR,1.2.3.0/24` | `DST-PORT,443` | （iOS 限制，不支持） | `RULE-SET,<url>,<policy>`（直接 URL，无 rule-providers 节） |
 | **Surge** | `DOMAIN-SUFFIX,example.com` | `IP-CIDR,1.2.3.0/24` | **`DEST-PORT,443`**（禁止 `DST-PORT`） | `PROCESS-NAME,curl` | `RULE-SET,<url> <policy>` |
 | **Loon** | `DOMAIN-SUFFIX,example.com` | `IP-CIDR,1.2.3.0/24` | **`DEST-PORT,443`**（同 Surge，禁止 `DST-PORT`） | `PROCESS-NAME,curl` | `RULE-SET,<url>,<policy>` |
@@ -502,6 +516,7 @@ done
 | **OpenClash full override YAML** | 顶层 `rule-providers:` / `rules:` | 各自**只能出现 1 次**（Ruby Psych last-wins 会静默丢内容） | §5 自检 4b |
 | **Passwall / Passwall2 shunt_rules** | 不支持 Clash 前缀 | 必须用 `domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote\|local:` / 裸 CIDR；**禁止** `DOMAIN-SUFFIX,` | shunt_rules.lua |
 | **sing-box rule_set** | `format` 字段 | `binary`（配 `.srs` 文件）或 `source`（配 JSON）；不能反着配 | sagernet.org 文档 |
+| **Stash rule-providers** | provider 下载代理 / health-check / exclude-filter | Stash Wiki 未列出这些 Mihomo 字段；从 CMFA 生成时删除 | `Stash/REFERENCE-Stash-wiki.md` |
 | **Shadowrocket** | rule-provider 节 | **不支持**；必须把 URL 直接写在 `RULE-SET,<url>,<policy>` 中 | §3.2 + §3.5.2 |
 | **Surge / Loon / QX** | 进程匹配 | iOS 进程命名空间不支持 `PROCESS-NAME`；Surge/Loon iOS 14+ 部分支持，QX 不支持 | 各官方 wiki |
 
@@ -520,9 +535,9 @@ done
 
 ## 4. 发版与版本号规则
 
-- Clash Party JS 顶部 VERSION 注释是**唯一主版本号**（目前 `v5.4.25`）。
+- Clash Party JS 顶部 VERSION 注释是**唯一主版本号**（目前 `v5.4.37`）。
 - 其他产物使用同主版本号 + 平台后缀：
-  - `v5.4.25-cmfa.X`、`v5.4.25-oc-normal.X`、`v5.4.25-oc-smart.X`、`v5.4.25-SR.X`、`v5.4.25-Surge.X`、`v5.4.25-Loon.X`、`v5.4.25-QX.X`、`v5.4.25-sing.X`、`v5.4.25-v2n.X`、`v5.4.25-pw.X`、`v5.4.25-pw2.X`、`v5.4.25-flclash.X`
+  - `v5.4.37-cmfa.X`、`v5.4.37-stash.X`、`v5.4.37-oc-normal.X`、`v5.4.37-oc-smart.X`、`v5.4.37-SR.X`、`v5.4.37-Surge.X`、`v5.4.37-Loon.X`、`v5.4.37-QX.X`、`v5.4.37-sing.X`、`v5.4.37-v2n.X`、`v5.4.37-pw.X`、`v5.4.37-pw2.X`、`v5.4.37-flclash.X`
 - 平台后缀内部可独立递增，但主版本号必须与 Clash Party 对齐；若不对齐，必须在对应子目录 `README.md` 开头标明原因。
 
 ---
@@ -533,6 +548,7 @@ done
 # 1) 数代理组数（必须为 33 业务组 + 22 区域组；sing-box 另加 1 个顶层节点选择）
 #    CMFA：业务组用 "- name:"、区域组用 "- type: url-test" + 缩进 "  name:"，需两种模式
 grep -cE "^- name: |^  name: " "Clash Meta For Android/CMFA(mihomo).yaml"  # 期望 55
+grep -cE "^- name: |^  name: " "Stash/Stash.yaml"                          # 期望 55
 #    OpenClash：33 业务组是静态 "- name:"；22 区域组由 Ruby make_smart_group() 动态生成，静态 grep 只能数到 33
 grep -cE "^- name: " "OpenClash/OpenClash(mihomo).sh"                  # 期望 33（静态业务组）
 grep -cE "^- name: " "OpenClash/OpenClash(mihomo-smart).sh"             # 期望 33（静态业务组）
@@ -546,6 +562,7 @@ node -e "const d=JSON.parse(require('fs').readFileSync('SingBox/SingBox(sing-box
 grep -c "proxy: DIRECT" "OpenClash/OpenClash(mihomo).sh"                    # 期望 0
 grep -c "proxy: '☁️ 云与CDN'" "Clash Meta For Android/CMFA(mihomo).yaml"         # 期望 0
 grep -c "proxy: '🚫 受限网站'" "Clash Meta For Android/CMFA(mihomo).yaml"        # 期望 ≥ 300
+grep -c "proxy: '🚫 受限网站'" "Stash/Stash.yaml"                              # 期望 0（Stash Wiki 未记录 provider proxy 字段）
 grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo).sh"               # 期望 ≥ 130
 grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo-smart).sh"  # 期望 ≥ 376
 
@@ -575,6 +592,7 @@ ruby -ryaml -e '
 '
 
 # 5) 产物合同验证（--strict-ruby 会实际解析 CMFA/OpenClash YAML）
+node tools/generate-stash-from-cmfa.js
 node tools/validate-artifact-contracts.js --strict-ruby
 
 # 6) JS 覆写与 PROCESS-NAME 合同
@@ -592,7 +610,7 @@ node tools/validate-process-name-direct.js
 ① 读 Clash Party JS（基线）→ 搞清楚要改什么
 ② 读目标 APP 官方文档 → 确认新字段/新组在每个产物上的等价写法
 ③ 改 Clash Party JS → 主线先落地
-④ 同步 CMFA → OpenClash(Normal+Smart) → Shadowrocket → Surge → Loon → QX → SingBox Full → v2rayN → Passwall/Passwall2 → FlClash（按适用性说明豁免）
+④ 同步 CMFA → Stash(由 CMFA 生成) → OpenClash(Normal+Smart) → Shadowrocket → Surge → Loon → QX → SingBox Full → v2rayN → Passwall/Passwall2 → FlClash（按适用性说明豁免）
 ⑤ 跑 §5 自检命令
 ⑥ 更新根 README.md + 各子目录 README.md
 ⑦ PR 描述里写：改动摘要 / 影响矩阵 / 官方文档链接 / 自检输出
@@ -604,7 +622,7 @@ node tools/validate-process-name-direct.js
 
 - 不同步 = 违规。
 - 不核对官方文档 = 违规。
-- 删除/改名 54 个代理组之一而未在 PR 说明里论证 = 违规。
+- 删除/改名 55 个代理组之一而未在 PR 说明里论证 = 违规。
 - 伪造「已兼容」结论（没有引用官方文档就下结论）= 违规。
 
 > 这些约束是仓库长期可维护性的前提，优先级高于任何「小修快改」的便利。
@@ -622,7 +640,7 @@ PR 提交后会自动运行两个验证工作流：
    - 验证内容：节点分类、组顺序、规则引用、订阅清理、TikTok 目标隔离等
 2. **Validate Artifact Contracts** — 跨客户端产物一致性验证（含 Ruby YAML 解析）
    - 触发条件：PR/push 修改任何产物文件（JS/YAML/JSON/conf）
-   - 验证内容：JS 覆写 + CMFA/OpenClash/SR/Surge/Loon/QX/SingBox/v2rayN/Passwall 组计数 + JSON 合法性 + YAML 重复键
+   - 验证内容：JS 覆写 + CMFA/Stash/OpenClash/SR/Surge/Loon/QX/SingBox/v2rayN/Passwall 组计数 + JSON 合法性 + YAML 重复键
 
 任一工作流失败 → PR 不得合入。
 

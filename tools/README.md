@@ -5,6 +5,24 @@
 This directory contains repository-maintainer checks. These tools do not change
 published client artifacts.
 
+## Generated client artifacts
+
+Run:
+
+```bash
+node tools/generate-stash-from-cmfa.js
+```
+
+Scope:
+
+- reads `Clash Meta For Android/CMFA(mihomo).yaml` as the Stash source;
+- writes `Stash/Stash.yaml`;
+- preserves the shared 22 region groups, 33 business groups, rule-providers,
+  and rules;
+- removes Stash-unverified Mihomo-only fields such as GeoX auto-update,
+  sniffer, provider health-check / exclude-filter, provider download `proxy`,
+  and Mihomo-specific DNS fallback keys.
+
 ## JS overwrite smoke contract
 
 Run:
@@ -48,8 +66,10 @@ Scope:
 
 - compiles the JS overwrite artifacts and checks that Normal / FlClash follow
   the Clash Party Smart baseline version;
-- checks static group counts for CMFA, Shadowrocket, Surge, Loon, and
+- checks static group counts for CMFA, Stash, Shadowrocket, Surge, Loon, and
   Quantumult X;
+- verifies Stash YAML is a generated CMFA derivative and does not carry
+  unverified Mihomo-only keys;
 - validates SingBox and v2rayN JSON structure and baseline metadata;
 - extracts OpenClash heredoc YAML and, when Ruby is available, parses it through
   Ruby/Psych to catch duplicate top-level `rule-providers` / `rules` keys;

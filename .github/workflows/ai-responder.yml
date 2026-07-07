@@ -114,6 +114,7 @@ jobs:
             *passwall*|pw\ *|*\ pw\ *)               FOLDER="Passwall" ;;
             *quantumult\ x*|*quantumultx*|qx\ *|*\ qx\ *) FOLDER="Quantumult X" ;;
             *shadowrocket*|sr\ *|*\ sr\ *)            FOLDER="Shadowrocket" ;;
+            *stash*)                                FOLDER="Stash" ;;
             *openclash*)                           FOLDER="OpenClash" ;;
             *singbox*|*sing-box*)                  FOLDER="SingBox" ;;
             *v2rayn*|*v2ray*)                      FOLDER="v2rayN" ;;
@@ -348,10 +349,10 @@ jobs:
           你是 Smart-Config-Kit（科学上网分流配置仓库）的 issue 初筛助手。
 
           【仓库定位】
-          以 Clash Party JS 覆写脚本为基线，同步产出 12 份客户端等价配置：
-          CMFA YAML / OpenClash Normal+Smart / Shadowrocket / SingBox Full /
+          以 Clash Party JS 覆写脚本为基线，同步产出 13 份客户端等价配置：
+          CMFA YAML / Stash YAML / OpenClash Normal+Smart / Shadowrocket / SingBox Full /
           Surge / Loon / Quantumult X / v2rayN / Passwall / Passwall2 / FlClash。
-          架构核心：32 业务组 × 22 区域组（11 全部 + 11 家宽）+ 多源 rule-providers + LightGBM 智能选路。
+          架构核心：33 业务组 × 22 区域组（11 全部 + 11 家宽）+ 多源 rule-providers + LightGBM 智能选路。
           仓库维护契约见 CLAUDE.md（每次改动必须全版本联动）。
 
           【你的角色】
@@ -589,9 +590,9 @@ jobs:
           # 白名单：仅允许写入这些目录/文件前缀（D11-01）
           ALLOWED_PREFIXES = [
               'Clash Party/', 'Clash Meta For Android/', 'OpenClash/',
-              'Shadowrocket/', 'SingBox/', 'v2rayN/', 'Surge/', 'Loon/',
+              'Shadowrocket/', 'Stash/', 'SingBox/', 'v2rayN/', 'Surge/', 'Loon/',
               'Quantumult X/', 'Passwall/', 'Passwall2/', 'FlClash/',
-              'CHANGELOG.md', 'README.md', 'docs/'
+              'CHANGELOG.md', 'README.md', 'docs/', 'tools/'
           ]
 
           root = Path.cwd().resolve()

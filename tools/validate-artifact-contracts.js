@@ -130,6 +130,7 @@ const ARTIFACT_FILES = [
   'Clash Party/ClashParty(mihomo).js',
   'FlClash/FlClash(mihomo).js',
   'Clash Meta For Android/CMFA(mihomo).yaml',
+  'Stash/Stash.yaml',
   'OpenClash/OpenClash(mihomo).conf',
   'OpenClash/OpenClash(mihomo).sh',
   'OpenClash/OpenClash(mihomo-smart).sh',
@@ -572,6 +573,184 @@ function validateClashYaml(record, baselineVersion, options) {
     const guard = `'DOMAIN-SUFFIX,${domain},🕹️ 国内游戏'`;
     checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, "'RULE-SET,hoyoverse,🎮 国外游戏'");
     checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-category-games`, rulesBlock, guard, "'GEOSITE,category-games,🎮 国外游戏'");
+  }
+}
+
+function validateStashYaml(record, baselineVersion, options) {
+  const file = 'Stash/Stash.yaml';
+  const source = readText(file);
+  const generator = readText('tools/generate-stash-from-cmfa.js');
+  const providersBlock = extractYamlBlock(source, 'rule-providers');
+  const rulesBlock = extractYamlBlock(source, 'rules');
+  const groupCount = countMatches(source, /^- name: |^  name: /gm);
+  const providerCount = countMatches(providersBlock, /^  [^ #][^:]+:\s*$/gm);
+  const ruleCount = countMatches(rulesBlock, /^- /gm);
+  const stashInterval300Count = countMatches(source, /^\s+interval:\s*300\s*$/gm);
+  const legacyRegionIntervals = countMatches(source, /^\s+interval:\s*(120|180)\s*$/gm);
+
+  record.check('stash.group-count', groupCount === EXPECTED_GROUPS, { value: groupCount });
+  record.check('stash.provider-count', providerCount >= MIN_FULL_PROVIDERS, { value: providerCount });
+  record.check('stash.rule-count', ruleCount >= MIN_FULL_RULES, { value: ruleCount });
+  record.check('stash.baseline-header', source.includes(`Clash Party ${baselineVersion}`), {
+    message: `missing Clash Party ${baselineVersion}`,
+  });
+  record.check('stash.version-prefix', source.includes(`Stash Smart ${baselineVersion}-stash.`), {
+    message: `missing Stash Smart ${baselineVersion}-stash.*`,
+  });
+  record.check('stash.generated-header', source.includes('node tools/generate-stash-from-cmfa.js'));
+  record.check('stash.generator-from-cmfa', generator.includes('Clash Meta For Android/CMFA(mihomo).yaml'));
+  record.check('stash.generator-not-reading-generated-output', !/readFileSync\([^)]*Stash\/Stash\.yaml/.test(generator));
+  record.check('stash.rule-provider-singleton', countMatches(source, /^rule-providers:$/gm) === 1, { value: countMatches(source, /^rule-providers:$/gm) });
+  record.check('stash.rules-singleton', countMatches(source, /^rules:$/gm) === 1, { value: countMatches(source, /^rules:$/gm) });
+  record.check('stash.region-test-interval-300', stashInterval300Count === EXPECTED_REGION_GROUPS, {
+    value: stashInterval300Count,
+    message: 'Stash region url-test groups must use 300s; proxy-provider health-check is intentionally omitted',
+  });
+  record.check('stash.no-legacy-fast-region-interval', legacyRegionIntervals === 0, {
+    value: legacyRegionIntervals,
+    message: 'Stash must not use 120s/180s region test intervals',
+  });
+
+  const rubyPath = findRuby();
+  if (!rubyPath) {
+    const message = 'Ruby not found; exact Stash YAML parsing skipped';
+    if (options.strictRuby) record.check('stash.ruby-available', false, { message });
+    else record.warn('stash.ruby-available', message);
+  } else {
+    try {
+      const parsed = rubyYamlFileProbe(file, rubyPath);
+      record.check('stash.ruby-top-provider-singleton', parsed.top_providers === 1, { value: parsed.top_providers });
+      record.check('stash.ruby-top-rules-singleton', parsed.top_rules === 1, { value: parsed.top_rules });
+      record.check('stash.ruby-group-count', parsed.groups === EXPECTED_GROUPS, { value: parsed.groups });
+      record.check('stash.ruby-provider-count', parsed.providers >= MIN_FULL_PROVIDERS, { value: parsed.providers });
+      record.check('stash.ruby-rule-count', parsed.rules >= MIN_FULL_RULES, { value: parsed.rules });
+    } catch (error) {
+      record.check('stash.ruby-parse', false, { message: error.message });
+    }
+  }
+
+  const forbiddenMihomoKeys = [
+    'bind-address',
+    'unified-delay',
+    'tcp-concurrent',
+    'find-process-mode',
+    'keep-alive-idle',
+    'keep-alive-interval',
+    'geodata-mode',
+    'geo-auto-update',
+    'geo-update-interval',
+    'geox-url',
+    'profile',
+    'sniffer',
+    'prefer-h3',
+    'fake-ip-filter-mode',
+    'use-hosts',
+    'use-system-hosts',
+    'cache-algorithm',
+    'respect-rules',
+    'proxy-server-nameserver',
+    'direct-nameserver',
+    'direct-nameserver-follow-policy',
+    'fallback',
+    'fallback-filter',
+    'health-check',
+    'exclude-filter',
+    'lazy',
+    'tolerance',
+  ];
+  for (const key of forbiddenMihomoKeys) {
+    const pattern = new RegExp(`^\\s*${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}:`, 'm');
+    record.check(`stash.no-mihomo-key.${key}`, !pattern.test(source), {
+      message: `Stash YAML must not carry unverified Mihomo-only key ${key}`,
+    });
+  }
+
+  record.check('stash.no-direct-provider-downloads', !/proxy:\s*['"]?DIRECT['"]?/.test(providersBlock));
+  record.check('stash.no-provider-download-proxy-key', !/^    proxy:\s*/m.test(providersBlock), {
+    message: 'Stash rule-providers do not document a provider download proxy field',
+  });
+  record.check('stash.no-restricted-provider-proxy-key', !/^\s+proxy:\s*['"]?\u{1F6AB} \u53D7\u9650\u7F51\u7AD9['"]?\s*$/mu.test(providersBlock), {
+    message: 'Stash rule-providers do not document a provider download proxy field',
+  });
+  record.check('stash.no-cloud-cdn-provider-downloads', !providersBlock.includes(CLOUD_CDN));
+  const badMrsProviders = [];
+  let currentProvider = null;
+  for (const line of providersBlock.split(/\r?\n/)) {
+    const providerHeader = line.match(/^  ([^ #][^:]+):\s*$/);
+    if (providerHeader) currentProvider = { name: providerHeader[1], behavior: null };
+    if (!currentProvider) continue;
+    const behavior = line.match(/^    behavior:\s*(\S+)/);
+    if (behavior) currentProvider.behavior = behavior[1];
+    const format = line.match(/^    format:\s*(\S+)/);
+    if (format && format[1] === 'mrs' && !['domain', 'ipcidr'].includes(currentProvider.behavior)) {
+      badMrsProviders.push(currentProvider.name);
+    }
+  }
+  record.check('stash.mrs-domain-ipcidr-only', badMrsProviders.length === 0, {
+    value: badMrsProviders,
+    message: 'Stash MRS rule sets support domain/ipcidr only',
+  });
+  record.check('stash.amap-provider', /amap:\n\s+type:\s+http/.test(providersBlock));
+  checkNeedleBefore(record, 'stash.amap-after-ads', rulesBlock, "'RULE-SET,anti-ad,🛑 广告拦截'", "'RULE-SET,amap,🏠 国内网站'");
+  checkNeedleBefore(record, 'stash.amap-before-foreign-tail', rulesBlock, "'RULE-SET,amap,🏠 国内网站'", "'RULE-SET,proxy,🌐 国外网站'");
+  record.check('stash.scholar-target-google', source.includes("'RULE-SET,scholar,🔍 Google 服务'"));
+  record.check('stash.scholar-not-tools', !source.includes("'RULE-SET,scholar,🔧 工具与服务'"));
+
+  const fakeIpFilterBlock = extractIndentedListBlock(source, 'fake-ip-filter');
+  const hasNoFakeIpRuleSetRefs = !/RULE-SET,/.test(fakeIpFilterBlock);
+  record.check(
+    'stash.fake-ip-filter-no-ruleset-references',
+    hasNoFakeIpRuleSetRefs,
+    failureMessage(hasNoFakeIpRuleSetRefs, 'Stash fake-ip-filter must not contain rule-mode RULE-SET entries'),
+  );
+  for (const entry of STUN_FAKE_IP_FILTER_ENTRIES) {
+    const hasEntry = fakeIpFilterBlock.includes(entry);
+    record.check(`stash.fake-ip-filter.${entry}`, hasEntry, failureMessage(hasEntry, `missing ${entry}`));
+  }
+  for (const entry of REQUIRED_FAKE_IP_FILTER_ENTRIES) {
+    const hasEntry = fakeIpFilterBlock.includes(entry);
+    record.check(`stash.fake-ip-filter.${entry}`, hasEntry, failureMessage(hasEntry, `missing ${entry}`));
+  }
+  for (const entry of ['+.msftconnecttest.com', '+.msftncsi.com', '+.in-addr.arpa', '+.ip6.arpa']) {
+    const hasEntry = fakeIpFilterBlock.includes(entry);
+    record.check(`stash.fake-ip-filter.${entry}`, hasEntry, failureMessage(hasEntry, `missing ${entry}`));
+  }
+  record.check('stash.dns.githubusercontent-policy', /['"]?\+\.githubusercontent\.com['"]?:/.test(source));
+  checkExactList(record, 'stash.dns.default-nameserver-plaintext', extractYamlListItems(source, 'default-nameserver'), DNS_BOOTSTRAP_PLAINTEXT);
+  checkExactList(record, 'stash.dns.nameserver-exact', extractYamlListItems(source, 'nameserver'), DNS_DOMESTIC_DOH);
+  checkExactList(record, 'stash.dns.policy-geosite-cn', extractYamlListItems(source, 'geosite:cn'), DNS_DOMESTIC_DOH);
+  checkExactList(record, 'stash.dns.policy-geosite-not-cn', extractYamlListItems(source, 'geosite:geolocation-!cn'), DNS_FOREIGN_DOH);
+  for (const port of STUN_DIRECT_PORTS) {
+    const hasPortRule = source.includes(`DST-PORT,${port},DIRECT`);
+    record.check(`stash.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
+  }
+  checkNeedleBefore(
+    record,
+    'stash.cloudflarestorage-before-ads',
+    source,
+    "'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站'",
+    "'RULE-SET,anti-ad,🛑 广告拦截'",
+  );
+  for (const domain of ['douyin.com', 'zjcdn.com']) {
+    checkNeedleBefore(
+      record,
+      `stash.douyin-guard.${domain}.before-tiktok`,
+      source,
+      `'DOMAIN-SUFFIX,${domain},📺 国内流媒体'`,
+      "'RULE-SET,tiktok,🎵 TikTok'",
+    );
+    checkNeedleBefore(
+      record,
+      `stash.douyin-guard.${domain}.before-foreign-tail`,
+      source,
+      `'DOMAIN-SUFFIX,${domain},📺 国内流媒体'`,
+      "'RULE-SET,proxy,🌐 国外网站'",
+    );
+  }
+  for (const domain of CN_GAME_PRIORITY_DOMAINS) {
+    const guard = `'DOMAIN-SUFFIX,${domain},🕹️ 国内游戏'`;
+    checkNeedleBefore(record, `stash.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, "'RULE-SET,hoyoverse,🎮 国外游戏'");
+    checkNeedleBefore(record, `stash.cn-game.${domain}.before-category-games`, rulesBlock, guard, "'GEOSITE,category-games,🎮 国外游戏'");
   }
 }
 
@@ -1286,6 +1465,7 @@ function main() {
   const record = makeRecorder();
   const { baselineVersion } = validateJsProducts(record);
   validateClashYaml(record, baselineVersion, options);
+  validateStashYaml(record, baselineVersion, options);
   validateOpenClash(record, baselineVersion, options);
   validateConfProducts(record, baselineVersion);
   validateJsonProducts(record, baselineVersion);

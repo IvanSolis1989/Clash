@@ -2,9 +2,15 @@
 
 > 仓库级变更摘要。各产物的详细变更见对应子目录 `CHANGELOG.md`。
 > 主版本号由 `Clash Party/ClashParty(mihomo-smart).js` 内 `const VERSION` 唯一决定。
-> 覆盖 12 个客户端形态的等价实现：Clash Party JS / CMFA / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash。
+> 覆盖 13 个客户端形态的等价实现：Clash Party JS / CMFA / Stash / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash。
 
 ---
+
+## v5.4.37-stash.1 (2026-07-07)
+
+- FEAT#173-STASH：新增 Stash 专用目录，包含由 CMFA 自动裁剪生成的 `Stash/Stash.yaml`、使用说明、CHANGELOG 与 Stash Wiki 字段参考。
+- TOOLING：新增 `tools/generate-stash-from-cmfa.js`，并把 Stash YAML 纳入 `validate-artifact-contracts.js` 与 CI 路径触发。
+- COMPAT：Stash 产物保留 22 区域组、33 业务组、376 rule-provider 与规则顺序；删除 Stash Wiki 未确认的 Mihomo 扩展字段和 provider 下载代理字段。
 
 ## v5.4.37 (2026-06-29)
 

@@ -5,6 +5,7 @@ on:
     paths:
       - 'Clash Party/**/*.js'
       - 'Clash Meta For Android/**/*.yaml'
+      - 'Stash/**/*.yaml'
       - 'OpenClash/**/*.conf'
       - 'OpenClash/**/*.sh'
       - 'Shadowrocket/**/*.conf'
@@ -19,6 +20,7 @@ on:
       - 'Passwall2/**/*.sh'
       - 'Passwall2/**/*.conf'
       - 'Passwall2/shunt-rules/**/*.list'
+      - 'tools/generate-stash-from-cmfa.js'
       - 'tools/validate-artifact-contracts.js'
       - 'tools/validate-process-name-direct.js'
       - 'tools/fixtures/**'
@@ -28,6 +30,7 @@ on:
     paths:
       - 'Clash Party/**/*.js'
       - 'Clash Meta For Android/**/*.yaml'
+      - 'Stash/**/*.yaml'
       - 'OpenClash/**/*.conf'
       - 'OpenClash/**/*.sh'
       - 'Shadowrocket/**/*.conf'
@@ -42,6 +45,7 @@ on:
       - 'Passwall2/**/*.sh'
       - 'Passwall2/**/*.conf'
       - 'Passwall2/shunt-rules/**/*.list'
+      - 'tools/generate-stash-from-cmfa.js'
       - 'tools/validate-artifact-contracts.js'
       - 'tools/validate-process-name-direct.js'
       - 'tools/fixtures/**'

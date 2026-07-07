@@ -10,12 +10,14 @@
 
 ## 1. 为什么需要这份文件
 
-Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 12 个产物目录）。它们必须在语义上一致，但语法完全不同：
+Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 13 个产物目录）。它们必须在语义上一致，但语法完全不同：
 
 - Mihomo JS 覆写（Clash Party，**基线**）
 - Mihomo YAML（CMFA）
+- FlClash JS 覆写（Clash Party Normal JS 移植版）
 - OpenClash heredoc shell（Normal / Smart）
 - Shadowrocket `.conf`（iOS SR 私有格式）
+- Stash YAML（Clash Premium 兼容，由 CMFA 自动裁剪生成）
 - sing-box JSON（Full）
 - v2rayN Xray 路由 JSON（Windows 桌面，仅 Xray 核心兜底；mihomo/sing-box 核心直接复用上面 CMFA/SingBox 产物，不是独立产物）
 - Surge `.conf`（iOS / macOS 付费正版；与 SR 语法 ~90% 兼容）
@@ -31,7 +33,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 - **v2rayN（mihomo/sing-box 模式）**：直接消费 CMFA YAML 或 SingBox Full JSON
 
 有 **降级产物** 的客户端（功能受限但可用）：
-- **Passwall / Passwall2**：底层走 xray/sing-box，支持 geosite/geoip/rule_set 规则匹配，但没有 mihomo 的 proxy-groups 嵌套选择器。本仓库提供两个独立参考目录：`Passwall/`（全功能版）和 `Passwall2/`（精简分流版），各自含 31 条展平 shunt rule。两者规则语法完全相同（共用 `shunt_rules.lua` 解析器），`.list` 文件互通。想要完整体验的用户应迁移到 OpenClash。
+- **Passwall / Passwall2**：底层走 xray/sing-box，支持 geosite/geoip/rule_set 规则匹配，但没有 mihomo 的 proxy-groups 嵌套选择器。本仓库提供两个独立参考目录：`Passwall/`（全功能版）和 `Passwall2/`（精简分流版），各自含 33 条展平 shunt rule。两者规则语法完全相同（共用 `shunt_rules.lua` 解析器），`.list` 文件互通。想要完整体验的用户应迁移到 OpenClash。
 
 显式不支持的客户端：
 - **SSR Plus+**：架构老旧 + 已停止维护，没有 geosite/rule_set 层能力；建议用户迁移到 OpenClash
@@ -52,8 +54,9 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 对「规则、策略组、DNS、嗅探、GeoX、LightGBM、rule-provider」的任何修改，代理必须：
 
 1. **先改 Clash Party 主线** `Clash Party/ClashParty(mihomo-smart).js`
-2. **再同步到其余 11 份产物**：
+2. **再同步到其余 12 份产物**：
    - `Clash Meta For Android/CMFA(mihomo).yaml`
+   - `Stash/Stash.yaml`（通过 `node tools/generate-stash-from-cmfa.js` 从 CMFA **重新生成**，禁止手工改）
    - `OpenClash/OpenClash(mihomo).sh`（Normal）
    - `OpenClash/OpenClash(mihomo-smart).sh`（Smart）
    - `Shadowrocket/Shadowrocket.conf`
@@ -64,6 +67,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
    - `Quantumult X/QuantumultX.conf`（独立手工维护的 QX 产物；当前仓库无 `srk_to_qx.py`，恢复自动转换前必须先提交并验证脚本）
    - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（展平降级参考；仅当业务组/规则类别变化时需同步；与 Passwall2 联动）
    - `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list`（同上；与 Passwall 联动）
+   - `FlClash/FlClash(mihomo).js`（Clash Party Normal JS 移植版）
 3. **bump 产物文件头部版本号**（仅版本号 + Build 日期 + 一行摘要，保持轻量）。
 4. **在对应 `<子目录>/CHANGELOG.md` 顶部追加一节**（详见 `CLAUDE.md §1.3`）——变更详情写这里，不再塞回产物文件头部。版本号必须与 Clash Party 主线对齐。
 5. **同步更新** 根 `README.md` + 对应子目录 `README.md`（子目录教程文件已统一命名为 `README.md`，GitHub 会自动渲染在文件列表下方）
@@ -73,7 +77,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 
 #### 约束 A 补丁 — 同构 bug 全产物审计（自 v5.2.6 起强制）
 
-只要修复命中以下任一**运行时逻辑点**，即使本次 bug 只在一份产物里显式报告，也**必须**对全部 12 份产物做同构审计：
+只要修复命中以下任一**运行时逻辑点**，即使本次 bug 只在一份产物里显式报告，也**必须**对全部 13 份产物做同构审计：
 
 1. **节点名 → 区域分类**（`REGION_DB` / `REGIONS` / mihomo `filter:` / SR `policy-regex-filter` / Loon `NameRegex FilterKey` / QX `server-tag-regex`）
 2. **区域组 fallback 链**（空区域回落到 `apacNodes` / `c.ALL` / 全局组）
@@ -83,10 +87,10 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 审计最小步骤（每条 bug 一次，**不得跳过**）：
 
 1. 列出当前触发 bug 的**样例输入**（如 "TWN 01 AnyRoute IEPL x2.5"）。
-2. 逐个打开 12 份产物的对应位置，对样例输入**做一次心算或小脚本回归**。
+2. 逐个打开 13 份产物的对应位置，对样例输入**做一次心算或小脚本回归**。
 3. 任何一份命中同构漏洞 → 本 PR 必须同步修复。
 4. 任何一份**结构上**不存在该逻辑点（如 SingBox 静态 outbound）→ 在 CHANGELOG + PR 描述里写清楚"不适用"理由。
-5. 在 PR 描述里放一张 12×1 审计矩阵表（产物 × 是否受影响 / 是否已修）。
+5. 在 PR 描述里放一张 13×1 审计矩阵表（产物 × 是否受影响 / 是否已修）。
 
 ⚠️ **关键陷阱：正则语义差异**。同一个字符串，不同产物判定结果可能不同：
 - **JS (Clash Party)**: word-boundary regex `(^|[^a-zA-Z])TW([^a-zA-Z]|$)` → `TW` **不**匹配 `TWN`
@@ -128,6 +132,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 **不可变（改动前必须征得 maintainer 同意）：**
 - `Clash Party/ClashParty(mihomo-smart).js` 中 `SMART` / `BIZ` 常量定义（§3.1 的 55 组命名：22 区域 + 33 业务）
 - `SingBox/SingBox(sing-box)-generator.js` 的生成策略
+- `tools/generate-stash-from-cmfa.js` 的生成策略
 - `CLAUDE.md` / `AGENTS.md`
 
 **可变（在约束 A/B 下可自由修改）：**
@@ -156,7 +161,7 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 ## 5. 验收门（PR 必须同时满足）
 
 - [ ] Clash Party JS 主线已改 / 明确说明本次无需改
-- [ ] 全部 12 份产物同步 / 明确说明某产物为何不需改
+- [ ] 全部 13 份产物同步 / 明确说明某产物为何不需改
 - [ ] **每个被动过的产物文件头已 bump 版本号 + Build 日期**（保持轻量：只改版本行，不加大段变更历史）
 - [ ] **对应 `<子目录>/CHANGELOG.md` 顶部已追加一节**（至少 1 行摘要 + 必要时细节子条目；禁止把详细变更塞回产物文件头）
 - [ ] **根 `CHANGELOG.md` 已追加一节**（仓库级摘要，不重复子目录细节）
@@ -165,8 +170,9 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 - [ ] `CLAUDE.md §5` 自检命令全部通过（输出贴在 PR 描述）
 - [ ] PR 描述引用了所有涉及 APP 的**官方文档锚点**
 - [ ] 代理组数仍为 55（22 区域〔11 全部 + 11 家宽〕 + 33 业务），未新增/删除/改名
-- [ ] 规则-provider 下载代理仍为 `🚫 受限网站`（Shadowrocket / sing-box 例外）
+- [ ] 规则-provider 下载代理仍为 `🚫 受限网站`（Shadowrocket / sing-box / Stash 例外）
 - [ ] sing-box full 产物是通过 `node SingBox/SingBox(sing-box)-generator.js` **重新生成**的
+- [ ] Stash YAML 是通过 `node tools/generate-stash-from-cmfa.js` **重新生成**的
 
 未全部打勾 → 不得合入。
 
@@ -185,12 +191,13 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 | 把详细变更日志塞回产物文件头 | 历史版本 v5.2.3 及之前 | 配置文件头被大段注释淹没；README + CHANGELOG + 代码三处不同步 | 自 v5.2.4 起：变更详情只写 `<子目录>/CHANGELOG.md`，配置文件头只保留版本号 + 一行架构声明 + 指向 CHANGELOG 的引用 |
 | 单边改 Clash Party JS 不同步其他产物 | 多次 | 用户同一账号跨设备策略不一致 | 全端联动 |
 | 凭训练数据说「sing-box 支持某字段」 | 潜在 | 版本字段频繁变更（1.11 重构 route action） | 必须引用 sing-box.sagernet.org 官方文档 |
+| 手工修改 `Stash/Stash.yaml` 或把 CMFA 全量字段直接复制给 Stash | Issue #173 | Stash Wiki 未确认 Mihomo GeoX/sniffer/provider proxy/health-check/exclude-filter 等字段，直接复制可能导入失败 | 只改 CMFA 或生成器，再运行 `node tools/generate-stash-from-cmfa.js`，依据 `Stash/REFERENCE-Stash-wiki.md` 裁剪 |
 | QX `[dns] server=https://doh.pub/dns-query` | v5.2.10-QX.2 | QX `server=` 仅接受 IP / IP:port / `/域名/IP`，DoH URL 必须用独立 `doh-server=` 字段，否则导入报"line N 配置文件语法错误" | 改 `doh-server=https://...`；详见 `CLAUDE.md §3.5.1` |
 | QX `running_mode_trigger=filter, filter, auto` | v5.2.10-QX.1 | `filter` 不是合法值；合法值仅 `direct`/`proxy`/`auto`/`follower`/`none` | 改 `auto, auto, auto`；详见 `CLAUDE.md §3.5.4` |
 | Loon `[Rule] DST-PORT,...` | v5.2.10-Loon.1 | Loon 是端口规则前缀的唯一异类（其他全用 `DST-PORT`），其解析器对 `DST-` 报错 | 改 `DEST-PORT,...`；详见 `CLAUDE.md §3.5.2` |
 | 把 Surge `encrypted-dns-server=` 直接复制到 Loon / SR | 潜在 | Loon/QX 用 `doh-server=`、SR 用同一 `dns-server=`，三家字段不同 | 查 `CLAUDE.md §3.5.1` 表对应字段名 |
 | 把 Clash `DOMAIN-SUFFIX,` 复制到 Passwall `.list` | 潜在 | Passwall shunt_rules.lua 不识别 Clash 前缀 | 改 `domain:` / `full:` / `regexp:` / `geosite:` 等；详见 `CLAUDE.md §3.5.2` |
-| 假设单平台 bug 修复无需联动 | v5.2.5 FIX#24~#26 | 误判为 JS 专属，实际波及 4 份产物（CMFA/OC Normal/OC Smart/JS） | 任何运行时逻辑 bug 必须按 §1.5 同构审计 12 份产物 |
+| 假设单平台 bug 修复无需联动 | v5.2.5 FIX#24~#26 | 误判为 JS 专属，实际波及 4 份产物（CMFA/OC Normal/OC Smart/JS） | 任何运行时逻辑 bug 必须按 §1.5 同构审计 13 份产物 |
 
 ---
 
@@ -198,6 +205,6 @@ Smart-Config-Kit 同时发布 **11 种客户端形态的等价产物**（分属 
 
 **不同步 = 违规。**
 **不核对官方文档 = 违规。**
-**改 54 个代理组命名但未在 PR 中论证 = 违规。**
+**改 55 个代理组命名但未在 PR 中论证 = 违规。**
 
 > 本仓库的长期可维护性依赖这份契约被所有代理严格遵守。
