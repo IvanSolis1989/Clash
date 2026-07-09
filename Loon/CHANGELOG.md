@@ -4,6 +4,11 @@
 
 ---
 
+## v5.4.38-Loon.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：`[Remote Rule]` 新增 13 个仓库维护的 supplemental 规则集，替代主规则零星直写。
+- SYNC：版本元数据同步 Clash Party v5.4.38。
+
 ## v5.4.37-Loon.1 (2026-06-29)
 
 - META#170-DNS-POLICY：跟随 Clash Party v5.4.37 更新版本元数据。

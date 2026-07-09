@@ -1,14 +1,14 @@
 ﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v5.4.37 (2026-06-29)
-// 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 376 rule-providers 100%+ 服务覆盖
-// v5.4.37: DNS-POLICY#170 geosite 级解析器分流 · v5.4.36: CLEAN#171-DIRECT 删除冗余直写规则
+// 版本：v5.4.38 (2026-07-09)
+// 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 391 rule-providers 100%+ 服务覆盖
+// v5.4.38: SCKI-SUPPLEMENTAL 零星补充规则集化 · v5.4.37: DNS-POLICY#170 geosite 级解析器分流
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v5.4.37'
+const VERSION = 'v5.4.38'
 
 // v5.4.9 FEAT#LOCAL-TOOLS:
 // Desktop-capable local tools that should not be routed through proxy nodes.
@@ -255,53 +255,40 @@ const BIZ = {
 const ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
 const ACC_VF_RULES = ['wise','monzo','revolut'].map(function(svc) { return 'RULE-SET,acc-vf-' + svc + ',' + BIZ.PAYMENTS })
 const ACC_FAKE_LOCATION_RULES = ['bilibili','kuaishou','xigua','weibo','zhihu','tieba','douban','xianyu'].map(function(app) { return 'RULE-SET,acc-fl-' + app + ',' + BIZ.CNMEDIA })
-const AD_FALSE_POSITIVE_ALLOWLIST = [
-  // v5.4.2 P0-FIX#41: 小米核心服务 DIRECT 白名单——前置 miuiprivacy/advertisingmitv。
-  // 小米账号认证安全域名（auth.be.sec.miui.com / idm.api.io.mi.com 在 miuiprivacy 中被误杀导致登录"网络错误"）。
-  `DOMAIN-SUFFIX,account.xiaomi.com,DIRECT`,
-  `DOMAIN-SUFFIX,passport.xiaomi.com,DIRECT`,
-  // 小米云服务。
-  `DOMAIN-SUFFIX,micloud.xiaomi.com,DIRECT`,
-  `DOMAIN,i.mi.com,DIRECT`,
-  // 小米系统安全（均在 miuiprivacy 中被误杀）。
-  `DOMAIN,auth.be.sec.miui.com,DIRECT`,
-  `DOMAIN,idm.api.io.mi.com,DIRECT`,
-  `DOMAIN,api.installer.xiaomi.com,DIRECT`,
-  `DOMAIN,flash.sec.miui.com,DIRECT`,
-  `DOMAIN,mazu.sec.miui.com,DIRECT`,
-  `DOMAIN,ccc.sys.miui.com,DIRECT`,
-  // 小米推送注册（register.xmpush.xiaomi.com 在 advertisingmitv 中被误杀）。
-  `DOMAIN,register.xmpush.xiaomi.com,DIRECT`,
-  // v5.4.14 FIX#CF-R2: Sukka reject_phishing 当前包含 Cloudflare R2 存储域；
-  // 必须前置到广告/钓鱼拦截规则之前，否则后面的国外网站规则无法覆盖首匹配。
-  `DOMAIN-SUFFIX,cloudflarestorage.com,${BIZ.INTL_SITE}`,
-  // v5.4.16 FIX#149: anti-AD/DustinWin 当前包含 analytics.paddle.com；
-  // Antigravity 账号设置会调用 Paddle 许可/支付链路，必须前置到广告规则之前。
-  `DOMAIN-SUFFIX,paddle.com,${BIZ.PAYMENTS}`,
-  // v5.4.19 #2 借鉴 Proxy-override：国内推送 SDK 直连前置——jpush(极光推送)/umeng(友盟) 在
-  // jiguangtuisong / youmengchuangxiang 规则集中被当 tracker 拦截，但承载合法 App 推送/消息功能，
-  // 故前置到广告规则之前强制 DIRECT（参照 P0-FIX#41 小米先例）。
-  `DOMAIN-SUFFIX,jpush.cn,DIRECT`,
-  `DOMAIN-SUFFIX,jpush.io,DIRECT`,
-  `DOMAIN,msg.umeng.com,DIRECT`,
-  // v5.4.22 GeTui(个推)推送 SDK 直连——延续 #2：被通用广告/隐私表(category-ads-all/privacy)当 tracker 拦截，但承载 App 推送(米家等)，放行保推送可达。
-  `DOMAIN-SUFFIX,getui.com,DIRECT`,
-  `DOMAIN-SUFFIX,getui.net,DIRECT`,
-  `DOMAIN-SUFFIX,gepush.com,DIRECT`,
-]
-const DOUYIN_CNMEDIA_GUARD_RULES = [
-  // v5.4.31 FIX#167-DOUYIN: Douyin Web 视频域名会被 TikTok / geolocation-!cn
-  // 等前置宽规则抢先命中；先锁到国内流媒体，确保 www.douyin.com 与 v5-dy-*.zjcdn.com 走国内链路。
-  `DOMAIN-SUFFIX,douyin.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,douyincdn.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,douyinpic.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,douyinstatic.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,douyinvod.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,idouyinvod.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,iesdouyin.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,iesdouyin.net,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,amemv.com,${BIZ.CNMEDIA}`,
-  `DOMAIN-SUFFIX,zjcdn.com,${BIZ.CNMEDIA}`,
+const SCKI_SUPPLEMENTAL_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash'
+const SCKI = {
+  ADFP_DIRECT: 'scki-adfp-direct',
+  ADFP_INTL_SITE: 'scki-adfp-intl-site',
+  ADFP_PAYMENTS: 'scki-adfp-payments',
+  CNMEDIA_GUARD: 'scki-cnmedia-guard',
+  LOCAL_DIRECT: 'scki-local-direct',
+  LOCAL_PROCESS_DIRECT: 'scki-local-process-direct',
+  WORK_PROCESS: 'scki-work-process',
+  GFW_GUARD: 'scki-gfw-guard',
+  YOUTUBE_GUARD: 'scki-youtube-guard',
+  GOOGLE_MAIL_INTL: 'scki-google-mail-intl',
+  GOOGLE_WORK: 'scki-google-work',
+  DOWNLOAD_GUARD: 'scki-download-guard',
+  CNSITE_GUARD: 'scki-cnsite-guard',
+  WORK_GUARD: 'scki-work-guard',
+  AI_SUPPLEMENT: 'scki-ai-supplement',
+}
+const SCKI_SUPPLEMENTAL_RULE_SETS = [
+  [SCKI.ADFP_DIRECT, 'adfp-direct.list'],
+  [SCKI.ADFP_INTL_SITE, 'adfp-intl-site.list'],
+  [SCKI.ADFP_PAYMENTS, 'adfp-payments.list'],
+  [SCKI.CNMEDIA_GUARD, 'cnmedia-guard.list'],
+  [SCKI.LOCAL_DIRECT, 'local-direct.list'],
+  [SCKI.LOCAL_PROCESS_DIRECT, 'local-process-direct.list'],
+  [SCKI.WORK_PROCESS, 'work-process.list'],
+  [SCKI.GFW_GUARD, 'gfw-guard.list'],
+  [SCKI.YOUTUBE_GUARD, 'youtube-guard.list'],
+  [SCKI.GOOGLE_MAIL_INTL, 'google-mail-intl.list'],
+  [SCKI.GOOGLE_WORK, 'google-work.list'],
+  [SCKI.DOWNLOAD_GUARD, 'download-guard.list'],
+  [SCKI.CNSITE_GUARD, 'cnsite-guard.list'],
+  [SCKI.WORK_GUARD, 'work-guard.list'],
+  [SCKI.AI_SUPPLEMENT, 'ai-supplement.list'],
 ]
 
 const REGION_ORDER = ['GLOBAL', 'HK', 'TW', 'SG', 'JPKR', 'APAC', 'US', 'EU', 'AMERICAS', 'AFRICA', 'OTHER']
@@ -1279,6 +1266,20 @@ function injectRuleProviders(config) {
       }
     }
 
+  for (const item of SCKI_SUPPLEMENTAL_RULE_SETS) {
+    const id = item[0]
+    const file = item[1]
+    config['rule-providers'][id] = {
+      type: 'http',
+      behavior: 'classical',
+      format: 'text',
+      url: `${SCKI_SUPPLEMENTAL_BASE}/${file}`,
+      path: `./ruleset/${id}.list`,
+      interval: 604800,
+      proxy: RP_PROXY
+    }
+  }
+
   const count = Object.keys(config['rule-providers']).length
   console.log(`[${VERSION}] Injected ${count} rule-providers (base=${RP_BASE}s step=${RP_STEP}s spread=${_rpIdx * RP_STEP}s/${(_rpIdx * RP_STEP / 60).toFixed(1)}min)`)
 }
@@ -1289,10 +1290,11 @@ function injectRuleProviders(config) {
 
 function injectRules(config) {
   config.rules = [
-    // Anti-ad false-positive allowlist: keep before all ad/phishing/TIF providers.
-    // See docs/GEOSITE_COVERAGE_LEDGER.md for ownership and update rules.
-    ...AD_FALSE_POSITIVE_ALLOWLIST,
-    ...DOUYIN_CNMEDIA_GUARD_RULES,
+    // Repository-owned supplemental guards stay before all ad/phishing/TIF providers.
+    `RULE-SET,${SCKI.ADFP_DIRECT},DIRECT`,
+    `RULE-SET,${SCKI.ADFP_INTL_SITE},${BIZ.INTL_SITE}`,
+    `RULE-SET,${SCKI.ADFP_PAYMENTS},${BIZ.PAYMENTS}`,
+    `RULE-SET,${SCKI.CNMEDIA_GUARD},${BIZ.CNMEDIA}`,
     `RULE-SET,anti-ad,${BIZ.AD}`,
     // v5.1: P0 安全 - 钓鱼域名拦截（13万条，SukkaW）
     `RULE-SET,sukka-phishing,${BIZ.AD}`,
@@ -1328,28 +1330,11 @@ function injectRules(config) {
     'DST-PORT,7680,REJECT',
     'GEOSITE,private,DIRECT',
     'GEOIP,private,DIRECT,no-resolve',
-    'IP-CIDR,172.90.1.130/32,DIRECT,no-resolve',
-    'PROCESS-NAME,WorkPro.exe,DIRECT',
-    'PROCESS-NAME,GCUService.exe,DIRECT',
-    'PROCESS-NAME,GCUBridge.exe,DIRECT',
-    'PROCESS-NAME,CCUWinUI.exe,DIRECT',
-    'PROCESS-NAME,HipsDaemon.exe,DIRECT',
-    'PROCESS-NAME,gdphost.exe,DIRECT',
-    'PROCESS-NAME,gehsender.exe,DIRECT',
-    'PROCESS-NAME,GSCService.exe,DIRECT',
-    // v5.1.8 FIX#12-P1: GSCService.exe 每 2h 访问 ip.cip.cc 做外部 IP 检测，TUN 下 DNS 解析失败
-    // 日志：dial DIRECT (match ProcessName/GSCService.exe) --> ip.cip.cc:80 error: dns resolve failed
-    'DOMAIN,ip.cip.cc,DIRECT',
-    'PROCESS-NAME,gsupservice.exe,DIRECT',
-    'PROCESS-NAME,gchsvc.exe,DIRECT',
-    'PROCESS-NAME,Weixin.exe,DIRECT',
-    'PROCESS-NAME,WeChatAppEx.exe,DIRECT',
-    'PROCESS-NAME,QQ.exe,DIRECT',
-    'PROCESS-NAME,WeChat.exe,DIRECT',
+    `RULE-SET,${SCKI.LOCAL_DIRECT},DIRECT`,
+    `RULE-SET,${SCKI.LOCAL_PROCESS_DIRECT},DIRECT`,
     // v5.4.11 FIX#RD-PROC: RustDesk public relay/API must not be forced DIRECT;
     // private/LAN destinations already hit GEOSITE/GEOIP private above.
-    ...RUSTDESK_WORK_PROCESS_NAMES.map(name => `PROCESS-NAME,${name},${BIZ.WORK}`),
-    ...LOCAL_TOOL_DIRECT_PROCESS_NAMES.map(name => `PROCESS-NAME,${name},DIRECT`),
+    `RULE-SET,${SCKI.WORK_PROCESS},${BIZ.WORK}`,
     'DST-PORT,26880,DIRECT',
     'DST-PORT,6540,DIRECT',
     'DST-PORT,33068,DIRECT',
@@ -1362,73 +1347,22 @@ function injectRules(config) {
     'DST-PORT,19302,DIRECT',
     'DST-PORT,19305,DIRECT',
     'DST-PORT,19307,DIRECT',
-    'DOMAIN-SUFFIX,chiphell.com,DIRECT',
-    'DOMAIN-SUFFIX,iwipwedabay.com,DIRECT',
-    'DOMAIN-SUFFIX,cdn.weixin.qq.com,DIRECT',
     // v5.2.0 CLEAN#2: Binance 精确 DOMAIN 规则已清理（全部被同组 DOMAIN-SUFFIX 覆盖）
     // 保留 fake-ip-filter 中的精确域名（DNS 层独立于规则层，不受影响）
     `DOMAIN-SUFFIX,binance.vision,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.info,${BIZ.CRYPTO}`,
     `DOMAIN-SUFFIX,binance.org,${BIZ.CRYPTO}`,
-    // v5.1.8 FIX#11-P0: dns.google 是 DoH 服务，前置拦截防止 szkane-ai 宽规则吞入 AI 组
-    // v5.2.10 FIX#39: 由 ☁️ 云与CDN 改路由到 🚫 受限网站——dns.google 在境内被封，
-    //                 若用户把 CDN 组误设直连，DoH 必失败；放在 GFW 组语义更准确
-    `DOMAIN,dns.google,${BIZ.GFW}`,
-    `DOMAIN,dns.google.com,${BIZ.GFW}`,
-    // v5.1.8 FIX#14-P0: YouTube/googlevideo 被 szkane-ai 宽规则吞入 AI 组
-    // szkane AiDomain.list 含 Google 宽域名（因 Gemini），导致 YouTube 全系误走 AI 代理
-    // 日志：[TCP] dial 🤖 AI 服务 (match RuleSet/szkane-ai) --> www.youtube.com / yt3.ggpht.com / googlevideo.com
-    // 前置精准拦截到 STREAM_US，优先于 RULE-SET,szkane-ai 生效
-    `DOMAIN-SUFFIX,youtube.com,${BIZ.YT}`,
-    `DOMAIN-SUFFIX,youtu.be,${BIZ.YT}`,
-    `DOMAIN-SUFFIX,googlevideo.com,${BIZ.YT}`,
-    `DOMAIN-SUFFIX,ytimg.com,${BIZ.YT}`,
-    `DOMAIN-SUFFIX,ggpht.com,${BIZ.YT}`,
-    `DOMAIN-SUFFIX,youtube-nocookie.com,${BIZ.YT}`,
-    `DOMAIN-SUFFIX,youtubekids.com,${BIZ.YT}`,
-    // v5.4.26 FIX#164: 腾讯 WorkBuddy/智能助手 copilot.tencent.com 属国内 AI 服务，但
-    //   szkane AiDomain.list 含 `DOMAIN-KEYWORD,copilot`（子串匹配，见下方 RULE-SET,szkane-ai），
-    //   会把它误吞到 🤖 AI 服务（国外代理）→ WorkBuddy 对话报错（issue #164）。
-    //   前置精准规则锁定国内直连；置于所有 AI rule-set 之前以防任何宽规则抢匹配。
-    `DOMAIN-SUFFIX,copilot.tencent.com,${BIZ.CN_SITE}`,
+    // Google / YouTube / 国内 AI 防吞盾：零散域名沉淀到 rulesets/supplemental。
+    `RULE-SET,${SCKI.GFW_GUARD},${BIZ.GFW}`,
+    `RULE-SET,${SCKI.YOUTUBE_GUARD},${BIZ.YT}`,
+    `RULE-SET,${SCKI.CNSITE_GUARD},${BIZ.CN_SITE}`,
     `RULE-SET,openai,${BIZ.AI}`,
     `RULE-SET,claude,${BIZ.AI}`,
     `RULE-SET,gemini,${BIZ.AI}`,
-    // v5.4.10 FIX#RD-COPILOT: Copilot.list contains IP-ASN 20473 (Vultr);
-    // RustDesk public relay nodes such as rs-ny.rustdesk.com can resolve there.
-    `DOMAIN-SUFFIX,rustdesk.com,${BIZ.WORK}`,
+    // v5.4.10 FIX#RD-COPILOT: RustDesk relay/API before broad Copilot ASN rules.
+    `RULE-SET,${SCKI.WORK_GUARD},${BIZ.WORK}`,
     `RULE-SET,copilot,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,perplexity.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,mistral.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,x.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,grok.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,deepseek.com,${BIZ.CN_SITE}`,
-    `DOMAIN-SUFFIX,huggingface.co,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,replicate.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,together.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,cohere.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,cohere.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,midjourney.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,stability.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,cursor.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,cursor.sh,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,v0.dev,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,vercel.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,notebooklm.google,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,poe.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,character.ai,${BIZ.AI}`,
-    // v5.2.2: PI.ai/Inflection → GFW（中国被墙需代理，印尼可直连）
-    `DOMAIN-SUFFIX,inflection.ai,${BIZ.GFW}`,
-    `DOMAIN-SUFFIX,pi.ai,${BIZ.GFW}`,
-    `DOMAIN-SUFFIX,suno.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,suno.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,runway.ml,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,runwayml.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,openrouter.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,fireworks.ai,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,modal.com,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,modal.run,${BIZ.AI}`,
-    `DOMAIN-SUFFIX,runpod.io,${BIZ.AI}`,
+    `RULE-SET,${SCKI.AI_SUPPLEMENT},${BIZ.AI}`,
     `RULE-SET,civitai,${BIZ.AI}`,
     // ════════════════════════════════════════════════════════════════
     //  v5.1.8 FIX#14-P0：Google 子服务防吞盾
@@ -1438,19 +1372,13 @@ function injectRules(config) {
     //  ▼ 以下规则从各业务区块提升至此，原位置 dead rules 已在 v5.1.9 清除
     // ════════════════════════════════════════════════════════════════
     // ── Google 邮件 ──
-    `DOMAIN-SUFFIX,gmail.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,googlemail.com,${BIZ.INTL_SITE}`,
-    `DOMAIN,mail.google.com,${BIZ.INTL_SITE}`,
-    `DOMAIN,inbox.google.com,${BIZ.INTL_SITE}`,
+    `RULE-SET,${SCKI.GOOGLE_MAIL_INTL},${BIZ.INTL_SITE}`,
     // ── Google 即时通讯 ──
     `RULE-SET,googlevoice,${BIZ.IM}`,
     // ── Google 会议协作 ──
-    `DOMAIN-SUFFIX,meet.google.com,${BIZ.WORK}`,
-    `DOMAIN,meet.googleapis.com,${BIZ.WORK}`,
-    // ── Google 下载更新 ──
-    `DOMAIN-SUFFIX,dl.google.com,${BIZ.DOWNLOAD}`,
-    `DOMAIN-SUFFIX,play.googleapis.com,${BIZ.DOWNLOAD}`,
-    `DOMAIN-SUFFIX,android.clients.google.com,${BIZ.DOWNLOAD}`,
+    `RULE-SET,${SCKI.GOOGLE_WORK},${BIZ.WORK}`,
+    // ── Google / Microsoft 下载更新防吞 ──
+    `RULE-SET,${SCKI.DOWNLOAD_GUARD},${BIZ.DOWNLOAD}`,
     `RULE-SET,googlefcm,${BIZ.DOWNLOAD}`,
     // ── Google 基础服务（兜底：MetaCubeX geosite:google 覆盖 google.com/co.*/com.*）──
     `RULE-SET,google,${BIZ.GOOGLE}`,
@@ -1462,9 +1390,6 @@ function injectRules(config) {
     `RULE-SET,acc-appleai,${BIZ.AI}`,
     `RULE-SET,acc-grok,${BIZ.AI}`,
     `RULE-SET,acc-gemini,${BIZ.AI}`,
-    // v5.1.8 FIX#13-P2: 微软 Delivery Optimization 遥测非 Copilot AI，前置拦截
-    // 日志：match RuleSet/acc-copilot) --> geover.prod.do.dsp.mp.microsoft.com:443
-    `DOMAIN-SUFFIX,do.dsp.mp.microsoft.com,${BIZ.DOWNLOAD}`,
     `RULE-SET,acc-copilot,${BIZ.AI}`,
     `RULE-SET,vpsdance-ai-coding,${BIZ.AI}`,
     `DOMAIN-SUFFIX,tradingview.com,${BIZ.CRYPTO}`,

@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.38-pw.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.38 更新版本元数据。
+- SCOPE：Passwall 展平 shunt rules 继续保持本地 `.list` 结构，不直接引用公共 supplemental URL。
+
 ## v5.4.37-pw.1 (2026-06-29)
 
 - META#170-DNS-POLICY：跟随 Clash Party v5.4.37 更新版本元数据。

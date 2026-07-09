@@ -5,6 +5,11 @@
 
 ---
 
+## v5.4.38-sing.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：生成器会读取 `rulesets/supplemental/clash/*.list` 并展开为 sing-box route rules。
+- SYNC：Full JSON 重新生成，基线更新到 Clash Party v5.4.38。
+
 ## v5.4.37-sing.1 (2026-06-29)
 
 - META#170-DNS-POLICY：`SingBox(sing-box)-generator.js` 跟随 Clash Party v5.4.37 更新版本元数据并重新生成 Full JSON。

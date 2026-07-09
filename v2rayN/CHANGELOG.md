@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.38-v2n.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.38 更新版本元数据。
+- SCOPE：Xray JSON 继续使用展平规则，不直接引用 `rulesets/supplemental` URL。
+
 ## v5.4.37-v2n.1 (2026-06-29)
 
 - META#170-DNS-POLICY：跟随 Clash Party v5.4.37 更新版本元数据。

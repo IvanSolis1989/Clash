@@ -5,6 +5,11 @@
 
 ---
 
+## v5.4.38-SR.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：删除零星本地白名单直写，改为 13 个仓库维护的 supplemental `RULE-SET`。
+- SYNC：版本元数据同步 Clash Party v5.4.38。
+
 ## v5.4.37-SR.1 (2026-06-29)
 
 - META#170-DNS-POLICY：跟随 Clash Party v5.4.37 更新版本元数据。

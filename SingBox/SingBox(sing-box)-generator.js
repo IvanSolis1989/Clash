@@ -1,9 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const vm = require('vm');
 
-const VERSION = 'v5.4.37-sing.1';
-const BUILD = '2026-06-29';
-const BASELINE = 'Clash Party v5.4.37';
+const VERSION = 'v5.4.38-sing.1';
+const BUILD = '2026-07-09';
+const BASELINE = 'Clash Party v5.4.38';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -503,6 +504,35 @@ const ruleSet = Object.entries(providers).map(([tag, info]) => {
   };
 }).filter(Boolean);
 
+function supplementalFileFromUrl(url) {
+  if (!url) return null;
+  const match = String(url).match(/Smart-Config-Kit@main\/rulesets\/supplemental\/clash\/([^/?#]+\.list)$/);
+  if (!match) return null;
+  return path.join(__dirname, '..', 'rulesets', 'supplemental', 'clash', match[1]);
+}
+
+function loadSupplementalProviderRules(providerMap) {
+  const result = new Map();
+  for (const [tag, info] of Object.entries(providerMap)) {
+    const filePath = supplementalFileFromUrl(info && info.url);
+    if (!filePath) continue;
+    const entries = fs.readFileSync(filePath, 'utf8')
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('#'));
+    result.set(tag, entries);
+  }
+  return result;
+}
+
+function bindSupplementalEntry(entry, target) {
+  const parts = String(entry).split(',');
+  if ((parts[0] === 'IP-CIDR' || parts[0] === 'IP-CIDR6' || parts[0] === 'SRC-IP-CIDR') && parts[2] === 'no-resolve') {
+    return `${parts[0]},${parts[1]},${target},no-resolve`;
+  }
+  return `${entry},${target}`;
+}
+
 // v5.4.18: removed geosite-cn / geoip-cn — reuse provider-derived 'cn' / 'cn-ip' tags
 // already created by ruleSet to avoid duplicate .srs downloads (~2-5 MB wasted per cycle).
 // geosite-private is kept as a defensive entry for DNS rules in case no GEOSITE,private rule exists.
@@ -528,6 +558,7 @@ function uniqueRuleSets(items) {
 
 const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...extraGeoSiteTags, ...dnsRouteRuleSets]);
 const availableRuleSets = new Set(allRouteRuleSets.map((item) => item.tag));
+const supplementalProviderRules = loadSupplementalProviderRules(providers);
 // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配。
 // 插入到 Clash 主线 5 条 AND/QUIC 规则所在位置，避免被后续普通规则或 route.final 改变语义。
 // YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT。
@@ -541,6 +572,7 @@ const quicRules = [
 ];
 let convertedRules = [];
 let insertedQuicRules = false;
+let convertedSourceRules = 0;
 for (const rule of rules) {
   if (String(rule).startsWith('AND,((DST-PORT,443),(NETWORK,UDP),')) {
     if (!insertedQuicRules) {
@@ -549,16 +581,31 @@ for (const rule of rules) {
     }
     continue;
   }
+  const parts = String(rule).split(',');
+  if (parts[0] === 'RULE-SET' && supplementalProviderRules.has(parts[1])) {
+    let expandedCount = 0;
+    for (const entry of supplementalProviderRules.get(parts[1])) {
+      const converted = toSingRule(bindSupplementalEntry(entry, parts[2]), availableRuleSets);
+      if (converted) {
+        convertedRules.push(converted);
+        expandedCount++;
+      }
+    }
+    if (expandedCount > 0) convertedSourceRules++;
+    continue;
+  }
   const converted = toSingRule(rule, availableRuleSets);
-  if (converted) convertedRules.push(converted);
+  if (converted) {
+    convertedRules.push(converted);
+    convertedSourceRules++;
+  }
 }
 if (!insertedQuicRules) convertedRules.unshift(...quicRules);
-const skippedProviders = Object.keys(providers).length - ruleSet.length;
+const skippedProviders = Object.keys(providers).length - ruleSet.length - supplementalProviderRules.size;
 // v5.4.22: AND/QUIC rules handled out-of-band；MATCH fallback is represented by route.final.
 const QUIC_AND_RULES = 5;
 const MATCH_FALLBACK_RULES = 1;
-const convertedClashRuleCount = convertedRules.length - quicRules.length;
-const skippedRules = rules.length - convertedClashRuleCount - QUIC_AND_RULES - MATCH_FALLBACK_RULES;
+const skippedRules = rules.length - convertedSourceRules - QUIC_AND_RULES - MATCH_FALLBACK_RULES;
 
 // v5.4.23-sing.2: Remove redundant domain_suffix rules that are fully covered by
 // a corresponding rule_set pointing to the same outbound.  The "root" domain suffix

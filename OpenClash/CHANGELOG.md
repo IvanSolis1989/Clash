@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.38-oc-normal.1 / v5.4.38-oc-smart.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：Normal / Smart heredoc 同步 15 个 `scki-*` rule-provider 与 846 条规则。
+- META：`VERSION_TAG` 与内嵌 Ruby `VERSION` 同步到 v5.4.38。
+
 ## v5.4.37-oc-normal.1 / v5.4.37-oc-smart.1 (2026-06-29)
 
 - ★ DNS-POLICY#170：Normal / Smart heredoc YAML 的 `dns.nameserver-policy` 同步新增：

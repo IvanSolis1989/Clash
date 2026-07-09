@@ -2,9 +2,16 @@
 
 > 仓库级变更摘要。各产物的详细变更见对应子目录 `CHANGELOG.md`。
 > 主版本号由 `Clash Party/ClashParty(mihomo-smart).js` 内 `const VERSION` 唯一决定。
-> 覆盖 13 个客户端形态的等价实现：Clash Party JS / CMFA / Stash / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash。
+> 覆盖 13 个客户端形态的等价实现：Clash Party JS / CMFA / Stash / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash；另提供 Egern Preview。
 
 ---
+
+## v5.4.38 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：新增 `rulesets/supplemental/` 公共补充规则集，将广告误伤、抖音 Web、RustDesk、Google Workspace、下载更新等零星直写域名/IP/进程整理为规则集引用。
+- EGERN：新增 `Egern/` Preview 目录与 Egern 原生 YAML 补充规则集；Egern 先接入订阅、策略组、DNS 与 supplemental rule_set，不声明 Mihomo 391 provider 完全等价。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2 元数据和产物同步到 v5.4.38。
+- VERIFY：合同校验改为检查 `scki-*` 补充规则集引用、顺序和 Egern YAML 结构；JS 产物为 55 组、846 条规则、391 providers。
 
 ## v5.4.37-stash.1 (2026-07-07)
 

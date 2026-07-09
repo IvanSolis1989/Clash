@@ -13,6 +13,11 @@ const mihomoWorkNames = fixture.mihomoWorkProcessNames || [];
 const surgeNames = fixture.surgeMacProcessNames;
 const surgeWorkNames = fixture.surgeWorkProcessNames || [];
 const WORK_POLICY = '🧑‍💼 会议协作';
+const SCKI_REPO_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental';
+const MIHOMO_DIRECT_RULE_SET = 'scki-local-process-direct';
+const MIHOMO_WORK_RULE_SET = 'scki-work-process';
+const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/local-process-direct.list`;
+const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/work-process.list`;
 
 const mihomoJsTargets = [
   'Clash Party/ClashParty(mihomo-smart).js',
@@ -45,6 +50,8 @@ for (const dir of ['Passwall/shunt-rules', 'Passwall2/shunt-rules']) {
 
 const failures = [];
 
+validateSupplementalProcessLists();
+
 for (const target of mihomoJsTargets) {
   const text = read(target);
   validateMihomoJsTarget(target, text);
@@ -58,14 +65,11 @@ for (const target of mihomoRuleTextTargets) {
 {
   const target = 'Surge/Surge.conf';
   const text = read(target);
-  const activeRules = activeProcessRuleSet(text);
-  const missing = surgeNames.filter((name) => !activeRules.has(`PROCESS-NAME,${name},DIRECT`));
-  if (missing.length > 0) {
-    failures.push(`${target}: missing ${missing.length} Surge Mac PROCESS-NAME rules: ${missing.join(', ')}`);
+  if (!text.includes(`RULE-SET,${SURGE_DIRECT_PROCESS_URL},DIRECT`)) {
+    failures.push(`${target}: missing Surge Mac supplemental DIRECT process RULE-SET`);
   }
-  const missingWork = surgeWorkNames.filter((name) => !activeRules.has(`PROCESS-NAME,${name},${WORK_POLICY}`));
-  if (missingWork.length > 0) {
-    failures.push(`${target}: missing ${missingWork.length} Surge RustDesk WORK PROCESS-NAME rules: ${missingWork.join(', ')}`);
+  if (!text.includes(`RULE-SET,${SURGE_WORK_PROCESS_URL},${WORK_POLICY}`)) {
+    failures.push(`${target}: missing Surge Mac supplemental WORK process RULE-SET`);
   }
 }
 
@@ -111,53 +115,25 @@ if (failures.length > 0) {
 console.log(`PROCESS-NAME policy validation: OK (${mihomoNames.length} direct desktop names, ${mihomoWorkNames.length} RustDesk work names, ${surgeNames.length} Surge direct names)`);
 
 function validateMihomoJsTarget(target, text) {
-  const directNames = extractConstStringArray(text, 'LOCAL_TOOL_DIRECT_PROCESS_NAMES');
-  const workNames = extractConstStringArray(text, 'RUSTDESK_WORK_PROCESS_NAMES');
-  const missingDirect = mihomoNames.filter((name) => !directNames.includes(name));
-  const missingWork = mihomoWorkNames.filter((name) => !workNames.includes(name));
-
-  if (missingDirect.length > 0) {
-    failures.push(`${target}: missing ${missingDirect.length} names in LOCAL_TOOL_DIRECT_PROCESS_NAMES: ${missingDirect.join(', ')}`);
+  if (!text.includes(MIHOMO_DIRECT_RULE_SET)) {
+    failures.push(`${target}: missing ${MIHOMO_DIRECT_RULE_SET} supplemental process rule-set reference`);
   }
-  if (missingWork.length > 0) {
-    failures.push(`${target}: missing ${missingWork.length} names in RUSTDESK_WORK_PROCESS_NAMES: ${missingWork.join(', ')}`);
-  }
-
-  if (!text.includes('LOCAL_TOOL_DIRECT_PROCESS_NAMES.map(name => `PROCESS-NAME,${name},DIRECT`)')) {
-    failures.push(`${target}: LOCAL_TOOL_DIRECT_PROCESS_NAMES is not mapped to PROCESS-NAME,<name>,DIRECT rules`);
-  }
-  if (!text.includes('RUSTDESK_WORK_PROCESS_NAMES.map(name => `PROCESS-NAME,${name},${BIZ.WORK}`)')) {
-    failures.push(`${target}: RUSTDESK_WORK_PROCESS_NAMES is not mapped to WORK PROCESS-NAME rules`);
+  if (!text.includes(MIHOMO_WORK_RULE_SET)) {
+    failures.push(`${target}: missing ${MIHOMO_WORK_RULE_SET} supplemental work-process rule-set reference`);
   }
 }
 
 function validateMihomoRuleTextTarget(target, text) {
-  const activeRules = activeProcessRuleSet(text);
-  const missing = mihomoNames.filter((name) => !activeRules.has(`PROCESS-NAME,${name},DIRECT`));
-  if (missing.length > 0) {
-    failures.push(`${target}: missing ${missing.length} desktop PROCESS-NAME rules: ${missing.join(', ')}`);
+  if (!text.includes(`RULE-SET,${MIHOMO_DIRECT_RULE_SET},DIRECT`)) {
+    failures.push(`${target}: missing ${MIHOMO_DIRECT_RULE_SET} supplemental process RULE-SET`);
   }
-  const missingWork = mihomoWorkNames.filter((name) => !hasWorkProcessRule(activeRules, name));
-  if (missingWork.length > 0) {
-    failures.push(`${target}: missing ${missingWork.length} RustDesk WORK PROCESS-NAME rules: ${missingWork.join(', ')}`);
+  if (!text.includes(`RULE-SET,${MIHOMO_WORK_RULE_SET},`) || !text.includes('会议协作')) {
+    failures.push(`${target}: missing ${MIHOMO_WORK_RULE_SET} supplemental work-process RULE-SET`);
   }
 }
 
 function read(relativePath) {
   return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
-}
-
-function extractConstStringArray(text, constName) {
-  const pattern = new RegExp(`const\\s+${constName}\\s*=\\s*\\[([\\s\\S]*?)\\]`);
-  const match = text.match(pattern);
-  if (!match) return [];
-  const values = [];
-  const stringPattern = /'((?:\\'|[^'])*)'|"((?:\\"|[^"])*)"/g;
-  let item;
-  while ((item = stringPattern.exec(match[1])) !== null) {
-    values.push((item[1] || item[2] || '').replace(/\\'/g, "'").replace(/\\"/g, '"'));
-  }
-  return values;
 }
 
 function activeProcessRuleSet(text) {
@@ -184,4 +160,38 @@ function hasWorkProcessRule(activeRules, name) {
     if (rule.startsWith(`PROCESS-NAME,${name},`) && rule.includes('会议协作')) return true;
   }
   return false;
+}
+
+function validateSupplementalProcessLists() {
+  const mihomoDirect = readProcessRuleSet('rulesets/supplemental/clash/local-process-direct.list');
+  const mihomoWork = readProcessRuleSet('rulesets/supplemental/clash/work-process.list');
+  const surgeDirect = readProcessRuleSet('rulesets/supplemental/surge/local-process-direct.list');
+  const surgeWork = readProcessRuleSet('rulesets/supplemental/surge/work-process.list');
+
+  const missingMihomo = mihomoNames.filter((name) => !mihomoDirect.has(name));
+  if (missingMihomo.length > 0) {
+    failures.push(`rulesets/supplemental/clash/local-process-direct.list: missing ${missingMihomo.length} names: ${missingMihomo.join(', ')}`);
+  }
+  const missingMihomoWork = mihomoWorkNames.filter((name) => !mihomoWork.has(name));
+  if (missingMihomoWork.length > 0) {
+    failures.push(`rulesets/supplemental/clash/work-process.list: missing ${missingMihomoWork.length} names: ${missingMihomoWork.join(', ')}`);
+  }
+  const missingSurge = surgeNames.filter((name) => !surgeDirect.has(name));
+  if (missingSurge.length > 0) {
+    failures.push(`rulesets/supplemental/surge/local-process-direct.list: missing ${missingSurge.length} names: ${missingSurge.join(', ')}`);
+  }
+  const missingSurgeWork = surgeWorkNames.filter((name) => !surgeWork.has(name));
+  if (missingSurgeWork.length > 0) {
+    failures.push(`rulesets/supplemental/surge/work-process.list: missing ${missingSurgeWork.length} names: ${missingSurgeWork.join(', ')}`);
+  }
+}
+
+function readProcessRuleSet(relativePath) {
+  return new Set(read(relativePath)
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith('#'))
+    .map((line) => line.split(','))
+    .filter((parts) => parts[0] === 'PROCESS-NAME' && parts[1])
+    .map((parts) => parts[1]));
 }

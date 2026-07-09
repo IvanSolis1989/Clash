@@ -5,6 +5,11 @@
 
 ---
 
+## v5.4.38-cmfa.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：同步 Clash Party v5.4.38 的 15 个 `scki-*` rule-provider 与 846 条规则。
+- VERIFY：合同校验改为检查补充规则集引用，不再要求主规则散写单条白名单。
+
 ## v5.4.37-cmfa.1 (2026-06-29)
 
 - ★ DNS-POLICY#170：`dns.nameserver-policy` 新增 `geosite:cn` → AliDNS / DNSPod DoH、`geosite:geolocation-!cn` → Cloudflare / Google DoH。

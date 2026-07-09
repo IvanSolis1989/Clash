@@ -5,6 +5,11 @@
 
 ---
 
+## v5.4.38-flclash.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：同步 Clash Party Normal v5.4.38，主 rules 改为引用补充规则集。
+- FIX：保持 FlClash 原数组引用，避免覆写后规则数组身份变化。
+
 ## v5.4.37-flclash.1 (2026-06-29)
 
 - ★ DNS-POLICY#170：同步 Clash Party Normal v5.4.37，`overwriteGeneral()` 为 Mihomo `nameserver-policy` 新增 `geosite:cn` 与 `geosite:geolocation-!cn` 解析器分流。

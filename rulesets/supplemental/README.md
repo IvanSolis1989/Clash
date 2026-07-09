@@ -1,0 +1,19 @@
+# Supplemental Rule Sets
+
+This directory contains small repository-owned rule sets for manual overrides
+that should not stay as scattered inline rules in product profiles.
+
+- `clash/`: Clash classical syntax. Used by Mihomo, CMFA, OpenClash, Stash,
+  Shadowrocket, Surge, Loon, and the SingBox generator expansion path.
+- `surge/`: Surge Mac-only process rules. Mobile profiles do not consume these.
+- `quantumultx/`: Quantumult X native lowercase syntax for remote filters.
+- `egern/`: Egern native YAML rule-set syntax generated from `clash/` by
+  `tools/generate-egern-supplemental.js`. Process rules are skipped because
+  Egern does not expose Clash-style `PROCESS-NAME`.
+
+Rules here intentionally omit policy targets. Each product binds the rule set to
+the correct policy in its own syntax.
+
+Inline single rules in main product files are allowed only when the rule cannot
+be represented safely as a supplemental rule set, such as port rules, logical
+AND/OR/NOT rules, platform-local syntax traps, or documented engine gaps.

@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v5.4.37）
+# v2rayN 使用教程（对齐 Clash Party v5.4.38）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON 兜底产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.37-v2n.1（详见 `v2rayN/CHANGELOG.md`；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.38-v2n.1（详见 `v2rayN/CHANGELOG.md`；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -126,7 +126,7 @@ Xray 核心的路由规则只能指向 `proxy / direct / block` 三个出站，�
 
 ## 路径 A：mihomo 核心 + Clash YAML（推荐）
 
-这是 v2rayN 路径里**最接近 Clash Party 主线**的方案：33 业务组、22 区域 `url-test` 组、376 rule-provider 全部原样生效，策略结构和 CMFA 完全一致。
+这是 v2rayN 路径里**最接近 Clash Party 主线**的方案：33 业务组、22 区域 `url-test` 组、391 rule-provider 全部原样生效，策略结构和 CMFA 完全一致。
 > ⚠️ 注意：`CMFA(mihomo).yaml` 是静态 YAML，区域组是 `type: url-test`（延迟择优），**不含 `type: smart` / `uselightgbm: true`**。LightGBM 自动择优不会启用；若需要此特性，请参见文首「关于 LightGBM / Smart 组的重要说明」。
 
 ### 1. 在 v2rayN 里启用 mihomo 核心
@@ -233,7 +233,7 @@ v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1
 - ❌ 无 33 业务组 → 区域组的两层结构。所有 `proxy` 规则指向同一个节点。
 - ❌ 无 LightGBM 自动择优。
 - ❌ 无 Smart 组 `uselightgbm: true`。
-- ❌ 无 376 rule-provider 自动更新（Xray 依赖 `geosite.dat` / `geoip.dat` 数据库，不是 rule-provider）。
+- ❌ 无 391 rule-provider 自动更新（Xray 依赖 `geosite.dat` / `geoip.dat` 数据库，不是 rule-provider）。
 - ⚠️ `geosite:xxx` 关键字依赖 v2rayN 集成的 geosite 数据库；少量我们在 Clash 里用的分类可能在 v2fly 的 geosite 里叫别的名字（例如 `geosite:openai` 对应 v2fly 的 `category-ai-!cn`）。
 
 **结论：路径 C 适合作为「还没准备好换核心的用户」的过渡方案。条件允许请切到路径 A 或 B。**

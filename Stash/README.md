@@ -23,11 +23,11 @@
 node tools/generate-stash-from-cmfa.js
 ```
 
-生成器只以 `Clash Meta For Android/CMFA(mihomo).yaml` 为输入，输出 `Stash/Stash.yaml`。任何规则、策略组、rule-provider 或 DNS 语义变更，都应先同步 CMFA，再重新生成 Stash。
+生成器只以 `Clash Meta For Android/CMFA(mihomo).yaml` 为输入，输出 `Stash/Stash.yaml`。任何规则、策略组、rule-provider、补充规则集或 DNS 语义变更，都应先同步 CMFA，再重新生成 Stash。
 
 ## 兼容范围
 
-- 保留：22 个区域 `url-test` 组、33 个业务组、376 个 rule-provider、`RULE-SET` / `GEOSITE` / `GEOIP` / `DST-PORT` / `PROCESS-NAME` 等规则语义。
+- 保留：22 个区域 `url-test` 组、33 个业务组、391 个 rule-provider、`RULE-SET` / `GEOSITE` / `GEOIP` / `DST-PORT` / `PROCESS-NAME` 等规则语义。
 - 保留：`proxy-providers` 远程订阅、`proxy-groups.use`、`nameserver-policy`、`fake-ip-filter`。
 - 不保留：Mihomo Smart + LightGBM、GeoX 自动更新、sniffer、provider `health-check` / `exclude-filter`、rule-provider 下载代理 `proxy`、Mihomo 专用 DNS fallback 字段。
 

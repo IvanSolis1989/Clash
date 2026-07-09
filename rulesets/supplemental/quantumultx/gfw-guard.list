@@ -1,0 +1,4 @@
+host, dns.google
+host, dns.google.com
+host-suffix, inflection.ai
+host-suffix, pi.ai

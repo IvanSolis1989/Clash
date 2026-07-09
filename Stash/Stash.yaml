@@ -1,8 +1,8 @@
 # ================================================================
-# Stash Smart v5.4.37-stash.1 - Stash (Clash Premium) 配置
-# Build: 2026-07-07
-# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 376 rule-providers
-# 基线：Clash Party v5.4.37（唯一主线） / 派生：CMFA v5.4.37-cmfa.1
+# Stash Smart v5.4.38-stash.1 - Stash (Clash Premium) 配置
+# Build: 2026-07-09
+# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 391 rule-providers
+# 基线：Clash Party v5.4.38（唯一主线） / 派生：CMFA v5.4.38-cmfa.1
 # 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）
 # 变更历史：见 `Stash/CHANGELOG.md`
 # 注意：Stash 不支持 Mihomo Smart + LightGBM；本产物使用 url-test 区域组
@@ -3006,1063 +3006,955 @@ rule-providers:
     url: 'https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_IP/GeoRouting_Africa_Central_GeoIP.yaml'
     path: ./ruleset/acc-GeoIP-Africa_Central.yaml
     interval: 91347
+  scki-adfp-direct:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-direct.list
+    path: ./ruleset/scki-adfp-direct.list
+    interval: 604800
+  scki-adfp-intl-site:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-intl-site.list
+    path: ./ruleset/scki-adfp-intl-site.list
+    interval: 604800
+  scki-adfp-payments:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-payments.list
+    path: ./ruleset/scki-adfp-payments.list
+    interval: 604800
+  scki-cnmedia-guard:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/cnmedia-guard.list
+    path: ./ruleset/scki-cnmedia-guard.list
+    interval: 604800
+  scki-local-direct:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/local-direct.list
+    path: ./ruleset/scki-local-direct.list
+    interval: 604800
+  scki-local-process-direct:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/local-process-direct.list
+    path: ./ruleset/scki-local-process-direct.list
+    interval: 604800
+  scki-work-process:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/work-process.list
+    path: ./ruleset/scki-work-process.list
+    interval: 604800
+  scki-gfw-guard:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/gfw-guard.list
+    path: ./ruleset/scki-gfw-guard.list
+    interval: 604800
+  scki-youtube-guard:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/youtube-guard.list
+    path: ./ruleset/scki-youtube-guard.list
+    interval: 604800
+  scki-google-mail-intl:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/google-mail-intl.list
+    path: ./ruleset/scki-google-mail-intl.list
+    interval: 604800
+  scki-google-work:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/google-work.list
+    path: ./ruleset/scki-google-work.list
+    interval: 604800
+  scki-download-guard:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/download-guard.list
+    path: ./ruleset/scki-download-guard.list
+    interval: 604800
+  scki-cnsite-guard:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/cnsite-guard.list
+    path: ./ruleset/scki-cnsite-guard.list
+    interval: 604800
+  scki-work-guard:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/work-guard.list
+    path: ./ruleset/scki-work-guard.list
+    interval: 604800
+  scki-ai-supplement:
+    type: http
+    behavior: classical
+    format: text
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/ai-supplement.list
+    path: ./ruleset/scki-ai-supplement.list
+    interval: 604800
 rules:
-# Anti-ad false-positive allowlist: keep before all ad/phishing/TIF providers.
-# See docs/GEOSITE_COVERAGE_LEDGER.md for ownership and update rules.
-- 'DOMAIN-SUFFIX,account.xiaomi.com,DIRECT'
-- 'DOMAIN-SUFFIX,passport.xiaomi.com,DIRECT'
-- 'DOMAIN-SUFFIX,micloud.xiaomi.com,DIRECT'
-- 'DOMAIN,i.mi.com,DIRECT'
-- 'DOMAIN,auth.be.sec.miui.com,DIRECT'
-- 'DOMAIN,idm.api.io.mi.com,DIRECT'
-- 'DOMAIN,api.installer.xiaomi.com,DIRECT'
-- 'DOMAIN,flash.sec.miui.com,DIRECT'
-- 'DOMAIN,mazu.sec.miui.com,DIRECT'
-- 'DOMAIN,ccc.sys.miui.com,DIRECT'
-- 'DOMAIN,register.xmpush.xiaomi.com,DIRECT'
-# v5.4.14 FIX#CF-R2: Sukka reject_phishing 当前包含 Cloudflare R2 存储域，需前置覆盖首匹配。
-- 'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站'
-# v5.4.16 FIX#149: anti-AD/DustinWin 当前包含 analytics.paddle.com；Antigravity 登录需放行 Paddle 许可/支付链路。
-- 'DOMAIN-SUFFIX,paddle.com,🏦 金融支付'
-# v5.4.19 #2 借鉴 Proxy-override：国内推送 SDK 直连前置——jpush/umeng 被 jiguangtuisong/youmengchuangxiang 当 tracker 拦截，但承载合法 App 推送/消息功能，需 DIRECT（参照 P0-FIX#41 小米先例）。
-- 'DOMAIN-SUFFIX,jpush.cn,DIRECT'
-- 'DOMAIN-SUFFIX,jpush.io,DIRECT'
-- 'DOMAIN,msg.umeng.com,DIRECT'
-# v5.4.22 GeTui(个推)推送 SDK 直连——延续 #2（被通用广告/隐私表当 tracker 拦截，承载 App 推送如米家）
-- 'DOMAIN-SUFFIX,getui.com,DIRECT'
-- 'DOMAIN-SUFFIX,getui.net,DIRECT'
-- 'DOMAIN-SUFFIX,gepush.com,DIRECT'
-# v5.4.32 FIX#167-DOUYIN：Douyin Web 视频域名先锁到国内流媒体，避免被 TikTok / geolocation-!cn 宽规则抢先命中。
-- 'DOMAIN-SUFFIX,douyin.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,douyincdn.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,douyinpic.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,douyinstatic.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,douyinvod.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,idouyinvod.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,iesdouyin.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,iesdouyin.net,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,amemv.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体'
-- 'RULE-SET,anti-ad,🛑 广告拦截'
-- 'RULE-SET,sukka-phishing,🛑 广告拦截'
-- 'RULE-SET,hagezi-tif,🛑 广告拦截'
-- 'RULE-SET,acc-hijackingplus,🛑 广告拦截'
-- 'RULE-SET,acc-blockhttpdnsplus,🛑 广告拦截'
-- 'RULE-SET,acc-prerepaireasyprivacy,🛑 广告拦截'
-- 'RULE-SET,acc-unsupportvpn,🛑 广告拦截'
-- 'GEOSITE,category-ads-all,🛑 广告拦截'
-- 'GEOSITE,private,DIRECT'
-- 'GEOIP,private,DIRECT,no-resolve'
-- 'GEOSITE,category-dev,🔧 工具与服务'
-- 'GEOSITE,tracker,🛑 广告拦截'
-- 'GEOSITE,gfw,🚫 受限网站'
-- 'RULE-SET,advertising,🛑 广告拦截'
-- 'RULE-SET,advertisingmitv,🛑 广告拦截'
-- 'RULE-SET,adobeactivation,🛑 广告拦截'
-- 'RULE-SET,blockhttpdns,🛑 广告拦截'
-- 'RULE-SET,domob,🛑 广告拦截'
-- 'RULE-SET,hijacking,🛑 广告拦截'
-- 'RULE-SET,jiguangtuisong,🛑 广告拦截'
-- 'RULE-SET,miuiprivacy,🛑 广告拦截'
-- 'RULE-SET,privacy,🛑 广告拦截'
-- 'RULE-SET,youmengchuangxiang,🛑 广告拦截'
-  # v5.4.35 FIX#169-AMAP: webapi.amap.com 属高德地图国内 API。专用 amap 规则放在广告/威胁规则之后、
-  #   TikTok/GFW/geolocation-!cn 宽规则之前，避免依赖尾部 RULE-SET,cn 才直连。
-- 'RULE-SET,amap,🏠 国内网站'
-  # v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——YouTube/Google/MS/Apple 白名单豁免（QUIC 走对应业务组），其余海外 QUIC REJECT 强制回退 HTTP/2
-- 'AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube'
-- 'AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务'
-- 'AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务'
-- 'AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务'
-- 'AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT'
-- DOMAIN-SUFFIX,local,DIRECT
-- DOMAIN-SUFFIX,localhost,DIRECT
-- DOMAIN-SUFFIX,lan,DIRECT
-- DOMAIN-SUFFIX,home.arpa,DIRECT
-- DOMAIN-SUFFIX,internal,DIRECT
-- DOMAIN-SUFFIX,intranet,DIRECT
-- IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
-- IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
-- IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
-- IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
-- IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
-- IP-CIDR,169.254.0.0/16,DIRECT,no-resolve
-- IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
-- 'IP-CIDR6,::1/128,DIRECT,no-resolve'
-- 'IP-CIDR6,fc00::/7,DIRECT,no-resolve'
-- 'IP-CIDR6,fe80::/10,DIRECT,no-resolve'
-- DST-PORT,7680,REJECT
-- 'PROCESS-NAME,QQ.exe,DIRECT'
-- 'PROCESS-NAME,Weixin.exe,DIRECT'
-- 'PROCESS-NAME,WeChat.exe,DIRECT'
-- 'PROCESS-NAME,WeChatAppEx.exe,DIRECT'
-- 'PROCESS-NAME,Oray.exe,DIRECT'
-- 'PROCESS-NAME,OrayService.exe,DIRECT'
-- 'PROCESS-NAME,SunloginClient.exe,DIRECT'
-- 'PROCESS-NAME,SunloginClient_Desktop.exe,DIRECT'
-- 'PROCESS-NAME,SunloginClient_Service.exe,DIRECT'
-- 'PROCESS-NAME,AweSun.exe,DIRECT'
-- 'PROCESS-NAME,AweSunService.exe,DIRECT'
-- 'PROCESS-NAME,NodeBaby.exe,DIRECT'
-- 'PROCESS-NAME,Node Baby.exe,DIRECT'
-- 'PROCESS-NAME,nblink.exe,DIRECT'
-- 'PROCESS-NAME,nblink,DIRECT'
-- 'PROCESS-NAME,owjdxb.exe,DIRECT'
-- 'PROCESS-NAME,tvnserver.exe,DIRECT'
-- 'PROCESS-NAME,tvnserver,DIRECT'
-- 'PROCESS-NAME,AnyDesk.exe,DIRECT'
-- 'PROCESS-NAME,AnyDesk,DIRECT'
-- 'PROCESS-NAME,ToDesk.exe,DIRECT'
-- 'PROCESS-NAME,ToDesk_Service.exe,DIRECT'
-- 'PROCESS-NAME,ToDesk,DIRECT'
-# v5.4.11 FIX#RD-PROC: RustDesk public relay/API 走会议协作；私网地址已由 private 规则直连
-- 'PROCESS-NAME,RustDesk.exe,🧑‍💼 会议协作'
-- 'PROCESS-NAME,rustdesk.exe,🧑‍💼 会议协作'
-- 'PROCESS-NAME,RustDesk,🧑‍💼 会议协作'
-- 'PROCESS-NAME,rustdesk,🧑‍💼 会议协作'
-- 'PROCESS-NAME,TeamViewer.exe,DIRECT'
-- 'PROCESS-NAME,TeamViewer_Service.exe,DIRECT'
-- 'PROCESS-NAME,TeamViewer,DIRECT'
-- 'PROCESS-NAME,ZeroTier One.exe,DIRECT'
-- 'PROCESS-NAME,zerotier-one.exe,DIRECT'
-- 'PROCESS-NAME,zerotier-one_x64.exe,DIRECT'
-- 'PROCESS-NAME,zerotier-one,DIRECT'
-- 'PROCESS-NAME,Tailscale.exe,DIRECT'
-- 'PROCESS-NAME,tailscale.exe,DIRECT'
-- 'PROCESS-NAME,tailscaled.exe,DIRECT'
-- 'PROCESS-NAME,Tailscale,DIRECT'
-- 'PROCESS-NAME,tailscale,DIRECT'
-- 'PROCESS-NAME,tailscaled,DIRECT'
-- 'PROCESS-NAME,phddns.exe,DIRECT'
-- 'PROCESS-NAME,phddns,DIRECT'
-- 'PROCESS-NAME,ngrok.exe,DIRECT'
-- 'PROCESS-NAME,ngrok,DIRECT'
-- 'PROCESS-NAME,frpc.exe,DIRECT'
-- 'PROCESS-NAME,frpc,DIRECT'
-- 'PROCESS-NAME,frps.exe,DIRECT'
-- 'PROCESS-NAME,frps,DIRECT'
-- 'PROCESS-NAME,natapp.exe,DIRECT'
-- 'PROCESS-NAME,natapp,DIRECT'
-- 'PROCESS-NAME,cloudflared.exe,DIRECT'
-- 'PROCESS-NAME,cloudflared,DIRECT'
-- 'PROCESS-NAME,xmqtunnel.exe,DIRECT'
-- 'PROCESS-NAME,xmqtunnel,DIRECT'
-- 'PROCESS-NAME,Navicat.exe,DIRECT'
-- 'PROCESS-NAME,navicat.exe,DIRECT'
-- 'PROCESS-NAME,Navicat Premium.exe,DIRECT'
-- 'PROCESS-NAME,Navicat,DIRECT'
-- 'PROCESS-NAME,Navicat Premium,DIRECT'
-# 游戏加速器 — 这些工具自身是网络加速隧道，走代理会导致双重代理/连接失败
-- 'PROCESS-NAME,LeigodAcc.exe,DIRECT'
-- 'PROCESS-NAME,LeigodAccel.exe,DIRECT'
-- 'PROCESS-NAME,leigodaccel.exe,DIRECT'
-- 'PROCESS-NAME,NeteaseUU.exe,DIRECT'
-- 'PROCESS-NAME,NeteaseUUBrowser.exe,DIRECT'
-- 'PROCESS-NAME,NNer.exe,DIRECT'
-- 'PROCESS-NAME,NNerClient.exe,DIRECT'
-- 'PROCESS-NAME,UU.exe,DIRECT'
-- 'PROCESS-NAME,UUGameBooster.exe,DIRECT'
-- 'PROCESS-NAME,UURepair.exe,DIRECT'
-- 'PROCESS-NAME,UUService.exe,DIRECT'
-- 'PROCESS-NAME,xhjsq.exe,DIRECT'
-- 'PROCESS-NAME,XiaoHeiAccelerator.exe,DIRECT'
-- 'PROCESS-NAME,xunyou.exe,DIRECT'
-- 'PROCESS-NAME,XunYouAcc.exe,DIRECT'
-- 'PROCESS-NAME,XunYouUpdate.exe,DIRECT'
-- DST-PORT,123,DIRECT
-- DST-PORT,3478,DIRECT
-- DST-PORT,3479,DIRECT
-- DST-PORT,5349,DIRECT
-- DST-PORT,19302,DIRECT
-- DST-PORT,19305,DIRECT
-- DST-PORT,19307,DIRECT
-- DOMAIN-SUFFIX,chiphell.com,DIRECT
-- DOMAIN-SUFFIX,iwipwedabay.com,DIRECT
-- DOMAIN-SUFFIX,cdn.weixin.qq.com,DIRECT
-- 'DOMAIN-SUFFIX,binance.vision,💰 加密货币'
-- 'DOMAIN-SUFFIX,binance.info,💰 加密货币'
-- 'DOMAIN-SUFFIX,binance.cloud,💰 加密货币'
-- 'DOMAIN-SUFFIX,binance.me,💰 加密货币'
-- 'DOMAIN-SUFFIX,binance.org,💰 加密货币'
-- 'DOMAIN-SUFFIX,binancefuture.com,💰 加密货币'
-- 'DOMAIN,dns.google,🚫 受限网站'
-- 'DOMAIN,dns.google.com,🚫 受限网站'
-- 'DOMAIN-SUFFIX,youtube.com,📹 YouTube'
-- 'DOMAIN-SUFFIX,youtu.be,📹 YouTube'
-- 'DOMAIN-SUFFIX,googlevideo.com,📹 YouTube'
-- 'DOMAIN-SUFFIX,ytimg.com,📹 YouTube'
-- 'DOMAIN-SUFFIX,ggpht.com,📹 YouTube'
-- 'DOMAIN-SUFFIX,youtube-nocookie.com,📹 YouTube'
-- 'DOMAIN-SUFFIX,youtubekids.com,📹 YouTube'
-# v5.4.26 FIX#164: 腾讯 WorkBuddy copilot.tencent.com 国内直连防吞——szkane AiDomain.list 的 DOMAIN-KEYWORD,copilot 子串会误吞到 🤖 AI 服务（国外代理）；前置精准国内规则
-- 'DOMAIN-SUFFIX,copilot.tencent.com,🏠 国内网站'
-- 'RULE-SET,openai,🤖 AI 服务'
-- 'RULE-SET,claude,🤖 AI 服务'
-- 'RULE-SET,gemini,🤖 AI 服务'
-# v5.4.10 FIX#RD-COPILOT: RustDesk relay 可落到 Copilot.list 的 AS20473，需前置防吞
-- 'DOMAIN-SUFFIX,rustdesk.com,🧑‍💼 会议协作'
-- 'RULE-SET,copilot,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,perplexity.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,mistral.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,x.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,grok.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,deepseek.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,huggingface.co,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,replicate.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,together.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,cohere.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,cohere.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,midjourney.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,stability.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,cursor.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,cursor.sh,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,v0.dev,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,vercel.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,notebooklm.google,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,poe.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,character.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,inflection.ai,🚫 受限网站'
-- 'DOMAIN-SUFFIX,pi.ai,🚫 受限网站'
-- 'DOMAIN-SUFFIX,suno.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,suno.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,runway.ml,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,runwayml.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,openrouter.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,fireworks.ai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,modal.com,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,modal.run,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,runpod.io,🤖 AI 服务'
-- 'RULE-SET,civitai,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,gmail.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,googlemail.com,🌐 国外网站'
-- 'DOMAIN,mail.google.com,🌐 国外网站'
-- 'DOMAIN,inbox.google.com,🌐 国外网站'
-- 'RULE-SET,googlevoice,💬 即时通讯'
-- 'DOMAIN-SUFFIX,meet.google.com,🧑‍💼 会议协作'
-- 'DOMAIN,meet.googleapis.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,dl.google.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,play.googleapis.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,android.clients.google.com,📥 下载更新'
-- 'RULE-SET,googlefcm,📥 下载更新'
-- 'RULE-SET,google,🔍 Google 服务'
-- 'RULE-SET,google-ip,🔍 Google 服务,no-resolve'
-- 'RULE-SET,szkane-ai,🤖 AI 服务'
-- 'RULE-SET,szkane-ciciai,🤖 AI 服务'
-- 'RULE-SET,acc-appleai,🤖 AI 服务'
-- 'RULE-SET,acc-grok,🤖 AI 服务'
-- 'RULE-SET,acc-gemini,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,do.dsp.mp.microsoft.com,📥 下载更新'
-- 'RULE-SET,acc-copilot,🤖 AI 服务'
-- 'RULE-SET,vpsdance-ai-coding,🤖 AI 服务'
-- 'DOMAIN-SUFFIX,tradingview.com,💰 加密货币'
-- 'DOMAIN-SUFFIX,tvcdn.com,💰 加密货币'
-- 'DOMAIN-SUFFIX,coinglass.com,💰 加密货币'
-- 'DOMAIN-SUFFIX,hyperliquid.xyz,💰 加密货币'
-- 'DOMAIN-SUFFIX,hyperliquid-testnet.xyz,💰 加密货币'
-- 'RULE-SET,cryptocurrency,💰 加密货币'
-- 'DOMAIN-SUFFIX,eth.limo,💰 加密货币'
-- 'DOMAIN-SUFFIX,glitternode.ru,💰 加密货币'
-- 'RULE-SET,binance,💰 加密货币'
-- 'RULE-SET,szkane-web3,💰 加密货币'
-- 'RULE-SET,paypal,🏦 金融支付'
-- 'DOMAIN-SUFFIX,wise.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,transferwise.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,revolut.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,revolut.me,🏦 金融支付'
-- 'DOMAIN-SUFFIX,braintree-api.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,cash.app,🏦 金融支付'
-- 'DOMAIN-SUFFIX,squareup.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,square.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,adyen.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,checkout.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,klarna.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,afterpay.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,plaid.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,midtrans.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,gopay.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,ovo.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,dana.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,shopeepay.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,xendit.co,🏦 金融支付'
-- 'DOMAIN-SUFFIX,doku.com,🏦 金融支付'
-- 'RULE-SET,stripe,🏦 金融支付'
-- 'RULE-SET,visa,🏦 金融支付'
-- 'RULE-SET,tigerfintech,🏦 金融支付'
-- 'RULE-SET,acc-bank-us,🏦 金融支付'
-- 'RULE-SET,acc-bank-uk,🏦 金融支付'
-- 'RULE-SET,acc-bank-hk,🏦 金融支付'
-- 'RULE-SET,acc-bank-sg,🏦 金融支付'
-- 'RULE-SET,acc-bank-jp,🏦 金融支付'
-- 'RULE-SET,acc-bank-au,🏦 金融支付'
-- 'RULE-SET,acc-bank-ca,🏦 金融支付'
-- 'RULE-SET,acc-bank-de,🏦 金融支付'
-- 'RULE-SET,acc-bank-nl,🏦 金融支付'
-- 'RULE-SET,acc-bank-fr,🏦 金融支付'
-- 'RULE-SET,acc-vf-wise,🏦 金融支付'
-- 'RULE-SET,acc-vf-monzo,🏦 金融支付'
-- 'RULE-SET,acc-vf-revolut,🏦 金融支付'
-- 'DOMAIN,login.live.com,Ⓜ️ 微软服务'
-- 'DOMAIN,g.live.com,Ⓜ️ 微软服务'
-- 'DOMAIN-SUFFIX,officeapps.live.com,Ⓜ️ 微软服务'
-- 'DOMAIN-SUFFIX,outlook.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,outlook.live.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,hotmail.com,🌐 国外网站'
-- 'DOMAIN,mail.live.com,🌐 国外网站'
-- 'DOMAIN,outlook.office.com,🌐 国外网站'
-- 'DOMAIN,mail.yahoo.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,ymail.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,proton.me,🌐 国外网站'
-- 'DOMAIN-SUFFIX,pm.me,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tutanota.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tuta.com,🌐 国外网站'
-- 'DOMAIN,mail.zoho.com,🌐 国外网站'
-- 'DOMAIN,mail.zoho.eu,🌐 国外网站'
-- 'DOMAIN,mail.zoho.in,🌐 国外网站'
-- 'DOMAIN,mail.zoho.com.au,🌐 国外网站'
-- 'DOMAIN,mail.zoho.jp,🌐 国外网站'
-- 'DOMAIN,mail.me.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,fastmail.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,fastmail.fm,🌐 国外网站'
-- 'RULE-SET,mail,🌐 国外网站'
-- 'RULE-SET,mailru,🌐 国外网站'
-- 'RULE-SET,protonmail,🌐 国外网站'
-- 'RULE-SET,spark,🌐 国外网站'
-- DOMAIN-SUFFIX,mail.qq.com,DIRECT
-- DOMAIN-SUFFIX,mail.163.com,DIRECT
-- DOMAIN-SUFFIX,mail.126.com,DIRECT
-- DOMAIN-SUFFIX,mail.sina.com.cn,DIRECT
-- DOMAIN-SUFFIX,mail.aliyun.com,DIRECT
-- 'RULE-SET,telegram,💬 即时通讯'
-- 'RULE-SET,telegram-ip,💬 即时通讯,no-resolve'
-- 'RULE-SET,discord,💬 即时通讯'
-- 'RULE-SET,whatsapp,💬 即时通讯'
-- 'RULE-SET,line,💬 即时通讯'
-- 'RULE-SET,kakaotalk,💬 即时通讯'
-- 'DOMAIN-SUFFIX,skype.com,💬 即时通讯'
-- 'DOMAIN-SUFFIX,skypeecs.net,💬 即时通讯'
-- 'DOMAIN-SUFFIX,skypeforbusiness.com,💬 即时通讯'
-- 'DOMAIN-SUFFIX,sfbassets.com,💬 即时通讯'
-- 'DOMAIN-SUFFIX,lync.com,💬 即时通讯'
-- 'DOMAIN-SUFFIX,signal.org,💬 即时通讯'
-- 'DOMAIN-SUFFIX,whispersystems.org,💬 即时通讯'
-- 'DOMAIN-SUFFIX,signal.art,💬 即时通讯'
-- 'DOMAIN-SUFFIX,viber.com,💬 即时通讯'
-- 'DOMAIN-SUFFIX,viber.io,💬 即时通讯'
-- 'DOMAIN-SUFFIX,element.io,💬 即时通讯'
-- 'DOMAIN-SUFFIX,matrix.org,💬 即时通讯'
-- 'DOMAIN-SUFFIX,zalo.me,💬 即时通讯'
-- 'DOMAIN-SUFFIX,zalopay.vn,💬 即时通讯'
-- 'DOMAIN-SUFFIX,wire.com,💬 即时通讯'
-- 'DOMAIN-SUFFIX,threema.ch,💬 即时通讯'
-- 'RULE-SET,telegramnl,💬 即时通讯,no-resolve'
-- 'RULE-SET,telegramsg,💬 即时通讯,no-resolve'
-- 'RULE-SET,telegramus,💬 即时通讯,no-resolve'
-- 'RULE-SET,zalo,💬 即时通讯'
-- 'RULE-SET,italkbb,💬 即时通讯'
-- 'RULE-SET,acc-signal,💬 即时通讯'
-- 'DOMAIN-SUFFIX,icq.com,💬 即时通讯'
-- 'RULE-SET,twitter,📱 社交媒体'
-- 'RULE-SET,twitter-ip,📱 社交媒体,no-resolve'
-- 'RULE-SET,reddit,📱 社交媒体'
-- 'RULE-SET,facebook,📱 社交媒体'
-- 'RULE-SET,facebook-ip,📱 社交媒体,no-resolve'
-- 'RULE-SET,instagram,📱 社交媒体'
-- 'RULE-SET,snapchat,📱 社交媒体'
-- 'RULE-SET,pinterest,📱 社交媒体'
-- 'RULE-SET,linkedin,📱 社交媒体'
-- 'DOMAIN-SUFFIX,mastodon.social,📱 社交媒体'
-- 'DOMAIN-SUFFIX,joinmastodon.org,📱 社交媒体'
-- 'DOMAIN-SUFFIX,threads.net,📱 社交媒体'
-- 'DOMAIN-SUFFIX,bsky.app,📱 社交媒体'
-- 'DOMAIN-SUFFIX,bsky.social,📱 社交媒体'
-- 'DOMAIN-SUFFIX,quora.com,📱 社交媒体'
-- 'DOMAIN-SUFFIX,medium.com,📱 社交媒体'
-- 'DOMAIN-SUFFIX,flickr.com,📱 社交媒体'
-- 'DOMAIN-SUFFIX,lemon8-app.com,📱 社交媒体'
-- 'RULE-SET,tumblr,📱 社交媒体'
-- 'RULE-SET,clubhouse,📱 社交媒体'
-- 'RULE-SET,clubhouseip,📱 社交媒体,no-resolve'
-- 'RULE-SET,pixiv,📱 社交媒体'
-- 'RULE-SET,truthsocial,📱 社交媒体'
-- 'RULE-SET,vk,📱 社交媒体'
-- 'RULE-SET,disqus,📱 社交媒体'
-- 'RULE-SET,imgur,📱 社交媒体'
-- 'RULE-SET,pixnet,📱 社交媒体'
-- 'RULE-SET,zoom,🧑‍💼 会议协作'
-- 'RULE-SET,slack,🧑‍💼 会议协作'
-- 'RULE-SET,teams,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,webex.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,wbx2.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,ciscospark.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,figma.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,linear.app,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,jira.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,asana.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,monday.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,clickup.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,basecamp.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,airtable.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,miro.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,canva.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,coda.io,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,loom.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,larksuite.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,larkoffice.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,gotomeeting.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,logmein.com,🧑‍💼 会议协作'
-- 'DOMAIN-SUFFIX,goto.com,🧑‍💼 会议协作'
-- 'RULE-SET,atlassian,🧑‍💼 会议协作'
-- 'RULE-SET,notion,🧑‍💼 会议协作'
-- 'RULE-SET,teamviewer,🧑‍💼 会议协作'
-- 'RULE-SET,zoho,🧑‍💼 会议协作'
-- 'RULE-SET,salesforce,🧑‍💼 会议协作'
-- 'RULE-SET,zendesk,🧑‍💼 会议协作'
-- 'RULE-SET,intercom,🧑‍💼 会议协作'
-- 'RULE-SET,remotedesktop,🧑‍💼 会议协作'
-- 'RULE-SET,acc-rustdesk,🧑‍💼 会议协作'
-- 'RULE-SET,acc-parsec,🧑‍💼 会议协作'
-- DOMAIN-SUFFIX,feishu.cn,DIRECT
-- DOMAIN-SUFFIX,dingtalk.com,DIRECT
-- DOMAIN-SUFFIX,welink.huaweicloud.com,DIRECT
-
-  # ============ 🎵 TikTok ============
-- 'RULE-SET,tiktok,🎵 TikTok'
-
-  # ============ 平台流媒体 ============
-- 'RULE-SET,youtube,📹 YouTube'
-- 'RULE-SET,netflix,🎥 Netflix'
-- 'RULE-SET,netflix-ip,🎥 Netflix,no-resolve'
-- 'RULE-SET,szkane-netflixip,🎥 Netflix,no-resolve'
-- 'RULE-SET,disney,🎬 Disney+'
-- 'RULE-SET,hbo,📡 HBO/Max'
-- 'RULE-SET,hulu,📺 Hulu'
-- 'RULE-SET,primevideo,🎬 Prime Video'
-- 'RULE-SET,spotify,🎵 音乐流媒体'
-- 'RULE-SET,soundcloud,🎵 音乐流媒体'
-- 'RULE-SET,pandora,🎵 音乐流媒体'
-- 'RULE-SET,tidal,🎵 音乐流媒体'
-- 'RULE-SET,deezer,🎵 音乐流媒体'
-- 'RULE-SET,lastfm,🎵 音乐流媒体'
-- 'RULE-SET,qobuz,🎵 音乐流媒体'
-
-  # ============ 🇭🇰 香港流媒体 ============
-# CLEAN#165: mytvsuper.com,nowe.com,rthk.hk,cabletv.com.hk 已被同策略 RULE-SET 覆盖
-- 'RULE-SET,szkane-bilihmt,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,mytv.com.hk,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,viu.com,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,viu.tv,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,hktv.com.hk,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,hktvmall.com,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,nowtv.com,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,icable.com,🇭🇰 香港流媒体'
-- 'DOMAIN-SUFFIX,hmvod.com.hk,🇭🇰 香港流媒体'
-- 'RULE-SET,mytvsuper,🇭🇰 香港流媒体'
-- 'RULE-SET,tvb,🇭🇰 香港流媒体'
-- 'RULE-SET,nowe,🇭🇰 香港流媒体'
-- 'RULE-SET,rthk,🇭🇰 香港流媒体'
-- 'RULE-SET,cabletv,🇭🇰 香港流媒体'
-- 'RULE-SET,moov,🇭🇰 香港流媒体'
-
-  # ============ 🇹🇼 台湾流媒体 ============
-# CLEAN#165: litv.tv,video.friday.tw,friday.tw,linetv.tw,hamivideo.hinet.net 已被同策略 RULE-SET 覆盖
-- 'RULE-SET,bahamut,🇹🇼 台湾流媒体'
-- 'RULE-SET,kktv,🇹🇼 台湾流媒体'
-- 'DOMAIN-SUFFIX,elta.tv,🇹🇼 台湾流媒体'
-- 'DOMAIN-SUFFIX,mod.cht.com.tw,🇹🇼 台湾流媒体'
-- 'DOMAIN-SUFFIX,ofiii.com,🇹🇼 台湾流媒体'
-- 'DOMAIN-SUFFIX,pts.org.tw,🇹🇼 台湾流媒体'
-- 'DOMAIN-SUFFIX,4gtv.tv,🇹🇼 台湾流媒体'
-- 'RULE-SET,litv,🇹🇼 台湾流媒体'
-- 'RULE-SET,friday,🇹🇼 台湾流媒体'
-- 'RULE-SET,hamivideo,🇹🇼 台湾流媒体'
-- 'RULE-SET,linetv,🇹🇼 台湾流媒体'
-- 'RULE-SET,vidoltv,🇹🇼 台湾流媒体'
-- 'RULE-SET,taiwangood,🇹🇼 台湾流媒体'
-- 'RULE-SET,cht,🇹🇼 台湾流媒体'
-
-  # ============ 🇯🇵 日韩流媒体 ============
-# CLEAN#165: tver.jp,dmm.com,dmm.co.jp,nicovideo.jp,nicovideo.me,dmc.nico 已被同策略 RULE-SET 覆盖
-- 'RULE-SET,abema,🇯🇵 日韩流媒体'
-- 'RULE-SET,dazn,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,unext.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,nhk.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,nhk.or.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,dtv.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,paravi.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,videomarket.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,fod.fujitv.co.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,gyao.yahoo.co.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,music.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,radiko.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,lemino.docomo.ne.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,wowow.co.jp,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,wavve.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,tving.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,watcha.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,coupangplay.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,sbs.co.kr,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,kbs.co.kr,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,mbc.co.kr,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,jtbc.co.kr,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,tvn.cjenm.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,afreecatv.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,tv.naver.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,now.naver.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,vod.naver.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,navertv.naver.com,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,kakaotv.daum.net,🇯🇵 日韩流媒体'
-- 'DOMAIN-SUFFIX,navercorp.com,🇯🇵 日韩流媒体'
-- 'RULE-SET,dmm,🇯🇵 日韩流媒体'
-- 'RULE-SET,tver,🇯🇵 日韩流媒体'
-- 'RULE-SET,niconico,🇯🇵 日韩流媒体'
-- 'RULE-SET,rakuten,🇯🇵 日韩流媒体'
-- 'RULE-SET,japonx,🇯🇵 日韩流媒体'
-- 'RULE-SET,nikkei,🇯🇵 日韩流媒体'
-
-  # ============ 🇪🇺 欧洲流媒体 ============
-# CLEAN#165: itv.com,itvstatic.com,britbox.com 已被同策略 RULE-SET 覆盖
-- 'RULE-SET,bbc,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,nowtv.co.uk,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,canalplus.com,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,mycanal.fr,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,france.tv,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,tf1.fr,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,molotov.tv,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,arte.tv,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,joyn.de,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,zdf.de,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,ard.de,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,ardmediathek.de,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,rtlplus.com,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,raiplay.it,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,rtve.es,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,videoland.com,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,ruutu.fi,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,tv2.dk,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,svtplay.se,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,nrk.no,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,ivi.ru,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,kinopoisk.ru,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,okko.tv,🇪🇺 欧洲流媒体'
-- 'DOMAIN-SUFFIX,more.tv,🇪🇺 欧洲流媒体'
-- 'RULE-SET,itv,🇪🇺 欧洲流媒体'
-- 'RULE-SET,all4,🇪🇺 欧洲流媒体'
-- 'RULE-SET,my5,🇪🇺 欧洲流媒体'
-- 'RULE-SET,skygo,🇪🇺 欧洲流媒体'
-- 'RULE-SET,britboxuk,🇪🇺 欧洲流媒体'
-- 'RULE-SET,londonreal,🇪🇺 欧洲流媒体'
-- 'RULE-SET,szkane-uk,🇪🇺 欧洲流媒体'
-
-  # ============ 🌐 其他国外流媒体 ============
-# CLEAN#165: wetv.vip,wetvinfo.com,viki.com,viki.io,mewatch.sg,discoveryplus.com 已被同策略 RULE-SET 覆盖
-- 'RULE-SET,viu,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,iq.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,vidio.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,vidio.static6.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,rctiplus.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,visionplus.id,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,genflix.co.id,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,goplay.co.id,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,maxstream.tv,🌐 其他国外流媒体'
-- 'RULE-SET,biliintl,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,iflix.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,catchplay.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,trueid.net,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,dimsum.my,🌐 其他国外流媒体'
-- 'RULE-SET,asianmedia,🌐 其他国外流媒体'
-- 'RULE-SET,iqiyiintl,🌐 其他国外流媒体'
-- 'RULE-SET,joox,🌐 其他国外流媒体'
-- 'RULE-SET,mewatch,🌐 其他国外流媒体'
-- 'RULE-SET,viki,🌐 其他国外流媒体'
-- 'RULE-SET,wetv,🌐 其他国外流媒体'
-- 'RULE-SET,zee,🌐 其他国外流媒体'
-- 'RULE-SET,acc-kwai,🌐 其他国外流媒体'
-- 'RULE-SET,paramount,🌐 其他国外流媒体'
-- 'RULE-SET,peacock,🌐 其他国外流媒体'
-- 'RULE-SET,twitch,🌐 其他国外流媒体'
-- 'RULE-SET,amazon,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,crunchyroll.com,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,vrv.co,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,pluto.tv,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,tubi.tv,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,fubo.tv,🌐 其他国外流媒体'
-- 'DOMAIN-SUFFIX,appletv.com,🌐 其他国外流媒体'
-- 'RULE-SET,cbs,🌐 其他国外流媒体'
-- 'RULE-SET,nbc,🌐 其他国外流媒体'
-- 'RULE-SET,pbs,🌐 其他国外流媒体'
-- 'RULE-SET,attwatchtv,🌐 其他国外流媒体'
-- 'RULE-SET,fox,🌐 其他国外流媒体'
-- 'RULE-SET,fubotv,🌐 其他国外流媒体'
-- 'RULE-SET,sling,🌐 其他国外流媒体'
-- 'RULE-SET,pandoratv,🌐 其他国外流媒体'
-- 'RULE-SET,vimeo,🌐 其他国外流媒体'
-- 'RULE-SET,dailymotion,🌐 其他国外流媒体'
-- 'RULE-SET,discoveryplus,🌐 其他国外流媒体'
-- 'RULE-SET,overcast,🌐 其他国外流媒体'
-- 'RULE-SET,americasvoice,🌐 其他国外流媒体'
-- 'RULE-SET,cake,🌐 其他国外流媒体'
-- 'RULE-SET,dood,🌐 其他国外流媒体'
-- 'RULE-SET,emby,🌐 其他国外流媒体'
-
-  # ============ 🔧 工具与服务 ============
-- 'DOMAIN-SUFFIX,aws.amazon.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,elasticbeanstalk.com,🔧 工具与服务'
-- 'RULE-SET,bing,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,yahoo.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,yahoo.co.jp,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,duckduckgo.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,ddg.co,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,brave.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,ecosia.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,startpage.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,you.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,search.naver.com,🔧 工具与服务'
-- 'RULE-SET,scholar,🔍 Google 服务'
-- 'RULE-SET,yandex,🔧 工具与服务'
-- 'RULE-SET,github,🔧 工具与服务'
-- 'RULE-SET,docker,🔧 工具与服务'
-- 'RULE-SET,gitlab,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,npmjs.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,npmjs.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,yarnpkg.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,crates.io,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,rubygems.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,packagist.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,maven.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,nuget.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,cocoapods.org,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,stackoverflow.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,stackexchange.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,sstatic.net,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,vercel.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,vercel.app,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,netlify.app,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,netlify.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,pages.dev,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,workers.dev,🔧 工具与服务'
-- 'DOMAIN,dash.cloudflare.com,🔧 工具与服务'
-- 'DOMAIN,api.cloudflare.com,🔧 工具与服务'
-- 'DOMAIN,developers.cloudflare.com,🔧 工具与服务'
-- 'DOMAIN,www.cloudflare.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,heroku.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,herokuapp.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,fly.io,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,railway.app,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,render.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,supabase.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,supabase.co,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,planetscale.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,neon.tech,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,digitalocean.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,vultr.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,linode.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,sentry.io,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,datadog.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,grafana.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,postman.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,jetbrains.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,hashicorp.com,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,terraform.io,🔧 工具与服务'
-- 'DOMAIN-SUFFIX,vagrantup.com,🔧 工具与服务'
-- 'RULE-SET,developer,🔧 工具与服务'
-- 'RULE-SET,python,🔧 工具与服务'
-- 'RULE-SET,gitbook,🔧 工具与服务'
-- 'RULE-SET,jfrog,🔧 工具与服务'
-- 'RULE-SET,sublimetext,🔧 工具与服务'
-- 'RULE-SET,wordpress,🔧 工具与服务'
-- 'RULE-SET,wix,🔧 工具与服务'
-- 'RULE-SET,cisco,🔧 工具与服务'
-- 'RULE-SET,ibm,🔧 工具与服务'
-- 'RULE-SET,oracle,🔧 工具与服务'
-- 'RULE-SET,unity,🔧 工具与服务'
-- 'RULE-SET,szkane-developer,🔧 工具与服务'
-
-  # ============ Ⓜ️ 微软服务 ============
-- 'RULE-SET,onedrive,Ⓜ️ 微软服务'
-- 'RULE-SET,microsoft,Ⓜ️ 微软服务'
-- 'RULE-SET,microsoftedge,Ⓜ️ 微软服务'
-- 'RULE-SET,acc-microsoftapps,Ⓜ️ 微软服务'
-
-  # ============ 🍎 苹果服务 ============
-- 'RULE-SET,applemusic,🍎 苹果服务'
-- 'RULE-SET,icloud,🍎 苹果服务'
-- 'RULE-SET,apple,🍎 苹果服务'
-- 'RULE-SET,appstore,🍎 苹果服务'
-- 'RULE-SET,appletv,🍎 苹果服务'
-- 'RULE-SET,applenews,🍎 苹果服务'
-- 'RULE-SET,appledev,🍎 苹果服务'
-- 'RULE-SET,appleproxy,🍎 苹果服务'
-- 'RULE-SET,siri,🍎 苹果服务'
-- 'RULE-SET,testflight,🍎 苹果服务'
-- 'RULE-SET,applefirmware,🍎 苹果服务'
-- 'RULE-SET,acc-applenews,🍎 苹果服务'
-- 'RULE-SET,acc-apple,🍎 苹果服务'
-
-  # ============ 📥 下载更新 ============
-- 'RULE-SET,systemota,📥 下载更新'
-- 'DOMAIN-SUFFIX,windowsupdate.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,update.microsoft.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,download.microsoft.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,delivery.mp.microsoft.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,officecdn.microsoft.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,officecdn.microsoft.com.edgesuite.net,📥 下载更新'
-- 'DOMAIN-SUFFIX,archive.ubuntu.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,security.ubuntu.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,mirrors.kernel.org,📥 下载更新'
-- 'DOMAIN-SUFFIX,dl.fedoraproject.org,📥 下载更新'
-- 'DOMAIN-SUFFIX,repo.anaconda.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,conda.anaconda.org,📥 下载更新'
-- 'DOMAIN-SUFFIX,repo.continuum.io,📥 下载更新'
-- 'DOMAIN-SUFFIX,sourceforge.net,📥 下载更新'
-- 'DOMAIN-SUFFIX,fosshub.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,filehippo.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,softonic.com,📥 下载更新'
-- 'DOMAIN-SUFFIX,gcr.io,📥 下载更新'
-- 'DOMAIN-SUFFIX,ghcr.io,📥 下载更新'
-- 'DOMAIN-SUFFIX,quay.io,📥 下载更新'
-- 'DOMAIN-SUFFIX,registry.k8s.io,📥 下载更新'
-- 'RULE-SET,download,📥 下载更新'
-- 'RULE-SET,ubuntu,📥 下载更新'
-- 'RULE-SET,mozilla,📥 下载更新'
-- 'RULE-SET,apkpure,📥 下载更新'
-- 'RULE-SET,android,📥 下载更新'
-- 'RULE-SET,intel,📥 下载更新'
-- 'RULE-SET,nvidia,📥 下载更新'
-- 'RULE-SET,dell,📥 下载更新'
-- 'RULE-SET,hp,📥 下载更新'
-- 'RULE-SET,canon,📥 下载更新'
-- 'RULE-SET,lg,📥 下载更新'
-- 'RULE-SET,acc-macappupgrade,📥 下载更新'
-
-  # ============ 🛰️ BT/PT Tracker ============
-- 'DOMAIN-SUFFIX,tracker.opentrackr.org,🛰️ BT/PT Tracker'
-- 'DOMAIN-SUFFIX,open.stealth.si,🛰️ BT/PT Tracker'
-- 'DOMAIN-SUFFIX,tracker.torrent.eu.org,🛰️ BT/PT Tracker'
-- 'DOMAIN-SUFFIX,exodus.desync.com,🛰️ BT/PT Tracker'
-- 'DOMAIN-SUFFIX,tracker.openbittorrent.com,🛰️ BT/PT Tracker'
-- 'DOMAIN-SUFFIX,tracker.publicbt.com,🛰️ BT/PT Tracker'
-- 'DOMAIN-SUFFIX,tracker.dler.org,🛰️ BT/PT Tracker'
-- 'RULE-SET,privatetracker,🛰️ BT/PT Tracker'
-- 'RULE-SET,acc-emuleserver,🛰️ BT/PT Tracker'
-
-  # ============ 🚫 受限网站 ============
-- 'DOMAIN-SUFFIX,jsdelivr.net,🚫 受限网站'
-- 'DOMAIN-SUFFIX,cloudflare-dns.com,🚫 受限网站'
-- 'RULE-SET,loyalsoldier-gfw,🚫 受限网站'
-- 'RULE-SET,loyalsoldier-greatfire,🚫 受限网站'
-- 'RULE-SET,szkane-proxygfw,🚫 受限网站'
-
-  # ============ 🕹️ 国内游戏 ============
-- 'DOMAIN-SUFFIX,mihoyo.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,miyoushe.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,bhsr.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,zenlesszonezero.com,🕹️ 国内游戏'
-- 'DOMAIN,game.163.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,gm.163.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,ds.163.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,nie.163.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,nie.netease.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,update.netease.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,netease.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,wegame.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,wegame.com.cn,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,perfect-world.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,wanmei.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,xd.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,taptap.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,taptap.io,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,papegames.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,hypergryph.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,gryphline.com,🕹️ 国内游戏'
-- 'DOMAIN-SUFFIX,lilith.com,🕹️ 国内游戏'
-- 'RULE-SET,steamcn,🕹️ 国内游戏'
-- 'RULE-SET,wanmeishijie,🕹️ 国内游戏'
-- 'RULE-SET,wankahuanju,🕹️ 国内游戏'
-- 'RULE-SET,majsoul,🕹️ 国内游戏'
-
-  # ============ 🎮 国外游戏 ============
-- 'RULE-SET,steam,🎮 国外游戏'
-- 'RULE-SET,epic,🎮 国外游戏'
-- 'RULE-SET,playstation,🎮 国外游戏'
-- 'RULE-SET,nintendo,🎮 国外游戏'
-- 'RULE-SET,xbox,🎮 国外游戏'
-- 'RULE-SET,ea,🎮 国外游戏'
-- 'RULE-SET,blizzard,🎮 国外游戏'
-- 'GEOSITE,category-games,🎮 国外游戏'
-# CLEAN#165: ubisoft.com,ubi.com,riotgames.com,leagueoflegends.com,valorant.com,rockstargames.com,gog.com,gogalaxy.com,supercell.com,garena.com,hoyoverse.com,hoyolab.com 已被同策略 RULE-SET 覆盖
-- 'RULE-SET,rockstar,🎮 国外游戏'
-- 'RULE-SET,riot,🎮 国外游戏'
-- 'RULE-SET,gog,🎮 国外游戏'
-- 'RULE-SET,supercell,🎮 国外游戏'
-- 'RULE-SET,garena,🎮 国外游戏'
-- 'RULE-SET,hoyoverse,🎮 国外游戏'
-- 'RULE-SET,ubi,🎮 国外游戏'
-- 'RULE-SET,sony,🎮 国外游戏'
-
-  # ============ 🌐 国外网站 ============
-- 'DOMAIN-SUFFIX,amazonaws.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,awsstatic.com,🌐 国外网站'
-- 'RULE-SET,cloudflare-ip,🌐 国外网站,no-resolve'
-- 'RULE-SET,cloudfront-ip,🌐 国外网站,no-resolve'
-- 'RULE-SET,fastly-ip,🌐 国外网站,no-resolve'
-- 'DOMAIN-SUFFIX,akamai.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,akamaized.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,akamaihd.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,akamaiedge.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,akamaitechnologies.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,edgekey.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,edgesuite.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,cloudfront.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,fastly.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,fastlylb.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,kxcdn.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,stackpathdns.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,stackpathcdn.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,b-cdn.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,bunny.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,bunnycdn.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,cdn77.org,🌐 国外网站'
-- 'DOMAIN-SUFFIX,azureedge.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,azurefd.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,msecnd.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,unpkg.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,r2.dev,🌐 国外网站'
-- 'DOMAIN-SUFFIX,ziffstatic.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,ucoz.ru,🌐 国外网站'
-- 'DOMAIN-SUFFIX,ucoz.net,🌐 国外网站'
-- 'RULE-SET,cloudflare,🌐 国外网站'
-- 'RULE-SET,akamai,🌐 国外网站'
-- 'RULE-SET,digicert,🌐 国外网站'
-- 'RULE-SET,globalsign,🌐 国外网站'
-- 'RULE-SET,sectigo,🌐 国外网站'
-- 'RULE-SET,brightcove,🌐 国外网站'
-- 'RULE-SET,jwplayer,🌐 国外网站'
-- 'RULE-SET,acc-fastly,🌐 国外网站'
-- 'DOMAIN-SUFFIX,letsencrypt.org,🌐 国外网站'
-- 'DOMAIN-SUFFIX,lencr.org,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tokopedia.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tokopedia.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,shopee.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,bukalapak.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,blibli.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,lazada.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,grab.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,gojek.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,gojek.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,traveloka.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tiket.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,telkomsel.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,telkom.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,indosatooredoo.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,im3.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,xl.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,smartfren.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tri.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,by.u.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,myrepublic.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,firstmedia.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,biznet.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,go.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,or.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,kompas.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,detik.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tempo.co,🌐 国外网站'
-- 'DOMAIN-SUFFIX,cnnindonesia.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,cnbcindonesia.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,liputan6.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,tribunnews.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,kumparan.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,idntimes.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,gofood.co.id,🌐 国外网站'
-- 'DOMAIN-SUFFIX,grabfood.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,66tutup.com,🌐 国外网站'
-- 'RULE-SET,acc-homeip-us,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-homeip-jp,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-aqara-global,🌐 国外网站'
-- 'RULE-SET,cnn,🌐 国外网站'
-- 'RULE-SET,nytimes,🌐 国外网站'
-- 'RULE-SET,bloomberg,🌐 国外网站'
-- 'RULE-SET,ebay,🌐 国外网站'
-- 'RULE-SET,nike,🌐 国外网站'
-- 'RULE-SET,adobe,🌐 国外网站'
-- 'RULE-SET,samsung,🌐 国外网站'
-- 'RULE-SET,tesla,🌐 国外网站'
-- 'RULE-SET,dropbox,🌐 国外网站'
-- 'RULE-SET,mega,🌐 国外网站'
-- 'RULE-SET,wikipedia,🌐 国外网站'
-- 'RULE-SET,duolingo,🌐 国外网站'
-- 'RULE-SET,proxy,🌐 国外网站'
-- 'RULE-SET,acc-waybackmachine,🌐 国外网站'
-- 'RULE-SET,acc-pornhub,🌐 国外网站'
-- 'RULE-SET,szkane-khan,🌐 国外网站'
-- 'RULE-SET,szkane-edutools,🌐 国外网站'
-- 'RULE-SET,naver,🌐 国外网站'
-- 'RULE-SET,ehgallery,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-asia-east,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-asia-eastsouth,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-asia-south,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-asia-central,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-asia-west,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-america-north,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-america-south,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-europe-west,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-europe-east,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-oceania,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-antarctica,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-africa-north,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-africa-south,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-africa-west,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-africa-east,🌐 国外网站'
-- 'RULE-SET,acc-geo-d-africa-central,🌐 国外网站'
-- 'RULE-SET,acc-geo-ip-asia-east,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-asia-eastsouth,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-asia-south,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-asia-central,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-asia-west,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-america-north,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-america-south,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-europe-west,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-europe-east,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-oceania,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-antarctica,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-africa-north,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-africa-south,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-africa-west,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-africa-east,🌐 国外网站,no-resolve'
-- 'RULE-SET,acc-geo-ip-africa-central,🌐 国外网站,no-resolve'
-- 'DOMAIN-SUFFIX,archive.org,🌐 国外网站'
-- 'DOMAIN-SUFFIX,udemy.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,udemycdn.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,grammarly.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,grammarly.io,🌐 国外网站'
-- 'DOMAIN-SUFFIX,jetbrains.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,theguardian.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,guardianapis.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,box.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,boxcdn.net,🌐 国外网站'
-- 'DOMAIN-SUFFIX,noip.com,🌐 国外网站'
-- 'DOMAIN-SUFFIX,bca.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,klikbca.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,bni.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,bri.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,bankmandiri.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,danamon.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,permatabank.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,cimbniaga.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,btn.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,ocbcnisp.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,banksinarmas.com,🏦 金融支付'
-- 'DOMAIN-SUFFIX,idx.co.id,🏦 金融支付'
-- 'DOMAIN-SUFFIX,ksei.co.id,🏦 金融支付'
-
-  # ============ 📺 国内流媒体 ============
-- 'RULE-SET,bilibili,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,iqiyi.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,iqiyipic.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,71.am,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,youku.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,ykimg.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,soku.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,v.qq.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,video.qq.com,📺 国内流媒体'
-- 'DOMAIN-KEYWORD,tencentvideo,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,mgtv.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,hitv.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,hunantv.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,ixigua.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,pstatp.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,snssdk.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,sohu.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,music.163.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,ntes53.netease.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,y.qq.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,music.qq.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,kugou.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,kuwo.cn,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,xiaohongshu.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,xhscdn.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,kuaishou.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,gifshow.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,weibo.com,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,weibo.cn,📺 国内流媒体'
-- 'DOMAIN-SUFFIX,sinaimg.cn,📺 国内流媒体'
-- 'RULE-SET,iqiyi,📺 国内流媒体'
-- 'RULE-SET,youku,📺 国内流媒体'
-- 'RULE-SET,tencentvideo,📺 国内流媒体'
-- 'RULE-SET,douyin,📺 国内流媒体'
-- 'RULE-SET,bytedance,📺 国内流媒体'
-- 'RULE-SET,kuaishou,📺 国内流媒体'
-- 'RULE-SET,weibo,📺 国内流媒体'
-- 'RULE-SET,xiaohongshu,📺 国内流媒体'
-- 'RULE-SET,neteasemusic,📺 国内流媒体'
-- 'RULE-SET,kugoukuwo,📺 国内流媒体'
-- 'RULE-SET,sohu,📺 国内流媒体'
-- 'RULE-SET,douyu,📺 国内流媒体'
-- 'RULE-SET,huya,📺 国内流媒体'
-- 'RULE-SET,himalaya,📺 国内流媒体'
-- 'RULE-SET,cctv,📺 国内流媒体'
-- 'RULE-SET,hunantv,📺 国内流媒体'
-- 'RULE-SET,pptv,📺 国内流媒体'
-- 'RULE-SET,funshion,📺 国内流媒体'
-- 'RULE-SET,letv,📺 国内流媒体'
-- 'RULE-SET,taihemusic,📺 国内流媒体'
-- 'RULE-SET,kukemusic,📺 国内流媒体'
-- 'RULE-SET,hibymusic,📺 国内流媒体'
-- 'RULE-SET,miwu,📺 国内流媒体'
-- 'RULE-SET,migu,📺 国内流媒体'
-- 'RULE-SET,iptvmainland,📺 国内流媒体'
-- 'RULE-SET,iptvother,📺 国内流媒体'
-- 'RULE-SET,cibn,📺 国内流媒体'
-- 'RULE-SET,bestv,📺 国内流媒体'
-- 'RULE-SET,huashutv,📺 国内流媒体'
-- 'RULE-SET,smg,📺 国内流媒体'
-- 'RULE-SET,hwtv,📺 国内流媒体'
-- 'RULE-SET,nivodtv,📺 国内流媒体'
-- 'RULE-SET,olevod,📺 国内流媒体'
-- 'RULE-SET,dandanzan,📺 国内流媒体'
-- 'RULE-SET,dandanplay,📺 国内流媒体'
-- 'RULE-SET,tiantiankankan,📺 国内流媒体'
-- 'RULE-SET,yizhibo,📺 国内流媒体'
-- 'RULE-SET,ku6,📺 国内流媒体'
-- 'RULE-SET,56,📺 国内流媒体'
-- 'RULE-SET,cetv,📺 国内流媒体'
-- 'RULE-SET,yyets,📺 国内流媒体'
-- 'RULE-SET,acc-alipan,📺 国内流媒体'
-- 'RULE-SET,acc-baidunetdisk,📺 国内流媒体'
-- 'RULE-SET,acc-weiyun,📺 国内流媒体'
-- 'RULE-SET,acc-fl-bilibili,📺 国内流媒体'
-- 'RULE-SET,acc-fl-kuaishou,📺 国内流媒体'
-- 'RULE-SET,acc-fl-xigua,📺 国内流媒体'
-- 'RULE-SET,acc-fl-weibo,📺 国内流媒体'
-- 'RULE-SET,acc-fl-zhihu,📺 国内流媒体'
-- 'RULE-SET,acc-fl-tieba,📺 国内流媒体'
-- 'RULE-SET,acc-fl-douban,📺 国内流媒体'
-- 'RULE-SET,acc-fl-xianyu,📺 国内流媒体'
-
-  # ============ 🏠 国内网站 ============
-- 'DOMAIN-SUFFIX,163.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,126.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,126.net,🏠 国内网站'
-- 'DOMAIN-SUFFIX,jianguoyun.com,🏠 国内网站'
-# v5.4.19 #2 借鉴 Proxy-override：国内前端 CDN 直连前置（纯静态库托管，无 tracker 冲突）。
-- 'DOMAIN-SUFFIX,baomitu.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,bootcss.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,staticfile.org,🏠 国内网站'
-- 'DOMAIN-SUFFIX,upaiyun.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,zhimg.com,🏠 国内网站'
-- 'RULE-SET,cn,🏠 国内网站'
-- 'RULE-SET,cn-ip,🏠 国内网站,no-resolve'
-- 'DOMAIN-SUFFIX,alimama.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,zxtdjy.com,🏠 国内网站'
-- 'DOMAIN-SUFFIX,zhihu.co,🏠 国内网站'
-- 'RULE-SET,acc-chinamax,🏠 国内网站'
-- 'RULE-SET,blued,🏠 国内网站'
-# v5.4.4 FIX#144: bbys.app 视频播放走直连
-- DOMAIN-SUFFIX,bbys.app,DIRECT
-- 'RULE-SET,acc-aqara-cn,🏠 国内网站'
-- 'RULE-SET,acc-geo-d-asia-china,🏠 国内网站'
-- 'RULE-SET,acc-geo-ip-asia-china,🏠 国内网站,no-resolve'
-- 'GEOIP,CN,🏠 国内网站,no-resolve'
-
-- 'MATCH,🐟 漏网之鱼'
+- "RULE-SET,scki-adfp-direct,DIRECT"
+- "RULE-SET,scki-adfp-intl-site,🌐 国外网站"
+- "RULE-SET,scki-adfp-payments,🏦 金融支付"
+- "RULE-SET,scki-cnmedia-guard,📺 国内流媒体"
+- "RULE-SET,anti-ad,🛑 广告拦截"
+- "RULE-SET,sukka-phishing,🛑 广告拦截"
+- "RULE-SET,hagezi-tif,🛑 广告拦截"
+- "RULE-SET,acc-hijackingplus,🛑 广告拦截"
+- "RULE-SET,acc-blockhttpdnsplus,🛑 广告拦截"
+- "RULE-SET,acc-prerepaireasyprivacy,🛑 广告拦截"
+- "RULE-SET,acc-unsupportvpn,🛑 广告拦截"
+- "GEOSITE,category-ads-all,🛑 广告拦截"
+- "RULE-SET,advertising,🛑 广告拦截"
+- "RULE-SET,advertisingmitv,🛑 广告拦截"
+- "RULE-SET,adobeactivation,🛑 广告拦截"
+- "RULE-SET,blockhttpdns,🛑 广告拦截"
+- "RULE-SET,domob,🛑 广告拦截"
+- "RULE-SET,hijacking,🛑 广告拦截"
+- "RULE-SET,jiguangtuisong,🛑 广告拦截"
+- "RULE-SET,miuiprivacy,🛑 广告拦截"
+- "RULE-SET,privacy,🛑 广告拦截"
+- "RULE-SET,youmengchuangxiang,🛑 广告拦截"
+- "RULE-SET,amap,🏠 国内网站"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT"
+- "DST-PORT,7680,REJECT"
+- "GEOSITE,private,DIRECT"
+- "GEOIP,private,DIRECT,no-resolve"
+- "RULE-SET,scki-local-direct,DIRECT"
+- "RULE-SET,scki-local-process-direct,DIRECT"
+- "RULE-SET,scki-work-process,🧑‍💼 会议协作"
+- "DST-PORT,26880,DIRECT"
+- "DST-PORT,6540,DIRECT"
+- "DST-PORT,33068,DIRECT"
+- "DST-PORT,123,DIRECT"
+- "DST-PORT,3478,DIRECT"
+- "DST-PORT,3479,DIRECT"
+- "DST-PORT,5349,DIRECT"
+- "DST-PORT,19302,DIRECT"
+- "DST-PORT,19305,DIRECT"
+- "DST-PORT,19307,DIRECT"
+- "DOMAIN-SUFFIX,binance.vision,💰 加密货币"
+- "DOMAIN-SUFFIX,binance.info,💰 加密货币"
+- "DOMAIN-SUFFIX,binance.org,💰 加密货币"
+- "RULE-SET,scki-gfw-guard,🚫 受限网站"
+- "RULE-SET,scki-youtube-guard,📹 YouTube"
+- "RULE-SET,scki-cnsite-guard,🏠 国内网站"
+- "RULE-SET,openai,🤖 AI 服务"
+- "RULE-SET,claude,🤖 AI 服务"
+- "RULE-SET,gemini,🤖 AI 服务"
+- "RULE-SET,scki-work-guard,🧑‍💼 会议协作"
+- "RULE-SET,copilot,🤖 AI 服务"
+- "RULE-SET,scki-ai-supplement,🤖 AI 服务"
+- "RULE-SET,civitai,🤖 AI 服务"
+- "RULE-SET,scki-google-mail-intl,🌐 国外网站"
+- "RULE-SET,googlevoice,💬 即时通讯"
+- "RULE-SET,scki-google-work,🧑‍💼 会议协作"
+- "RULE-SET,scki-download-guard,📥 下载更新"
+- "RULE-SET,googlefcm,📥 下载更新"
+- "RULE-SET,google,🔍 Google 服务"
+- "RULE-SET,google-ip,🔍 Google 服务,no-resolve"
+- "RULE-SET,szkane-ai,🤖 AI 服务"
+- "RULE-SET,szkane-ciciai,🤖 AI 服务"
+- "RULE-SET,acc-appleai,🤖 AI 服务"
+- "RULE-SET,acc-grok,🤖 AI 服务"
+- "RULE-SET,acc-gemini,🤖 AI 服务"
+- "RULE-SET,acc-copilot,🤖 AI 服务"
+- "RULE-SET,vpsdance-ai-coding,🤖 AI 服务"
+- "DOMAIN-SUFFIX,tradingview.com,💰 加密货币"
+- "DOMAIN-SUFFIX,tvcdn.com,💰 加密货币"
+- "DOMAIN-SUFFIX,coinglass.com,💰 加密货币"
+- "DOMAIN-SUFFIX,hyperliquid.xyz,💰 加密货币"
+- "DOMAIN-SUFFIX,hyperliquid-testnet.xyz,💰 加密货币"
+- "RULE-SET,cryptocurrency,💰 加密货币"
+- "DOMAIN-SUFFIX,eth.limo,💰 加密货币"
+- "DOMAIN-SUFFIX,glitternode.ru,💰 加密货币"
+- "RULE-SET,binance,💰 加密货币"
+- "RULE-SET,szkane-web3,💰 加密货币"
+- "RULE-SET,paypal,🏦 金融支付"
+- "DOMAIN-SUFFIX,wise.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,transferwise.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,revolut.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,revolut.me,🏦 金融支付"
+- "DOMAIN-SUFFIX,braintree-api.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,cash.app,🏦 金融支付"
+- "DOMAIN-SUFFIX,squareup.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,square.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,adyen.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,checkout.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,klarna.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,afterpay.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,plaid.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,midtrans.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,gopay.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,ovo.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,dana.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,shopeepay.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,xendit.co,🏦 金融支付"
+- "DOMAIN-SUFFIX,doku.com,🏦 金融支付"
+- "RULE-SET,stripe,🏦 金融支付"
+- "RULE-SET,visa,🏦 金融支付"
+- "RULE-SET,tigerfintech,🏦 金融支付"
+- "RULE-SET,acc-bank-us,🏦 金融支付"
+- "RULE-SET,acc-bank-uk,🏦 金融支付"
+- "RULE-SET,acc-bank-hk,🏦 金融支付"
+- "RULE-SET,acc-bank-sg,🏦 金融支付"
+- "RULE-SET,acc-bank-jp,🏦 金融支付"
+- "RULE-SET,acc-bank-au,🏦 金融支付"
+- "RULE-SET,acc-bank-ca,🏦 金融支付"
+- "RULE-SET,acc-bank-de,🏦 金融支付"
+- "RULE-SET,acc-bank-nl,🏦 金融支付"
+- "RULE-SET,acc-bank-fr,🏦 金融支付"
+- "RULE-SET,acc-vf-wise,🏦 金融支付"
+- "RULE-SET,acc-vf-monzo,🏦 金融支付"
+- "RULE-SET,acc-vf-revolut,🏦 金融支付"
+- "DOMAIN,login.live.com,Ⓜ️ 微软服务"
+- "DOMAIN,g.live.com,Ⓜ️ 微软服务"
+- "DOMAIN-SUFFIX,officeapps.live.com,Ⓜ️ 微软服务"
+- "DOMAIN-SUFFIX,outlook.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,outlook.live.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,hotmail.com,🌐 国外网站"
+- "DOMAIN,mail.live.com,🌐 国外网站"
+- "DOMAIN,outlook.office.com,🌐 国外网站"
+- "DOMAIN,mail.yahoo.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,ymail.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tutanota.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tuta.com,🌐 国外网站"
+- "DOMAIN,mail.zoho.com,🌐 国外网站"
+- "DOMAIN,mail.zoho.eu,🌐 国外网站"
+- "DOMAIN,mail.zoho.in,🌐 国外网站"
+- "DOMAIN,mail.zoho.com.au,🌐 国外网站"
+- "DOMAIN,mail.zoho.jp,🌐 国外网站"
+- "DOMAIN,mail.me.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,fastmail.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,fastmail.fm,🌐 国外网站"
+- "RULE-SET,mail,🌐 国外网站"
+- "RULE-SET,mailru,🌐 国外网站"
+- "RULE-SET,protonmail,🌐 国外网站"
+- "RULE-SET,spark,🌐 国外网站"
+- "DOMAIN-SUFFIX,mail.qq.com,DIRECT"
+- "DOMAIN-SUFFIX,mail.163.com,DIRECT"
+- "DOMAIN-SUFFIX,mail.126.com,DIRECT"
+- "DOMAIN-SUFFIX,mail.sina.com.cn,DIRECT"
+- "DOMAIN-SUFFIX,mail.aliyun.com,DIRECT"
+- "RULE-SET,telegram,💬 即时通讯"
+- "RULE-SET,telegram-ip,💬 即时通讯,no-resolve"
+- "RULE-SET,discord,💬 即时通讯"
+- "RULE-SET,whatsapp,💬 即时通讯"
+- "RULE-SET,line,💬 即时通讯"
+- "RULE-SET,kakaotalk,💬 即时通讯"
+- "DOMAIN-SUFFIX,skype.com,💬 即时通讯"
+- "DOMAIN-SUFFIX,skypeecs.net,💬 即时通讯"
+- "DOMAIN-SUFFIX,skypeforbusiness.com,💬 即时通讯"
+- "DOMAIN-SUFFIX,sfbassets.com,💬 即时通讯"
+- "DOMAIN-SUFFIX,lync.com,💬 即时通讯"
+- "DOMAIN-SUFFIX,signal.org,💬 即时通讯"
+- "DOMAIN-SUFFIX,whispersystems.org,💬 即时通讯"
+- "DOMAIN-SUFFIX,signal.art,💬 即时通讯"
+- "DOMAIN-SUFFIX,viber.com,💬 即时通讯"
+- "DOMAIN-SUFFIX,viber.io,💬 即时通讯"
+- "DOMAIN-SUFFIX,element.io,💬 即时通讯"
+- "DOMAIN-SUFFIX,matrix.org,💬 即时通讯"
+- "DOMAIN-SUFFIX,zalo.me,💬 即时通讯"
+- "DOMAIN-SUFFIX,zalopay.vn,💬 即时通讯"
+- "DOMAIN-SUFFIX,wire.com,💬 即时通讯"
+- "DOMAIN-SUFFIX,threema.ch,💬 即时通讯"
+- "RULE-SET,telegramnl,💬 即时通讯,no-resolve"
+- "RULE-SET,telegramsg,💬 即时通讯,no-resolve"
+- "RULE-SET,telegramus,💬 即时通讯,no-resolve"
+- "RULE-SET,zalo,💬 即时通讯"
+- "RULE-SET,italkbb,💬 即时通讯"
+- "RULE-SET,acc-signal,💬 即时通讯"
+- "DOMAIN-SUFFIX,icq.com,💬 即时通讯"
+- "RULE-SET,twitter,📱 社交媒体"
+- "RULE-SET,twitter-ip,📱 社交媒体,no-resolve"
+- "RULE-SET,reddit,📱 社交媒体"
+- "RULE-SET,facebook,📱 社交媒体"
+- "RULE-SET,facebook-ip,📱 社交媒体,no-resolve"
+- "RULE-SET,instagram,📱 社交媒体"
+- "RULE-SET,snapchat,📱 社交媒体"
+- "RULE-SET,pinterest,📱 社交媒体"
+- "RULE-SET,linkedin,📱 社交媒体"
+- "DOMAIN-SUFFIX,mastodon.social,📱 社交媒体"
+- "DOMAIN-SUFFIX,joinmastodon.org,📱 社交媒体"
+- "DOMAIN-SUFFIX,threads.net,📱 社交媒体"
+- "DOMAIN-SUFFIX,bsky.app,📱 社交媒体"
+- "DOMAIN-SUFFIX,bsky.social,📱 社交媒体"
+- "DOMAIN-SUFFIX,quora.com,📱 社交媒体"
+- "DOMAIN-SUFFIX,medium.com,📱 社交媒体"
+- "DOMAIN-SUFFIX,flickr.com,📱 社交媒体"
+- "DOMAIN-SUFFIX,lemon8-app.com,📱 社交媒体"
+- "RULE-SET,tumblr,📱 社交媒体"
+- "RULE-SET,clubhouse,📱 社交媒体"
+- "RULE-SET,clubhouseip,📱 社交媒体,no-resolve"
+- "RULE-SET,pixiv,📱 社交媒体"
+- "RULE-SET,truthsocial,📱 社交媒体"
+- "RULE-SET,vk,📱 社交媒体"
+- "RULE-SET,blued,🏠 国内网站"
+- "RULE-SET,disqus,📱 社交媒体"
+- "RULE-SET,imgur,📱 社交媒体"
+- "RULE-SET,pixnet,📱 社交媒体"
+- "RULE-SET,zoom,🧑‍💼 会议协作"
+- "RULE-SET,slack,🧑‍💼 会议协作"
+- "RULE-SET,teams,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,webex.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,wbx2.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,ciscospark.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,figma.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,linear.app,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,jira.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,asana.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,monday.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,clickup.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,basecamp.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,airtable.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,miro.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,canva.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,coda.io,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,loom.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,larksuite.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,larkoffice.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,gotomeeting.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,logmein.com,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,goto.com,🧑‍💼 会议协作"
+- "RULE-SET,atlassian,🧑‍💼 会议协作"
+- "RULE-SET,notion,🧑‍💼 会议协作"
+- "RULE-SET,teamviewer,🧑‍💼 会议协作"
+- "RULE-SET,zoho,🧑‍💼 会议协作"
+- "RULE-SET,salesforce,🧑‍💼 会议协作"
+- "RULE-SET,zendesk,🧑‍💼 会议协作"
+- "RULE-SET,intercom,🧑‍💼 会议协作"
+- "RULE-SET,remotedesktop,🧑‍💼 会议协作"
+- "RULE-SET,acc-rustdesk,🧑‍💼 会议协作"
+- "RULE-SET,acc-parsec,🧑‍💼 会议协作"
+- "DOMAIN-SUFFIX,feishu.cn,DIRECT"
+- "DOMAIN-SUFFIX,dingtalk.com,DIRECT"
+- "DOMAIN-SUFFIX,welink.huaweicloud.com,DIRECT"
+- "RULE-SET,bilibili,📺 国内流媒体"
+- "RULE-SET,tiktok,🎵 TikTok"
+- "RULE-SET,youtube,📹 YouTube"
+- "RULE-SET,netflix,🎥 Netflix"
+- "RULE-SET,netflix-ip,🎥 Netflix,no-resolve"
+- "RULE-SET,szkane-netflixip,🎥 Netflix,no-resolve"
+- "RULE-SET,disney,🎬 Disney+"
+- "RULE-SET,hbo,📡 HBO/Max"
+- "RULE-SET,hulu,📺 Hulu"
+- "RULE-SET,primevideo,🎬 Prime Video"
+- "RULE-SET,amazon,🎬 Prime Video"
+- "RULE-SET,spotify,🎵 音乐流媒体"
+- "RULE-SET,soundcloud,🎵 音乐流媒体"
+- "RULE-SET,pandora,🎵 音乐流媒体"
+- "RULE-SET,pandoratv,🎵 音乐流媒体"
+- "RULE-SET,tidal,🎵 音乐流媒体"
+- "RULE-SET,deezer,🎵 音乐流媒体"
+- "RULE-SET,overcast,🎵 音乐流媒体"
+- "RULE-SET,lastfm,🎵 音乐流媒体"
+- "RULE-SET,qobuz,🎵 音乐流媒体"
+- "RULE-SET,szkane-bilihmt,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,mytv.com.hk,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,viu.com,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,viu.tv,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,hktv.com.hk,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,hktvmall.com,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,nowtv.com,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,icable.com,🇭🇰 香港流媒体"
+- "DOMAIN-SUFFIX,hmvod.com.hk,🇭🇰 香港流媒体"
+- "RULE-SET,mytvsuper,🇭🇰 香港流媒体"
+- "RULE-SET,tvb,🇭🇰 香港流媒体"
+- "RULE-SET,nowe,🇭🇰 香港流媒体"
+- "RULE-SET,rthk,🇭🇰 香港流媒体"
+- "RULE-SET,cabletv,🇭🇰 香港流媒体"
+- "RULE-SET,moov,🇭🇰 香港流媒体"
+- "RULE-SET,bahamut,🇹🇼 台湾流媒体"
+- "RULE-SET,kktv,🇹🇼 台湾流媒体"
+- "DOMAIN-SUFFIX,elta.tv,🇹🇼 台湾流媒体"
+- "DOMAIN-SUFFIX,mod.cht.com.tw,🇹🇼 台湾流媒体"
+- "DOMAIN-SUFFIX,ofiii.com,🇹🇼 台湾流媒体"
+- "DOMAIN-SUFFIX,pts.org.tw,🇹🇼 台湾流媒体"
+- "DOMAIN-SUFFIX,4gtv.tv,🇹🇼 台湾流媒体"
+- "RULE-SET,litv,🇹🇼 台湾流媒体"
+- "RULE-SET,friday,🇹🇼 台湾流媒体"
+- "RULE-SET,hamivideo,🇹🇼 台湾流媒体"
+- "RULE-SET,linetv,🇹🇼 台湾流媒体"
+- "RULE-SET,vidoltv,🇹🇼 台湾流媒体"
+- "RULE-SET,taiwangood,🇹🇼 台湾流媒体"
+- "RULE-SET,cht,🇹🇼 台湾流媒体"
+- "RULE-SET,abema,🇯🇵 日韩流媒体"
+- "RULE-SET,dazn,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,unext.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,nhk.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,nhk.or.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,dtv.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,paravi.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,videomarket.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,fod.fujitv.co.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,gyao.yahoo.co.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,music.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,radiko.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,lemino.docomo.ne.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,wowow.co.jp,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,wavve.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,tving.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,watcha.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,coupangplay.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,sbs.co.kr,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,kbs.co.kr,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,mbc.co.kr,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,jtbc.co.kr,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,tvn.cjenm.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,afreecatv.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,tv.naver.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,now.naver.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,vod.naver.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,navertv.naver.com,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,kakaotv.daum.net,🇯🇵 日韩流媒体"
+- "DOMAIN-SUFFIX,navercorp.com,🇯🇵 日韩流媒体"
+- "RULE-SET,dmm,🇯🇵 日韩流媒体"
+- "RULE-SET,tver,🇯🇵 日韩流媒体"
+- "RULE-SET,niconico,🇯🇵 日韩流媒体"
+- "RULE-SET,rakuten,🇯🇵 日韩流媒体"
+- "RULE-SET,japonx,🇯🇵 日韩流媒体"
+- "RULE-SET,nikkei,🇯🇵 日韩流媒体"
+- "RULE-SET,bbc,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,nowtv.co.uk,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,canalplus.com,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,mycanal.fr,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,france.tv,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,tf1.fr,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,molotov.tv,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,arte.tv,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,joyn.de,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,zdf.de,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,ard.de,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,ardmediathek.de,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,rtlplus.com,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,raiplay.it,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,rtve.es,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,videoland.com,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,ruutu.fi,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,tv2.dk,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,svtplay.se,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,nrk.no,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,ivi.ru,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,kinopoisk.ru,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,okko.tv,🇪🇺 欧洲流媒体"
+- "DOMAIN-SUFFIX,more.tv,🇪🇺 欧洲流媒体"
+- "RULE-SET,itv,🇪🇺 欧洲流媒体"
+- "RULE-SET,all4,🇪🇺 欧洲流媒体"
+- "RULE-SET,my5,🇪🇺 欧洲流媒体"
+- "RULE-SET,skygo,🇪🇺 欧洲流媒体"
+- "RULE-SET,britboxuk,🇪🇺 欧洲流媒体"
+- "RULE-SET,londonreal,🇪🇺 欧洲流媒体"
+- "RULE-SET,szkane-uk,🇪🇺 欧洲流媒体"
+- "RULE-SET,viu,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,iq.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,vidio.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,vidio.static6.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,rctiplus.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,visionplus.id,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,genflix.co.id,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,goplay.co.id,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,maxstream.tv,🌐 其他国外流媒体"
+- "RULE-SET,biliintl,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,iflix.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,catchplay.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,trueid.net,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,dimsum.my,🌐 其他国外流媒体"
+- "RULE-SET,asianmedia,🌐 其他国外流媒体"
+- "RULE-SET,iqiyiintl,🌐 其他国外流媒体"
+- "RULE-SET,joox,🌐 其他国外流媒体"
+- "RULE-SET,mewatch,🌐 其他国外流媒体"
+- "RULE-SET,viki,🌐 其他国外流媒体"
+- "RULE-SET,wetv,🌐 其他国外流媒体"
+- "RULE-SET,zee,🌐 其他国外流媒体"
+- "RULE-SET,acc-kwai,🌐 其他国外流媒体"
+- "RULE-SET,paramount,🌐 其他国外流媒体"
+- "RULE-SET,peacock,🌐 其他国外流媒体"
+- "RULE-SET,twitch,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,crunchyroll.com,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,vrv.co,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,pluto.tv,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,tubi.tv,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,fubo.tv,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,appletv.com,🌐 其他国外流媒体"
+- "RULE-SET,cbs,🌐 其他国外流媒体"
+- "RULE-SET,nbc,🌐 其他国外流媒体"
+- "RULE-SET,pbs,🌐 其他国外流媒体"
+- "RULE-SET,attwatchtv,🌐 其他国外流媒体"
+- "RULE-SET,fox,🌐 其他国外流媒体"
+- "RULE-SET,fubotv,🌐 其他国外流媒体"
+- "RULE-SET,sling,🌐 其他国外流媒体"
+- "RULE-SET,vimeo,🌐 其他国外流媒体"
+- "RULE-SET,dailymotion,🌐 其他国外流媒体"
+- "RULE-SET,discoveryplus,🌐 其他国外流媒体"
+- "RULE-SET,americasvoice,🌐 其他国外流媒体"
+- "RULE-SET,cake,🌐 其他国外流媒体"
+- "RULE-SET,dood,🌐 其他国外流媒体"
+- "RULE-SET,emby,🌐 其他国外流媒体"
+- "DOMAIN-SUFFIX,aws.amazon.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,elasticbeanstalk.com,🔧 工具与服务"
+- "RULE-SET,bing,🔧 工具与服务"
+- "DOMAIN-SUFFIX,yahoo.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,yahoo.co.jp,🔧 工具与服务"
+- "DOMAIN-SUFFIX,duckduckgo.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,ddg.co,🔧 工具与服务"
+- "DOMAIN-SUFFIX,brave.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,ecosia.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,startpage.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,you.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,search.naver.com,🔧 工具与服务"
+- "RULE-SET,scholar,🔍 Google 服务"
+- "RULE-SET,yandex,🔧 工具与服务"
+- "RULE-SET,github,🔧 工具与服务"
+- "RULE-SET,docker,🔧 工具与服务"
+- "RULE-SET,gitlab,🔧 工具与服务"
+- "GEOSITE,category-dev,🔧 工具与服务"
+- "DOMAIN-SUFFIX,npmjs.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,npmjs.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,yarnpkg.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,crates.io,🔧 工具与服务"
+- "DOMAIN-SUFFIX,rubygems.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,packagist.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,maven.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,nuget.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,cocoapods.org,🔧 工具与服务"
+- "DOMAIN-SUFFIX,stackoverflow.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,stackexchange.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,sstatic.net,🔧 工具与服务"
+- "DOMAIN-SUFFIX,vercel.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,vercel.app,🔧 工具与服务"
+- "DOMAIN-SUFFIX,netlify.app,🔧 工具与服务"
+- "DOMAIN-SUFFIX,netlify.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,pages.dev,🔧 工具与服务"
+- "DOMAIN-SUFFIX,workers.dev,🔧 工具与服务"
+- "DOMAIN,dash.cloudflare.com,🔧 工具与服务"
+- "DOMAIN,api.cloudflare.com,🔧 工具与服务"
+- "DOMAIN,developers.cloudflare.com,🔧 工具与服务"
+- "DOMAIN,www.cloudflare.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,heroku.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,herokuapp.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,fly.io,🔧 工具与服务"
+- "DOMAIN-SUFFIX,railway.app,🔧 工具与服务"
+- "DOMAIN-SUFFIX,render.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,supabase.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,supabase.co,🔧 工具与服务"
+- "DOMAIN-SUFFIX,planetscale.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,neon.tech,🔧 工具与服务"
+- "DOMAIN-SUFFIX,digitalocean.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,vultr.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,linode.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,sentry.io,🔧 工具与服务"
+- "DOMAIN-SUFFIX,datadog.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,grafana.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,postman.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,jetbrains.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,hashicorp.com,🔧 工具与服务"
+- "DOMAIN-SUFFIX,terraform.io,🔧 工具与服务"
+- "DOMAIN-SUFFIX,vagrantup.com,🔧 工具与服务"
+- "RULE-SET,developer,🔧 工具与服务"
+- "RULE-SET,python,🔧 工具与服务"
+- "RULE-SET,gitbook,🔧 工具与服务"
+- "RULE-SET,jfrog,🔧 工具与服务"
+- "RULE-SET,sublimetext,🔧 工具与服务"
+- "RULE-SET,wordpress,🔧 工具与服务"
+- "RULE-SET,wix,🔧 工具与服务"
+- "RULE-SET,cisco,🔧 工具与服务"
+- "RULE-SET,ibm,🔧 工具与服务"
+- "RULE-SET,oracle,🔧 工具与服务"
+- "RULE-SET,unity,🔧 工具与服务"
+- "RULE-SET,szkane-developer,🔧 工具与服务"
+- "RULE-SET,onedrive,Ⓜ️ 微软服务"
+- "RULE-SET,microsoft,Ⓜ️ 微软服务"
+- "RULE-SET,microsoftedge,Ⓜ️ 微软服务"
+- "RULE-SET,acc-microsoftapps,Ⓜ️ 微软服务"
+- "RULE-SET,applemusic,🍎 苹果服务"
+- "RULE-SET,icloud,🍎 苹果服务"
+- "RULE-SET,apple,🍎 苹果服务"
+- "RULE-SET,appstore,🍎 苹果服务"
+- "RULE-SET,appletv,🍎 苹果服务"
+- "RULE-SET,applenews,🍎 苹果服务"
+- "RULE-SET,appledev,🍎 苹果服务"
+- "RULE-SET,appleproxy,🍎 苹果服务"
+- "RULE-SET,siri,🍎 苹果服务"
+- "RULE-SET,testflight,🍎 苹果服务"
+- "RULE-SET,applefirmware,🍎 苹果服务"
+- "RULE-SET,acc-applenews,🍎 苹果服务"
+- "RULE-SET,acc-apple,🍎 苹果服务"
+- "RULE-SET,systemota,📥 下载更新"
+- "DOMAIN-SUFFIX,windowsupdate.com,📥 下载更新"
+- "DOMAIN-SUFFIX,update.microsoft.com,📥 下载更新"
+- "DOMAIN-SUFFIX,download.microsoft.com,📥 下载更新"
+- "DOMAIN-SUFFIX,delivery.mp.microsoft.com,📥 下载更新"
+- "DOMAIN-SUFFIX,officecdn.microsoft.com,📥 下载更新"
+- "DOMAIN-SUFFIX,officecdn.microsoft.com.edgesuite.net,📥 下载更新"
+- "DOMAIN-SUFFIX,archive.ubuntu.com,📥 下载更新"
+- "DOMAIN-SUFFIX,security.ubuntu.com,📥 下载更新"
+- "DOMAIN-SUFFIX,mirrors.kernel.org,📥 下载更新"
+- "DOMAIN-SUFFIX,dl.fedoraproject.org,📥 下载更新"
+- "DOMAIN-SUFFIX,repo.anaconda.com,📥 下载更新"
+- "DOMAIN-SUFFIX,conda.anaconda.org,📥 下载更新"
+- "DOMAIN-SUFFIX,repo.continuum.io,📥 下载更新"
+- "DOMAIN-SUFFIX,sourceforge.net,📥 下载更新"
+- "DOMAIN-SUFFIX,fosshub.com,📥 下载更新"
+- "DOMAIN-SUFFIX,filehippo.com,📥 下载更新"
+- "DOMAIN-SUFFIX,softonic.com,📥 下载更新"
+- "DOMAIN-SUFFIX,gcr.io,📥 下载更新"
+- "DOMAIN-SUFFIX,ghcr.io,📥 下载更新"
+- "DOMAIN-SUFFIX,quay.io,📥 下载更新"
+- "DOMAIN-SUFFIX,registry.k8s.io,📥 下载更新"
+- "RULE-SET,download,📥 下载更新"
+- "RULE-SET,ubuntu,📥 下载更新"
+- "RULE-SET,mozilla,📥 下载更新"
+- "RULE-SET,apkpure,📥 下载更新"
+- "RULE-SET,android,📥 下载更新"
+- "RULE-SET,intel,📥 下载更新"
+- "RULE-SET,nvidia,📥 下载更新"
+- "RULE-SET,dell,📥 下载更新"
+- "RULE-SET,hp,📥 下载更新"
+- "RULE-SET,canon,📥 下载更新"
+- "RULE-SET,lg,📥 下载更新"
+- "RULE-SET,acc-macappupgrade,📥 下载更新"
+- "GEOSITE,tracker,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,tracker.opentrackr.org,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,open.stealth.si,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,tracker.torrent.eu.org,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,exodus.desync.com,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,tracker.openbittorrent.com,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,tracker.publicbt.com,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,tracker.dler.org,🛰️ BT/PT Tracker"
+- "RULE-SET,privatetracker,🛰️ BT/PT Tracker"
+- "RULE-SET,acc-emuleserver,🛰️ BT/PT Tracker"
+- "DOMAIN-SUFFIX,jsdelivr.net,🚫 受限网站"
+- "DOMAIN-SUFFIX,cloudflare-dns.com,🚫 受限网站"
+- "GEOSITE,gfw,🚫 受限网站"
+- "RULE-SET,loyalsoldier-gfw,🚫 受限网站"
+- "RULE-SET,loyalsoldier-greatfire,🚫 受限网站"
+- "RULE-SET,szkane-proxygfw,🚫 受限网站"
+- "DOMAIN-SUFFIX,mihoyo.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,miyoushe.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,bhsr.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,zenlesszonezero.com,🕹️ 国内游戏"
+- "DOMAIN,game.163.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,gm.163.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,ds.163.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,nie.163.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,nie.netease.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,update.netease.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,netease.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,wegame.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,wegame.com.cn,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,perfect-world.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,wanmei.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,xd.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,taptap.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,taptap.io,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,papegames.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,hypergryph.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,gryphline.com,🕹️ 国内游戏"
+- "DOMAIN-SUFFIX,lilith.com,🕹️ 国内游戏"
+- "RULE-SET,steamcn,🕹️ 国内游戏"
+- "RULE-SET,wanmeishijie,🕹️ 国内游戏"
+- "RULE-SET,wankahuanju,🕹️ 国内游戏"
+- "RULE-SET,majsoul,🕹️ 国内游戏"
+- "RULE-SET,steam,🎮 国外游戏"
+- "RULE-SET,epic,🎮 国外游戏"
+- "RULE-SET,playstation,🎮 国外游戏"
+- "RULE-SET,nintendo,🎮 国外游戏"
+- "RULE-SET,xbox,🎮 国外游戏"
+- "RULE-SET,ea,🎮 国外游戏"
+- "RULE-SET,blizzard,🎮 国外游戏"
+- "GEOSITE,category-games,🎮 国外游戏"
+- "RULE-SET,rockstar,🎮 国外游戏"
+- "RULE-SET,riot,🎮 国外游戏"
+- "RULE-SET,gog,🎮 国外游戏"
+- "RULE-SET,supercell,🎮 国外游戏"
+- "RULE-SET,garena,🎮 国外游戏"
+- "RULE-SET,hoyoverse,🎮 国外游戏"
+- "RULE-SET,ubi,🎮 国外游戏"
+- "RULE-SET,sony,🎮 国外游戏"
+- "DOMAIN-SUFFIX,amazonaws.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,awsstatic.com,🌐 国外网站"
+- "RULE-SET,cloudflare-ip,🌐 国外网站,no-resolve"
+- "RULE-SET,cloudfront-ip,🌐 国外网站,no-resolve"
+- "RULE-SET,fastly-ip,🌐 国外网站,no-resolve"
+- "DOMAIN-SUFFIX,akamai.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,akamaized.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,akamaihd.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,akamaiedge.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,akamaitechnologies.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,edgekey.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,edgesuite.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,cloudfront.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,fastly.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,fastlylb.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,kxcdn.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,stackpathdns.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,stackpathcdn.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,b-cdn.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,bunny.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,bunnycdn.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,cdn77.org,🌐 国外网站"
+- "DOMAIN-SUFFIX,azureedge.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,azurefd.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,msecnd.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,unpkg.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,r2.dev,🌐 国外网站"
+- "DOMAIN-SUFFIX,ziffstatic.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,ucoz.ru,🌐 国外网站"
+- "DOMAIN-SUFFIX,ucoz.net,🌐 国外网站"
+- "RULE-SET,cloudflare,🌐 国外网站"
+- "RULE-SET,akamai,🌐 国外网站"
+- "RULE-SET,digicert,🌐 国外网站"
+- "RULE-SET,globalsign,🌐 国外网站"
+- "RULE-SET,sectigo,🌐 国外网站"
+- "RULE-SET,brightcove,🌐 国外网站"
+- "RULE-SET,jwplayer,🌐 国外网站"
+- "RULE-SET,acc-fastly,🌐 国外网站"
+- "DOMAIN-SUFFIX,letsencrypt.org,🌐 国外网站"
+- "DOMAIN-SUFFIX,lencr.org,🌐 国外网站"
+- "DOMAIN-SUFFIX,tokopedia.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tokopedia.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,shopee.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,bukalapak.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,blibli.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,lazada.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,grab.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,gojek.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,gojek.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,traveloka.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tiket.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,telkomsel.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,telkom.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,indosatooredoo.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,im3.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,xl.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,smartfren.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tri.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,by.u.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,myrepublic.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,firstmedia.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,biznet.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,go.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,or.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,kompas.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,detik.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tempo.co,🌐 国外网站"
+- "DOMAIN-SUFFIX,cnnindonesia.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,cnbcindonesia.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,liputan6.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,tribunnews.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,kumparan.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,idntimes.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,gofood.co.id,🌐 国外网站"
+- "DOMAIN-SUFFIX,grabfood.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,66tutup.com,🌐 国外网站"
+- "GEOIP,ID,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-homeip-us,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-homeip-jp,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-aqara-global,🌐 国外网站"
+- "RULE-SET,cnn,🌐 国外网站"
+- "RULE-SET,nytimes,🌐 国外网站"
+- "RULE-SET,bloomberg,🌐 国外网站"
+- "RULE-SET,ebay,🌐 国外网站"
+- "RULE-SET,nike,🌐 国外网站"
+- "RULE-SET,adobe,🌐 国外网站"
+- "RULE-SET,samsung,🌐 国外网站"
+- "RULE-SET,tesla,🌐 国外网站"
+- "RULE-SET,dropbox,🌐 国外网站"
+- "RULE-SET,mega,🌐 国外网站"
+- "RULE-SET,wikipedia,🌐 国外网站"
+- "RULE-SET,duolingo,🌐 国外网站"
+- "RULE-SET,proxy,🌐 国外网站"
+- "RULE-SET,acc-waybackmachine,🌐 国外网站"
+- "RULE-SET,acc-pornhub,🌐 国外网站"
+- "RULE-SET,szkane-khan,🌐 国外网站"
+- "RULE-SET,szkane-edutools,🌐 国外网站"
+- "RULE-SET,naver,🌐 国外网站"
+- "RULE-SET,ehgallery,🌐 国外网站"
+- "RULE-SET,acc-geo-d-asia-east,🌐 国外网站"
+- "RULE-SET,acc-geo-d-asia-eastsouth,🌐 国外网站"
+- "RULE-SET,acc-geo-d-asia-south,🌐 国外网站"
+- "RULE-SET,acc-geo-d-asia-central,🌐 国外网站"
+- "RULE-SET,acc-geo-d-asia-west,🌐 国外网站"
+- "RULE-SET,acc-geo-d-america-north,🌐 国外网站"
+- "RULE-SET,acc-geo-d-america-south,🌐 国外网站"
+- "RULE-SET,acc-geo-d-europe-west,🌐 国外网站"
+- "RULE-SET,acc-geo-d-europe-east,🌐 国外网站"
+- "RULE-SET,acc-geo-d-oceania,🌐 国外网站"
+- "RULE-SET,acc-geo-d-antarctica,🌐 国外网站"
+- "RULE-SET,acc-geo-d-africa-north,🌐 国外网站"
+- "RULE-SET,acc-geo-d-africa-south,🌐 国外网站"
+- "RULE-SET,acc-geo-d-africa-west,🌐 国外网站"
+- "RULE-SET,acc-geo-d-africa-east,🌐 国外网站"
+- "RULE-SET,acc-geo-d-africa-central,🌐 国外网站"
+- "RULE-SET,acc-geo-ip-asia-east,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-asia-eastsouth,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-asia-south,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-asia-central,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-asia-west,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-america-north,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-america-south,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-europe-west,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-europe-east,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-oceania,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-antarctica,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-africa-north,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-africa-south,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-africa-west,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-africa-east,🌐 国外网站,no-resolve"
+- "RULE-SET,acc-geo-ip-africa-central,🌐 国外网站,no-resolve"
+- "DOMAIN-SUFFIX,archive.org,🌐 国外网站"
+- "DOMAIN-SUFFIX,udemy.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,udemycdn.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,grammarly.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,grammarly.io,🌐 国外网站"
+- "DOMAIN-SUFFIX,jetbrains.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,theguardian.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,guardianapis.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,box.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,boxcdn.net,🌐 国外网站"
+- "DOMAIN-SUFFIX,noip.com,🌐 国外网站"
+- "DOMAIN-SUFFIX,bca.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,klikbca.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,bni.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,bri.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,bankmandiri.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,danamon.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,permatabank.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,cimbniaga.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,btn.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,ocbcnisp.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,banksinarmas.com,🏦 金融支付"
+- "DOMAIN-SUFFIX,idx.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,ksei.co.id,🏦 金融支付"
+- "DOMAIN-SUFFIX,iqiyi.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,iqiyipic.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,71.am,📺 国内流媒体"
+- "DOMAIN-SUFFIX,youku.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,ykimg.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,soku.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,v.qq.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,video.qq.com,📺 国内流媒体"
+- "DOMAIN-KEYWORD,tencentvideo,📺 国内流媒体"
+- "DOMAIN-SUFFIX,mgtv.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,hitv.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,hunantv.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,ixigua.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,pstatp.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,snssdk.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,sohu.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,music.163.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,ntes53.netease.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,y.qq.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,music.qq.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,kugou.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,kuwo.cn,📺 国内流媒体"
+- "DOMAIN-SUFFIX,xiaohongshu.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,xhscdn.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,kuaishou.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,gifshow.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,weibo.com,📺 国内流媒体"
+- "DOMAIN-SUFFIX,weibo.cn,📺 国内流媒体"
+- "DOMAIN-SUFFIX,sinaimg.cn,📺 国内流媒体"
+- "RULE-SET,iqiyi,📺 国内流媒体"
+- "RULE-SET,youku,📺 国内流媒体"
+- "RULE-SET,tencentvideo,📺 国内流媒体"
+- "RULE-SET,douyin,📺 国内流媒体"
+- "RULE-SET,bytedance,📺 国内流媒体"
+- "RULE-SET,kuaishou,📺 国内流媒体"
+- "RULE-SET,weibo,📺 国内流媒体"
+- "RULE-SET,xiaohongshu,📺 国内流媒体"
+- "RULE-SET,neteasemusic,📺 国内流媒体"
+- "RULE-SET,kugoukuwo,📺 国内流媒体"
+- "RULE-SET,sohu,📺 国内流媒体"
+- "RULE-SET,douyu,📺 国内流媒体"
+- "RULE-SET,huya,📺 国内流媒体"
+- "RULE-SET,himalaya,📺 国内流媒体"
+- "RULE-SET,cctv,📺 国内流媒体"
+- "RULE-SET,hunantv,📺 国内流媒体"
+- "RULE-SET,pptv,📺 国内流媒体"
+- "RULE-SET,funshion,📺 国内流媒体"
+- "RULE-SET,letv,📺 国内流媒体"
+- "RULE-SET,taihemusic,📺 国内流媒体"
+- "RULE-SET,kukemusic,📺 国内流媒体"
+- "RULE-SET,hibymusic,📺 国内流媒体"
+- "RULE-SET,miwu,📺 国内流媒体"
+- "RULE-SET,migu,📺 国内流媒体"
+- "RULE-SET,iptvmainland,📺 国内流媒体"
+- "RULE-SET,iptvother,📺 国内流媒体"
+- "RULE-SET,cibn,📺 国内流媒体"
+- "RULE-SET,bestv,📺 国内流媒体"
+- "RULE-SET,huashutv,📺 国内流媒体"
+- "RULE-SET,smg,📺 国内流媒体"
+- "RULE-SET,hwtv,📺 国内流媒体"
+- "RULE-SET,nivodtv,📺 国内流媒体"
+- "RULE-SET,olevod,📺 国内流媒体"
+- "RULE-SET,dandanzan,📺 国内流媒体"
+- "RULE-SET,dandanplay,📺 国内流媒体"
+- "RULE-SET,tiantiankankan,📺 国内流媒体"
+- "RULE-SET,yizhibo,📺 国内流媒体"
+- "RULE-SET,ku6,📺 国内流媒体"
+- "RULE-SET,56,📺 国内流媒体"
+- "RULE-SET,cetv,📺 国内流媒体"
+- "RULE-SET,yyets,📺 国内流媒体"
+- "RULE-SET,acc-alipan,📺 国内流媒体"
+- "RULE-SET,acc-baidunetdisk,📺 国内流媒体"
+- "RULE-SET,acc-weiyun,📺 国内流媒体"
+- "RULE-SET,acc-fl-bilibili,📺 国内流媒体"
+- "RULE-SET,acc-fl-kuaishou,📺 国内流媒体"
+- "RULE-SET,acc-fl-xigua,📺 国内流媒体"
+- "RULE-SET,acc-fl-weibo,📺 国内流媒体"
+- "RULE-SET,acc-fl-zhihu,📺 国内流媒体"
+- "RULE-SET,acc-fl-tieba,📺 国内流媒体"
+- "RULE-SET,acc-fl-douban,📺 国内流媒体"
+- "RULE-SET,acc-fl-xianyu,📺 国内流媒体"
+- "DOMAIN-SUFFIX,163.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,126.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,126.net,🏠 国内网站"
+- "DOMAIN-SUFFIX,jianguoyun.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,baomitu.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,bootcss.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,staticfile.org,🏠 国内网站"
+- "DOMAIN-SUFFIX,upaiyun.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,zhimg.com,🏠 国内网站"
+- "RULE-SET,cn,🏠 国内网站"
+- "RULE-SET,cn-ip,🏠 国内网站,no-resolve"
+- "DOMAIN-SUFFIX,alimama.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,zxtdjy.com,🏠 国内网站"
+- "DOMAIN-SUFFIX,zhihu.co,🏠 国内网站"
+- "RULE-SET,acc-chinamax,🏠 国内网站"
+- "DOMAIN-SUFFIX,bbys.app,DIRECT"
+- "RULE-SET,acc-aqara-cn,🏠 国内网站"
+- "RULE-SET,acc-geo-d-asia-china,🏠 国内网站"
+- "RULE-SET,acc-geo-ip-asia-china,🏠 国内网站,no-resolve"
+- "GEOIP,cloudflare,🌐 国外网站,no-resolve"
+- "GEOIP,telegram,💬 即时通讯,no-resolve"
+- "GEOIP,netflix,🎥 Netflix,no-resolve"
+- "GEOIP,facebook,📱 社交媒体,no-resolve"
+- "GEOIP,twitter,📱 社交媒体,no-resolve"
+- "GEOIP,google,🔍 Google 服务,no-resolve"
+- "GEOIP,CN,🏠 国内网站,no-resolve"
+- "MATCH,🐟 漏网之鱼"

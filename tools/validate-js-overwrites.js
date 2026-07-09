@@ -107,8 +107,6 @@ const COST_AND_LINE_QUALITY_CASES = [
   'JP 02 0.2x Saver Home x0.2',
   'HK IPLC 03 x3',
 ];
-const DIRECT_PROCESS_RULES = ['WorkPro.exe', 'GCUService.exe', 'GSCService.exe', 'Weixin.exe', 'WeChat.exe', 'QQ.exe'];
-const RUSTDESK_WORK_PROCESS_RULES = ['RustDesk.exe', 'rustdesk.exe', 'RustDesk', 'rustdesk'];
 const WORK_PROVIDER_RULES = ['remotedesktop', 'acc-rustdesk', 'acc-parsec'];
 const STUN_DIRECT_PORTS = [3478, 3479, 5349, 19302, 19305, 19307];
 const STUN_FAKE_IP_FILTER_ENTRIES = [
@@ -123,10 +121,14 @@ const STUN_FAKE_IP_FILTER_ENTRIES = [
   'stun4.l.google.com',
   'global.turn.twilio.com',
 ];
-const DOUYIN_CNMEDIA_GUARD_RULES = [
-  'DOMAIN-SUFFIX,douyin.com,📺 国内流媒体',
-  'DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体',
-];
+const SCKI_SUPPLEMENTAL_RULES = {
+  adfpIntlSite: 'RULE-SET,scki-adfp-intl-site,🌐 国外网站',
+  cnmediaGuard: 'RULE-SET,scki-cnmedia-guard,📺 国内流媒体',
+  localProcessDirect: 'RULE-SET,scki-local-process-direct,DIRECT',
+  workProcess: 'RULE-SET,scki-work-process,🧑‍💼 会议协作',
+  workGuard: 'RULE-SET,scki-work-guard,🧑‍💼 会议协作',
+  cnsiteGuard: 'RULE-SET,scki-cnsite-guard,🏠 国内网站',
+};
 const CN_GAME_GUARD_RULES = [
   'DOMAIN-SUFFIX,mihoyo.com,🕹️ 国内游戏',
   'DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏',
@@ -430,7 +432,7 @@ function validateRulesAndProviders(output, record, target) {
   const providerNames = new Set(Object.keys(providers));
   const groupNames = new Set((output['proxy-groups'] || []).map((group) => group.name));
 
-  record.expect(rules.length >= 900, `injects a full ruleset, got ${rules.length}`);
+  record.expect(rules.length >= 840, `injects a full ruleset, got ${rules.length}`);
   record.expect(providerNames.size >= 376, `injects the full rule-provider set, got ${providerNames.size}`);
   record.expectEqual(rules[rules.length - 1], 'MATCH,🐟 漏网之鱼', 'keeps MATCH as the final fallback');
   record.expect(!rules.slice(0, -1).some((rule) => String(rule).startsWith('MATCH,')), 'does not place MATCH before the final rule');
@@ -446,8 +448,8 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(gfwIndex !== -1, 'gfw tail rule exists');
   record.expect(antiAdIndex !== -1 && gfwIndex !== -1 && antiAdIndex < gfwIndex, 'ad blocking stays before the GFW tail block');
 
-  const cloudflareR2Index = rules.indexOf('DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站');
-  record.expect(cloudflareR2Index !== -1, 'Cloudflare R2 storage domain has an explicit route rule');
+  const cloudflareR2Index = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.adfpIntlSite);
+  record.expect(cloudflareR2Index !== -1, 'Cloudflare R2 storage domain is covered by the supplemental allowlist rule-set');
   record.expect(
     cloudflareR2Index !== -1 && antiAdIndex !== -1 && cloudflareR2Index < antiAdIndex,
     'Cloudflare R2 storage domain is evaluated before ad/phishing reject rules',
@@ -465,18 +467,16 @@ function validateRulesAndProviders(output, record, target) {
     amapIndex !== -1 && proxyIndex !== -1 && amapIndex < proxyIndex,
     'AMap/GaoDe guard is evaluated before foreign-site tail',
   );
-  for (const guardRule of DOUYIN_CNMEDIA_GUARD_RULES) {
-    const guardIndex = rules.indexOf(guardRule);
-    record.expect(guardIndex !== -1, `Douyin Web CN media guard exists: ${guardRule}`);
-    record.expect(
-      guardIndex !== -1 && tiktokIndex !== -1 && guardIndex < tiktokIndex,
-      `Douyin Web CN media guard is evaluated before TikTok: ${guardRule}`,
-    );
-    record.expect(
-      guardIndex !== -1 && proxyIndex !== -1 && guardIndex < proxyIndex,
-      `Douyin Web CN media guard is evaluated before foreign-site tail: ${guardRule}`,
-    );
-  }
+  const douyinGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.cnmediaGuard);
+  record.expect(douyinGuardIndex !== -1, 'Douyin Web CN media guard is covered by the supplemental rule-set');
+  record.expect(
+    douyinGuardIndex !== -1 && tiktokIndex !== -1 && douyinGuardIndex < tiktokIndex,
+    'Douyin Web CN media guard is evaluated before TikTok',
+  );
+  record.expect(
+    douyinGuardIndex !== -1 && proxyIndex !== -1 && douyinGuardIndex < proxyIndex,
+    'Douyin Web CN media guard is evaluated before foreign-site tail',
+  );
   for (const guardRule of CN_GAME_GUARD_RULES) {
     const guardIndex = rules.indexOf(guardRule);
     record.expect(guardIndex !== -1, `CN game guard exists: ${guardRule}`);
@@ -522,19 +522,12 @@ function validateRulesAndProviders(output, record, target) {
     !rules.includes('RULE-SET,scholar,🔧 工具与服务'),
     'Google Scholar does not regress to tools target',
   );
-  for (const processName of DIRECT_PROCESS_RULES) {
-    record.expect(
-      rules.includes(`PROCESS-NAME,${processName},DIRECT`),
-      `local client process stays on DIRECT: ${processName}`,
-    );
-  }
   const workGroupTarget = extractRuleTarget(rules.find((rule) => rule.startsWith('RULE-SET,remotedesktop,')));
-  for (const processName of RUSTDESK_WORK_PROCESS_RULES) {
-    record.expect(
-      rules.includes(`PROCESS-NAME,${processName},${workGroupTarget}`),
-      `RustDesk process uses work group instead of broad DIRECT: ${processName}`,
-    );
-  }
+  record.expect(rules.includes(SCKI_SUPPLEMENTAL_RULES.localProcessDirect), 'local client process supplemental rule-set stays on DIRECT');
+  record.expect(
+    rules.includes(`RULE-SET,scki-work-process,${workGroupTarget}`),
+    'RustDesk process supplemental rule-set uses work group instead of broad DIRECT',
+  );
   for (const providerName of WORK_PROVIDER_RULES) {
     record.expect(
       rules.includes(`RULE-SET,${providerName},🧑‍💼 会议协作`),
@@ -553,18 +546,18 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
-  const rustDeskGuardIndex = rules.indexOf('DOMAIN-SUFFIX,rustdesk.com,🧑‍💼 会议协作');
+  const rustDeskGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.workGuard);
   const copilotIndex = rules.indexOf('RULE-SET,copilot,🤖 AI 服务');
-  record.expect(rustDeskGuardIndex !== -1, 'RustDesk domain guard exists before broad Copilot ASN rules');
+  record.expect(rustDeskGuardIndex !== -1, 'RustDesk domain guard supplemental rule-set exists before broad Copilot ASN rules');
   record.expect(
     rustDeskGuardIndex !== -1 && copilotIndex !== -1 && rustDeskGuardIndex < copilotIndex,
     'RustDesk domain guard is evaluated before RuleSet/copilot',
   );
   // v5.4.26 FIX#164: 腾讯 WorkBuddy copilot.tencent.com 必须在 szkane AiDomain.list
   // （含 DOMAIN-KEYWORD,copilot 子串）之前锁定国内直连，否则被误吞到 🤖 AI 服务（国外代理）。
-  const copilotTencentGuardIndex = rules.indexOf('DOMAIN-SUFFIX,copilot.tencent.com,🏠 国内网站');
+  const copilotTencentGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.cnsiteGuard);
   const szkaneAiIndex = rules.indexOf('RULE-SET,szkane-ai,🤖 AI 服务');
-  record.expect(copilotTencentGuardIndex !== -1, 'copilot.tencent.com domestic guard exists (FIX#164)');
+  record.expect(copilotTencentGuardIndex !== -1, 'copilot.tencent.com domestic guard supplemental rule-set exists (FIX#164)');
   record.expect(
     copilotTencentGuardIndex !== -1 && szkaneAiIndex !== -1 && copilotTencentGuardIndex < szkaneAiIndex,
     'copilot.tencent.com domestic guard is evaluated before RuleSet/szkane-ai (FIX#164)',

@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.38 / v5.4.38-normal.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：新增公共补充规则集常量与 15 个 `scki-*` rule-provider，将零星域名/IP/进程补丁从主 rules 中移出。
+- SYNC：Smart / Normal 同步到 846 条规则、391 providers；补充规则集前置顺序覆盖广告误伤、抖音 Web、RustDesk、Google Workspace、下载更新等场景。
+
 ## v5.4.37 / v5.4.37-normal.1 (2026-06-29)
 
 - ★ DNS-POLICY#170：`overwriteGeneral()` 在既有 GitHub / jsdelivr / Fastly CDN policy 之外，新增 geosite 级解析器分流：

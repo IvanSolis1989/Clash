@@ -17,11 +17,34 @@ const EXPECTED_SINGBOX_URLTEST_GROUPS = 2;
 const EXPECTED_PASSWALL_RULES = 33;
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
-const MIN_FULL_PROVIDERS = 376;
-const MIN_FULL_RULES = 900;
+const MIN_FULL_PROVIDERS = 391;
+const MIN_FULL_RULES = 840;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
+const SUPPLEMENTAL_RULESET_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental';
+const SUPPLEMENTAL_CLASH_RULESETS = [
+  { id: 'scki-adfp-direct', file: 'adfp-direct', policy: 'DIRECT' },
+  { id: 'scki-adfp-intl-site', file: 'adfp-intl-site', policy: '🌐 国外网站' },
+  { id: 'scki-adfp-payments', file: 'adfp-payments', policy: '🏦 金融支付' },
+  { id: 'scki-cnmedia-guard', file: 'cnmedia-guard', policy: '📺 国内流媒体' },
+  { id: 'scki-local-direct', file: 'local-direct', policy: 'DIRECT' },
+  { id: 'scki-local-process-direct', file: 'local-process-direct', policy: 'DIRECT', process: true },
+  { id: 'scki-work-process', file: 'work-process', policy: '🧑‍💼 会议协作', process: true },
+  { id: 'scki-gfw-guard', file: 'gfw-guard', policy: '🚫 受限网站' },
+  { id: 'scki-youtube-guard', file: 'youtube-guard', policy: '📹 YouTube' },
+  { id: 'scki-google-mail-intl', file: 'google-mail-intl', policy: '🌐 国外网站' },
+  { id: 'scki-google-work', file: 'google-work', policy: '🧑‍💼 会议协作' },
+  { id: 'scki-download-guard', file: 'download-guard', policy: '📥 下载更新' },
+  { id: 'scki-cnsite-guard', file: 'cnsite-guard', policy: '🏠 国内网站' },
+  { id: 'scki-work-guard', file: 'work-guard', policy: '🧑‍💼 会议协作' },
+  { id: 'scki-ai-supplement', file: 'ai-supplement', policy: '🤖 AI 服务' },
+];
+const SUPPLEMENTAL_MOBILE_CLASH_RULESETS = SUPPLEMENTAL_CLASH_RULESETS.filter((spec) => !spec.process);
+const SUPPLEMENTAL_SURGE_PROCESS_RULESETS = [
+  { id: 'scki-local-process-direct', file: 'local-process-direct', policy: 'DIRECT' },
+  { id: 'scki-work-process', file: 'work-process', policy: '🧑‍💼 会议协作' },
+];
 // v5.4.21 #4: DoH-over-IP bootstrap + 1 plaintext fallback
 const DNS_BOOTSTRAP_DOH_OVER_IP = ['https://223.5.5.5/dns-query', 'https://223.6.6.6/dns-query', 'https://8.8.8.8/dns-query', 'https://1.1.1.1/dns-query'];
 const DNS_BOOTSTRAP_IPS = [...DNS_BOOTSTRAP_DOH_OVER_IP, '223.5.5.5'];
@@ -139,6 +162,7 @@ const ARTIFACT_FILES = [
   'Loon/Loon.conf',
   'Quantumult X/QuantumultX.conf',
   'SingBox/SingBox(sing-box)-full.json',
+  'Egern/Egern.yaml',
   'v2rayN/v2rayN(xray).json',
   'Passwall/Passwall(xray+sing-box)-apply.sh',
   'Passwall/Passwall(xray+sing-box).conf',
@@ -219,6 +243,64 @@ function checkNeedleBefore(record, id, source, beforeNeedle, afterNeedle) {
   record.check(`${id}.guard-order`, beforeIndex !== -1 && afterIndex !== -1 && beforeIndex < afterIndex, {
     message: afterIndex === -1 ? `missing ${afterNeedle}` : `${beforeNeedle} must appear before ${afterNeedle}`,
   });
+}
+
+function supplementalUrl(flavor, file) {
+  return `${SUPPLEMENTAL_RULESET_BASE}/${flavor}/${file}.list`;
+}
+
+function checkSupplementalProviderRefs(record, id, providersBlock) {
+  for (const spec of SUPPLEMENTAL_CLASH_RULESETS) {
+    const hasProvider = new RegExp(`^\\s{2}${spec.id}:\\s*$`, 'm').test(providersBlock);
+    const hasUrl = providersBlock.includes(supplementalUrl('clash', spec.file));
+    record.check(`${id}.supplemental-provider.${spec.id}`, hasProvider && hasUrl, {
+      message: `${spec.id} must point to ${supplementalUrl('clash', spec.file)}`,
+    });
+  }
+}
+
+function checkSupplementalMihomoRules(record, id, rulesSource) {
+  for (const spec of SUPPLEMENTAL_CLASH_RULESETS) {
+    const needle = `RULE-SET,${spec.id},${spec.policy}`;
+    record.check(`${id}.supplemental-rule.${spec.id}`, rulesSource.includes(needle), {
+      message: `missing ${needle}`,
+    });
+  }
+  checkNeedleBefore(record, `${id}.supplemental.adfp-before-ads`, rulesSource, 'RULE-SET,scki-adfp-intl-site,🌐 国外网站', 'RULE-SET,anti-ad,🛑 广告拦截');
+  checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-tiktok`, rulesSource, 'RULE-SET,scki-cnmedia-guard,📺 国内流媒体', 'RULE-SET,tiktok,🎵 TikTok');
+  checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-foreign-tail`, rulesSource, 'RULE-SET,scki-cnmedia-guard,📺 国内流媒体', 'RULE-SET,proxy,🌐 国外网站');
+  checkNeedleBefore(record, `${id}.supplemental.cnsite-before-foreign-tail`, rulesSource, 'RULE-SET,scki-cnsite-guard,🏠 国内网站', 'RULE-SET,proxy,🌐 国外网站');
+  checkNeedleBefore(record, `${id}.supplemental.ai-before-ai-provider`, rulesSource, 'RULE-SET,scki-ai-supplement,🤖 AI 服务', 'RULE-SET,civitai,🤖 AI 服务');
+}
+
+function checkSupplementalMobileRules(record, id, source, flavor, options = {}) {
+  const specs = [...SUPPLEMENTAL_MOBILE_CLASH_RULESETS];
+  if (options.surgeProcess) {
+    specs.push(...SUPPLEMENTAL_SURGE_PROCESS_RULESETS.map((spec) => ({ ...spec, flavor: 'surge' })));
+  }
+
+  for (const spec of specs) {
+    const specFlavor = spec.flavor || flavor;
+    const url = supplementalUrl(specFlavor, spec.file);
+    let ok = false;
+    if (options.qx) {
+      const qxPolicy = spec.policy === 'DIRECT' ? 'direct' : spec.policy;
+      ok = source.includes(url) && source.includes(`tag=${spec.id}`) && source.includes(`force-policy=${qxPolicy}`);
+    } else if (options.loon) {
+      ok = source.includes(`${url}, policy=${spec.policy}, tag=${spec.id}, enabled=true`);
+    } else {
+      ok = source.includes(`RULE-SET,${url},${spec.policy}`);
+    }
+    record.check(`${id}.supplemental-rule.${spec.id}`, ok, {
+      message: `missing supplemental ${spec.id} in ${id}`,
+    });
+  }
+
+  if (!options.qx && !options.loon) {
+    const clientDir = id === 'shadowrocket' ? 'Shadowrocket' : 'Surge';
+    checkNeedleBefore(record, `${id}.supplemental.adfp-before-ads`, source, `RULE-SET,${supplementalUrl(flavor, 'adfp-intl-site')},🌐 国外网站`, 'RULE-SET,https://fastly.jsdelivr.net/gh/privacy-protection-tools/anti-AD@master/anti-ad-surge.txt,🛑 广告拦截');
+    checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-tiktok`, source, `RULE-SET,${supplementalUrl(flavor, 'cnmedia-guard')},📺 国内流媒体`, `RULE-SET,https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/${clientDir}/TikTok/TikTok.list,🎵 TikTok`);
+  }
 }
 
 function countLiteral(source, literal) {
@@ -500,10 +582,12 @@ function validateClashYaml(record, baselineVersion, options) {
     value: countLiteral(source, RESTRICTED_SITE),
   });
   record.check('cmfa.amap-provider', /amap:\n\s+type:\s+http/.test(providersBlock));
-  checkNeedleBefore(record, 'cmfa.amap-after-ads', rulesBlock, "'RULE-SET,anti-ad,🛑 广告拦截'", "'RULE-SET,amap,🏠 国内网站'");
-  checkNeedleBefore(record, 'cmfa.amap-before-foreign-tail', rulesBlock, "'RULE-SET,amap,🏠 国内网站'", "'RULE-SET,proxy,🌐 国外网站'");
-  record.check('cmfa.scholar-target-google', source.includes("'RULE-SET,scholar,🔍 Google 服务'"));
-  record.check('cmfa.scholar-not-tools', !source.includes("'RULE-SET,scholar,🔧 工具与服务'"));
+  checkNeedleBefore(record, 'cmfa.amap-after-ads', rulesBlock, 'RULE-SET,anti-ad,🛑 广告拦截', 'RULE-SET,amap,🏠 国内网站');
+  checkNeedleBefore(record, 'cmfa.amap-before-foreign-tail', rulesBlock, 'RULE-SET,amap,🏠 国内网站', 'RULE-SET,proxy,🌐 国外网站');
+  checkSupplementalProviderRefs(record, 'cmfa', providersBlock);
+  checkSupplementalMihomoRules(record, 'cmfa', rulesBlock);
+  record.check('cmfa.scholar-target-google', source.includes('RULE-SET,scholar,🔍 Google 服务'));
+  record.check('cmfa.scholar-not-tools', !source.includes('RULE-SET,scholar,🔧 工具与服务'));
   const fakeIpFilterBlock = extractIndentedListBlock(source, 'fake-ip-filter');
   record.check('cmfa.fake-ip-filter-blacklist-mode', /fake-ip-filter-mode:\s*blacklist/.test(source));
   const hasNoFakeIpRuleSetRefs = !/RULE-SET,/.test(fakeIpFilterBlock);
@@ -546,33 +630,10 @@ function validateClashYaml(record, baselineVersion, options) {
     const hasPortRule = source.includes(`DST-PORT,${port},DIRECT`);
     record.check(`cmfa.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
   }
-  checkNeedleBefore(
-    record,
-    'cmfa.cloudflarestorage-before-ads',
-    source,
-    "'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站'",
-    "'RULE-SET,anti-ad,🛑 广告拦截'",
-  );
-  for (const domain of ['douyin.com', 'zjcdn.com']) {
-    checkNeedleBefore(
-      record,
-      `cmfa.douyin-guard.${domain}.before-tiktok`,
-      source,
-      `'DOMAIN-SUFFIX,${domain},📺 国内流媒体'`,
-      "'RULE-SET,tiktok,🎵 TikTok'",
-    );
-    checkNeedleBefore(
-      record,
-      `cmfa.douyin-guard.${domain}.before-foreign-tail`,
-      source,
-      `'DOMAIN-SUFFIX,${domain},📺 国内流媒体'`,
-      "'RULE-SET,proxy,🌐 国外网站'",
-    );
-  }
   for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-    const guard = `'DOMAIN-SUFFIX,${domain},🕹️ 国内游戏'`;
-    checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, "'RULE-SET,hoyoverse,🎮 国外游戏'");
-    checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-category-games`, rulesBlock, guard, "'GEOSITE,category-games,🎮 国外游戏'");
+    const guard = `DOMAIN-SUFFIX,${domain},🕹️ 国内游戏`;
+    checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, 'RULE-SET,hoyoverse,🎮 国外游戏');
+    checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-category-games`, rulesBlock, guard, 'GEOSITE,category-games,🎮 国外游戏');
   }
 }
 
@@ -691,10 +752,12 @@ function validateStashYaml(record, baselineVersion, options) {
     message: 'Stash MRS rule sets support domain/ipcidr only',
   });
   record.check('stash.amap-provider', /amap:\n\s+type:\s+http/.test(providersBlock));
-  checkNeedleBefore(record, 'stash.amap-after-ads', rulesBlock, "'RULE-SET,anti-ad,🛑 广告拦截'", "'RULE-SET,amap,🏠 国内网站'");
-  checkNeedleBefore(record, 'stash.amap-before-foreign-tail', rulesBlock, "'RULE-SET,amap,🏠 国内网站'", "'RULE-SET,proxy,🌐 国外网站'");
-  record.check('stash.scholar-target-google', source.includes("'RULE-SET,scholar,🔍 Google 服务'"));
-  record.check('stash.scholar-not-tools', !source.includes("'RULE-SET,scholar,🔧 工具与服务'"));
+  checkNeedleBefore(record, 'stash.amap-after-ads', rulesBlock, 'RULE-SET,anti-ad,🛑 广告拦截', 'RULE-SET,amap,🏠 国内网站');
+  checkNeedleBefore(record, 'stash.amap-before-foreign-tail', rulesBlock, 'RULE-SET,amap,🏠 国内网站', 'RULE-SET,proxy,🌐 国外网站');
+  checkSupplementalProviderRefs(record, 'stash', providersBlock);
+  checkSupplementalMihomoRules(record, 'stash', rulesBlock);
+  record.check('stash.scholar-target-google', source.includes('RULE-SET,scholar,🔍 Google 服务'));
+  record.check('stash.scholar-not-tools', !source.includes('RULE-SET,scholar,🔧 工具与服务'));
 
   const fakeIpFilterBlock = extractIndentedListBlock(source, 'fake-ip-filter');
   const hasNoFakeIpRuleSetRefs = !/RULE-SET,/.test(fakeIpFilterBlock);
@@ -724,33 +787,10 @@ function validateStashYaml(record, baselineVersion, options) {
     const hasPortRule = source.includes(`DST-PORT,${port},DIRECT`);
     record.check(`stash.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
   }
-  checkNeedleBefore(
-    record,
-    'stash.cloudflarestorage-before-ads',
-    source,
-    "'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站'",
-    "'RULE-SET,anti-ad,🛑 广告拦截'",
-  );
-  for (const domain of ['douyin.com', 'zjcdn.com']) {
-    checkNeedleBefore(
-      record,
-      `stash.douyin-guard.${domain}.before-tiktok`,
-      source,
-      `'DOMAIN-SUFFIX,${domain},📺 国内流媒体'`,
-      "'RULE-SET,tiktok,🎵 TikTok'",
-    );
-    checkNeedleBefore(
-      record,
-      `stash.douyin-guard.${domain}.before-foreign-tail`,
-      source,
-      `'DOMAIN-SUFFIX,${domain},📺 国内流媒体'`,
-      "'RULE-SET,proxy,🌐 国外网站'",
-    );
-  }
   for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-    const guard = `'DOMAIN-SUFFIX,${domain},🕹️ 国内游戏'`;
-    checkNeedleBefore(record, `stash.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, "'RULE-SET,hoyoverse,🎮 国外游戏'");
-    checkNeedleBefore(record, `stash.cn-game.${domain}.before-category-games`, rulesBlock, guard, "'GEOSITE,category-games,🎮 国外游戏'");
+    const guard = `DOMAIN-SUFFIX,${domain},🕹️ 国内游戏`;
+    checkNeedleBefore(record, `stash.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, 'RULE-SET,hoyoverse,🎮 国外游戏');
+    checkNeedleBefore(record, `stash.cn-game.${domain}.before-category-games`, rulesBlock, guard, 'GEOSITE,category-games,🎮 国外游戏');
   }
 }
 
@@ -770,16 +810,17 @@ function validateOpenClash(record, baselineVersion, options) {
   }
 
   for (const spec of [
-    { id: 'normal', file: 'OpenClash/OpenClash(mihomo).sh', suffix: 'oc-normal', minProviders: 130, minRules: MIN_FULL_RULES },
+    { id: 'normal', file: 'OpenClash/OpenClash(mihomo).sh', suffix: 'oc-normal', minProviders: MIN_FULL_PROVIDERS, minRules: MIN_FULL_RULES },
     { id: 'smart', file: 'OpenClash/OpenClash(mihomo-smart).sh', suffix: 'oc-smart', minProviders: MIN_FULL_PROVIDERS, minRules: MIN_FULL_RULES },
   ]) {
     const source = readText(spec.file);
     const yaml = extractOpenClashOverride(spec.file);
+    const providersOnly = extractYamlBlock(yaml, 'rule-providers');
     const rulesOnly = extractYamlBlock(yaml, 'rules');
     const staticBizGroups = countMatches(source, /^- name: /gm);
     const topProviders = countMatches(yaml, /^rule-providers:$/gm);
     const topRules = countMatches(yaml, /^rules:$/gm);
-    const restrictedCount = countLiteral(source, RESTRICTED_SITE_RUBY);
+    const restrictedCount = countLiteral(source, RESTRICTED_SITE_RUBY) + countLiteral(yaml, RESTRICTED_SITE);
 
     record.check(`openclash.${spec.id}.static-business-groups`, staticBizGroups === EXPECTED_BUSINESS_GROUPS, { value: staticBizGroups });
     const hasBaselineHeader = source.includes(`Clash Party ${baselineVersion}`);
@@ -802,8 +843,10 @@ function validateOpenClash(record, baselineVersion, options) {
     record.check(`openclash.${spec.id}.amap-provider`, /amap:\n\s+type:\s+http/.test(yaml));
     checkNeedleBefore(record, `openclash.${spec.id}.amap-after-ads`, rulesOnly, 'RULE-SET,anti-ad', 'RULE-SET,amap');
     checkNeedleBefore(record, `openclash.${spec.id}.amap-before-foreign-tail`, rulesOnly, 'RULE-SET,amap', 'RULE-SET,proxy');
-    record.check(`openclash.${spec.id}.scholar-target-google`, source.includes('RULE-SET,scholar,\\U0001F50D Google 服务'));
-    record.check(`openclash.${spec.id}.scholar-not-tools`, !source.includes('RULE-SET,scholar,\\U0001F527 工具与服务'));
+    checkSupplementalProviderRefs(record, `openclash.${spec.id}`, providersOnly);
+    checkSupplementalMihomoRules(record, `openclash.${spec.id}`, rulesOnly);
+    record.check(`openclash.${spec.id}.scholar-target-google`, rulesOnly.includes('RULE-SET,scholar,🔍 Google 服务'));
+    record.check(`openclash.${spec.id}.scholar-not-tools`, !rulesOnly.includes('RULE-SET,scholar,🔧 工具与服务'));
     for (const entry of STUN_FAKE_IP_FILTER_ENTRIES) {
       const hasEntry = yaml.includes(entry);
       record.check(`openclash.${spec.id}.fake-ip-filter.${entry}`, hasEntry, failureMessage(hasEntry, `missing ${entry}`));
@@ -838,29 +881,6 @@ function validateOpenClash(record, baselineVersion, options) {
     for (const port of STUN_DIRECT_PORTS) {
       const hasPortRule = yaml.includes(`DST-PORT,${port},DIRECT`);
       record.check(`openclash.${spec.id}.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
-    }
-    checkNeedleBefore(
-      record,
-      `openclash.${spec.id}.cloudflarestorage-before-ads`,
-      source,
-      'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站',
-      'RULE-SET,anti-ad,\\U0001F6D1 广告拦截',
-    );
-    for (const domain of ['douyin.com', 'zjcdn.com']) {
-      checkNeedleBefore(
-        record,
-        `openclash.${spec.id}.douyin-guard.${domain}.before-tiktok`,
-        source,
-        `DOMAIN-SUFFIX,${domain},\\U0001F4FA 国内流媒体`,
-        'RULE-SET,tiktok,\\U0001F3B5 TikTok',
-      );
-      checkNeedleBefore(
-        record,
-        `openclash.${spec.id}.douyin-guard.${domain}.before-foreign-tail`,
-        source,
-        `DOMAIN-SUFFIX,${domain},\\U0001F4FA 国内流媒体`,
-        'RULE-SET,proxy,\\U0001F310 国外网站',
-      );
     }
     for (const domain of CN_GAME_PRIORITY_DOMAINS) {
       checkNeedleBefore(
@@ -926,6 +946,8 @@ function validateConfProducts(record, baselineVersion) {
   const qx = readText('Quantumult X/QuantumultX.conf');
   const loonRemoteRule = extractConfSection(loon, 'Remote Rule');
   const loonRuleSection = extractConfSection(loon, 'Rule');
+  const qxFilterRemote = extractConfSection(qx, 'filter_remote');
+  const qxFilterLocal = extractConfSection(qx, 'filter_local');
   record.check('shadowrocket.scholar-target-google', shadowrocket.includes('Shadowrocket/Scholar/Scholar.list,🔍 Google 服务'));
   record.check('shadowrocket.scholar-not-tools', !shadowrocket.includes('Shadowrocket/Scholar/Scholar.list,🔧 工具与服务'));
   record.check('surge.scholar-target-google', surge.includes('Surge/Scholar/Scholar.list,🔍 Google 服务'));
@@ -934,14 +956,12 @@ function validateConfProducts(record, baselineVersion) {
   record.check('loon.scholar-not-tools', !loon.includes('Loon/Scholar/Scholar.list, policy=🔧 工具与服务'));
   record.check('qx.scholar-target-google', qx.includes('QuantumultX/Scholar/Scholar.list, tag=scholar, force-policy=🔍 Google 服务'));
   record.check('qx.scholar-not-tools', !qx.includes('QuantumultX/Scholar/Scholar.list, tag=scholar, force-policy=🔧 工具与服务'));
-  const confGuardSpecs = [
-    { id: 'shadowrocket', source: shadowrocket, guard: 'DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体', tiktok: 'Shadowrocket/TikTok/TikTok.list,🎵 TikTok', foreign: 'Shadowrocket/CNN/CNN.list,🌐 国外网站' },
-    { id: 'surge', source: surge, guard: 'DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体', tiktok: 'Surge/TikTok/TikTok.list,🎵 TikTok', foreign: 'Surge/CNN/CNN.list,🌐 国外网站' },
-  ];
-  for (const spec of confGuardSpecs) {
-    checkNeedleBefore(record, `${spec.id}.douyin-zjcdn-before-tiktok`, spec.source, spec.guard, spec.tiktok);
-    checkNeedleBefore(record, `${spec.id}.douyin-zjcdn-before-foreign-tail`, spec.source, spec.guard, spec.foreign);
-  }
+  checkSupplementalMobileRules(record, 'shadowrocket', shadowrocket, 'clash');
+  checkSupplementalMobileRules(record, 'surge', surge, 'clash', { surgeProcess: true });
+  checkSupplementalMobileRules(record, 'loon', loonRemoteRule, 'clash', { loon: true });
+  checkSupplementalMobileRules(record, 'qx', qxFilterRemote, 'quantumultx', { qx: true });
+  checkNeedleBefore(record, 'loon.supplemental.adfp-before-ads', loonRemoteRule, `${supplementalUrl('clash', 'adfp-intl-site')}, policy=🌐 国外网站`, 'Loon/YouMengChuangXiang/YouMengChuangXiang.list, policy=🛑 广告拦截');
+  checkNeedleBefore(record, 'qx.supplemental.adfp-before-ads', qxFilterRemote, `${supplementalUrl('quantumultx', 'adfp-intl-site')}, tag=scki-adfp-intl-site, force-policy=🌐 国外网站`, 'QuantumultX/YouMengChuangXiang/YouMengChuangXiang.list, tag=youmengchuangxiang, force-policy=🛑 广告拦截');
   checkNeedleBefore(
     record,
     'shadowrocket.amap-after-ads',
@@ -1018,8 +1038,6 @@ function validateConfProducts(record, baselineVersion) {
     'DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏',
     '# ─── 阶段 19: 国外游戏',
   );
-  record.check('loon.douyin-zjcdn-cnmedia', loon.includes('DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体'), failureMessage(loon.includes('DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体'), 'missing Loon zjcdn.com CN media guard'));
-  checkNeedleBefore(record, 'loon.douyin-zjcdn-before-local-foreign-tail', loon, 'DOMAIN-SUFFIX,zjcdn.com,📺 国内流媒体', 'DOMAIN-SUFFIX,archive.org,🌐 国外网站');
   // v5.4.18: normalize whitespace around commas to avoid false failures on cosmetic formatting changes
   const srNorm = (s) => s.replace(/\s*,\s*/g, ',');
   // v5.4.21 #4: DoH-over-IP — all DoH URLs use IP host to eliminate bootstrap leak
@@ -1070,8 +1088,6 @@ function validateConfProducts(record, baselineVersion) {
     qxHasValidRunningModeTrigger,
     failureMessage(qxHasValidRunningModeTrigger, 'QX running_mode_trigger cannot use filter'),
   );
-  const qxFilterRemote = extractConfSection(qx, 'filter_remote');
-  const qxFilterLocal = extractConfSection(qx, 'filter_local');
   checkNeedleBefore(
     record,
     'qx.amap-after-ads',
@@ -1105,37 +1121,6 @@ function validateConfProducts(record, baselineVersion) {
     'qx.filter-remote-no-local-rules',
     !qxLocalRuleInRemote,
     failureMessage(!qxLocalRuleInRemote, 'QX local filter rules must live in [filter_local], not [filter_remote]'),
-  );
-  for (const line of [
-    'host-suffix, account.xiaomi.com, direct',
-    'host-suffix, cloudflarestorage.com, 🌐 国外网站',
-    'host-suffix, paddle.com, 🏦 金融支付',
-    'host-suffix, douyin.com, 📺 国内流媒体',
-    'host-suffix, zjcdn.com, 📺 国内流媒体',
-    'host-suffix, rustdesk.com, 🧑‍💼 会议协作',
-  ]) {
-    record.check(`qx.filter-local.${line}`, qxFilterLocal.includes(line), failureMessage(qxFilterLocal.includes(line), `missing ${line}`));
-  }
-  checkNeedleBefore(
-    record,
-    'shadowrocket.cloudflarestorage-before-ads',
-    shadowrocket,
-    'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站',
-    'RULE-SET,https://fastly.jsdelivr.net/gh/privacy-protection-tools/anti-AD@master/anti-ad-surge.txt,🛑 广告拦截',
-  );
-  checkNeedleBefore(
-    record,
-    'surge.cloudflarestorage-before-ads',
-    surge,
-    'DOMAIN-SUFFIX,cloudflarestorage.com,🌐 国外网站',
-    'RULE-SET,https://fastly.jsdelivr.net/gh/privacy-protection-tools/anti-AD@master/anti-ad-surge.txt,🛑 广告拦截',
-  );
-  const loonLocalRule = /^DOMAIN-SUFFIX,cloudflarestorage\.com,🌐 国外网站$/m.test(loon);
-  record.check('loon.cloudflarestorage-local-rule', loonLocalRule, failureMessage(loonLocalRule, 'missing local Cloudflare R2 override rule'));
-  record.check(
-    'qx.cloudflarestorage-local-rule',
-    qxFilterLocal.includes('host-suffix, cloudflarestorage.com, 🌐 国外网站'),
-    failureMessage(qxFilterLocal.includes('host-suffix, cloudflarestorage.com, 🌐 国外网站'), 'missing local Cloudflare R2 override rule in [filter_local]'),
   );
 }
 
@@ -1338,6 +1323,64 @@ function validateJsonProducts(record, baselineVersion) {
   });
 }
 
+function validateEgern(record, baselineVersion, options) {
+  const file = 'Egern/Egern.yaml';
+  const source = readText(file);
+  const autoTestCount = countMatches(source, /^\s+- auto_test:\s*$/gm);
+  const selectCount = countMatches(source, /^\s+- select:\s*$/gm);
+  const ruleSetCount = countMatches(source, /^\s+- rule_set:\s*$/gm);
+
+  record.check('egern.version-prefix', source.includes(`Egern Smart ${baselineVersion}-egern.`), {
+    message: `missing Egern Smart ${baselineVersion}-egern.*`,
+  });
+  record.check('egern.baseline-header', source.includes(`Baseline: Clash Party ${baselineVersion}`), {
+    message: `missing Clash Party ${baselineVersion}`,
+  });
+  record.check('egern.external-subscription', /^\s+- external:\s*$/m.test(source) && source.includes('name: Subscribe'));
+  record.check('egern.region-auto-test-count', autoTestCount === EXPECTED_REGION_GROUPS, { value: autoTestCount });
+  record.check('egern.business-select-count', selectCount === EXPECTED_BUSINESS_GROUPS + 1, { value: selectCount });
+  for (const group of SINGBOX_BUSINESS_ORDER) {
+    const hasGroup = source.includes(`name: ${group}`);
+    record.check(`egern.business-group.${group}`, hasGroup, failureMessage(hasGroup, `missing ${group}`));
+  }
+  record.check('egern.rule-set-count', ruleSetCount === SUPPLEMENTAL_MOBILE_CLASH_RULESETS.length, { value: ruleSetCount });
+  record.check('egern.no-process-rulesets', !/local-process-direct|work-process|PROCESS-NAME/.test(source), {
+    message: 'Egern must not include Clash-style process rule sets',
+  });
+  for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
+    const egernFile = `rulesets/supplemental/egern/${spec.file}.yaml`;
+    const egernSource = readText(egernFile);
+    const url = supplementalUrl('egern', spec.file).replace(/\.list$/, '.yaml');
+    const hasRule = source.includes(url) && source.includes(`policy: ${spec.policy}`);
+    record.check(`egern.supplemental-rule.${spec.id}`, hasRule, {
+      message: `missing ${url} -> ${spec.policy}`,
+    });
+    record.check(`egern.supplemental-file.${spec.file}`, /_set:\s*$/m.test(egernSource), {
+      message: `${egernFile} must contain Egern YAML set fields`,
+    });
+    record.check(`egern.supplemental-file-no-process.${spec.file}`, !/PROCESS-NAME|process/i.test(egernSource), {
+      message: `${egernFile} must not contain process rules`,
+    });
+  }
+
+  const rubyPath = findRuby();
+  if (!rubyPath) {
+    const message = 'Ruby not found; exact Egern YAML parsing skipped';
+    if (options.strictRuby) record.check('egern.ruby-available', false, { message });
+    else record.warn('egern.ruby-available', message);
+  } else {
+    try {
+      rubyYamlFileProbe(file, rubyPath);
+      for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
+        rubyYamlFileProbe(`rulesets/supplemental/egern/${spec.file}.yaml`, rubyPath);
+      }
+      record.check('egern.ruby-parse', true);
+    } catch (error) {
+      record.check('egern.ruby-parse', false, { message: error.message });
+    }
+  }
+}
+
 function validatePasswall(record, baselineVersion) {
   const specs = [
     { id: 'passwall', file: 'Passwall/Passwall(xray+sing-box)-apply.sh', reference: 'Passwall/Passwall(xray+sing-box).conf', dir: 'Passwall/shunt-rules' },
@@ -1469,6 +1512,7 @@ function main() {
   validateOpenClash(record, baselineVersion, options);
   validateConfProducts(record, baselineVersion);
   validateJsonProducts(record, baselineVersion);
+  validateEgern(record, baselineVersion, options);
   validatePasswall(record, baselineVersion);
   const manifest = buildManifest(baselineVersion);
   const result = {

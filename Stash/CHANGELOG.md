@@ -4,6 +4,11 @@
 
 ---
 
+## v5.4.38-stash.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：由 CMFA v5.4.38-cmfa.1 重新生成，保留 391 rule-provider 与 846 条规则。
+- COMPAT：Stash 继续裁剪 Mihomo-only 字段；补充规则集使用 Stash 可识别的 rule-provider 结构。
+
 ## v5.4.37-stash.1 (2026-07-07)
 
 - FEAT#173-STASH：新增 `Stash/Stash.yaml`，由 `tools/generate-stash-from-cmfa.js` 从 CMFA 自动裁剪生成。

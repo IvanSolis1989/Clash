@@ -1,0 +1,443 @@
+---
+# ======================================================================
+# Egern Smart v5.4.38-egern.1 - Egern Preview Profile
+# Build: 2026-07-09
+# Baseline: Clash Party v5.4.38
+# Scope: Egern-native starter profile + repository-owned supplemental rule sets.
+# Note: Egern rule_set files use YAML sets, so this profile does not import
+#       Clash/Mihomo .mrs or classical providers directly.
+# ======================================================================
+
+ipv6: false
+http_port: 3080
+socks_port: 3090
+allow_external_connections: false
+vif_only: false
+block_quic: false
+close_connections_on_policy_change: true
+proxy_latency_test_url: http://www.gstatic.com/generate_204
+direct_latency_test_url: http://www.gstatic.com/generate_204
+default_subscription_group: Subscribe
+default_proxy_group: 🚀 节点选择
+
+bypass_tunnel_proxy:
+  - "*.local"
+  - "localhost"
+  - "127.0.0.0/8"
+  - "10.0.0.0/8"
+  - "172.16.0.0/12"
+  - "192.168.0.0/16"
+  - "169.254.0.0/16"
+
+real_ip_domains:
+  - "*.lan"
+  - "*.local"
+  - "*.push.apple.com"
+  - "*.rustdesk.com"
+
+hijack_dns:
+  - "*"
+
+dns:
+  bootstrap:
+    - system
+    - 223.5.5.5
+    - 119.29.29.29
+    - 1.1.1.1
+    - 8.8.8.8
+  upstreams:
+    domestic:
+      - https://dns.alidns.com/dns-query
+      - https://doh.pub/dns-query
+    foreign:
+      - https://cloudflare-dns.com/dns-query
+      - https://dns.google/dns-query
+  proxy_nameservers:
+    - https://cloudflare-dns.com/dns-query
+    - https://dns.google/dns-query
+  forward:
+    - domain_suffix:
+        match: "cn"
+        value: domestic
+    - domain_suffix:
+        match: "local"
+        value: bootstrap
+    - domain_suffix:
+        match: "lan"
+        value: bootstrap
+    - domain_keyword:
+        match: "taobao"
+        value: domestic
+    - domain_keyword:
+        match: "alicdn"
+        value: domestic
+    - domain_keyword:
+        match: "tencent"
+        value: domestic
+    - domain_keyword:
+        match: "google"
+        value: foreign
+    - domain_keyword:
+        match: "youtube"
+        value: foreign
+    - domain_wildcard:
+        match: "*"
+        value: foreign
+
+policy_groups:
+  - external:
+      name: Subscribe
+      type: auto_test
+      urls:
+        - "https://example.com/your-subscription-url"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+      update_interval: 86400
+      icon: tray.and.arrow.down
+
+  - auto_test:
+      name: 🇭🇰 香港节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)香港|HK|Hong Kong"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🇹🇼 台湾节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)台湾|TW|Taiwan"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🇯🇵 日韩节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)日本|韩国|JP|KR|Japan|Korea|Tokyo|Seoul"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🇸🇬 狮城节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)新加坡|SG|Singapore"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🌏 亚太节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)香港|台湾|日本|韩国|新加坡|泰国|越南|印尼|菲律宾|HK|TW|JP|KR|SG|TH|VN|ID|PH|Asia"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🇺🇸 美国节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)美国|US|USA|United States|Los Angeles|San Jose|New York"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🇪🇺 欧洲节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)欧洲|英国|德国|法国|荷兰|EU|UK|DE|FR|NL|Europe|London|Frankfurt|Paris|Amsterdam"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🌎 美洲节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)美国|加拿大|墨西哥|巴西|阿根廷|智利|US|CA|MX|BR|AR|CL|America|Canada|Mexico|Brazil"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🌍 非洲节点
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)非洲|南非|埃及|尼日利亚|肯尼亚|ZA|EG|NG|KE|Africa"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🌍 全球节点
+      policies: [Subscribe]
+      flatten: true
+      filter: ".*"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🌏 其他节点
+      policies: [Subscribe]
+      flatten: true
+      filter: ".*"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 香港家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(香港|HK|Hong Kong).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(香港|HK|Hong Kong)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 台湾家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(台湾|TW|Taiwan).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(台湾|TW|Taiwan)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 日韩家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(日本|韩国|JP|KR|Japan|Korea|Tokyo|Seoul).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(日本|韩国|JP|KR|Japan|Korea|Tokyo|Seoul)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 狮城家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(新加坡|SG|Singapore).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(新加坡|SG|Singapore)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 亚太家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(香港|台湾|日本|韩国|新加坡|泰国|越南|印尼|菲律宾|HK|TW|JP|KR|SG|TH|VN|ID|PH|Asia).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(香港|台湾|日本|韩国|新加坡|泰国|越南|印尼|菲律宾|HK|TW|JP|KR|SG|TH|VN|ID|PH|Asia)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 美国家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(美国|US|USA|United States|Los Angeles|San Jose|New York).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(美国|US|USA|United States|Los Angeles|San Jose|New York)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 欧洲家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(欧洲|英国|德国|法国|荷兰|EU|UK|DE|FR|NL|Europe|London|Frankfurt|Paris|Amsterdam).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(欧洲|英国|德国|法国|荷兰|EU|UK|DE|FR|NL|Europe|London|Frankfurt|Paris|Amsterdam)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 美洲家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(美国|加拿大|墨西哥|巴西|阿根廷|智利|US|CA|MX|BR|AR|CL|America|Canada|Mexico|Brazil).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(美国|加拿大|墨西哥|巴西|阿根廷|智利|US|CA|MX|BR|AR|CL|America|Canada|Mexico|Brazil)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 非洲家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)(非洲|南非|埃及|尼日利亚|肯尼亚|ZA|EG|NG|KE|Africa).*(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线)|(家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线).*(非洲|南非|埃及|尼日利亚|肯尼亚|ZA|EG|NG|KE|Africa)"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 其他家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+  - auto_test:
+      name: 🏡 全球家宽
+      policies: [Subscribe]
+      flatten: true
+      filter: "(?i)家宽|住宅|宽带|resi|residential|home|broadband|isp|iplc|iepl|专线"
+      interval: 300
+      tolerance: 100
+      timeout: 5
+
+  - select:
+      name: 🚀 节点选择
+      policies: [🌍 全球节点, 🏡 全球家宽, 🇭🇰 香港节点, 🏡 香港家宽, 🇹🇼 台湾节点, 🏡 台湾家宽, 🇯🇵 日韩节点, 🏡 日韩家宽, 🇸🇬 狮城节点, 🏡 狮城家宽, 🌏 亚太节点, 🏡 亚太家宽, 🇺🇸 美国节点, 🏡 美国家宽, 🇪🇺 欧洲节点, 🏡 欧洲家宽, 🌎 美洲节点, 🏡 美洲家宽, 🌍 非洲节点, 🏡 非洲家宽, 🌏 其他节点, 🏡 其他家宽, DIRECT]
+      icon: globe
+
+  - select:
+      name: 🤖 AI 服务
+      policies: [🚀 节点选择, 🇺🇸 美国节点, 🌍 全球节点, 🏡 全球家宽, 🇯🇵 日韩节点, 🇸🇬 狮城节点, 🇭🇰 香港节点, DIRECT]
+  - select:
+      name: 💰 加密货币
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇸🇬 狮城节点, DIRECT]
+  - select:
+      name: 🏦 金融支付
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇭🇰 香港节点, 🇸🇬 狮城节点, DIRECT]
+  - select:
+      name: 💬 即时通讯
+      policies: [🚀 节点选择, 🌍 全球节点, 🇭🇰 香港节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点, DIRECT]
+  - select:
+      name: 📱 社交媒体
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点, DIRECT]
+  - select:
+      name: 🧑‍💼 会议协作
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点, DIRECT]
+  - select:
+      name: 📺 国内流媒体
+      policies: [DIRECT, 🏠 国内网站, 🚀 节点选择]
+  - select:
+      name: 🎵 TikTok
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点]
+  - select:
+      name: 🎥 Netflix
+      policies: [🚀 节点选择, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点, 🌍 全球节点]
+  - select:
+      name: 🎬 Disney+
+      policies: [🚀 节点选择, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点, 🌍 全球节点]
+  - select:
+      name: 📡 HBO/Max
+      policies: [🚀 节点选择, 🇺🇸 美国节点, 🌍 全球节点, DIRECT]
+  - select:
+      name: 📺 Hulu
+      policies: [🚀 节点选择, 🇯🇵 日韩节点, 🇺🇸 美国节点, 🌍 全球节点, DIRECT]
+  - select:
+      name: 🎬 Prime Video
+      policies: [🚀 节点选择, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点, 🌍 全球节点]
+  - select:
+      name: 📹 YouTube
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, 🇸🇬 狮城节点]
+  - select:
+      name: 🎵 音乐流媒体
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, DIRECT]
+  - select:
+      name: 🇭🇰 香港流媒体
+      policies: [🇭🇰 香港节点, 🚀 节点选择, DIRECT]
+  - select:
+      name: 🇹🇼 台湾流媒体
+      policies: [🇹🇼 台湾节点, 🚀 节点选择, DIRECT]
+  - select:
+      name: 🇯🇵 日韩流媒体
+      policies: [🇯🇵 日韩节点, 🚀 节点选择, DIRECT]
+  - select:
+      name: 🇪🇺 欧洲流媒体
+      policies: [🇪🇺 欧洲节点, 🚀 节点选择, DIRECT]
+  - select:
+      name: 🌐 其他国外流媒体
+      policies: [🚀 节点选择, 🌍 全球节点, DIRECT]
+  - select:
+      name: 🕹️ 国内游戏
+      policies: [DIRECT, 🏠 国内网站, 🚀 节点选择]
+  - select:
+      name: 🎮 国外游戏
+      policies: [🚀 节点选择, 🌍 全球节点, 🇯🇵 日韩节点, 🇺🇸 美国节点, DIRECT]
+  - select:
+      name: 🔍 Google 服务
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, DIRECT]
+  - select:
+      name: 🔧 工具与服务
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, DIRECT]
+  - select:
+      name: Ⓜ️ 微软服务
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, DIRECT]
+  - select:
+      name: 🍎 苹果服务
+      policies: [DIRECT, 🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点]
+  - select:
+      name: 📥 下载更新
+      policies: [DIRECT, 🚀 节点选择, 🌍 全球节点]
+  - select:
+      name: 🛰️ BT/PT Tracker
+      policies: [DIRECT, 🚀 节点选择]
+  - select:
+      name: 🏠 国内网站
+      policies: [DIRECT, 🚀 节点选择]
+  - select:
+      name: 🚫 受限网站
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点]
+  - select:
+      name: 🌐 国外网站
+      policies: [🚀 节点选择, 🌍 全球节点, 🇺🇸 美国节点, 🇯🇵 日韩节点, DIRECT]
+  - select:
+      name: 🐟 漏网之鱼
+      policies: [🚀 节点选择, 🌍 全球节点, DIRECT]
+  - select:
+      name: 🛑 广告拦截
+      policies: [REJECT, DIRECT]
+
+rules:
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/adfp-direct.yaml"
+      policy: DIRECT
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/adfp-intl-site.yaml"
+      policy: 🌐 国外网站
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/adfp-payments.yaml"
+      policy: 🏦 金融支付
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/cnmedia-guard.yaml"
+      policy: 📺 国内流媒体
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/local-direct.yaml"
+      policy: DIRECT
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/gfw-guard.yaml"
+      policy: 🚫 受限网站
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/youtube-guard.yaml"
+      policy: 📹 YouTube
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/cnsite-guard.yaml"
+      policy: 🏠 国内网站
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/work-guard.yaml"
+      policy: 🧑‍💼 会议协作
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/ai-supplement.yaml"
+      policy: 🤖 AI 服务
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/google-mail-intl.yaml"
+      policy: 🌐 国外网站
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/google-work.yaml"
+      policy: 🧑‍💼 会议协作
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/download-guard.yaml"
+      policy: 📥 下载更新
+      update_interval: 86400
+
+  - dest_port:
+      match: "3478,3479,5349,19302,19305,19307"
+      policy: DIRECT
+  - geoip:
+      match: CN
+      policy: 🏠 国内网站
+      no_resolve: true
+  - default:
+      policy: 🐟 漏网之鱼

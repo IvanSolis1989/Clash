@@ -6,6 +6,11 @@
 
 ---
 
+## v5.4.38-QX.1 (2026-07-09)
+
+- SCKI-SUPPLEMENTAL：`[filter_remote]` 新增 13 个 Quantumult X 原生 supplemental 规则集，替代 `filter_local` 零星白名单。
+- SYNC：版本元数据同步 Clash Party v5.4.38。
+
 ## v5.4.37-QX.1 (2026-06-29)
 
 - META#170-DNS-POLICY：跟随 Clash Party v5.4.37 更新版本元数据。

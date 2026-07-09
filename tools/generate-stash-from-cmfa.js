@@ -8,7 +8,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const SOURCE_FILE = 'Clash Meta For Android/CMFA(mihomo).yaml';
 const OUTPUT_FILE = 'Stash/Stash.yaml';
 const VERSION_SUFFIX = 'stash.1';
-const BUILD_DATE = '2026-07-07';
+const BUILD_DATE = '2026-07-09';
 
 const DNS_BOOTSTRAP_PLAINTEXT = ['223.5.5.5', '119.29.29.29', '1.1.1.1', '8.8.8.8'];
 const DNS_DOMESTIC_DOH = ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query'];
@@ -125,7 +125,7 @@ function buildHeader(versions) {
     '# ================================================================',
     `# Stash Smart ${versions.stashVersion} - Stash (Clash Premium) 配置`,
     `# Build: ${BUILD_DATE}`,
-    '# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 376 rule-providers',
+    '# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 391 rule-providers',
     `# 基线：Clash Party ${versions.baselineVersion}（唯一主线） / 派生：CMFA ${versions.cmfaVersion}`,
     '# 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）',
     '# 变更历史：见 `Stash/CHANGELOG.md`',

@@ -11,6 +11,7 @@ Run:
 
 ```bash
 node tools/generate-stash-from-cmfa.js
+node tools/generate-egern-supplemental.js
 ```
 
 Scope:
@@ -22,6 +23,11 @@ Scope:
 - removes Stash-unverified Mihomo-only fields such as GeoX auto-update,
   sniffer, provider health-check / exclude-filter, provider download `proxy`,
   and Mihomo-specific DNS fallback keys.
+- reads `rulesets/supplemental/clash/*.list` as the Egern supplemental source;
+- writes `rulesets/supplemental/egern/*.yaml` with Egern-native
+  `domain_suffix_set` / `domain_set` / `ip_cidr_set` fields;
+- skips process rule sets because Egern does not expose Clash-style
+  `PROCESS-NAME` matching.
 
 ## JS overwrite smoke contract
 
@@ -70,6 +76,8 @@ Scope:
   Quantumult X;
 - verifies Stash YAML is a generated CMFA derivative and does not carry
   unverified Mihomo-only keys;
+- validates Egern Preview metadata, 22 region auto-test groups, 33 business
+  groups, and 13 native supplemental rule-set references;
 - validates SingBox and v2rayN JSON structure and baseline metadata;
 - extracts OpenClash heredoc YAML and, when Ruby is available, parses it through
   Ruby/Psych to catch duplicate top-level `rule-providers` / `rules` keys;

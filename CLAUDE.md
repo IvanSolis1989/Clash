@@ -310,6 +310,22 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 
 ---
 
+### 1.6 补充规则集优先（禁止无必要散写单条规则）⚠️
+
+主分流规则必须保持清晰。除非存在 **100% 必要性**，不得在各产物主规则中继续新增零散单条规则。
+
+默认处理规则：
+
+1. `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` / `IP-CIDR` / `PROCESS-NAME` 等零星补丁，优先加入 `rulesets/supplemental/` 下对应补充规则集。
+2. 各产物只负责引用补充规则集：Mihomo 家族使用 `rule-providers` + `RULE-SET`；Surge/Shadowrocket 使用 URL `RULE-SET`；Loon 使用 `[Remote Rule]`；Quantumult X 使用 `[filter_remote]`；SingBox 由生成器展开为原生 route rule。
+3. 同一补丁若目标策略不同，必须拆成多个规则集；不要把 DIRECT / 支付 / 国外网站等不同策略混进同一个 rule-set。
+4. 只有端口规则、逻辑组合规则（`AND` / `OR` / `NOT`）、`MATCH` / `FINAL`、平台无法表达的字段，或已记录原因的平台专属例外，才允许继续保留为主规则内联。
+5. 临时排障单条规则不得长期留在主规则；同一 PR 必须给出迁入补充规则集或删除的结论。
+
+新增规则前的强制自问：**能否放进 `rulesets/supplemental/`？** 只要答案不是明确不能，就不允许散写单条规则。
+
+---
+
 
 
 ---

@@ -1,0 +1,5 @@
+ip-cidr, 172.90.1.130/32, no-resolve
+host, ip.cip.cc
+host-suffix, chiphell.com
+host-suffix, iwipwedabay.com
+host-suffix, cdn.weixin.qq.com

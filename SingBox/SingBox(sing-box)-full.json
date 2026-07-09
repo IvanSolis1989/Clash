@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v5.4.37-sing.1",
-    "build": "2026-06-29",
-    "baseline": "Clash Party v5.4.37",
+    "version": "v5.4.38-sing.1",
+    "build": "2026-07-09",
+    "baseline": "Clash Party v5.4.38",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {
@@ -1963,20 +1963,6 @@
       },
       {
         "domain_suffix": [
-          "cloudflarestorage.com"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "domain_suffix": [
-          "paddle.com"
-        ],
-        "action": "route",
-        "outbound": "🏦 金融支付"
-      },
-      {
-        "domain_suffix": [
           "jpush.cn"
         ],
         "action": "route",
@@ -2016,6 +2002,20 @@
         ],
         "action": "route",
         "outbound": "DIRECT"
+      },
+      {
+        "domain_suffix": [
+          "cloudflarestorage.com"
+        ],
+        "action": "route",
+        "outbound": "🌐 国外网站"
+      },
+      {
+        "domain_suffix": [
+          "paddle.com"
+        ],
+        "action": "route",
+        "outbound": "🏦 金融支付"
       },
       {
         "domain_suffix": [
@@ -2194,6 +2194,34 @@
         "outbound": "DIRECT"
       },
       {
+        "domain": [
+          "ip.cip.cc"
+        ],
+        "action": "route",
+        "outbound": "DIRECT"
+      },
+      {
+        "domain_suffix": [
+          "chiphell.com"
+        ],
+        "action": "route",
+        "outbound": "DIRECT"
+      },
+      {
+        "domain_suffix": [
+          "iwipwedabay.com"
+        ],
+        "action": "route",
+        "outbound": "DIRECT"
+      },
+      {
+        "domain_suffix": [
+          "cdn.weixin.qq.com"
+        ],
+        "action": "route",
+        "outbound": "DIRECT"
+      },
+      {
         "process_name": [
           "WorkPro.exe"
         ],
@@ -2250,13 +2278,6 @@
         "outbound": "DIRECT"
       },
       {
-        "domain": [
-          "ip.cip.cc"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
         "process_name": [
           "gsupservice.exe"
         ],
@@ -2297,34 +2318,6 @@
         ],
         "action": "route",
         "outbound": "DIRECT"
-      },
-      {
-        "process_name": [
-          "RustDesk.exe"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "process_name": [
-          "rustdesk.exe"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "process_name": [
-          "RustDesk"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "process_name": [
-          "rustdesk"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
       },
       {
         "process_name": [
@@ -2796,6 +2789,34 @@
         "outbound": "DIRECT"
       },
       {
+        "process_name": [
+          "RustDesk.exe"
+        ],
+        "action": "route",
+        "outbound": "🧑‍💼 会议协作"
+      },
+      {
+        "process_name": [
+          "rustdesk.exe"
+        ],
+        "action": "route",
+        "outbound": "🧑‍💼 会议协作"
+      },
+      {
+        "process_name": [
+          "RustDesk"
+        ],
+        "action": "route",
+        "outbound": "🧑‍💼 会议协作"
+      },
+      {
+        "process_name": [
+          "rustdesk"
+        ],
+        "action": "route",
+        "outbound": "🧑‍💼 会议协作"
+      },
+      {
         "port": [
           26880
         ],
@@ -2867,27 +2888,6 @@
       },
       {
         "domain_suffix": [
-          "chiphell.com"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "domain_suffix": [
-          "iwipwedabay.com"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "domain_suffix": [
-          "cdn.weixin.qq.com"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "domain_suffix": [
           "binance.vision"
         ],
         "action": "route",
@@ -2917,6 +2917,20 @@
       {
         "domain": [
           "dns.google.com"
+        ],
+        "action": "route",
+        "outbound": "🚫 受限网站"
+      },
+      {
+        "domain_suffix": [
+          "inflection.ai"
+        ],
+        "action": "route",
+        "outbound": "🚫 受限网站"
+      },
+      {
+        "domain_suffix": [
+          "pi.ai"
         ],
         "action": "route",
         "outbound": "🚫 受限网站"
@@ -2978,6 +2992,13 @@
         "outbound": "🏠 国内网站"
       },
       {
+        "domain_suffix": [
+          "deepseek.com"
+        ],
+        "action": "route",
+        "outbound": "🏠 国内网站"
+      },
+      {
         "rule_set": [
           "openai"
         ],
@@ -3018,13 +3039,6 @@
         ],
         "action": "route",
         "outbound": "🤖 AI 服务"
-      },
-      {
-        "domain_suffix": [
-          "deepseek.com"
-        ],
-        "action": "route",
-        "outbound": "🏠 国内网站"
       },
       {
         "domain_suffix": [
@@ -3123,20 +3137,6 @@
         ],
         "action": "route",
         "outbound": "🤖 AI 服务"
-      },
-      {
-        "domain_suffix": [
-          "inflection.ai"
-        ],
-        "action": "route",
-        "outbound": "🚫 受限网站"
-      },
-      {
-        "domain_suffix": [
-          "pi.ai"
-        ],
-        "action": "route",
-        "outbound": "🚫 受限网站"
       },
       {
         "domain_suffix": [
@@ -3265,6 +3265,13 @@
         "outbound": "📥 下载更新"
       },
       {
+        "domain_suffix": [
+          "do.dsp.mp.microsoft.com"
+        ],
+        "action": "route",
+        "outbound": "📥 下载更新"
+      },
+      {
         "rule_set": [
           "google"
         ],
@@ -3277,13 +3284,6 @@
         ],
         "action": "route",
         "outbound": "🔍 Google 服务"
-      },
-      {
-        "domain_suffix": [
-          "do.dsp.mp.microsoft.com"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
       },
       {
         "rule_set": [
