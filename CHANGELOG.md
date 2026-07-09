@@ -1,23 +1,31 @@
 # Smart-Config-Kit — 变更日志
 
 > 仓库级变更摘要。各产物的详细变更见对应子目录 `CHANGELOG.md`。
-> 主版本号由 `Clash Party/ClashParty(mihomo-smart).js` 内 `const VERSION` 唯一决定。
+> 主版本号由 `rulesets/source/routing-graph.js` 的 `SOURCE_GRAPH_VERSION` 与客户端产物版本共同维护；规则权威源是 `rulesets/source/routing-graph.js`。
 > 覆盖 14 个客户端形态的等价实现：Clash Party JS / CMFA / Stash / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / Egern / v2rayN / Passwall / Passwall2 / FlClash。
 
 ---
 
+## Unreleased (2026-07-09)
+
+- SOURCE-GRAPH：新增 `rulesets/source/routing-graph.js` 作为规则权威输入，集中记录上游 provider、原始规则顺序、MRS 归一化映射和最终分流目标。
+- APP-SIMPLIFY：Clash Party Smart/Normal 与 FlClash JS 覆写脚本移除 raw provider/rule 注入和 MRS 映射表，只保留节点/策略组逻辑与最终融合规则集调用。
+- FALLBACK-FUSED：v2rayN Xray 由 fused sing-box JSON 展平成 86 条原生 Xray RuleObject；Passwall / Passwall2 改为 68 条原生 `rule-set:remote` fused shunt rule，不再维护 33 条手写域名/IP 展平列表。
+- TOOLING：`sync-mihomo-mrs-rule-providers.js` 改读 source graph raw 输入；`apply-mihomo-mrs-overrides.js` 只更新 source graph；`build-fused-rule-sets.js` 改读 source graph normalized 输入，并联动 `generate-fused-fallback-artifacts.js` 生成 v2rayN / Passwall / Passwall2 fallback 产物。
+- VERIFY：全产物合同新增 source graph authority、fallback fused 映射和 Passwall 原生 `.srs` 引用检查，并禁止客户端 JS 重新携带原始上游规则框架。本次不改变最终融合规则语义，最终 Mihomo-family 输出为 `113 providers / 130 rules`。
+
 ## v6.0.0 (2026-07-09)
 
-- FUSED-RULESETS：新增 `tools/build-fused-rule-sets.js`，以 Clash Party Smart 运行时输出作为唯一基准，将源 `474 providers / 929 rules` 编译为 `68` 个策略顺序段、`120` 个融合 provider、`130` 条主规则，保留 `17` 条必要内联规则，`unresolved=0`。
+- FUSED-RULESETS：新增 `tools/build-fused-rule-sets.js`，将源 `474 providers / 931 rules` 编译为 `68` 个策略顺序段、`113` 个融合 provider、`130` 条主规则，保留 `17` 条必要内联规则，`unresolved=0`。
 - MIHOMO-MRS：支持 `.mrs` 的 Mihomo 产物优先引用融合后的 `*-domain.mrs` / `*-ipcidr.mrs` / `*-ipcidr-no-resolve.mrs`；不可转部分落到 `*-residual.yaml`，不再依赖静态兼容映射表膨胀主配置。
 - NATIVE-FUSED：Shadowrocket / Surge / Loon / Quantumult X 迁移到融合文本规则集；Egern 生成 118 个原生 YAML 规则集；SingBox 生成 68 个 `.srs` 规则集。
-- GOVERNANCE：`CLAUDE.md` / `AGENTS.md` 固化 “Clash Party → MRS → 融合规则集 → 各端产物” 的单向链路，禁止后续把 CMFA 当成权威源。
+- GOVERNANCE：`CLAUDE.md` / `AGENTS.md` 固化 “source graph → MRS → 融合规则集 → 各端产物” 的单向链路，禁止后续把 Clash Party / CMFA 当成权威源。
 - VERIFY：同步更新 JS / PROCESS-NAME / 全产物合同校验，融合 manifest 与 `.mrs` manifest 纳入验收。
 
 ## v5.4.39 (2026-07-09)
 
 - MRS-PARTIAL：全量复查剩余 `YamlRule` / `TextRule`，可迁移部分全部迁移；`.mrs` manifest 当前为 converted=267、split=39、partial=30、existing_mrs=35、retained=20、failed=0。
-- MIHOMO-MRS：Mihomo 系产物同步到 474 providers / 929 rules；424 个 provider 使用 `.mrs`，30 个 provider 使用本仓库残余 classical YAML，20 个确认为全量不可迁移保留原格式。
+- MIHOMO-MRS：Mihomo 系产物同步到 474 providers / 931 rules；424 个 provider 使用 `.mrs`，30 个 provider 使用本仓库残余 classical YAML，20 个确认为全量不可迁移保留原格式。
 - SCKI-SUPPLEMENTAL：补充规则集里可表达为 domain/ipcidr 的 `scki-*` 已迁移到 `.mrs`；两个 `PROCESS-NAME` 规则集继续保留为平台例外。
 - DERIVED：Egern 重新生成为 927 条主规则、484 个 rule_set；SingBox 生成器改为从 `.mrs` manifest 回溯 `scki-*` 源规则并展开为原生 route rules。
 - VERIFY：`.mrs` 映射表在 JS 产物中改为压缩生成层，静态 YAML 产物直接写最终规则集地址；合同校验同步检查 partial / residual 文件数量与引用。

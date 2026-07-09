@@ -5,11 +5,16 @@ const childProcess = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const vm = require('node:vm');
 const zlib = require('node:zlib');
+const {
+  SOURCE_GRAPH_ID,
+  getMihomoNormalizedRoutingGraph,
+} = require('../rulesets/source/routing-graph');
+const {
+  generateFusedFallbackArtifacts,
+} = require('./generate-fused-fallback-artifacts');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
-const CLASH_PARTY_FILE = path.join(REPO_ROOT, 'Clash Party/ClashParty(mihomo-smart).js');
 const MIHOMO_MRS_MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
 const FUSED_ROOT = path.join(REPO_ROOT, 'rulesets/generated/fused');
 const FUSED_MIHOMO_DIR = path.join(FUSED_ROOT, 'mihomo');
@@ -29,24 +34,20 @@ const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rule
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
 const HAGEZI_TIF_DOMAINS = 'https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/tif.txt';
 const ANTI_AD_CLASH = 'https://anti-ad.net/clash.yaml';
-const MIHOMO_REPO_API = 'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest';
-const SING_BOX_REPO_API = 'https://api.github.com/repos/SagerNet/sing-box/releases/latest';
+const MIHOMO_REPO = 'MetaCubeX/mihomo';
+const SING_BOX_REPO = 'SagerNet/sing-box';
+const MIHOMO_REPO_API = `https://api.github.com/repos/${MIHOMO_REPO}/releases/latest`;
+const SING_BOX_REPO_API = `https://api.github.com/repos/${SING_BOX_REPO}/releases/latest`;
+const RELEASE_FETCH_TIMEOUT_MS = Number(process.env.SCKI_RELEASE_FETCH_TIMEOUT_MS || 15000);
 
 const DOMAIN_TYPES = new Set(['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD', 'DOMAIN-REGEX', 'DOMAIN-WILDCARD']);
 const IPCIDR_TYPES = new Set(['IP-CIDR', 'IP-CIDR6']);
 const RESIDUAL_TYPES = new Set(['PROCESS-NAME', 'PROCESS-PATH', 'PROCESS-PATH-REGEX', 'SRC-IP-CIDR', 'SRC-PORT', 'GEOSITE', 'GEOIP']);
 
 const INLINE_ONLY_TYPES = new Set(['AND', 'OR', 'NOT', 'DST-PORT', 'SRC-PORT', 'MATCH', 'FINAL', 'NETWORK']);
-const REQUIRED_SUPPORT_PROVIDERS = new Set([
-  // Still referenced by inline QUIC AND rules or sing-box DNS/QUIC helper rules.
-  'apple',
-  'microsoft',
-  'youtube',
-  'google',
-  'cn',
-  'cn-ip',
-  'anti-ad',
-]);
+// Final Mihomo-family products should only expose generated scki-fused-* providers.
+// GEO checks that must remain runtime-local are emitted as GEOSITE/GEOIP inline rules.
+const REQUIRED_SUPPORT_PROVIDERS = new Set();
 
 const POLICY_SLUGS = new Map([
   ['DIRECT', 'direct'],
@@ -185,43 +186,13 @@ function parsePayloadEntries(text) {
   return entries;
 }
 
-function runClashPartyBaseline() {
-  const source = readText(CLASH_PARTY_FILE);
-  const logs = [];
-  const sandbox = {
-    console: {
-      log(...args) { logs.push(args.join(' ')); },
-      warn(...args) { logs.push(args.join(' ')); },
-      error(...args) { logs.push(args.join(' ')); },
-    },
-    SCKI_DISABLE_FUSED_RULESETS: true,
-  };
-  vm.createContext(sandbox);
-  vm.runInContext(`${source}\nthis.__main = main; this.__VERSION = VERSION;`, sandbox, { filename: CLASH_PARTY_FILE });
-  if (typeof sandbox.__main !== 'function') throw new Error('Clash Party main() not found');
-  const proxy = (name) => ({ name, type: 'ss', server: 'example.com', port: 443, cipher: 'aes-128-gcm', password: 'x' });
-  const config = {
-    proxies: [
-      proxy('HK 01'),
-      proxy('HK Home 01'),
-      proxy('TW 01'),
-      proxy('JP 01'),
-      proxy('KR 01'),
-      proxy('SG 01'),
-      proxy('US 01'),
-      proxy('DE 01'),
-    ],
-    'proxy-groups': [],
-    'rule-providers': {},
-    rules: [],
-    dns: {},
-  };
-  const output = sandbox.__main(config);
+function runSourceRoutingGraphBaseline() {
+  const output = getMihomoNormalizedRoutingGraph();
   return {
-    version: sandbox.__VERSION,
+    version: output.version,
     providers: output['rule-providers'] || {},
     rules: output.rules || [],
-    logs,
+    logs: [],
   };
 }
 
@@ -674,9 +645,104 @@ function renderSingBoxSource(entries) {
 }
 
 async function downloadJson(url) {
-  const response = await fetch(url, { headers: { 'user-agent': 'Smart-Config-Kit-Fused-Rules/1.0' } });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), RELEASE_FETCH_TIMEOUT_MS);
+  let response;
+  try {
+    response = await fetch(url, {
+      signal: controller.signal,
+      headers: { 'user-agent': 'Smart-Config-Kit-Fused-Rules/1.0' },
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   if (!response.ok) throw new Error(`${url} -> HTTP ${response.status}`);
   return response.json();
+}
+
+function findExecutable(command) {
+  try {
+    const finder = process.platform === 'win32' ? 'where.exe' : 'which';
+    const found = childProcess.execFileSync(finder, [command], {
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).split(/\r?\n/)[0].trim();
+    return found || null;
+  } catch {
+    return null;
+  }
+}
+
+function configuredExecutable(envName, commands) {
+  const configured = process.env[envName];
+  if (configured) {
+    if (!fs.existsSync(configured)) throw new Error(`${envName} points to missing file: ${configured}`);
+    return configured;
+  }
+  for (const command of commands) {
+    const found = findExecutable(command);
+    if (found) return found;
+  }
+  return null;
+}
+
+function readReleaseWithGhCli(repo) {
+  try {
+    const raw = childProcess.execFileSync('gh', ['release', 'view', '-R', repo, '--json', 'tagName,assets'], {
+      cwd: REPO_ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    const release = JSON.parse(raw);
+    return {
+      tag_name: release.tagName,
+      assets: (release.assets || []).map((asset) => ({
+        name: asset.name,
+        browser_download_url: asset.url,
+      })),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function downloadRelease(repo, apiUrl) {
+  const ghRelease = readReleaseWithGhCli(repo);
+  if (ghRelease) return ghRelease;
+  return downloadJson(apiUrl);
+}
+
+async function downloadBuffer(url) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), RELEASE_FETCH_TIMEOUT_MS);
+  try {
+    const response = await fetch(url, {
+      signal: controller.signal,
+      headers: { 'user-agent': 'Smart-Config-Kit-Fused-Rules/1.0' },
+    });
+    if (!response.ok) throw new Error(`${url} -> HTTP ${response.status}`);
+    return Buffer.from(await response.arrayBuffer());
+  } catch (error) {
+    const curl = findExecutable(process.platform === 'win32' ? 'curl.exe' : 'curl');
+    if (!curl) throw error;
+    fs.mkdirSync(CACHE_DIR, { recursive: true });
+    const urlPath = new URL(url).pathname;
+    const filename = path.basename(urlPath) || `download-${Date.now()}`;
+    const target = path.join(CACHE_DIR, `${Date.now()}-${filename}`);
+    const result = childProcess.spawnSync(curl, ['-L', '--fail', '--silent', '--show-error', '-o', target, url], {
+      cwd: REPO_ROOT,
+      encoding: 'utf8',
+    });
+    if (result.status !== 0) {
+      if (fs.existsSync(target)) fs.rmSync(target, { force: true });
+      throw new Error(result.stderr || result.stdout || error.message);
+    }
+    const buffer = fs.readFileSync(target);
+    fs.rmSync(target, { force: true });
+    return buffer;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function mihomoAssetPattern() {
@@ -697,19 +763,20 @@ function mihomoAssetPattern() {
 }
 
 async function ensureMihomoBinary() {
+  const configured = configuredExecutable('SCKI_MIHOMO_BIN', process.platform === 'win32' ? ['mihomo.exe', 'mihomo'] : ['mihomo']);
+  if (configured) return configured;
+
   fs.mkdirSync(MIHOMO_CACHE_DIR, { recursive: true });
   const existing = fs.readdirSync(MIHOMO_CACHE_DIR).find((file) => /^mihomo-v.*\.exe$/.test(file) || /^mihomo-v/.test(file));
   if (existing) return path.join(MIHOMO_CACHE_DIR, existing);
 
-  const release = await downloadJson(MIHOMO_REPO_API);
+  const release = await downloadRelease(MIHOMO_REPO, MIHOMO_REPO_API);
   const asset = release.assets.find((candidate) => mihomoAssetPattern().test(candidate.name));
   if (!asset) throw new Error('No mihomo release asset found');
   const target = path.join(MIHOMO_CACHE_DIR, `mihomo-${release.tag_name}${process.platform === 'win32' ? '.exe' : ''}`);
   if (fs.existsSync(target)) return target;
   const archive = path.join(MIHOMO_CACHE_DIR, asset.name);
-  const response = await fetch(asset.browser_download_url, { headers: { 'user-agent': 'Smart-Config-Kit-Fused-Rules/1.0' } });
-  if (!response.ok) throw new Error(`${asset.browser_download_url} -> HTTP ${response.status}`);
-  fs.writeFileSync(archive, Buffer.from(await response.arrayBuffer()));
+  fs.writeFileSync(archive, await downloadBuffer(asset.browser_download_url));
   if (asset.name.endsWith('.gz')) {
     fs.writeFileSync(target, zlib.gunzipSync(fs.readFileSync(archive)));
     fs.chmodSync(target, 0o755);
@@ -746,12 +813,8 @@ function singBoxAssetPattern() {
 
 async function ensureSingBoxBinary() {
   const command = process.platform === 'win32' ? 'sing-box.exe' : 'sing-box';
-  try {
-    const found = childProcess.execFileSync(process.platform === 'win32' ? 'where.exe' : 'which', [command], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).split(/\r?\n/)[0].trim();
-    if (found) return found;
-  } catch {
-    // Download below.
-  }
+  const configured = configuredExecutable('SCKI_SING_BOX_BIN', process.platform === 'win32' ? ['sing-box.exe', 'sing-box'] : ['sing-box']);
+  if (configured) return configured;
 
   const pattern = singBoxAssetPattern();
   if (!pattern) return null;
@@ -760,13 +823,11 @@ async function ensureSingBoxBinary() {
   const existing = fs.readdirSync(dir).find((file) => file === command || file === 'sing-box.exe');
   if (existing) return path.join(dir, existing);
 
-  const release = await downloadJson(SING_BOX_REPO_API);
+  const release = await downloadRelease(SING_BOX_REPO, SING_BOX_REPO_API);
   const asset = release.assets.find((candidate) => pattern.test(candidate.name));
   if (!asset) return null;
   const archive = path.join(dir, asset.name);
-  const response = await fetch(asset.browser_download_url, { headers: { 'user-agent': 'Smart-Config-Kit-Fused-Rules/1.0' } });
-  if (!response.ok) throw new Error(`${asset.browser_download_url} -> HTTP ${response.status}`);
-  fs.writeFileSync(archive, Buffer.from(await response.arrayBuffer()));
+  fs.writeFileSync(archive, await downloadBuffer(asset.browser_download_url));
   const extractDir = path.join(dir, `unpack-${release.tag_name}`);
   fs.rmSync(extractDir, { recursive: true, force: true });
   fs.mkdirSync(extractDir, { recursive: true });
@@ -1010,7 +1071,7 @@ function buildTimeline(segments, inlineRules) {
 function renderJsFusedBlock(providers, rules) {
   return [
     '// BEGIN AUTO-GENERATED MIHOMO FUSED RULE-SETS',
-    '// Generated by tools/build-fused-rule-sets.js from Clash Party runtime output.',
+    '// Generated by tools/build-fused-rule-sets.js from rulesets/source/routing-graph.js.',
     `const MIHOMO_FUSED_RULE_PROVIDERS = ${JSON.stringify(providers)}`,
     `const MIHOMO_FUSED_RULES = ${JSON.stringify(rules)}`,
     '',
@@ -1034,12 +1095,12 @@ function renderJsFusedBlock(providers, rules) {
 function applyJsFusedBlock(relativeFile, providers, rules) {
   const file = path.join(REPO_ROOT, relativeFile);
   let source = readText(file);
-  source = source.replace(/\n\/\/ BEGIN AUTO-GENERATED MIHOMO FUSED RULE-SETS[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO FUSED RULE-SETS\n/g, '\n');
+  source = source.replace(/(?:\r?\n)?\/\/ BEGIN AUTO-GENERATED MIHOMO FUSED RULE-SETS[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO FUSED RULE-SETS(?:\r?\n)*/g, '\n');
   source = source.replace(/\n\s*applyMihomoFusedRuleSets\(config\)\n/g, '\n');
   const block = renderJsFusedBlock(providers, rules);
-  if (!source.includes('// BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES')) throw new Error(`${relativeFile}: missing MRS block anchor`);
-  source = source.replace(/\n\/\/ BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES/, `\n${block}\n// BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES`);
-  const withCall = source.replace(/(\n\s*)(injectRules|overwriteRules)\(config\)/, '$1$2(config)$1applyMihomoFusedRuleSets(config)');
+  if (!source.includes('\nconst REGION_ORDER =')) throw new Error(`${relativeFile}: missing fused block anchor`);
+  source = source.replace(/\nconst REGION_ORDER =/, `\n${block}\nconst REGION_ORDER =`);
+  const withCall = source.replace(/(\n\s*)injectBusinessGroups\(config, activeSmartNames\)/, '$1injectBusinessGroups(config, activeSmartNames)$1applyMihomoFusedRuleSets(config)');
   if (withCall === source) throw new Error(`${relativeFile}: cannot locate rule injection call`);
   source = withCall;
   writeText(file, source);
@@ -1160,7 +1221,7 @@ function applyMobileConfigs(timeline) {
 
 async function main() {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
-  const clashOutput = runClashPartyBaseline();
+  const clashOutput = runSourceRoutingGraphBaseline();
   const { segments, inlineRules, timeline, stats } = await buildSegments(clashOutput);
   const writeStats = await writeFusedRuleSets(segments);
   const fused = mergeFusedRules(segments, timeline, clashOutput.providers, stats.passthroughProviderIds);
@@ -1181,7 +1242,7 @@ async function main() {
 
   const manifest = {
     generated_at: new Date().toISOString(),
-    authority: 'Clash Party/ClashParty(mihomo-smart).js runtime output after Mihomo MRS normalization, with SCKI_DISABLE_FUSED_RULESETS=true',
+    authority: `${SOURCE_GRAPH_ID} after Mihomo MRS normalization`,
     baseline_version: clashOutput.version,
     source_provider_count: Object.keys(clashOutput.providers).length,
     source_rule_count: clashOutput.rules.length,
@@ -1200,7 +1261,9 @@ async function main() {
     inline_rules: inlineRules,
   };
   writeText(path.join(FUSED_ROOT, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
+  const fallbackStats = generateFusedFallbackArtifacts({ quiet: true, updateManifest: true });
   console.log(`fused rule sets: source_providers=${manifest.source_provider_count} source_rules=${manifest.source_rule_count} segments=${manifest.segment_count} fused_providers=${manifest.fused_provider_count} fused_rules=${manifest.fused_rule_count} inline=${manifest.inline_rule_count} mrs=${manifest.generated_mrs_files} srs=${manifest.generated_srs_files} unresolved=${manifest.unresolved_providers.length}`);
+  console.log(`fused fallback artifacts: xray_rules=${fallbackStats.xray.ruleCount} passwall_rules=${fallbackStats.passwallFiles}`);
   if (manifest.unresolved_providers.length || manifest.unresolved_sources.length) {
     console.warn(`fused rule sets warning: passthrough/unresolved items kept=${manifest.unresolved_providers.length + manifest.unresolved_sources.length}`);
   }

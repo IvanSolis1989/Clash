@@ -1,319 +1,90 @@
 # v2rayN 使用教程（对齐 Clash Party v6.0.0）
 
-> 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON 兜底产物说明。
+> 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON fallback 产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.0-v2n.1（详见 `v2rayN/CHANGELOG.md`；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
-
-<sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
-
-> 本目录提供 Windows 客户端 **v2rayN** 的接入说明。
-> v2rayN 本身不是内核，它是一个「多核心调度器」——可以切换到 **mihomo（推荐）/ sing-box / Xray** 三种核心。
-> 因此这里给出 **三条导入路径**，按功能完整度从高到低排列，你任选一条即可。
->
-> 最低 v2rayN 版本：**7.0** 及以上（低版本不支持 mihomo / sing-box 多核切换）
-> 下载地址：https://github.com/2dust/v2rayN/releases
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.0-v2n.2（Build 2026-07-09；基线：Clash Party v6.0.0；变更历史见 `v2rayN/CHANGELOG.md`）。
 
 ---
 
-## 🚀 零基础快速开始
+## 1. 先选核心
 
-### 这是什么？
-v2rayN 是 Windows 上最流行的代理客户端，**免费、开源、中文界面**。它自己不是内核，而是调度「mihomo / sing-box / Xray」三种核心，你选哪种核，就吃对应格式的配置文件。
+v2rayN 是多核心调度器，不是单一代理内核。Smart-Config-Kit 在 v2rayN 里有三条路径：
 
-### 我要准备什么？
-1. **Windows 10 / 11 电脑**（macOS / Linux 请看对应目录）
-2. **[v2rayN 最新版](https://github.com/2dust/v2rayN/releases)**（下 `v2rayN-windows-64-SelfContained.zip` 最简单，解压双击即用）
-3. **一个机场订阅 URL**
-4. **v2rayN 7.0+**（低版本不支持 mihomo/sing-box 多核切换）
+| 路径 | 核心 | 使用文件 | 保真度 | 适用场景 |
+| --- | --- | --- | --- | --- |
+| A | mihomo | `Clash Meta For Android/CMFA(mihomo).yaml` | 高 | 推荐路径；保留 22 区域组 + 33 业务组 |
+| B | sing-box | `SingBox/SingBox(sing-box)-full.json` | 中高 | 想用 sing-box selector/urltest |
+| C | Xray | `v2rayN/v2rayN(xray).json` | 降级 | 已有 Xray 节点配置、不想换核心 |
 
-### 一句话决定走哪条路径
-- **想要 Smart + LightGBM 自动择优** → **不要用 v2rayN**（做不到），用 **Clash Verge Rev / Mihomo Party**（看仓库 `Clash Party/README.md`）
-- **想要 33 业务组 + 区域组的完整体验** → **路径 A**（mihomo 核）或 **路径 B**（sing-box 核）
-- **只要基础上网，节点池共用一个** → **路径 C**（Xray 核，导入本目录的路由 JSON）
-
-### 3 条路径的 3 分钟速览
-
-| 步骤 | 路径 A（mihomo） | 路径 B（sing-box） | 路径 C（Xray） |
-|---|---|---|---|
-| 1. 换核心 | 设置 → 核心基础设置 → mihomo | 设置 → 核心基础设置 → sing-box | （保持默认 Xray）|
-| 2. 导入配置 | 订阅 → 新增 Clash 订阅，URL 填 CMFA YAML | 自定义配置服务器 → 导入 `SingBox(sing-box)-full.json` | 路由设置 → 导入 `v2rayN(xray).json` |
-| 3. 加节点 | Clash 订阅会自动带节点 | JSON 里占位节点替换成你机场的 | 正常通过 v2rayN 订阅加节点 |
-| 规则数 | 376 providers | 41 remote rule_set + 684 route rules | 40 启用规则 |
-| 业务组 | 25 | 25 | ❌ 只有 proxy/direct/block |
-
-详见下面的「🎯 三条路径总览」和各路径详解。
-
-### 跑起来怎么验证？
-- 浏览器打开 `https://www.google.com` 能打开 = 代理通了
-- v2rayN 右下角托盘图标应该是绿色/彩色（有流量）
-- 路径 A / B 下，主面板应能看到 25+ 个策略组；路径 C 下没有业务组（Xray 限制）
-- 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
-
-### 最常见踩坑
-- ❌ **v2rayN 版本太旧**：6.x 以下无 mihomo/sing-box 多核支持。升级到 7.0+。
-- ❌ **路径 A 报"找不到 mihomo.exe"**：首次切换到 mihomo 核心时 v2rayN 会自动下载；如果没弹下载提示，去 https://github.com/MetaCubeX/mihomo/releases 手动下 `mihomo-windows-amd64.exe`，重命名为 `mihomo.exe` 放到 `v2rayN/bin/mihomo/` 目录。
-- ❌ **Windows Defender 报 mihomo.exe 是病毒**：误报。添加信任即可。
-- ❌ **Codex / ChatGPT 还是 403**：这不是分流问题（你已经走美国节点了）。是机场节点是 DC IP 被 OpenAI 风控。换住宅 IP 节点或套 Cloudflare WARP。
-- ❌ **我能直接加载 `ClashParty(mihomo-smart).js` 吗**：**不能**。v2rayN 没实现 JS 覆写执行器。要 LightGBM 请换 Clash Verge Rev / Mihomo Party，见 FAQ Q3。
+想要 Clash Party JS 覆写、Smart 内核和 LightGBM 自动择优，请使用 Clash Party / Mihomo Party / Clash Verge Rev。v2rayN 不能执行 `ClashParty(mihomo-smart).js`。
 
 ---
 
-## 🔌 协议支持（按 v2rayN 核心切换）
+## 2. 路径 A：mihomo 核心
 
-v2rayN 自己不实现协议，它调度三个下层内核，协议支持 = 你选的核支持的协议：
+1. 打开 v2rayN。
+2. 进入设置里的核心基础设置，切到 mihomo。
+3. 新增 Clash 订阅，URL 填本仓库 `Clash Meta For Android/CMFA(mihomo).yaml`。
+4. 启动后应能看到 22 个区域组和 33 个业务组。
 
-| 协议 | Xray 核（默认） | mihomo 核 | sing-box 核 |
-|---|:-:|:-:|:-:|
-| **Shadowsocks (SS) + 2022** | ✅ | ✅ | ✅ |
-| **ShadowsocksR (SSR)** | ❌ | ✅ | ❌ |
-| **VMess** | ✅（原产地）| ✅ | ✅ |
-| **VLESS + REALITY + XTLS-Vision** | ✅（原产地）| ✅ | ✅ |
-| **Trojan** | ✅ | ✅ | ✅ |
-| **Hysteria v1** | ❌ | ✅ | ✅ |
-| **Hysteria 2** | ❌ | ✅ | ✅ |
-| **TUIC v5** | ❌ | ✅ | ✅ |
-| **WireGuard** | ⚠️ 实验 | ✅ | ✅ |
-| **AnyTLS / ShadowTLS** | ❌ | ✅ | ✅ |
-| **Snell / Mieru** | ❌ | ✅ | ❌ |
-| **SOCKS5 / HTTP(S)** | ✅ | ✅ | ✅ |
-
-**选核一句话建议**：
-- 机场给 **VLESS + REALITY** → Xray 核（原产地，性能最好）
-- 机场给 **Hysteria 2 / TUIC** → mihomo 核 或 sing-box 核
-- 想要**所有协议都能跑** → mihomo 核（本仓库路径 A 推荐）
-- 想要**SSR 兼容** → 只有 mihomo 核支持
-
-### 切核心的方法
-v2rayN → 菜单 **设置 → 参数设置 → 核心基础设置** → 勾选要用的那个。首次切换时 v2rayN 会提示下载对应二进制（mihomo.exe / sing-box.exe），若自动下载失败到官方 release 页面手动下。
+这条路径最接近仓库主线，但 CMFA 是静态 YAML，不执行 Clash Party JS，所以没有 LightGBM Smart 组。
 
 ---
 
-## 🎯 三条路径总览
+## 3. 路径 B：sing-box 核心
 
-| 路径 | 核心 | 使用文件 | 业务组 | 区域组 | LightGBM 自动择优 | 推荐度 |
-|---|---|---|---:|---|---|---|
-| **A（强烈推荐）** | mihomo (Clash.Meta) | `Clash Meta For Android/CMFA(mihomo).yaml` | 33 业务 select | 22 区域 `url-test` | ❌（YAML 不含 `type: smart`） | ★★★★★ |
-| **B** | sing-box | `SingBox/SingBox(sing-box)-full.json` | 33 业务 selector | 20 区域 selector/urltest | ❌（sing-box 无此特性） | ★★★★ |
-| **C（仅兜底）** | Xray | `v2rayN/v2rayN(xray).json` | **只有 3 出站** | — | ❌ | ★★ |
+1. 在 v2rayN 里切到 sing-box 核心。
+2. 导入 `SingBox/SingBox(sing-box)-full.json`。
+3. 按你的机场订阅替换或合并节点。
 
-**v2rayN 不能直接加载 Clash Party 的 JS 覆写脚本**（这是本节最关键的事实）：
-- `Clash Party/ClashParty(mihomo-smart).js` 顶部以 `function main(config) { … return config }` 为入口，这是 **Clash Verge Rev / Mihomo Party 的 JS 扩展格式**——客户端在解析完 YAML 之后会调用这个函数，再把返回值交给 mihomo 内核。
-- **v2rayN 没有实现这套 JS 扩展执行器**。它的 Clash 通道只做 `下载 YAML → 注入 v2rayN 自用字段 → 交给 mihomo 二进制` 这三步，没有脚本预处理层。所以把 `.js` 文件丢给 v2rayN 不会起任何作用。
-
-**推论：LightGBM / Smart 组在 v2rayN 里天然不可达**
-- Clash Party JS 正是在 `main()` 里把 9 个区域组注入为 `type: smart` + `uselightgbm: true` 的；这一步 v2rayN 无法执行。
-- `Clash Meta For Android/CMFA(mihomo).yaml` 是**静态 YAML 产物**（基于 JS 脚本的输出冻结而来），区域组是 `type: url-test`（按 `gstatic/generate_204` 延迟择优），**不含 smart 组，也没有 LightGBM**。这是 CMFA / FlClash / v2rayN 这类「原生 YAML」客户端的通用状态。
-- 想在 Windows 上获得完整的「Smart + LightGBM」体验，正确做法是**换客户端**：用 **Clash Verge Rev / Mihomo Party / Clash Party**（都原生支持 JS 覆写 + mihomo Alpha 内核）直接加载 `Clash Party/ClashParty(mihomo-smart).js`。v2rayN 的路径 A / B / C 都达不到这个能力。
-
-**为什么路径 C 最弱？**
-Xray 核心的路由规则只能指向 `proxy / direct / block` 三个出站，无法表达 33 业务 + 区域组两层结构，更不能 LightGBM 择优。仅适合不想换核心、只需要基础分流的用户。
-
-### 多机场订阅合并（所有路径通用）
-
-如果你同时买了多家机场，可以用**在线订阅转换站**把多个链接合并成一个 URL，无需安装任何工具，所有客户端通用。
-
-1. 打开 https://acl4ssr-sub.github.io （或 https://sub.v1.mk）
-2. 把多家机场订阅链接粘贴进去（一行一个或用 `|` 分隔）
-3. 后端选 **Mihomo（Clash.Meta）**
-4. 生成新 URL：
-   - **路径 A**：填入 CMFA YAML 的 `proxy-providers.Subscribe.url`
-   - **路径 B**：将节点从新 URL 解析后填入 sing-box JSON 的 `outbounds` 段
-   - **路径 C**：将新 URL 作为 v2rayN 常规订阅添加
-
-> ⚠️ **隐私提醒**：转换站能看到你提交的订阅链接（含 token）。不要提交含专线 IP 等敏感信息的订阅链接。
+SingBox Full 使用 `rulesets/generated/fused/sing-box/*.srs`，是本仓库 fused 规则集的原生消费路径。
 
 ---
 
-## 路径 A：mihomo 核心 + Clash YAML（推荐）
+## 4. 路径 C：Xray 核心 fallback
 
-这是 v2rayN 路径里**最接近 Clash Party 主线**的方案：33 业务组、22 区域 `url-test` 组、391 rule-provider 全部原样生效，策略结构和 CMFA 完全一致。
-> ⚠️ 注意：`CMFA(mihomo).yaml` 是静态 YAML，区域组是 `type: url-test`（延迟择优），**不含 `type: smart` / `uselightgbm: true`**。LightGBM 自动择优不会启用；若需要此特性，请参见文首「关于 LightGBM / Smart 组的重要说明」。
+`v2rayN/v2rayN(xray).json` 是给 Xray 核心准备的降级路由规则数组。当前文件由 `tools/generate-fused-fallback-artifacts.js` 从 `rulesets/generated/fused/sing-box/*.json` 展平成原生 Xray RuleObject：
 
-### 1. 在 v2rayN 里启用 mihomo 核心
+- 1 条禁用 meta 规则。
+- 68 条 fused 顺序段，保持源规则图的首匹配顺序。
+- 17 条端口、逻辑组合和 `MATCH` 等必要内联规则。
+- 出站只使用 `proxy`、`direct`、`block` 三个标签。
 
-1. 打开 v2rayN → 菜单栏 **设置 → 参数设置 → 核心基础设置**。
-2. 勾选/切换到 **mihomo**。
-3. 首次使用时 v2rayN 会提示下载 `mihomo.exe`（若没自动下载，到 https://github.com/MetaCubeX/mihomo/releases 手动下）。
-4. 本 YAML 使用普通 mihomo Stable 即可；**无需** Smart Alpha 分支，因为本 YAML 里没有 `type: smart` 组。
+Xray routing 支持 `domain`、`ip`、`port`、`process`、`outboundTag` 等 RuleObject 字段，但没有 sing-box `.srs` 远程 rule-set 字段。因此路径 C 不能像 sing-box 一样引用远程 `.srs`，只能把 fused JSON 展开为 Xray 原生数组。广告段很大，所以 JSON 文件体积明显大于旧手写版。
 
-### 2. 准备 YAML
+导入步骤：
 
-1. 复制仓库里的 **`Clash Meta For Android/CMFA(mihomo).yaml`** 到本地。
-2. 打开它，找到 `proxy-providers → Subscribe → url`，把占位 URL 改成你自己的机场订阅（`?flag=clash.meta` 或 `?flag=meta`）：
-   ```yaml
-   proxy-providers:
-     Subscribe:
-       type: http
-       url: 'https://your-subscription.example.com/link'
-       interval: 86400
-       path: ./proxy_providers/subscribe.yaml
-   ```
+1. 保持 v2rayN 使用 Xray 核心。
+2. 进入路由设置，导入 `v2rayN/v2rayN(xray).json`。
+3. 确认主配置里存在 `proxy`、`direct`、`block` 三个出站标签。
+4. 节点仍然通过 v2rayN 常规订阅管理；本文件只负责路由规则。
 
-### 3. 导入到 v2rayN
+路径 C 的限制：
 
-1. v2rayN 左侧 **订阅（Subscription）** → **订阅组设置** → ➕ 新建。
-2. 地址栏可以填：
-   - **本地文件路径**（`file:///C:/path/to/CMFA(mihomo).yaml`），或
-   - **托管 URL**（把 YAML 放到 GitHub Raw / Gist / 自建 HTTP）。
-3. **订阅类型**选 **Clash**（即 mihomo 格式）。
-4. 保存 → 右键新建的订阅 → **更新订阅**。
-5. v2rayN 下方日志窗口应看到 mihomo 启动 + 规则加载完成。
-
-### 4. 验证
-
-在 v2rayN 的 **代理组/策略组** 面板里应看到：
-- 22 区域 `url-test` 组（11 全部 + 11 家宽），延迟最低的节点自动被选中；无 LightGBM 自动择优
-- 33 业务组（🤖 AI 服务、💰 加密货币、…、🛑 广告拦截）
-
-然后按 `Clash Party/README.md` 第七节「业务组推荐配置」给每个业务组指定一个区域组即可。
-
-### 5. DNS / Sniffer / GeoX URL（重要）
-
-mihomo 会读取 YAML 里写的 dns/sniffer 块。但 v2rayN 默认用系统 DNS；如果你想 100% 复刻 Clash Party 的 DNS 行为，需要：
-
-1. 保持 YAML 里 `dns:` / `sniffer:` / `geox-url:` 段完整（CMFA YAML 已内置）。
-2. v2rayN 设置 → **参数设置 → 核心基础设置** → 勾选 **使用配置文件里的 DNS 设置**。
-3. **不要**再在 v2rayN 路由规则里覆盖，否则会和 YAML 打架。
+- 没有 33 个业务策略组和 22 个区域组。
+- 没有 URLTest、Smart、LightGBM、节点过滤和订阅组重建。
+- 大量规则被压到三出站模型：国内直连、广告屏蔽、其他代理。
+- 端口/逻辑规则只覆盖 Xray 可表达的部分；无法表达的平台能力由生成器和验证器记录为例外。
 
 ---
 
-## 路径 B：sing-box 核心 + JSON
+## 5. Happ 用户
 
-适合「想把 v2rayN 当 sing-box 前端」的用户。支持 33 业务组 + 20 区域组，靠 sing-box 原生 `selector` / `urltest` 实现；但没有 LightGBM 自动择优（sing-box 无此特性）。
-
-### 1. 启用 sing-box 核心
-
-1. v2rayN → **设置 → 参数设置 → 核心基础设置** → 切到 **sing-box**。
-2. 首次使用会提示下载 `sing-box.exe`，或到 https://github.com/SagerNet/sing-box/releases 手动下。
-
-### 2. 准备 JSON
-
-从本仓库选一个：
-
-| 文件 | 规则量 | 适合 |
-|---|---:|---|
-| `SingBox/SingBox(sing-box)-full.json`（推荐） | 40 remote rule_set + 686 route rules | 与 Clash Party 关键路径对齐且保证 SRS/source 兼容 |
-
-打开 JSON，找到 `outbounds` 里 `"type": "trojan"` / `"type": "vless"` 的占位节点，替换成你自己的节点配置。
-
-### 3. 导入
-
-1. v2rayN → 左侧 **自定义配置服务器（Custom Config Server）** → ➕ 新建。
-2. 选 **本地 sing-box JSON 文件**，指向你修改好的 `SingBox(sing-box)-full.json`。
-3. 右键该条目 → **设为活动节点**。
-
-### 4. 验证
-
-v2rayN 主面板状态栏应显示 sing-box 已启动；打开 `http://127.0.0.1:9090/ui`（若启用了 clash dashboard）可看到 20 区域 + 33 业务组。
+Happ 使用 Xray-core。若使用原始 JSON 导入模式，可复用 `v2rayN/v2rayN(xray).json` 获得同样的 `proxy/direct/block` 三级分流。若更偏好 Happ 原生路由 Profile，请用 Happ 自身工具生成等价路由。
 
 ---
 
-## 路径 C：Xray 核心 + 本目录的路由 JSON（功能受限）
+## 6. 维护者入口
 
-**仅适合已有 v2rayN + Xray 配置、不想切换核心**的用户。
+不要手工编辑 `v2rayN/v2rayN(xray).json`。规则源来自 `rulesets/source/routing-graph.js`，fallback 产物由下面命令生成：
 
-### 1. 导入路由规则
+```bash
+node tools/build-fused-rule-sets.js
+node tools/generate-fused-fallback-artifacts.js
+node tools/validate-artifact-contracts.js --strict-ruby
+```
 
-1. v2rayN → 菜单 **路由设置（Routing）** → **导入规则集**。
-2. 选本目录的 **`v2rayN(xray).json`**。
-3. 导入后在「路由设置」面板应出现 33 条启用规则（广告拦截 / DNS / 私有直连 / AI / 加密货币 / 社交 / 会议协作 / 流媒体 / GFW / 中国直连 / FINAL），另有 1 条禁用的版本标记规则。
+官方语法参考：
 
-> 注意：v5.2.6-v2n.3 起本文件是 v2rayN 官方导入格式：JSON 顶层就是规则数组，不再包一层 `_meta` / `rules` 对象。
-
-### 2. 节点放哪里
-
-路径 C **不处理节点来源**——节点走 v2rayN 原来的订阅即可。路由规则生效的前提是：
-- 默认 `proxy` 出站 = 你手动选中的那个节点。
-- 默认 `direct` = 直连。
-- 默认 `block` = Xray 内置 block outbound。
-- DNS 53 规则也走 `direct`，因为本路由导入文件不定义 `dns-out` 出站。
-
-### 3. 已知限制（相对于 Clash Party 主线）
-
-- ❌ 无 33 业务组 → 区域组的两层结构。所有 `proxy` 规则指向同一个节点。
-- ❌ 无 LightGBM 自动择优。
-- ❌ 无 Smart 组 `uselightgbm: true`。
-- ❌ 无 391 rule-provider 自动更新（Xray 依赖 `geosite.dat` / `geoip.dat` 数据库，不是 rule-provider）。
-- ⚠️ `geosite:xxx` 关键字依赖 v2rayN 集成的 geosite 数据库；少量我们在 Clash 里用的分类可能在 v2fly 的 geosite 里叫别的名字（例如 `geosite:openai` 对应 v2fly 的 `category-ai-!cn`）。
-
-**结论：路径 C 适合作为「还没准备好换核心的用户」的过渡方案。条件允许请切到路径 A 或 B。**
-
----
-
-## 常见问题（FAQ）
-
-### Q1：v2rayN 启动后没有 33 业务组？
-- 路径 A / B：确认核心选对了（mihomo 或 sing-box），而不是默认的 Xray。
-- 路径 C：Xray 本身不支持多业务组，这是设计限制。
-
-### Q2：AI 服务默认都走「🇺🇸 美国节点」了，为什么 Codex CLI 还 403？
-- 这不是分流问题。`cf-ray: *-SJC` 说明流量确实从美国出去了。
-- 403 通常是 Cloudflare + OpenAI 对 **机房 IP / 非住宅 ASN** 的风控。换住宅 IP 节点 / 套 Cloudflare WARP / 检查账号注册地区三选一即可。
-- 详见仓库根目录 `README.md` 的「AI 服务连接问题」章节（若有）。
-
-### Q3：v2rayN 能直接加载 `ClashParty(mihomo-smart).js` 吗？
-
-**不能。** 这份脚本的入口是 `function main(config) { … return config }`，是 **Clash Verge Rev / Mihomo Party 的 JS 扩展格式**——由客户端在解析完 YAML 之后调用这个函数，再把返回值送进 mihomo 内核。**v2rayN 没有实现这套 JS 扩展执行器**，它的 Clash 通道只做「下载 YAML → 注入自用字段 → 交给 mihomo」三步，没有脚本预处理层。把 `.js` 直接喂给 v2rayN 不会起任何作用。
-
-想在 Windows 上得到 Clash Party 的完整运行效果（含 Smart 组 + LightGBM），可行路径有三个，按推荐度排列：
-
-1. **换客户端（最省事，也是我们推荐的）**：用 [**Clash Verge Rev**](https://github.com/clash-verge-rev/clash-verge-rev) 或 [**Mihomo Party**](https://github.com/mihomo-party-org/mihomo-party) 代替 v2rayN。它们原生支持加载 `.js` 覆写，开箱就是 `type: smart` + `uselightgbm: true` + LightGBM 自动择优。
-2. **自己搭前置流水线**：用 Node.js 在本地把「订阅 YAML + 本脚本」跑一遍 `main(config)`，输出一份静态 YAML，再把产物交给 v2rayN 的 mihomo 核心。技术可行，但要自己维护 Node 环境和运行封装；**不在本仓库支持范围内**。
-3. **手工魔改 CMFA YAML（最低保留度）**：把 `Clash Meta For Android/CMFA(mihomo).yaml` 中 9 个区域组的 `type: url-test` 改为 `type: smart`，再追加 `uselightgbm: true`。同时把 v2rayN 的 mihomo 换成 [Prerelease-Alpha](https://github.com/MetaCubeX/mihomo/releases/tag/Prerelease-Alpha)，并把 `Model.bin`（下载自 https://github.com/vernesong/mihomo/releases/download/LightGBM-Model/Model.bin）放到 `v2rayN/bin/mihomo/Model.bin`。这样只能启用 LightGBM 一项，其他 JS 脚本里的动态能力（节点过滤、指纹注入、fpByPurpose）仍然没有，**且该魔改不在仓库基线覆盖范围，未来不保证同步**。
-
-### Q4：Windows Defender / 360 报毒？
-- `mihomo.exe` / `sing-box.exe` 会被部分杀毒软件误报为代理工具。添加信任即可。
-- 若路径 A 更新订阅频繁失败，检查杀软是否拦截 `v2rayN\bin\mihomo\` 写入 cache.db / ruleset 目录。
-
-### Q5：路径 A 下，jsdelivr rule-provider 冷启动下载失败？
-- CMFA YAML 的 `rule-providers.proxy` 已统一改为 `'🚫 受限网站'`（与 Clash Party FIX#17-P0 一致）。
-- 确保你第一次导入时 **已经连上代理**，否则 376 个 rule-provider 会卡在 403/超时。
-- 若仍失败，把 YAML 顶部 `geox-url` 段的 jsdelivr 换成 cdn.jsdelivr.net 或自建镜像。
-
----
-
-## Happ 用户（Xray-core 内核，跨平台）
-
-[Happ](https://www.happ.su) 是 Flyfrog LLC 开发的跨平台代理工具（iOS / Android / macOS / Windows / Linux / tvOS），底层使用 **Xray-core** 内核。
-
-### Happ 能直接使用本仓库的什么？
-
-Happ 支持 **"原始 JSON 导入"模式**——将标准 Xray JSON 1:1 直通给 Xray 内核，此时 Happ 自身路由规则不生效。因此：
-
-- **直接复用路径 C 的 `v2rayN(xray).json`**：在 Happ 中以"原始 JSON"方式导入 `v2rayN/v2rayN(xray).json`，即可获得 Direct / Proxy / Block 三级分流（广告拦截 → block、国内 → direct、国外 → proxy）。
-
-### Happ 不能做什么？
-
-- ❌ **不能表达完整嵌套策略体系**：Xray-core 路由只支持 `proxy / direct / block` 三出站，无法表达 33 业务组 + 区域组的两层 `select` / `url-test` 结构。
-- ❌ **无 LightGBM 自动择优**。
-- ❌ **无 rule-provider 自动更新**（依赖 `geosite.dat` / `geoip.dat` 数据库）。
-
-### Happ 的路由 Profile（替代方案）
-
-Happ 有自有的路由 Profile JSON 格式（`happ://routing/...` deep link 下发），可通过 <https://routing.happ.su> 在线生成。功能上与 `v2rayN(xray).json` 等价（Direct / Proxy / Block 三出站 + geosite/geoip 匹配），但格式不同。如果你更偏好 Happ 原生路由体验，可用生成器创建等价规则。
-
-### 想要完整体验？
-
-切换到 mihomo 内核客户端（[CMFA](https://github.com/MetaCubeX/ClashMetaForAndroid) / [ClashMi](https://github.com/KaringX/clashmi) / OpenClash / Clash Verge Rev / Mihomo Party），加载本仓库的 `CMFA(mihomo).yaml` 或 `ClashParty(mihomo-smart).js`。
-
----
-
-## 版本与同步策略
-
-- 本目录所有产物跟随 Clash Party 主线（`Clash Party/ClashParty(mihomo-smart).js`）。
-- 路径 A / B 的实际规则来源是 `Clash Meta For Android/` 与 `SingBox/` 目录，**不在本目录重复维护**。
-- 只有路径 C 的 `v2rayN(xray).json` 是本目录的独立产物，需要按仓库根目录 `CLAUDE.md` / `AGENTS.md` 的约束同步更新。
-
-## 致谢
-
-- [v2rayN](https://github.com/2dust/v2rayN)
-- [MetaCubeX/mihomo](https://github.com/MetaCubeX/mihomo)
-- [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
-- [XTLS/Xray-core](https://github.com/XTLS/Xray-core)
-- 所有本仓库上游规则维护者（MetaCubeX / blackmatrix7 / Loyalsoldier / szkane / Accademia 等）
-
----
-
-## 💖 支持本项目
-
-→ [捐赠 / Star / PR](../docs/donate.md)
+- v2rayN 自定义路由规则：https://github.com/2dust/v2rayN/wiki/Description-of-custom-routing-rules
+- Xray routing RuleObject：https://xtls.github.io/config/routing.html

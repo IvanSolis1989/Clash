@@ -84,15 +84,15 @@
       {
         "rule_set": [
           "geosite-private",
-          "cn",
-          "cn-ip"
+          "geosite-cn",
+          "geoip-cn"
         ],
         "action": "route",
         "server": "dns_direct"
       },
       {
         "rule_set": [
-          "anti-ad"
+          "scki-fused-005-ad-domain"
         ],
         "action": "reject"
       }
@@ -1474,76 +1474,6 @@
     "rule_set": [
       {
         "type": "remote",
-        "tag": "apple",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/apple.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "microsoft",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/microsoft.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "youtube",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "google",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "cn",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "cn-ip",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "anti-ad",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/ads.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
         "tag": "scki-fused-001-direct-domain",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-001-direct.srs",
@@ -2681,6 +2611,66 @@
           "detour": "🌍 全球节点"
         },
         "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-youtube",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-google",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-microsoft",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/microsoft.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-apple",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/apple.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-cn",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-cn",
+        "format": "binary",
+        "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
+        "http_client": {
+          "detour": "🌍 全球节点"
+        },
+        "update_interval": "1d"
       }
     ],
     "rules": [
@@ -2733,7 +2723,7 @@
       },
       {
         "rule_set": [
-          "youtube"
+          "geosite-youtube"
         ],
         "port": [
           443
@@ -2744,7 +2734,7 @@
       },
       {
         "rule_set": [
-          "google"
+          "geosite-google"
         ],
         "port": [
           443
@@ -2755,7 +2745,7 @@
       },
       {
         "rule_set": [
-          "microsoft"
+          "geosite-microsoft"
         ],
         "port": [
           443
@@ -2766,7 +2756,7 @@
       },
       {
         "rule_set": [
-          "apple"
+          "geosite-apple"
         ],
         "port": [
           443
@@ -2777,7 +2767,7 @@
       },
       {
         "rule_set": [
-          "cn"
+          "geosite-cn"
         ],
         "port": [
           443

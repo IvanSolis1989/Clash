@@ -8,7 +8,7 @@
 ## v6.0.0-sing.1 (2026-07-09)
 
 - FUSED-RULESETS：生成器基线更新到 Clash Party v6.0.0，将融合 provider 映射到 `rulesets/generated/fused/sing-box/*.srs`。
-- SCALE：Full JSON 当前包含 121 个 route rule_set（120 个融合规则集 + private）与 130 条 route rules。
+- SCALE：Full JSON 当前包含 120 个 route rule_set（113 个融合规则集 + 7 个 GEO runtime rule_set）与 130 条 route rules。
 
 ## v5.4.39-sing.1 (2026-07-09)
 

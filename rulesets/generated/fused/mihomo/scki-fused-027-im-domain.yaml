@@ -72,6 +72,7 @@ payload:
   - "DOMAIN-SUFFIX,kakaocdn.net"
   - "DOMAIN-SUFFIX,kakaocorp.com"
   - "DOMAIN-SUFFIX,potplayer.tv"
+  - "DOMAIN-SUFFIX,kakaotalk.com,💬 即时通讯"
   - "DOMAIN-SUFFIX,skype.com,💬 即时通讯"
   - "DOMAIN-SUFFIX,skypeecs.net,💬 即时通讯"
   - "DOMAIN-SUFFIX,skypeforbusiness.com,💬 即时通讯"

@@ -46,7 +46,7 @@
 ### 最常见踩坑
 - ❌ **APK 装不上**：没允许"来自未知来源的应用"。设置 → 安全 → 允许安装未知来源。
 - ❌ **导入后节点列表是空的**：订阅链接返回的格式不对。换链接加 `?flag=clash.meta` 后缀；或用 Sub-Store 做格式转换。
-- ❌ **首次启动卡在"加载规则"**：CMFA 要下载 120 个融合规则源。**必须在 WiFi + 已开代理**（可以先用随便一个能用的节点启动，等规则下完再切到本配置），否则 GitHub/jsdelivr 在国内会 404。
+- ❌ **首次启动卡在"加载规则"**：CMFA 要下载 113 个融合规则源。**必须在 WiFi + 已开代理**（可以先用随便一个能用的节点启动，等规则下完再切到本配置），否则 GitHub/jsdelivr 在国内会 404。
 - ❌ **打开支付宝/银行 App 卡死**：已在配置里把 `+.alipay.com` / 主流银行域名排除了代理。如果你用的银行没排除，在 CMFA 的「应用 → 分应用代理」里把那个银行 App 设为"不走代理"。
 - ❌ **LightGBM 自动择优不生效**：CMFA YAML 用的是 `url-test`（按延迟择优），**不是** Mihomo Smart 组。Smart + LightGBM 需要 Mihomo Smart Alpha 内核，**目前仅桌面端 Clash Verge Rev / Mihomo Party + Clash Party Smart JS 支持**。FlClash 覆写脚本 (`../FlClash/FlClash(mihomo).js`) 也是 url-test（标准 Mihomo 内核限制），但提供动态节点分类/家宽识别/订阅清理等 YAML 没有的能力。
 
@@ -253,7 +253,7 @@ proxy-providers:
 1. 在 CMFA 首页选择刚导入的配置，点击「**启动**」按钮。
 2. 首次启动 CMFA 会自动完成以下动作（需保持网络畅通）：
    - 下载机场节点列表（`subscribe.yaml`）
-   - 下载 **120 个融合 rule-providers**（源规则来自 `blackmatrix7 / MetaCubeX` 等上游）
+   - 下载 **113 个融合 rule-providers**（源规则来自 `blackmatrix7 / MetaCubeX` 等上游）
    - 下载 **Loyalsoldier 增强版** `geoip.dat` / `Country.mmdb` / `GeoLite2-ASN.mmdb`
    - 下载 **MetaCubeX** `geosite.dat`
    - 下载 **LightGBM 模型** `Model.bin`（用于 Smart 组自动择优）
@@ -398,7 +398,7 @@ ClashMi App 首页菜单 → **我的配置** → 右上角 **＋** → 选择�
 ### 与 CMFA 行为一致的部分
 
 - ✅ 54 代理组（22 区域 + 33 业务）结构 1:1 加载。
-- ✅ 130 条主规则 + 120 个融合 `rule-providers` 全部由 Clash Party 基准顺序编译生成。
+- ✅ 130 条主规则 + 113 个融合 `rule-providers` 全部由 source graph 顺序编译生成。
 - ✅ fake-ip DNS / sniffer / `proxy-providers.filter` / `exclude-filter` 行为与 CMFA 等价。
 - ✅ 22 区域组使用 `type: url-test`（按延迟择优）—— 与 CMFA 完全相同。
 

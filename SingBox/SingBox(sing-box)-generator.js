@@ -580,18 +580,38 @@ function bindSupplementalEntry(entry, target) {
   return `${entry},${target}`;
 }
 
-// v5.4.18: removed geosite-cn / geoip-cn — reuse provider-derived 'cn' / 'cn-ip' tags
-// already created by ruleSet to avoid duplicate .srs downloads (~2-5 MB wasted per cycle).
-// geosite-private is kept as a defensive entry for DNS rules in case no GEOSITE,private rule exists.
-const dnsRouteRuleSets = [
-  {
+function metaGeositeRuleSet(tag, name) {
+  return {
     type: 'remote',
-    tag: 'geosite-private',
+    tag,
     format: 'binary',
-    url: 'https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs',
+    url: `https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/${name}.srs`,
     http_client: { detour: SMART.GLOBAL },
     update_interval: '1d'
-  }
+  };
+}
+
+function metaGeoipRuleSet(tag, name) {
+  return {
+    type: 'remote',
+    tag,
+    format: 'binary',
+    url: `https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/${name}.srs`,
+    http_client: { detour: SMART.GLOBAL },
+    update_interval: '1d'
+  };
+}
+
+// Runtime GEO helpers remain explicit sing-box rule_sets. They are not upstream
+// business providers and are only used for DNS/private/CN/QUIC guard logic.
+const requiredGeoRuleSets = [
+  metaGeositeRuleSet('geosite-private', 'private'),
+  metaGeositeRuleSet('geosite-youtube', 'youtube'),
+  metaGeositeRuleSet('geosite-google', 'google'),
+  metaGeositeRuleSet('geosite-microsoft', 'microsoft'),
+  metaGeositeRuleSet('geosite-apple', 'apple'),
+  metaGeositeRuleSet('geosite-cn', 'cn'),
+  metaGeoipRuleSet('geoip-cn', 'cn')
 ];
 
 function uniqueRuleSets(items) {
@@ -603,18 +623,18 @@ function uniqueRuleSets(items) {
   });
 }
 
-const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...extraGeoSiteTags, ...dnsRouteRuleSets]);
+const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...requiredGeoRuleSets, ...extraGeoSiteTags]);
 const availableRuleSets = new Set(allRouteRuleSets.map((item) => item.tag));
 const supplementalProviderRules = loadSupplementalProviderRules(providers);
 // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配。
 // 插入到 Clash 主线 5 条 AND/QUIC 规则所在位置，避免被后续普通规则或 route.final 改变语义。
 // YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT。
 const quicRules = [
-  { rule_set: ['youtube'], port: [443], network: 'udp', action: 'route', outbound: '📹 YouTube' },
-  { rule_set: ['google'], port: [443], network: 'udp', action: 'route', outbound: '🔍 Google 服务' },
-  { rule_set: ['microsoft'], port: [443], network: 'udp', action: 'route', outbound: 'Ⓜ️ 微软服务' },
-  { rule_set: ['apple'], port: [443], network: 'udp', action: 'route', outbound: '🍎 苹果服务' },
-  { rule_set: ['cn'], port: [443], network: 'udp', action: 'route', outbound: 'DIRECT' },
+  { rule_set: ['geosite-youtube'], port: [443], network: 'udp', action: 'route', outbound: '📹 YouTube' },
+  { rule_set: ['geosite-google'], port: [443], network: 'udp', action: 'route', outbound: '🔍 Google 服务' },
+  { rule_set: ['geosite-microsoft'], port: [443], network: 'udp', action: 'route', outbound: 'Ⓜ️ 微软服务' },
+  { rule_set: ['geosite-apple'], port: [443], network: 'udp', action: 'route', outbound: '🍎 苹果服务' },
+  { rule_set: ['geosite-cn'], port: [443], network: 'udp', action: 'route', outbound: 'DIRECT' },
   { port: [443], network: 'udp', action: 'reject' },
 ];
 let convertedRules = [];
@@ -749,12 +769,12 @@ baseConfig.dns = {
   ],
   rules: [
     {
-      rule_set: ['geosite-private', 'cn', 'cn-ip'],
+      rule_set: ['geosite-private', 'geosite-cn', 'geoip-cn'],
       action: 'route',
       server: 'dns_direct'
     },
     {
-      rule_set: ['anti-ad'],
+      rule_set: ['scki-fused-005-ad-domain'],
       action: 'reject'
     }
   ],

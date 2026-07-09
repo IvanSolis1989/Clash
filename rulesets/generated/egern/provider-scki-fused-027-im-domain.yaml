@@ -51,6 +51,7 @@ domain_suffix_set:
   - "kakao.com"
   - "kakaocdn.net"
   - "kakaocorp.com"
+  - "kakaotalk.com"
   - "lin.ee"
   - "line-apps.com"
   - "line-cdn.net"

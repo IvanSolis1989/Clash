@@ -15,6 +15,8 @@ node tools/generate-egern-supplemental.js
 node tools/generate-egern-from-cmfa.js
 node tools/sync-mihomo-mrs-rule-providers.js
 node tools/apply-mihomo-mrs-overrides.js
+node tools/build-fused-rule-sets.js
+node tools/generate-fused-fallback-artifacts.js
 ```
 
 Scope:
@@ -40,6 +42,12 @@ Scope:
   `rulesets/generated/mihomo-mrs/manifest.json` for Mihomo-compatible
   products; mixed classical providers are split into `-domain` and `-ipcidr`
   rule providers.
+- reads `rulesets/source/routing-graph.js` as the fused compiler input and
+  writes `rulesets/generated/fused/**`; this is the authority for client
+  fused rule-set consumption.
+- writes fallback-native fused artifacts for clients that cannot consume
+  Mihomo `.mrs`: v2rayN Xray is flattened into native RuleObject JSON, while
+  Passwall / Passwall2 receive generated `rule-set:remote` `.srs` shunt rules.
 
 ## JS overwrite smoke contract
 
@@ -92,11 +100,12 @@ Scope:
 - validates formal Egern metadata, 22 region smart groups, 33 business groups,
   882 generated rules, 439 top-level rule-set references, and the absence of
   `.mrs` / process rule-set files in Egern;
-- validates SingBox and v2rayN JSON structure and baseline metadata;
+- validates SingBox and v2rayN JSON structure, baseline metadata, and fused
+  source mapping;
 - extracts OpenClash heredoc YAML and, when Ruby is available, parses it through
   Ruby/Psych to catch duplicate top-level `rule-providers` / `rules` keys;
-- checks Passwall / Passwall2 shunt-rule counts and rejects Clash-style rule
-  prefixes inside `.list` files;
+- checks Passwall / Passwall2 fused shunt-rule counts, generated `.srs` URLs,
+  and rejects Clash-style rule prefixes inside `.list` files;
 - includes legacy reference `.conf` files in the sha256 manifest and warns when
   they drift from the authoritative `.sh` / shunt-rule artifacts;
 - can emit a sha256 manifest for release review without changing any published

@@ -18,8 +18,8 @@
 # 架构：
 #   • 22 url-test 区域组（11 全部 + 11 家宽；interval 600s / tolerance 150ms / lazy：与 Smart 版同步延迟参数）
 #   • 33 业务策略组（流媒体按平台拆分：TikTok / Netflix / Disney+ / HBO/Max / Hulu / Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体）
-#   • 120 融合 rule-providers（源 474 providers，全部 proxy: "🚫 受限网站"）
-#   • 130 条 rules（源 929 rules；仅保留 17 条必要内联规则）
+#   • 113 融合 rule-providers（源 474 providers，全部 proxy: "🚫 受限网站"）
+#   • 130 条 rules（源 931 rules；仅保留 17 条必要内联规则）
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / url-test 组生成 / TLS 指纹注入
 # 基线：Clash Party v6.0.0（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
@@ -511,72 +511,16 @@ proxy-groups:
 OVERRIDE_EOF
 
 # ============================================================================
-# OVERRIDE YAML (续) — Fused Rule-Providers：120 项，对齐 Clash Party v6.0.0 主线
+# OVERRIDE YAML (续) — Fused Rule-Providers：113 项，对齐 Clash Party v6.0.0 主线
 # 策略：
 #   ✓ 与 Clash Party 主线（BIZ.GFW = '🚫 受限网站'）一致：所有 provider 都走 GFW 组
 #     下载，在中国走代理、在印尼走 DIRECT，规避 jsdelivr/GitHub 冷启动死锁。
-#   ✓ 22 url-test 区域组 + 33 业务组 + 120 融合 rule-providers + 130 条规则
+#   ✓ 22 url-test 区域组 + 33 业务组 + 113 融合 rule-providers + 130 条规则
 #   ✓ 区域组统一 type: url-test + include-all-proxies / explicit proxies 分流
 #   ✓ TLS 指纹注入（Ruby 阶段 _simple_hash 分配）
 # ============================================================================
 cat >> "$OVERRIDE_YAML" << 'OVERRIDE_EOF'
 rule-providers:
-  apple:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/apple.mrs"
-    path: "./ruleset/meta-apple.mrs"
-    interval: 86313
-    proxy: "🚫 受限网站"
-  microsoft:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.mrs"
-    path: "./ruleset/meta-microsoft.mrs"
-    interval: 86280
-    proxy: "🚫 受限网站"
-  youtube:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.mrs"
-    path: "./ruleset/meta-youtube.mrs"
-    interval: 85943
-    proxy: "🚫 受限网站"
-  google:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.mrs"
-    path: "./ruleset/meta-google.mrs"
-    interval: 85898
-    proxy: "🚫 受限网站"
-  cn:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.mrs"
-    path: "./ruleset/meta-cn.mrs"
-    interval: 86583
-    proxy: "🚫 受限网站"
-  cn-ip:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.mrs"
-    path: "./ruleset/meta-ip-cn.mrs"
-    interval: 86601
-    proxy: "🚫 受限网站"
-  anti-ad:
-    type: http
-    behavior: domain
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@mihomo-ruleset/ads.mrs"
-    path: "./ruleset/anti-ad.mrs"
-    interval: 85512
-    proxy: "🚫 受限网站"
   scki-fused-001-direct-domain:
     type: http
     behavior: domain
@@ -1491,8 +1435,8 @@ rules:
 - "RULE-SET,scki-fused-006-cn-site-domain,🏠 国内网站"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务"
-- "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务"
-- "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,microsoft)),Ⓜ️ 微软服务"
+- "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,apple)),🍎 苹果服务"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT"
 - "DST-PORT,7680,REJECT"
 - "RULE-SET,scki-fused-007-direct-domain,DIRECT"

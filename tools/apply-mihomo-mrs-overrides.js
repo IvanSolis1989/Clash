@@ -7,16 +7,7 @@ const path = require('node:path');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
 const BASE_URL = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs';
-const JS_FILES = [
-  'Clash Party/ClashParty(mihomo-smart).js',
-  'Clash Party/ClashParty(mihomo).js',
-  'FlClash/FlClash(mihomo).js',
-];
-const YAML_FILES = [
-  'Clash Meta For Android/CMFA(mihomo).yaml',
-  'OpenClash/OpenClash(mihomo).sh',
-  'OpenClash/OpenClash(mihomo-smart).sh',
-];
+const SOURCE_GRAPH_FILE = 'rulesets/source/routing-graph.js';
 
 function readText(file) {
   return fs.readFileSync(path.join(REPO_ROOT, file), 'utf8');
@@ -117,125 +108,18 @@ function jsGeneratedBlock(pure, split, partial) {
   ].join('\n');
 }
 
-function applyJs(file, maps) {
-  let source = readText(file);
-  source = source.replace(/\n\/\/ BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO MRS OVERRIDES\n/g, '\n');
-  source = source.replace(/\n\s*applyMihomoMrsRuleProviderOverrides\(config\)\n/g, '\n');
-  source = source.replace(/\n\s*config\.rules = expandMihomoMrsSplitRules\(config\.rules\)\n/g, '\n');
-
+function applySourceGraph(maps) {
+  let source = readText(SOURCE_GRAPH_FILE);
   const block = jsGeneratedBlock(maps.pure, maps.split, maps.partial);
-  if (!source.includes('const REGION_ORDER = ')) throw new Error(`${file}: missing JS insertion anchor`);
-  source = source.replace(/\nconst REGION_ORDER = /, `\n${block}\nconst REGION_ORDER = `);
-  source = source.replace(/(\n\s*)const count = Object\.keys\(config\['rule-providers'\]\)\.length/, '$1applyMihomoMrsRuleProviderOverrides(config)$1const count = Object.keys(config[\'rule-providers\']).length');
-  source = source.replace(/(\n\s*)console\.log\(`\[\$\{VERSION\}\] Injected \$\{config\.rules\.length\} rules`\)/, '$1config.rules = expandMihomoMrsSplitRules(config.rules)$1console.log(`[${VERSION}] Injected ${config.rules.length} rules`)');
-  writeText(file, source);
-}
-
-function parseProviderBlock(block) {
-  const fields = {};
-  for (const line of block.split(/\r?\n/)) {
-    const match = line.match(/^    ([A-Za-z0-9_-]+):\s*(.+?)\s*$/);
-    if (match) fields[match[1]] = match[2].trim();
-  }
-  return fields;
-}
-
-function renderProviderBlock(id, behavior, file, fields, format = 'mrs') {
-  const lines = [
-    `  ${id}:`,
-    '    type: http',
-    `    behavior: ${behavior}`,
-    `    format: ${format}`,
-    `    url: ${BASE_URL}/${file}`,
-    `    path: "./ruleset/scki-mrs-${file}"`,
-  ];
-  if (fields.interval) lines.push(`    interval: ${fields.interval}`);
-  if (fields.proxy) lines.push(`    proxy: ${fields.proxy}`);
-  return lines.join('\n');
-}
-
-function rewriteProviderSection(source, maps) {
-  const start = source.search(/\nrule-providers:\n/);
-  const end = source.search(/\nrules:\n/);
-  if (start === -1 || end === -1 || end <= start) return source;
-  const before = source.slice(0, start + 1);
-  const section = source.slice(start + 1, end);
-  const after = source.slice(end + 1);
-  const lines = section.split(/\n/);
-  const output = [];
-  let i = 0;
-  while (i < lines.length) {
-    const match = lines[i].match(/^  ([^:\s][^:]*):\s*$/);
-    if (!match) {
-      output.push(lines[i]);
-      i += 1;
-      continue;
-    }
-    const id = match[1].replace(/^['"]|['"]$/g, '');
-    const block = [lines[i]];
-    i += 1;
-    while (i < lines.length && !/^  [^:\s][^:]*:\s*$/.test(lines[i])) {
-      block.push(lines[i]);
-      i += 1;
-    }
-    const fields = parseProviderBlock(block.join('\n'));
-    if (maps.pure[id]) {
-      output.push(renderProviderBlock(id, maps.pure[id].behavior, maps.pure[id].file, fields));
-    } else if (maps.split[id]) {
-      const split = maps.split[id];
-      if (split.domain) output.push(renderProviderBlock(`${id}-domain`, 'domain', split.domain, fields));
-      if (split.ipcidr) output.push(renderProviderBlock(`${id}-ipcidr`, 'ipcidr', split.ipcidr, fields));
-    } else if (maps.partial[id]) {
-      const partial = maps.partial[id];
-      if (partial.domain) output.push(renderProviderBlock(`${id}-domain`, 'domain', partial.domain, fields));
-      if (partial.ipcidr) output.push(renderProviderBlock(`${id}-ipcidr`, 'ipcidr', partial.ipcidr, fields));
-      if (partial.residual) output.push(renderProviderBlock(`${id}-classical`, 'classical', partial.residual, fields, 'yaml'));
-    } else {
-      output.push(block.join('\n'));
-    }
-  }
-  return `${before}${output.join('\n')}\n${after}`;
-}
-
-function expandRuleLine(line, maps) {
-  const match = line.match(/^(\s*-\s*['"]?)RULE-SET,([^,]+),(.+?)(['"]?\s*)$/);
-  if (!match || (!maps.split[match[2]] && !maps.partial[match[2]])) return [line];
-  const prefix = match[1];
-  const id = match[2];
-  const tail = match[3];
-  const suffix = match[4];
-  const split = maps.split[id] || maps.partial[id];
-  const domainTail = tail.replace(/,no-resolve$/, '');
-  const lines = [];
-  if (split.domain) lines.push(`${prefix}RULE-SET,${id}-domain,${domainTail}${suffix}`);
-  if (split.ipcidr) lines.push(`${prefix}RULE-SET,${id}-ipcidr,${tail}${suffix}`);
-  if (split.residual) lines.push(`${prefix}RULE-SET,${id}-classical,${domainTail}${suffix}`);
-  return lines;
-}
-
-function rewriteRules(source, maps) {
-  const start = source.search(/\nrules:\n/);
-  if (start === -1) return source;
-  const before = source.slice(0, start + 1);
-  const rules = source.slice(start + 1);
-  const lines = [];
-  for (const line of rules.split(/\n/)) lines.push(...expandRuleLine(line, maps));
-  return `${before}${lines.join('\n')}`;
-}
-
-function applyYaml(file, maps) {
-  let source = readText(file).replace(/\r\n/g, '\n');
-  source = source.replace(/(proxy:\s*[^\n]+)rules:\n/g, '$1\nrules:\n');
-  source = rewriteProviderSection(source, maps);
-  source = rewriteRules(source, maps);
-  writeText(file, source);
+  const next = source.replace(/\n\/\/ BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO MRS OVERRIDES\n/g, `\n${block}\n`);
+  if (next === source) throw new Error(`${SOURCE_GRAPH_FILE}: missing MRS override block`);
+  writeText(SOURCE_GRAPH_FILE, next);
 }
 
 function main() {
   const maps = buildMaps();
-  for (const file of JS_FILES) applyJs(file, maps);
-  for (const file of YAML_FILES) applyYaml(file, maps);
-  console.log(`Applied Mihomo .mrs overrides: pure=${Object.keys(maps.pure).length} split=${Object.keys(maps.split).length} partial=${Object.keys(maps.partial).length}`);
+  applySourceGraph(maps);
+  console.log(`Applied Mihomo .mrs source graph overrides: pure=${Object.keys(maps.pure).length} split=${Object.keys(maps.split).length} partial=${Object.keys(maps.partial).length}`);
 }
 
 main();

@@ -10,7 +10,7 @@
 ## v6.0.0-oc-normal.1 / v6.0.0-oc-smart.1 (2026-07-09)
 
 - FUSED-RULESETS：Normal / Smart heredoc 同步到 Clash Party v6.0.0 融合规则集，直接使用融合 `.mrs` / residual YAML。
-- SCALE：规则规模从 `474 providers / 929 rules` 压缩为 `120` 个融合 provider 与 `130` 条规则。
+- SCALE：规则规模从 `474 providers / 931 rules` 压缩为 `113` 个融合 provider 与 `130` 条规则。
 - META：`VERSION_TAG` 与内嵌 Ruby `VERSION` 同步到 v6.0.0。
 
 ## v5.4.39-oc-normal.1 / v5.4.39-oc-smart.1 (2026-07-09)

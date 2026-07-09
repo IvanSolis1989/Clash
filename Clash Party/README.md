@@ -7,7 +7,7 @@
 > - `ClashParty(mihomo).js`（**v6.0.0-normal.1**，2026-07-09）— 普通内核 url-test 延迟选路
 >
 > UI 补充配置：已整合到本文「四、粘贴 UI 补充配置」章节
-> 架构：**SUB-STORE 多机场融合** + 22 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + **120 融合 rule-providers / 130 rules**（源 474 providers / 929 rules）
+> 架构：**SUB-STORE 多机场融合** + 22 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + **113 融合 rule-providers / 130 rules**（源 474 providers / 931 rules）
 > 适用客户端：
 > - **Mihomo Party**（桌面端，推荐，原生支持 JS 覆写；内置 Smart 内核）
 > - **Clash Verge Rev**（桌面端，支持 JS/YAML 双覆写）
@@ -340,7 +340,7 @@ sniffer:
 
 3. **规则（Rules）页面**
    - 总规则数应 ≥ **1000 条**；
-   - `rule-providers` 数量应为 **120**。
+   - `rule-providers` 数量应为 **113**。
 
 4. **日志（Logs）页面**
    - 无 `parse error` / `list not found`；
@@ -379,7 +379,7 @@ sniffer:
 - 打开日志，查看是否有 `No node classified` 提示。
 
 ### Q2：首次连接特别慢？
-- 首次需下载 **120 个融合 rule-providers**（Mihomo 优先 `.mrs`），体积显著低于展开源规则；
+- 首次需下载 **113 个融合 rule-providers**（Mihomo 优先 `.mrs`），体积显著低于展开源规则；
 - 建议在 WiFi 环境下完成首次下载。
 
 ### Q3：如何升级到新版本？

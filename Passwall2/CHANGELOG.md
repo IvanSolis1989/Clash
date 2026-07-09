@@ -1,10 +1,15 @@
 # Passwall / Passwall2 — 变更日志
 
 > `Passwall2/` 目录的变更日志（目录名保留历史命名，实际产物同时适用 Passwall 全功能版 + Passwall2 精简分流版——两者共用 `shunt_rules.lua` 解析器，同一份 `.list` 互通）。
-> 本目录提供把 Clash Party 两层结构（业务组 → 区域组）**手工展平**为 33 条 shunt rule 的降级参考。
+> 本目录提供从 `rulesets/generated/fused/sing-box/*.srs` 生成的 68 条原生 fused shunt rule 降级参考。
 > 主版本号跟随 Clash Party 主线；尾段 `-pw2.N` 独立递增。
 
 ---
+
+## v6.0.0-pw2.2 (2026-07-09)
+
+- FUSED-PASSWALL2：`Passwall2(xray+sing-box)-apply.sh`、参考 `.conf` 与 `shunt-rules/*.list` 改由 `tools/generate-fused-fallback-artifacts.js` 生成。
+- SCOPE：每条 shunt rule 只引用对应的 `rulesets/generated/fused/sing-box/*.srs` 远程规则集；旧 33 条手写域名/IP 展平列表全部移除，并与 Passwall 保持 `.list` 同源互通。
 
 ## v6.0.0-pw2.1 (2026-07-09)
 

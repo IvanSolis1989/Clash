@@ -1,16 +1,22 @@
 # Clash Party — 变更日志
 
-> 本文件是 `Clash Party/ClashParty(mihomo-smart).js` 的完整变更日志。
-> 本 JS 覆写脚本是仓库的**主线基线**，其它所有产物（CMFA YAML / OpenClash Normal+Smart / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash）跟随本版本。
+> 本文件记录 Clash Party JS 覆写脚本变更。
+> 规则权威源已迁移到 `rulesets/source/routing-graph.js`；Clash Party 是消费最终融合规则集的客户端产物。
 >
-> 主版本号 `v5.4.X`；主版本变更必须同步传递到所有受影响产物的子版本号。
+> 主版本变更必须同步传递到所有受影响产物的子版本号。
 
 ---
 
+## Unreleased (2026-07-09)
+
+- SOURCE-GRAPH：raw provider / raw rules / MRS 映射迁移到 `rulesets/source/routing-graph.js`。
+- APP-SIMPLIFY：Smart 与 Normal JS 覆写脚本只保留节点清洗、区域组、业务组、DNS/全局覆写和最终 `applyMihomoFusedRuleSets(config)` 调用。
+- RULES：最终输出为融合后的 `113` 个 rule-provider 与 `130` 条规则；不改变分流语义。
+
 ## v6.0.0 / v6.0.0-normal.1 (2026-07-09)
 
-- FUSED-RULESETS：以 Clash Party Smart 运行时输出作为唯一基准，新增融合规则集编译层。
-- SCALE：源 `474 providers / 929 rules` 压缩为 `120` 个融合 provider 与 `130` 条主规则，主规则只保留 `17` 条端口/逻辑组合/兜底等必要内联规则。
+- FUSED-RULESETS：新增融合规则集编译层；后续权威输入已迁移到 `rulesets/source/routing-graph.js`。
+- SCALE：源 `474 providers / 931 rules` 压缩为 `113` 个融合 provider 与 `130` 条主规则，主规则只保留 `17` 条端口/逻辑组合/兜底等必要内联规则。
 - MIHOMO-MRS：融合 provider 优先输出 `.mrs`，残余不可转条目写入 `*-residual.yaml`。
 - GOVERNANCE：后续零星域名/IP/进程补丁必须进入补充规则集并由融合编译器折叠，不得无必要散写单条规则。
 

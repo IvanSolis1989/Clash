@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-07-09T08:44:50.860Z",
-  "authority": "Clash Party/ClashParty(mihomo-smart).js runtime output after Mihomo MRS normalization, with SCKI_DISABLE_FUSED_RULESETS=true",
+  "generated_at": "2026-07-09T11:02:03.822Z",
+  "authority": "rulesets/source/routing-graph.js after Mihomo MRS normalization",
   "baseline_version": "v6.0.0",
   "source_provider_count": 474,
-  "source_rule_count": 929,
-  "fused_provider_count": 120,
+  "source_rule_count": 931,
+  "fused_provider_count": 113,
   "fused_rule_count": 130,
   "inline_rule_count": 17,
   "segment_count": 68,
@@ -14,15 +14,7 @@
   "unresolved_providers": [],
   "unresolved_sources": [],
   "passthrough_providers": [],
-  "required_support_providers": [
-    "apple",
-    "microsoft",
-    "youtube",
-    "google",
-    "cn",
-    "cn-ip",
-    "anti-ad"
-  ],
+  "required_support_providers": [],
   "segments": [
     {
       "id": "scki-fused-001-direct",
@@ -55,6 +47,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-001-direct.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-001-direct.list",
+          "source": "sing-box/scki-fused-001-direct.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-001-direct.json"
         }
       },
       "counts": {
@@ -95,6 +97,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-002-intl-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-002-intl-site.list",
+          "source": "sing-box/scki-fused-002-intl-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-002-intl-site.json"
         }
       },
       "counts": {
@@ -135,6 +147,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-003-payments.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-003-payments.list",
+          "source": "sing-box/scki-fused-003-payments.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-003-payments.json"
         }
       },
       "counts": {
@@ -175,6 +197,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-004-cnmedia.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-004-cnmedia.list",
+          "source": "sing-box/scki-fused-004-cnmedia.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-004-cnmedia.json"
         }
       },
       "counts": {
@@ -222,10 +254,20 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-005-ad.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-005-ad.list",
+          "source": "sing-box/scki-fused-005-ad.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-005-ad.json"
         }
       },
       "counts": {
-        "domain": 2139625,
+        "domain": 2139390,
         "ipcidr": 545,
         "ipcidr_no_resolve": 0,
         "residual": 0
@@ -262,6 +304,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-006-cn-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-006-cn-site.list",
+          "source": "sing-box/scki-fused-006-cn-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-006-cn-site.json"
         }
       },
       "counts": {
@@ -321,6 +373,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-007-direct.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-007-direct.list",
+          "source": "sing-box/scki-fused-007-direct.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-007-direct.json"
         }
       },
       "counts": {
@@ -360,6 +422,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-008-work.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-008-work.list",
+          "source": "sing-box/scki-fused-008-work.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-008-work.json"
         }
       },
       "counts": {
@@ -400,6 +472,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-009-crypto.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-009-crypto.list",
+          "source": "sing-box/scki-fused-009-crypto.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-009-crypto.json"
         }
       },
       "counts": {
@@ -440,6 +522,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-010-gfw.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-010-gfw.list",
+          "source": "sing-box/scki-fused-010-gfw.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-010-gfw.json"
         }
       },
       "counts": {
@@ -480,6 +572,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-011-youtube.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-011-youtube.list",
+          "source": "sing-box/scki-fused-011-youtube.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-011-youtube.json"
         }
       },
       "counts": {
@@ -520,6 +622,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-012-cn-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-012-cn-site.list",
+          "source": "sing-box/scki-fused-012-cn-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-012-cn-site.json"
         }
       },
       "counts": {
@@ -560,6 +672,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-013-ai.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-013-ai.list",
+          "source": "sing-box/scki-fused-013-ai.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-013-ai.json"
         }
       },
       "counts": {
@@ -600,6 +722,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-014-work.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-014-work.list",
+          "source": "sing-box/scki-fused-014-work.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-014-work.json"
         }
       },
       "counts": {
@@ -647,6 +779,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-015-ai.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-015-ai.list",
+          "source": "sing-box/scki-fused-015-ai.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-015-ai.json"
         }
       },
       "counts": {
@@ -687,6 +829,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-016-intl-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-016-intl-site.list",
+          "source": "sing-box/scki-fused-016-intl-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-016-intl-site.json"
         }
       },
       "counts": {
@@ -727,6 +879,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-017-im.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-017-im.list",
+          "source": "sing-box/scki-fused-017-im.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-017-im.json"
         }
       },
       "counts": {
@@ -767,6 +929,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-018-work.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-018-work.list",
+          "source": "sing-box/scki-fused-018-work.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-018-work.json"
         }
       },
       "counts": {
@@ -814,6 +986,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-019-download.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-019-download.list",
+          "source": "sing-box/scki-fused-019-download.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-019-download.json"
         }
       },
       "counts": {
@@ -861,6 +1043,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-020-google.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-020-google.list",
+          "source": "sing-box/scki-fused-020-google.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-020-google.json"
         }
       },
       "counts": {
@@ -913,6 +1105,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-021-ai.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-021-ai.list",
+          "source": "sing-box/scki-fused-021-ai.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-021-ai.json"
         }
       },
       "counts": {
@@ -958,6 +1160,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-022-crypto.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-022-crypto.list",
+          "source": "sing-box/scki-fused-022-crypto.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-022-crypto.json"
         }
       },
       "counts": {
@@ -998,6 +1210,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-023-payments.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-023-payments.list",
+          "source": "sing-box/scki-fused-023-payments.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-023-payments.json"
         }
       },
       "counts": {
@@ -1038,6 +1260,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-024-microsoft.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-024-microsoft.list",
+          "source": "sing-box/scki-fused-024-microsoft.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-024-microsoft.json"
         }
       },
       "counts": {
@@ -1078,6 +1310,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-025-intl-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-025-intl-site.list",
+          "source": "sing-box/scki-fused-025-intl-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-025-intl-site.json"
         }
       },
       "counts": {
@@ -1118,6 +1360,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-026-direct.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-026-direct.list",
+          "source": "sing-box/scki-fused-026-direct.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-026-direct.json"
         }
       },
       "counts": {
@@ -1130,7 +1382,7 @@
     {
       "id": "scki-fused-027-im",
       "policy": "💬 即时通讯",
-      "source_rules": 33,
+      "source_rules": 34,
       "files": {
         "domain": {
           "behavior": "domain",
@@ -1177,10 +1429,20 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-027-im.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-027-im.list",
+          "source": "sing-box/scki-fused-027-im.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-027-im.json"
         }
       },
       "counts": {
-        "domain": 97,
+        "domain": 98,
         "ipcidr": 33,
         "ipcidr_no_resolve": 22,
         "residual": 1
@@ -1231,6 +1493,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-028-social.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-028-social.list",
+          "source": "sing-box/scki-fused-028-social.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-028-social.json"
         }
       },
       "counts": {
@@ -1271,6 +1543,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-029-cn-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-029-cn-site.list",
+          "source": "sing-box/scki-fused-029-cn-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-029-cn-site.json"
         }
       },
       "counts": {
@@ -1311,6 +1593,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-030-social.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-030-social.list",
+          "source": "sing-box/scki-fused-030-social.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-030-social.json"
         }
       },
       "counts": {
@@ -1363,6 +1655,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-031-work.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-031-work.list",
+          "source": "sing-box/scki-fused-031-work.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-031-work.json"
         }
       },
       "counts": {
@@ -1403,6 +1705,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-032-direct.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-032-direct.list",
+          "source": "sing-box/scki-fused-032-direct.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-032-direct.json"
         }
       },
       "counts": {
@@ -1443,6 +1755,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-033-cnmedia.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-033-cnmedia.list",
+          "source": "sing-box/scki-fused-033-cnmedia.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-033-cnmedia.json"
         }
       },
       "counts": {
@@ -1483,6 +1805,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-034-tiktok.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-034-tiktok.list",
+          "source": "sing-box/scki-fused-034-tiktok.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-034-tiktok.json"
         }
       },
       "counts": {
@@ -1523,6 +1855,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-035-youtube.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-035-youtube.list",
+          "source": "sing-box/scki-fused-035-youtube.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-035-youtube.json"
         }
       },
       "counts": {
@@ -1570,6 +1912,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-036-netflix.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-036-netflix.list",
+          "source": "sing-box/scki-fused-036-netflix.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-036-netflix.json"
         }
       },
       "counts": {
@@ -1615,6 +1967,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-037-disney.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-037-disney.list",
+          "source": "sing-box/scki-fused-037-disney.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-037-disney.json"
         }
       },
       "counts": {
@@ -1660,6 +2022,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-038-hbo-max.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-038-hbo-max.list",
+          "source": "sing-box/scki-fused-038-hbo-max.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-038-hbo-max.json"
         }
       },
       "counts": {
@@ -1705,6 +2077,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-039-hulu.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-039-hulu.list",
+          "source": "sing-box/scki-fused-039-hulu.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-039-hulu.json"
         }
       },
       "counts": {
@@ -1757,6 +2139,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-040-prime-video.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-040-prime-video.list",
+          "source": "sing-box/scki-fused-040-prime-video.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-040-prime-video.json"
         }
       },
       "counts": {
@@ -1804,6 +2196,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-041-music.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-041-music.list",
+          "source": "sing-box/scki-fused-041-music.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-041-music.json"
         }
       },
       "counts": {
@@ -1851,6 +2253,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-042-stream-hk.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-042-stream-hk.list",
+          "source": "sing-box/scki-fused-042-stream-hk.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-042-stream-hk.json"
         }
       },
       "counts": {
@@ -1896,6 +2308,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-043-stream-tw.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-043-stream-tw.list",
+          "source": "sing-box/scki-fused-043-stream-tw.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-043-stream-tw.json"
         }
       },
       "counts": {
@@ -1943,6 +2365,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-044-stream-jpkr.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-044-stream-jpkr.list",
+          "source": "sing-box/scki-fused-044-stream-jpkr.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-044-stream-jpkr.json"
         }
       },
       "counts": {
@@ -1983,6 +2415,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-045-stream-eu.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-045-stream-eu.list",
+          "source": "sing-box/scki-fused-045-stream-eu.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-045-stream-eu.json"
         }
       },
       "counts": {
@@ -2035,6 +2477,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-046-stream-other.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-046-stream-other.list",
+          "source": "sing-box/scki-fused-046-stream-other.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-046-stream-other.json"
         }
       },
       "counts": {
@@ -2075,6 +2527,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-047-tools.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-047-tools.list",
+          "source": "sing-box/scki-fused-047-tools.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-047-tools.json"
         }
       },
       "counts": {
@@ -2115,6 +2577,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-048-google.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-048-google.list",
+          "source": "sing-box/scki-fused-048-google.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-048-google.json"
         }
       },
       "counts": {
@@ -2167,6 +2639,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-049-tools.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-049-tools.list",
+          "source": "sing-box/scki-fused-049-tools.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-049-tools.json"
         }
       },
       "counts": {
@@ -2207,6 +2689,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-050-microsoft.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-050-microsoft.list",
+          "source": "sing-box/scki-fused-050-microsoft.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-050-microsoft.json"
         }
       },
       "counts": {
@@ -2259,6 +2751,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-051-apple.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-051-apple.list",
+          "source": "sing-box/scki-fused-051-apple.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-051-apple.json"
         }
       },
       "counts": {
@@ -2311,6 +2813,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-052-download.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-052-download.list",
+          "source": "sing-box/scki-fused-052-download.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-052-download.json"
         }
       },
       "counts": {
@@ -2358,6 +2870,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-053-tracker.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-053-tracker.list",
+          "source": "sing-box/scki-fused-053-tracker.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-053-tracker.json"
         }
       },
       "counts": {
@@ -2405,6 +2927,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-054-gfw.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-054-gfw.list",
+          "source": "sing-box/scki-fused-054-gfw.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-054-gfw.json"
         }
       },
       "counts": {
@@ -2417,7 +2949,7 @@
     {
       "id": "scki-fused-055-game-cn",
       "policy": "🕹️ 国内游戏",
-      "source_rules": 27,
+      "source_rules": 28,
       "files": {
         "domain": {
           "behavior": "domain",
@@ -2445,10 +2977,20 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-055-game-cn.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-055-game-cn.list",
+          "source": "sing-box/scki-fused-055-game-cn.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-055-game-cn.json"
         }
       },
       "counts": {
-        "domain": 91,
+        "domain": 92,
         "ipcidr": 0,
         "ipcidr_no_resolve": 0,
         "residual": 0
@@ -2492,6 +3034,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-056-game-intl.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-056-game-intl.list",
+          "source": "sing-box/scki-fused-056-game-intl.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-056-game-intl.json"
         }
       },
       "counts": {
@@ -2551,6 +3103,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-057-intl-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-057-intl-site.list",
+          "source": "sing-box/scki-fused-057-intl-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-057-intl-site.json"
         }
       },
       "counts": {
@@ -2591,6 +3153,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-058-payments.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-058-payments.list",
+          "source": "sing-box/scki-fused-058-payments.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-058-payments.json"
         }
       },
       "counts": {
@@ -2643,6 +3215,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-059-cnmedia.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-059-cnmedia.list",
+          "source": "sing-box/scki-fused-059-cnmedia.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-059-cnmedia.json"
         }
       },
       "counts": {
@@ -2690,6 +3272,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-060-cn-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-060-cn-site.list",
+          "source": "sing-box/scki-fused-060-cn-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-060-cn-site.json"
         }
       },
       "counts": {
@@ -2730,6 +3322,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-061-direct.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-061-direct.list",
+          "source": "sing-box/scki-fused-061-direct.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-061-direct.json"
         }
       },
       "counts": {
@@ -2777,6 +3379,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-062-cn-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-062-cn-site.list",
+          "source": "sing-box/scki-fused-062-cn-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-062-cn-site.json"
         }
       },
       "counts": {
@@ -2818,6 +3430,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-063-intl-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-063-intl-site.list",
+          "source": "sing-box/scki-fused-063-intl-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-063-intl-site.json"
         }
       },
       "counts": {
@@ -2859,6 +3481,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-064-im.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-064-im.list",
+          "source": "sing-box/scki-fused-064-im.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-064-im.json"
         }
       },
       "counts": {
@@ -2900,6 +3532,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-065-netflix.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-065-netflix.list",
+          "source": "sing-box/scki-fused-065-netflix.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-065-netflix.json"
         }
       },
       "counts": {
@@ -2941,6 +3583,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-066-social.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-066-social.list",
+          "source": "sing-box/scki-fused-066-social.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-066-social.json"
         }
       },
       "counts": {
@@ -2982,6 +3634,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-067-google.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-067-google.list",
+          "source": "sing-box/scki-fused-067-google.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-067-google.json"
         }
       },
       "counts": {
@@ -3023,6 +3685,16 @@
         "egern": {
           "format": "yaml",
           "file": "scki-fused-068-cn-site.yaml"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-068-cn-site.list",
+          "source": "sing-box/scki-fused-068-cn-site.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-068-cn-site.json"
         }
       },
       "counts": {
@@ -3036,8 +3708,8 @@
   "inline_rules": [
     "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube",
     "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务",
-    "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,microsoft)),Ⓜ️ 微软服务",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,apple)),🍎 苹果服务",
     "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT",
     "DST-PORT,7680,REJECT",
     "DST-PORT,26880,DIRECT",
@@ -3051,5 +3723,8 @@
     "DST-PORT,19305,DIRECT",
     "DST-PORT,19307,DIRECT",
     "MATCH,🐟 漏网之鱼"
-  ]
+  ],
+  "generated_passwall_files": 68,
+  "generated_xray_rules": 86,
+  "generated_xray_fused_segments": 68
 }

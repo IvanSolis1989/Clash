@@ -1,15 +1,18 @@
 # Xray (v2rayN) 配置参考文档
 
+> 更新于 2026-07-09：复核 Xray routing `RuleObject` 与 v2rayN 自定义路由规则格式。Xray 路由支持 `domain` / `ip` / `port` / `process` / `outboundTag` 等原生字段，但没有 sing-box `.srs` 远程 rule-set 字段；本仓库因此把 fused sing-box JSON 展平成原生 Xray RuleObject，而不是在 Xray JSON 中引用远程 `.srs`。
+>
 > 更新于 2026-05-31（上次获取 2026-04-30）：Xray-core 最新稳定版仍为 v26.3.27（2026-03-27），预发布推进至 v26.5.9（2026-05-09）。稳定版无变化，本仓库 v2rayN 配置无需调整。
 >
 > 更新于 2026-04-30（上次获取 2026-04-26）：Xray-core 最新稳定版 v26.3.27（2026-03-27），预发布 v26.4.25（2026-04-25）。v26.3.27 新增 Hysteria2 入站/传输层、ECH 默认仅允许 ECH 连接、Finalmask HTTP 自定义头/Sudoku。`allowInsecure` 已标记废弃（2026-06 截止）——本仓库 v2rayN 配置未使用该字段，无影响。
 >
 > 来源 URL：
 > - https://xtls.github.io/config/routing.html (路由配置)
+> - https://github.com/2dust/v2rayN/wiki/Description-of-custom-routing-rules (v2rayN 自定义路由规则)
 > - https://xtls.github.io/config/dns.html (DNS 配置)
 > - https://xtls.github.io/config/outbound.html (出站配置)
 >
-> 获取日期：2026-04-26
+> 获取日期：2026-07-09
 
 ---
 
@@ -34,7 +37,7 @@ v2rayN 使用 JSON 数组格式的「路由规则」配置，每个数组项代�
 ]
 ```
 
-**注意：** v2rayN 只支持 `proxy`、`direct`、`block` 三个出站标签。没有复杂策略组。
+**注意：** 本仓库路径 C 只使用 `proxy`、`direct`、`block` 三个出站标签。没有复杂策略组，也不在 Xray JSON 中引用远程 fused `.srs`。
 
 ---
 

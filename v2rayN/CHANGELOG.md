@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.0-v2n.2 (2026-07-09)
+
+- FUSED-XRAY：`v2rayN(xray).json` 改由 `tools/generate-fused-fallback-artifacts.js` 从 `rulesets/generated/fused/sing-box/*.json` 展平成原生 Xray RuleObject。
+- SCOPE：Xray 没有远程 `.srs` rule-set 路由字段，不能像 sing-box/Passwall 一样引用远程 fused `.srs`；本产物保留 `proxy/direct/block` 三出站，输出 1 条 meta、68 条 fused 段和 17 条端口/逻辑/MATCH 内联规则。
+
 ## v6.0.0-v2n.1 (2026-07-09)
 
 - META：跟随 Clash Party v6.0.0 更新版本元数据。

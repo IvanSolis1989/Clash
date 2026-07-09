@@ -22,7 +22,7 @@ Egern 已纳入正式同步产物，但不能直接复制 Mihomo/Clash 的 `rule
 
 ## 平台边界
 
-- Egern Profile 正式跟随 CMFA 的 120 个融合 rule-provider 和 130 条规则顺序生成。
+- Egern Profile 正式跟随 CMFA 的 113 个融合 rule-provider 和 130 条规则顺序生成。
 - Egern 实际渲染 130 条主规则；桌面 `PROCESS-NAME` 补充规则如遇官方能力限制会作为平台例外处理。
 - Mihomo `.mrs` 不在 Egern 中直接引用；生成器会映射到 `rulesets/generated/egern/*.yaml` 的 Egern 原生规则集。
 

@@ -1,5 +1,7 @@
 # Passwall2 配置参考文档
 
+> 更新于 2026-07-09：复核当前 `shunt_rules.lua` 解析器。Passwall2 的 `domain_list` 与 `ip_list` 仍接受 `rule-set:remote:` / `rule-set:local:`，因此本仓库的 Passwall2 fallback 直接引用 `rulesets/generated/fused/sing-box/*.srs`，不再维护手写域名/IP 展平列表。
+>
 > 更新于 2026-05-31（上次获取 2026-04-30）：Passwall2 最新版 v26.5.19-1（2026-05-18）。从 v26.4.20-1 升级 4 个版本。`shunt_rules.lua` 分流规则语法无变更。
 >
 > 更新于 2026-04-30（上次获取 2026-04-26）：Passwall2 最新版 v26.4.20-1（2026-04-19）。新增 APK 包管理支持（OpenWrt 新包管理器）。`shunt_rules.lua` 分流规则语法无变更。
@@ -9,7 +11,7 @@
 > - https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua (分流规则解析器源码)
 > - https://github.com/Openwrt-Passwall/openwrt-passwall2/discussions/555 (Passwall vs Passwall2 差异讨论)
 >
-> 获取日期：2026-04-26
+> 获取日期：2026-07-09
 
 ---
 

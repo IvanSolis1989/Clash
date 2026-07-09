@@ -1,14 +1,19 @@
 # FlClash — 变更日志
 
 > FlClash 覆写脚本 `FlClash(mihomo).js`，使用标准 Mihomo 内核的 url-test 区域组。
-> 基线：Clash Party Normal（规则与策略 100% 对齐）。
+> 规则权威源：`rulesets/source/routing-graph.js`；FlClash 消费最终融合规则集，区域组与 Clash Party Normal 对齐。
 
 ---
+
+## Unreleased (2026-07-09)
+
+- SOURCE-GRAPH：移除 raw provider / raw rules / MRS 映射表，改为只消费 `tools/build-fused-rule-sets.js` 生成的最终融合规则集。
+- RULES：最终输出为 `113` 个融合 provider 与 `130` 条规则；规则语义不变。
 
 ## v6.0.0-flclash.1 (2026-07-09)
 
 - FUSED-RULESETS：同步 Clash Party Normal v6.0.0，标准 Mihomo 内核版本使用融合 `.mrs` / residual YAML。
-- SCALE：规则规模压缩为 `120` 个融合 provider 与 `130` 条规则，保持 55 个代理组不变。
+- SCALE：规则规模压缩为 `113` 个融合 provider 与 `130` 条规则，保持 55 个代理组不变。
 
 ## v5.4.39-flclash.1 (2026-07-09)
 

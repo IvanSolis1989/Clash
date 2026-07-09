@@ -8,7 +8,7 @@ const vm = require('node:vm');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const RESTRICTED_SITE = '🚫 受限网站';
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
-const EXPECTED_FUSED_PROVIDERS = 120;
+const EXPECTED_FUSED_PROVIDERS = 113;
 const EXPECTED_FUSED_RULES = 130;
 
 const TARGETS = [
@@ -443,6 +443,7 @@ function validateRulesAndProviders(output, record, target) {
 
   record.expectEqual(rules.length, EXPECTED_FUSED_RULES, `injects the fused ruleset`);
   record.expectEqual(providerNames.size, EXPECTED_FUSED_PROVIDERS, `injects the fused rule-provider set`);
+  record.expect([...providerNames].every((name) => name.startsWith('scki-fused-')), 'final rule-providers are generated fused providers only');
   record.expectEqual(rules[rules.length - 1], 'MATCH,🐟 漏网之鱼', 'keeps MATCH as the final fallback');
   record.expect(!rules.slice(0, -1).some((rule) => String(rule).startsWith('MATCH,')), 'does not place MATCH before the final rule');
   record.expect(!rules.some((rule) => String(rule).includes('机场自动选择')), 'subscription-native rules are removed');
@@ -524,8 +525,8 @@ function validateRulesAndProviders(output, record, target) {
   record.expectEqual(quicAndRules.length, 5, 'exactly 5 QUIC AND rules exist');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,youtube') && String(r).endsWith('📹 YouTube'); }), 'QUIC AND: YouTube whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,google') && String(r).endsWith('🔍 Google 服务'); }), 'QUIC AND: Google service whitelist intact');
-  record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
-  record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
+  record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
   const fusedRustDeskGuard = indexOfPrefix('RULE-SET,scki-fused-014-work-domain,🧑‍💼 会议协作');
   const fusedCopilot = indexOfPrefix('RULE-SET,scki-fused-021-ai-domain,🤖 AI 服务');

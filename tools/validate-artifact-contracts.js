@@ -7,6 +7,11 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
+const {
+  SOURCE_GRAPH_ID,
+  getRawRoutingGraph,
+  getMihomoNormalizedRoutingGraph,
+} = require('../rulesets/source/routing-graph');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const EXPECTED_GROUPS = 55;
@@ -14,17 +19,19 @@ const EXPECTED_BUSINESS_GROUPS = 33;
 const EXPECTED_REGION_GROUPS = EXPECTED_GROUPS - EXPECTED_BUSINESS_GROUPS;
 const EXPECTED_SINGBOX_GROUPS = 54;
 const EXPECTED_SINGBOX_URLTEST_GROUPS = 2;
-const EXPECTED_PASSWALL_RULES = 33;
+const EXPECTED_PASSWALL_RULES = 68;
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
 const SOURCE_FULL_PROVIDERS = 474;
-const SOURCE_FULL_RULES = 929;
-const MIN_FULL_PROVIDERS = 120;
+const SOURCE_FULL_RULES = 931;
+const MIN_FULL_PROVIDERS = 113;
+const EXPECTED_SINGBOX_RUNTIME_GEO_RULE_SETS = 7;
 const MIN_FULL_RULES = 130;
 const EXPECTED_FUSED_SEGMENTS = 68;
 const EXPECTED_FUSED_INLINE_RULES = 17;
 const EXPECTED_FUSED_MRS_FILES = 96;
 const EXPECTED_FUSED_SRS_FILES = 68;
+const EXPECTED_FUSED_PASSWALL_FILES = 68;
 const EXPECTED_MIHOMO_MRS_CONVERTED = 267;
 const EXPECTED_MIHOMO_MRS_SPLIT = 39;
 const EXPECTED_MIHOMO_MRS_PARTIAL = 30;
@@ -40,6 +47,7 @@ const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
 const SUPPLEMENTAL_RULESET_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental';
+const SOURCE_GRAPH_FILE = 'rulesets/source/routing-graph.js';
 const SUPPLEMENTAL_CLASH_RULESETS = [
   { id: 'scki-adfp-direct', file: 'adfp-direct', policy: 'DIRECT' },
   { id: 'scki-adfp-intl-site', file: 'adfp-intl-site', policy: '🌐 国外网站' },
@@ -347,16 +355,48 @@ function validateMihomoMrsRuleSets(record) {
   record.check('mihomo-mrs.residual-classical-yaml', badResiduals.length === 0, { message: badResiduals.map((row) => `${row.file}:${row.behavior}`).join(', ') });
   record.check('mihomo-mrs.retained-has-reason', retainedWithoutReason.length === 0, { message: retainedWithoutReason.map((row) => row.id).join(', ') });
 
+  const sourceGraph = readText(SOURCE_GRAPH_FILE);
+  const rawGraph = getRawRoutingGraph();
+  const normalizedGraph = getMihomoNormalizedRoutingGraph();
+  record.check('mihomo-mrs.source-graph.tool-disable-switch', sourceGraph.includes('SCKI_DISABLE_MIHOMO_MRS_OVERRIDES'), {
+    message: 'Source graph must expose a tool-only disable switch so MRS sync can read raw upstream providers',
+  });
+  record.check('mihomo-mrs.source-graph.raw-provider-count', Object.keys(rawGraph['rule-providers'] || {}).length > 0, {
+    value: Object.keys(rawGraph['rule-providers'] || {}).length,
+  });
+  record.check('mihomo-mrs.source-graph.normalized-provider-count', Object.keys(normalizedGraph['rule-providers'] || {}).length === SOURCE_FULL_PROVIDERS, {
+    value: Object.keys(normalizedGraph['rule-providers'] || {}).length,
+  });
+  record.check('mihomo-mrs.source-graph.normalized-rule-count', (normalizedGraph.rules || []).length === SOURCE_FULL_RULES, {
+    value: (normalizedGraph.rules || []).length,
+  });
+
   for (const spec of [
     { id: 'js-smart', file: 'Clash Party/ClashParty(mihomo-smart).js' },
     { id: 'js-normal', file: 'Clash Party/ClashParty(mihomo).js' },
     { id: 'flclash', file: 'FlClash/FlClash(mihomo).js' },
   ]) {
     const source = readText(spec.file);
-    record.check(`mihomo-mrs.${spec.id}.tool-disable-switch`, source.includes('SCKI_DISABLE_MIHOMO_MRS_OVERRIDES'), {
-      message: 'JS MRS override block must expose a tool-only disable switch so sync reads Clash Party raw upstream providers',
+    record.check(`mihomo-mrs.${spec.id}.no-source-mrs-block`, !source.includes('SCKI_DISABLE_MIHOMO_MRS_OVERRIDES'), {
+      message: 'Client JS products must not carry source MRS override blocks',
+    });
+    record.check(`mihomo-mrs.${spec.id}.no-source-provider-injection`, !source.includes('function injectRuleProviders'), {
+      message: 'Client JS products must consume fused rule-providers only',
+    });
+    record.check(`mihomo-mrs.${spec.id}.no-source-rule-injection`, !source.includes('function injectRules'), {
+      message: 'Client JS products must consume fused rules only',
     });
   }
+}
+
+function xrayDomainIncludes(rule, value) {
+  const domains = Array.isArray(rule && rule.domain) ? rule.domain : [];
+  const normalized = String(value).replace(/^(domain|full|keyword|regexp):/, '');
+  return domains.includes(value)
+    || domains.includes(`domain:${normalized}`)
+    || domains.includes(`full:${normalized}`)
+    || domains.includes(`keyword:${normalized}`)
+    || domains.includes(normalized);
 }
 
 function validateFusedRuleSets(record) {
@@ -364,7 +404,7 @@ function validateFusedRuleSets(record) {
   const fusedDir = relPath('rulesets/generated/fused');
   const countFiles = (subdir, suffix) => fs.readdirSync(path.join(fusedDir, subdir)).filter((file) => file.endsWith(suffix)).length;
 
-  record.check('fused.authority-clash-party', String(manifest.authority || '').includes('Clash Party/ClashParty(mihomo-smart).js'), { value: manifest.authority });
+  record.check('fused.authority-source-graph', String(manifest.authority || '').includes(SOURCE_GRAPH_ID), { value: manifest.authority });
   record.check('fused.source-provider-count', manifest.source_provider_count === SOURCE_FULL_PROVIDERS, { value: manifest.source_provider_count });
   record.check('fused.source-rule-count', manifest.source_rule_count === SOURCE_FULL_RULES, { value: manifest.source_rule_count });
   record.check('fused.provider-count', manifest.fused_provider_count === MIN_FULL_PROVIDERS, { value: manifest.fused_provider_count });
@@ -373,6 +413,8 @@ function validateFusedRuleSets(record) {
   record.check('fused.inline-rule-count', manifest.inline_rule_count === EXPECTED_FUSED_INLINE_RULES, { value: manifest.inline_rule_count });
   record.check('fused.generated-mrs-files', manifest.generated_mrs_files === EXPECTED_FUSED_MRS_FILES, { value: manifest.generated_mrs_files });
   record.check('fused.generated-srs-files', manifest.generated_srs_files === EXPECTED_FUSED_SRS_FILES, { value: manifest.generated_srs_files });
+  record.check('fused.generated-passwall-files', manifest.generated_passwall_files === EXPECTED_FUSED_PASSWALL_FILES, { value: manifest.generated_passwall_files });
+  record.check('fused.generated-xray-segments', manifest.generated_xray_fused_segments === EXPECTED_FUSED_SEGMENTS, { value: manifest.generated_xray_fused_segments });
   record.check('fused.unresolved-providers', (manifest.unresolved_providers || []).length === 0, { value: manifest.unresolved_providers });
   record.check('fused.unresolved-sources', (manifest.unresolved_sources || []).length === 0, { value: manifest.unresolved_sources });
   record.check('fused.passthrough-providers', (manifest.passthrough_providers || []).length === 0, { value: manifest.passthrough_providers });
@@ -381,6 +423,7 @@ function validateFusedRuleSets(record) {
   record.check('fused.qx-file-count', countFiles('quantumultx', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('quantumultx', '.list') });
   record.check('fused.egern-file-count', countFiles('egern', '.yaml') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('egern', '.yaml') });
   record.check('fused.sing-box-srs-count', countFiles('sing-box', '.srs') === EXPECTED_FUSED_SRS_FILES, { value: countFiles('sing-box', '.srs') });
+  record.check('fused.passwall-file-count', countFiles('passwall', '.list') === EXPECTED_FUSED_PASSWALL_FILES, { value: countFiles('passwall', '.list') });
   for (const id of [
     'scki-fused-005-ad',
     'scki-fused-007-direct',
@@ -393,7 +436,14 @@ function validateFusedRuleSets(record) {
     'scki-fused-056-game-intl',
     'scki-fused-057-intl-site',
   ]) {
-    record.check(`fused.segment.${id}`, (manifest.segments || []).some((segment) => segment.id === id), { message: `missing ${id}` });
+    const segment = (manifest.segments || []).find((row) => row.id === id);
+    record.check(`fused.segment.${id}`, Boolean(segment), { message: `missing ${id}` });
+    record.check(`fused.segment-passwall.${id}`, Boolean(segment && segment.files && segment.files.passwall && segment.files.passwall.file === `${id}.list`), {
+      message: `missing Passwall fused mapping for ${id}`,
+    });
+    record.check(`fused.segment-xray.${id}`, Boolean(segment && segment.files && segment.files.xray && segment.files.xray.file === 'v2rayN/v2rayN(xray).json'), {
+      message: `missing Xray fused mapping for ${id}`,
+    });
   }
 }
 
@@ -586,6 +636,14 @@ function meaningfulRuleLines(relativePath) {
     .split(/\r?\n/)
     .map((line) => line.trim())
     .filter((line) => line && !line.startsWith('#'));
+}
+
+function fusedSrsUrl(segmentId) {
+  return `${SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/fused')}/sing-box/${segmentId}.srs`;
+}
+
+function fusedSingBoxText(segmentId) {
+  return readText(`rulesets/generated/fused/sing-box/${segmentId}.json`);
 }
 
 function findRuby() {
@@ -818,8 +876,8 @@ function validateStashYaml(record, baselineVersion, options) {
   record.check('stash.group-count', groupCount === EXPECTED_GROUPS, { value: groupCount });
   record.check('stash.provider-count', providerCount >= MIN_FULL_PROVIDERS, { value: providerCount });
   record.check('stash.rule-count', ruleCount >= MIN_FULL_RULES, { value: ruleCount });
-  record.check('stash.baseline-header', source.includes(`Clash Party ${baselineVersion}`), {
-    message: `missing Clash Party ${baselineVersion}`,
+  record.check('stash.baseline-header', source.includes(`rulesets/source/routing-graph.js ${baselineVersion}`), {
+    message: `missing source graph ${baselineVersion}`,
   });
   record.check('stash.version-prefix', source.includes(`Stash Smart ${baselineVersion}-stash.`), {
     message: `missing Stash Smart ${baselineVersion}-stash.*`,
@@ -1206,7 +1264,7 @@ function validateJsonProducts(record, baselineVersion) {
   record.check('singbox.no-unconditional-final-route-rule', !finalAsUnconditionalRule, {
     message: 'SingBox must use route.final for MATCH fallback; an unconditional final rule would shadow later QUIC rules',
   });
-  record.check('singbox.rule-set-count', ruleSetCount === MIN_FULL_PROVIDERS + 1, { value: ruleSetCount });
+  record.check('singbox.rule-set-count', ruleSetCount === MIN_FULL_PROVIDERS + EXPECTED_SINGBOX_RUNTIME_GEO_RULE_SETS, { value: ruleSetCount });
   record.check('singbox.route-rule-count', routeRuleCount === MIN_FULL_RULES, { value: routeRuleCount });
   const singboxScholarGoogle = routeRules.some((rule) => (
     Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-020-google-domain') && rule.outbound === '🔍 Google 服务'
@@ -1242,11 +1300,11 @@ function validateJsonProducts(record, baselineVersion) {
   record.check('singbox.dns.private-direct', singboxPrivateDnsDirect, failureMessage(singboxPrivateDnsDirect, 'geosite-private DNS must use dns_direct'));
   const singboxCnDnsDirect = dnsRules.some((rule) => (
     Array.isArray(rule.rule_set)
-      && rule.rule_set.includes('cn')
-      && rule.rule_set.includes('cn-ip')
+      && rule.rule_set.includes('geosite-cn')
+      && rule.rule_set.includes('geoip-cn')
       && rule.server === 'dns_direct'
   ));
-  record.check('singbox.dns.cn-direct', singboxCnDnsDirect, failureMessage(singboxCnDnsDirect, 'cn and cn-ip DNS must use dns_direct'));
+  record.check('singbox.dns.cn-direct', singboxCnDnsDirect, failureMessage(singboxCnDnsDirect, 'geosite-cn and geoip-cn DNS must use dns_direct'));
   record.check('singbox.dns.final-proxy', (singbox.dns || {}).final === 'dns_proxy', { value: (singbox.dns || {}).final });
   for (const port of STUN_DIRECT_PORTS) {
     const hasPortRule = ((singbox.route || {}).rules || []).some((rule) => (
@@ -1300,10 +1358,21 @@ function validateJsonProducts(record, baselineVersion) {
   const v2rayn = readJson('v2rayN/v2rayN(xray).json');
   const allowedTags = new Set(['proxy', 'direct', 'block']);
   record.check('v2rayn.top-level-array', Array.isArray(v2rayn));
-  record.check('v2rayn.rule-count', Array.isArray(v2rayn) && v2rayn.length >= 30, { value: Array.isArray(v2rayn) ? v2rayn.length : null });
+  record.check('v2rayn.rule-count', Array.isArray(v2rayn) && v2rayn.length >= EXPECTED_FUSED_SEGMENTS, { value: Array.isArray(v2rayn) ? v2rayn.length : null });
   record.check('v2rayn.baseline-remarks', Array.isArray(v2rayn) && String(v2rayn[0] && v2rayn[0].remarks).includes(`Clash Party ${baselineVersion}`));
+  record.check('v2rayn.generated-from-fused', Array.isArray(v2rayn) && String(v2rayn[0] && v2rayn[0].remarks).includes('rulesets/generated/fused/sing-box'), {
+    message: 'v2rayN Xray output must be generated from fused sing-box source JSON',
+  });
   record.check('v2rayn.outbound-tags', Array.isArray(v2rayn) && v2rayn.every((rule) => allowedTags.has(rule.outboundTag)), {
     value: Array.isArray(v2rayn) ? Array.from(new Set(v2rayn.map((rule) => rule.outboundTag))).sort() : null,
+  });
+  for (const id of ['scki-fused-002-intl-site', 'scki-fused-004-cnmedia', 'scki-fused-005-ad', 'scki-fused-006-cn-site', 'scki-fused-020-google', 'scki-fused-055-game-cn', 'scki-fused-056-game-intl']) {
+    record.check(`v2rayn.fused-rule.${id}`, Array.isArray(v2rayn) && v2rayn.some((rule) => rule.id === id), {
+      message: `missing ${id}`,
+    });
+  }
+  record.check('v2rayn.no-legacy-handwritten-rule-ids', Array.isArray(v2rayn) && !v2rayn.some((rule) => /^scki-(000[abcde]|00[1-9]|0[1-9][0-9])-/.test(String(rule.id || ''))), {
+    message: 'v2rayN must not retain old handwritten scki-NNN route ids',
   });
   for (const port of STUN_DIRECT_PORTS) {
     const hasPortRule = Array.isArray(v2rayn) && v2rayn.some((rule) => (
@@ -1312,33 +1381,33 @@ function validateJsonProducts(record, baselineVersion) {
     record.check(`v2rayn.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing port ${port} -> direct`));
   }
   const v2CloudflareR2Index = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => (
-    rule.outboundTag === 'proxy' && Array.isArray(rule.domain) && rule.domain.includes('domain:cloudflarestorage.com')
+    rule.id === 'scki-fused-002-intl-site'
+      && rule.outboundTag === 'proxy'
+      && xrayDomainIncludes(rule, 'domain:cloudflarestorage.com')
   )) : -1;
-  const v2AdsIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => rule.id === 'scki-001-ads') : -1;
+  const v2AdsIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => rule.id === 'scki-fused-005-ad') : -1;
   const v2DouyinIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => (
-    rule.id === 'scki-000d-douyin-web-cnmedia'
+    rule.id === 'scki-fused-004-cnmedia'
       && rule.outboundTag === 'direct'
-      && Array.isArray(rule.domain)
-      && DOUYIN_CNMEDIA_DOMAINS.every((domain) => rule.domain.includes(`domain:${domain}`))
+      && DOUYIN_CNMEDIA_DOMAINS.every((domain) => xrayDomainIncludes(rule, `domain:${domain}`))
   )) : -1;
   const v2AmapIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => (
-    rule.id === 'scki-000e-amap-direct'
+    rule.id === 'scki-fused-006-cn-site'
       && rule.outboundTag === 'direct'
-      && Array.isArray(rule.domain)
-      && PASSWALL_AMAP_REQUIRED.every((domain) => rule.domain.includes(domain))
+      && PASSWALL_AMAP_REQUIRED.every((domain) => xrayDomainIncludes(rule, domain))
   )) : -1;
   const v2ScholarGoogle = Array.isArray(v2rayn) && v2rayn.some((rule) => (
-    rule.id === 'scki-027-google' && rule.outboundTag === 'proxy' && Array.isArray(rule.domain) && rule.domain.includes('domain:scholar.google.com')
+    rule.id === 'scki-fused-020-google' && rule.outboundTag === 'proxy' && xrayDomainIncludes(rule, 'domain:scholar.google.com')
   ));
-  const v2CnGameIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => rule.id === 'scki-025-cn-game') : -1;
-  const v2IntlGameIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => rule.id === 'scki-026-intl-game') : -1;
+  const v2CnGameIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => rule.id === 'scki-fused-055-game-cn') : -1;
+  const v2IntlGameIndex = Array.isArray(v2rayn) ? v2rayn.findIndex((rule) => rule.id === 'scki-fused-056-game-intl') : -1;
   const v2CnGame = v2CnGameIndex === -1 ? null : v2rayn[v2CnGameIndex];
-  record.check('v2rayn.douyin-web-direct-guard', v2DouyinIndex !== -1, failureMessage(v2DouyinIndex !== -1, 'scki-000d must direct all Douyin Web guard domains'));
+  record.check('v2rayn.douyin-web-direct-guard', v2DouyinIndex !== -1, failureMessage(v2DouyinIndex !== -1, 'scki-fused-004-cnmedia must direct all Douyin Web guard domains'));
   record.check('v2rayn.douyin-web-before-ads', v2DouyinIndex !== -1 && v2AdsIndex !== -1 && v2DouyinIndex < v2AdsIndex, {
     value: { douyin: v2DouyinIndex, ads: v2AdsIndex },
   });
-  record.check('v2rayn.amap-direct-guard', v2AmapIndex !== -1, failureMessage(v2AmapIndex !== -1, 'scki-000e must direct all GaoDe/AMap fallback domains'));
-  record.check('v2rayn.amap-before-ads', v2AmapIndex !== -1 && v2AdsIndex !== -1 && v2AmapIndex < v2AdsIndex, {
+  record.check('v2rayn.amap-direct-guard', v2AmapIndex !== -1, failureMessage(v2AmapIndex !== -1, 'scki-fused-006-cn-site must direct all GaoDe/AMap fallback domains'));
+  record.check('v2rayn.amap-after-ads', v2AmapIndex !== -1 && v2AdsIndex !== -1 && v2AdsIndex < v2AmapIndex, {
     value: { amap: v2AmapIndex, ads: v2AdsIndex },
   });
   record.check('v2rayn.cn-game-before-intl-game', v2CnGameIndex !== -1 && v2IntlGameIndex !== -1 && v2CnGameIndex < v2IntlGameIndex, {
@@ -1347,11 +1416,11 @@ function validateJsonProducts(record, baselineVersion) {
   for (const domain of PASSWALL_CN_GAME_REQUIRED) {
     record.check(
       `v2rayn.cn-game.${domain}`,
-      v2CnGame && Array.isArray(v2CnGame.domain) && v2CnGame.domain.includes(domain),
-      failureMessage(v2CnGame && Array.isArray(v2CnGame.domain) && v2CnGame.domain.includes(domain), `scki-025-cn-game missing ${domain}`),
+      v2CnGame && xrayDomainIncludes(v2CnGame, domain),
+      failureMessage(v2CnGame && xrayDomainIncludes(v2CnGame, domain), `scki-fused-055-game-cn missing ${domain}`),
     );
   }
-  record.check('v2rayn.scholar-target-google', v2ScholarGoogle, failureMessage(v2ScholarGoogle, 'scki-027-google must include domain:scholar.google.com'));
+  record.check('v2rayn.scholar-target-google', v2ScholarGoogle, failureMessage(v2ScholarGoogle, 'scki-fused-020-google must include domain:scholar.google.com'));
   record.check('v2rayn.cloudflarestorage-before-ads', v2CloudflareR2Index !== -1 && v2AdsIndex !== -1 && v2CloudflareR2Index < v2AdsIndex, {
     value: { cloudflarestorage: v2CloudflareR2Index, ads: v2AdsIndex },
   });
@@ -1450,6 +1519,14 @@ function validateEgern(record, baselineVersion, options) {
 }
 
 function validatePasswall(record, baselineVersion) {
+  const manifest = readJson('rulesets/generated/fused/manifest.json');
+  const expectedListNames = (manifest.segments || []).map((segment) => `${segment.id}.list`).sort();
+  const passwallGeneratedLists = listFiles('rulesets/generated/fused/passwall').filter((file) => file.endsWith('.list')).map((file) => path.basename(file)).sort();
+  record.check('passwall.generated-fused-list-count', passwallGeneratedLists.length === EXPECTED_FUSED_PASSWALL_FILES, { value: passwallGeneratedLists.length });
+  record.check('passwall.generated-fused-list-names', JSON.stringify(passwallGeneratedLists) === JSON.stringify(expectedListNames), {
+    value: { expected: expectedListNames, actual: passwallGeneratedLists },
+  });
+
   const specs = [
     { id: 'passwall', file: 'Passwall/Passwall(xray+sing-box)-apply.sh', reference: 'Passwall/Passwall(xray+sing-box).conf', dir: 'Passwall/shunt-rules' },
     { id: 'passwall2', file: 'Passwall2/Passwall2(xray+sing-box)-apply.sh', reference: 'Passwall2/Passwall2(xray+sing-box).conf', dir: 'Passwall2/shunt-rules' },
@@ -1460,70 +1537,105 @@ function validatePasswall(record, baselineVersion) {
     const reference = readText(spec.reference);
     const shuntFiles = listFiles(spec.dir).filter((file) => file.endsWith('.list'));
     const activeRuleText = [source, reference, ...shuntFiles.map((file) => readText(file))].join('\n');
-    const ruleAdds = countMatches(source, /uci add "\$\{CONFIG_NAME\}" shunt_rules/g);
+    const ruleAdds = countMatches(source, /^add_fused_shunt_rule /gm);
     const hasBaselineHeader = source.includes(baselineVersion);
     record.check(`${spec.id}.baseline-header`, hasBaselineHeader, failureMessage(hasBaselineHeader, `missing ${baselineVersion}`));
     record.check(`${spec.id}.script-rule-count`, ruleAdds === EXPECTED_PASSWALL_RULES, { value: ruleAdds });
     record.check(`${spec.id}.list-file-count`, shuntFiles.length === EXPECTED_PASSWALL_RULES, { value: shuntFiles.length });
+    record.check(`${spec.id}.list-file-names`, JSON.stringify(shuntFiles.map((file) => path.basename(file)).sort()) === JSON.stringify(expectedListNames), {
+      value: shuntFiles.map((file) => path.basename(file)).sort(),
+    });
+    record.check(`${spec.id}.generated-marker`, source.includes('node tools/generate-fused-fallback-artifacts.js'), {
+      message: 'Passwall fallback artifacts must be generated, not hand-maintained',
+    });
     record.check(`${spec.id}.apply-script-replace-mode`, source.includes('MODE="${1:---replace}"') && source.includes('cleanup_existing_scki_rules'), {
       message: 'apply script must default to --replace and delete existing Smart-Config-Kit shunt rules before recreating them',
     });
     if (!reference.includes(baselineVersion)) {
       record.warn(`${spec.id}.reference-conf.baseline`, `${spec.reference} does not advertise ${baselineVersion}; apply script plus shunt-rules are authoritative`);
     }
-    record.check(`${spec.id}.cloudflarestorage-script-rule`, source.includes("domain_list='domain:cloudflarestorage.com'"));
-    record.check(`${spec.id}.cloudflarestorage-reference-rule`, reference.includes('domain:cloudflarestorage.com'));
-    record.check(`${spec.id}.scholar-target-google`, activeRuleText.includes('domain:scholar.google.com'), {
-      message: 'Google shunt rule must include domain:scholar.google.com',
+
+    for (const segment of manifest.segments || []) {
+      const url = fusedSrsUrl(segment.id);
+      record.check(`${spec.id}.script-fused-url.${segment.id}`, source.includes(`add_fused_shunt_rule '${segment.id} | ${segment.policy}' '${url}'`), {
+        message: `missing ${segment.id} in apply script`,
+      });
+      record.check(`${spec.id}.reference-fused-url.${segment.id}`, reference.includes(`rule-set:remote:${url}`), {
+        message: `missing ${segment.id} in reference conf`,
+      });
+      const listFile = path.join(spec.dir, `${segment.id}.list`);
+      const lines = meaningfulRuleLines(listFile);
+      record.check(`${spec.id}.list-fused-url.${segment.id}`, lines.length === 1 && lines[0] === `rule-set:remote:${url}`, {
+        message: `${listFile} must contain exactly one native Passwall rule-set:remote entry`,
+        value: lines,
+      });
+    }
+
+    const cnmediaJson = fusedSingBoxText('scki-fused-004-cnmedia');
+    const cnSiteJson = fusedSingBoxText('scki-fused-006-cn-site');
+    const googleJson = fusedSingBoxText('scki-fused-020-google');
+    const cnGameJson = fusedSingBoxText('scki-fused-055-game-cn');
+    const intlGameJson = fusedSingBoxText('scki-fused-056-game-intl');
+    const imJson = `${fusedSingBoxText('scki-fused-017-im')}\n${fusedSingBoxText('scki-fused-027-im')}`;
+
+    record.check(`${spec.id}.cloudflarestorage-fused-source`, fusedSingBoxText('scki-fused-002-intl-site').includes('cloudflarestorage.com'));
+    record.check(`${spec.id}.scholar-target-google`, googleJson.includes('scholar.google.com'), {
+      message: 'Google fused source must include scholar.google.com',
     });
     record.check(
       `${spec.id}.douyin-web-domain-fallbacks`,
-      DOUYIN_CNMEDIA_DOMAINS.every((domain) => activeRuleText.includes(`domain:${domain}`)),
-      { message: 'CN media shunt rule must include explicit Douyin Web / zjcdn.com domain fallbacks' },
+      DOUYIN_CNMEDIA_DOMAINS.every((domain) => cnmediaJson.includes(domain)),
+      { message: 'CN media fused source must include explicit Douyin Web / zjcdn.com domain fallbacks' },
     );
     record.check(
       `${spec.id}.amap-domain-fallbacks`,
-      PASSWALL_AMAP_REQUIRED.every((domain) => activeRuleText.includes(domain)),
-      { message: 'CN site shunt rule must include explicit GaoDe / AMap domain fallbacks' },
+      PASSWALL_AMAP_REQUIRED.every((domain) => cnSiteJson.includes(domain.replace(/^domain:/, ''))),
+      { message: 'CN site fused source must include explicit GaoDe / AMap domain fallbacks' },
+    );
+    checkNeedleBefore(
+      record,
+      `${spec.id}.cloudflarestorage-script-before-ads`,
+      source,
+      "add_fused_shunt_rule 'scki-fused-002-intl-site",
+      "add_fused_shunt_rule 'scki-fused-005-ad",
+    );
+    checkNeedleBefore(
+      record,
+      `${spec.id}.cnmedia-script-before-tiktok`,
+      source,
+      "add_fused_shunt_rule 'scki-fused-004-cnmedia",
+      "add_fused_shunt_rule 'scki-fused-034-tiktok",
     );
     checkNeedleBefore(
       record,
       `${spec.id}.cn-game-script-before-intl-game`,
       source,
-      "remarks='🕹️ 国内游戏'",
-      "remarks='🎮 国外游戏'",
+      "add_fused_shunt_rule 'scki-fused-055-game-cn",
+      "add_fused_shunt_rule 'scki-fused-056-game-intl",
     );
-    const cnGameList = meaningfulRuleLines(path.join(spec.dir, '21-cn-game.list'));
-    const intlGameList = meaningfulRuleLines(path.join(spec.dir, '22-intl-game.list'));
     for (const domain of PASSWALL_CN_GAME_REQUIRED) {
+      const normalized = domain.replace(/^domain:/, '');
       record.check(
-        `${spec.id}.cn-game-list.${domain}`,
-        cnGameList.includes(domain),
-        failureMessage(cnGameList.includes(domain), `21-cn-game.list missing ${domain}`),
-      );
-      record.check(
-        `${spec.id}.cn-game-script.${domain}`,
-        source.includes(`domain_list='${domain}'`),
-        failureMessage(source.includes(`domain_list='${domain}'`), `apply script missing ${domain}`),
+        `${spec.id}.cn-game-fused-source.${normalized}`,
+        cnGameJson.includes(normalized),
+        failureMessage(cnGameJson.includes(normalized), `scki-fused-055-game-cn missing ${normalized}`),
       );
     }
-    record.check(`${spec.id}.intl-game-no-mihoyo`, !intlGameList.includes('domain:mihoyo.com'), {
-      message: 'domain:mihoyo.com must stay in CN game, not intl game',
+    record.check(`${spec.id}.cn-game-mihoyo-before-intl-game`, cnGameJson.includes('"mihoyo.com"') && source.indexOf("add_fused_shunt_rule 'scki-fused-055-game-cn") < source.indexOf("add_fused_shunt_rule 'scki-fused-056-game-intl"), {
+      message: 'domain:mihoyo.com must be protected by an earlier CN game fused segment even if later broad game providers also contain it',
     });
     record.check(`${spec.id}.no-legacy-kakaotalk-geosite`, !activeRuleText.includes('geosite:kakaotalk'), {
       message: 'geosite:kakaotalk is not a valid v2fly/domain-list-community category; use geosite:kakao plus domain fallbacks',
     });
     record.check(
       `${spec.id}.kakao-domain-fallbacks`,
-      activeRuleText.includes('geosite:kakao') && activeRuleText.includes('domain:kakao.com') && activeRuleText.includes('domain:kakaocorp.com') && activeRuleText.includes('domain:kakaotalk.com'),
-      { message: 'KakaoTalk must include geosite:kakao plus explicit kakao.com/kakaocorp.com/kakaotalk.com fallbacks' },
+      imJson.includes('kakao.com') && imJson.includes('kakaocorp.com') && imJson.includes('kakaotalk.com'),
+      { message: 'KakaoTalk fused source must include explicit kakao.com/kakaocorp.com/kakaotalk.com fallbacks' },
     );
     for (const file of shuntFiles) {
       const badLine = readText(file).split(/\r?\n/).find((line) => !/^\s*#/.test(line) && /^(DOMAIN|DOMAIN-SUFFIX|DOMAIN-KEYWORD|IP-CIDR|IP-CIDR6|RULE-SET),/.test(line));
       record.check(`${spec.id}.${path.basename(file)}.passwall-syntax`, !badLine, { message: badLine ? `Clash-style prefix: ${badLine}` : undefined });
     }
-    const intlSiteList = readText(path.join(spec.dir, '29-intl-site.list'));
-    record.check(`${spec.id}.cloudflarestorage-list-rule`, intlSiteList.includes('domain:cloudflarestorage.com'));
   }
 
   const passwallLists = listFiles('Passwall/shunt-rules').filter((file) => file.endsWith('.list')).map((file) => path.basename(file)).sort();

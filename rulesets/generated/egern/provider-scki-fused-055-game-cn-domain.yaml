@@ -16,6 +16,7 @@ domain_set:
   - "wmsjsteam.com"
   - "xz.pphimalayanrt.com"
 domain_suffix_set:
+  - "battlenet.com.cn"
   - "bhsr.com"
   - "cm.steampowered.com"
   - "counter-strike.cn"
