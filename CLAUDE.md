@@ -43,6 +43,10 @@ node tools/validate-process-name-direct.js
 ### 产物重新生成
 
 ```bash
+# 同步/转换 Mihomo .mrs 规则集（支持 .mrs 的 Mihomo 产物必须先走这两步）
+node tools/sync-mihomo-mrs-rule-providers.js
+node tools/apply-mihomo-mrs-overrides.js
+
 # 重新生成 SingBox Full JSON（禁止手工改）
 node "SingBox/SingBox(sing-box)-generator.js"
 
@@ -122,6 +126,23 @@ node tools/generate-egern-from-cmfa.js
 
 这些目录的修改**不需要**触发 §1 全版本联动，但 `tools/` 和 `.github/workflows/` 的改动应在 PR 描述中说明。
 
+### 0.2 规则生成链路架构（v5.4.38 起强制）
+
+本仓库现在有两条生成链路，不能混用：
+
+1. **Mihomo `.mrs` 链路**：面向 Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash。
+   - 权威输入：`Clash Meta For Android/CMFA(mihomo).yaml` 里的 `rule-providers`。
+   - 同步脚本：`node tools/sync-mihomo-mrs-rule-providers.js`。
+   - 输出目录：`rulesets/generated/mihomo-mrs/` + `manifest.json`。
+   - 应用脚本：`node tools/apply-mihomo-mrs-overrides.js`。
+   - 规则：`domain` / `ipcidr` 才能转 `.mrs`；混合 classical 必须拆成 `-domain` / `-ipcidr`；含 `GEOIP`、端口、进程、逻辑组合等不支持类型必须保留原格式，并写入 manifest 的 retained 原因。
+2. **Egern 原生规则链路**：面向 `Egern/Egern.yaml`。
+   - Egern 不直接消费 Mihomo `.mrs`。
+   - `node tools/generate-egern-from-cmfa.js` 会读取 CMFA 规则顺序和 `.mrs` manifest，把上游规则映射为 `rulesets/generated/egern/*.yaml` 的 Egern 原生 YAML 规则集。
+   - 两个 `PROCESS-NAME` 补充规则集不进入 Egern，这是官方规则能力限制，不是同步遗漏。
+
+**强制顺序**：改 rule-provider / 规则集后，先更新 Clash Party/CMFA 语义，再运行 `.mrs` 同步与应用，再生成 Stash/Egern/SingBox，最后跑 §5 自检。禁止反向从 Stash/Egern/SingBox 手工改回主线。
+
 ---
 
 ## 1. 每次修改「规则 / 策略组 / DNS」都必须全版本联动 ⚠️
@@ -132,6 +153,7 @@ node tools/generate-egern-from-cmfa.js
 
 - 新增/删除/重命名**任何代理组**（含 22 个区域组〔11 全部 + 11 家宽〕与 33 个业务组）
 - 新增/删除/修改**任何 rule-provider**（含 URL、behavior、format、interval、proxy 字段）
+- 新增/删除/修改 `rulesets/generated/mihomo-mrs/manifest.json`、`rulesets/generated/mihomo-mrs/*.mrs`、`rulesets/generated/egern/*.yaml` 的生成规则
 - 修改**规则条目的目标组**（例如把 `RULE-SET,tiktok` 从 `📱 社交媒体` 改到其他组）
 - 修改**规则顺序**中影响命中优先级的段（特别是广告拦截、GFW、FINAL 前置关系）
 - 修改 **DNS / Sniffer / fake-ip / GeoX URL / LightGBM URL** 等全局行为
@@ -158,11 +180,19 @@ node tools/generate-egern-from-cmfa.js
    - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（展平降级参考；仅当业务组/规则类别变化时需同步）
    - `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list`（同上；与 Passwall 同步联动）
    - `FlClash/FlClash(mihomo).js`（Clash Party Normal JS 的 FlClash 移植版；规则/组/DNS 与主线对齐，overwriteGeneral 裁剪 TUN/端口）
-3. **同步更新每个产物头部的「介绍 / 更新日志 / 版本号」注释块**（见 §1.3 强制注释字段）。
-4. **同步更新文档**：根 `README.md` + 对应子目录的 `README.md`（原 `使用方法.md` / `使用教程.md` 已统一重命名为 `README.md`，GitHub 子目录视图会自动渲染），必要时 `CHANGELOG`。
-5. **自检命令必须通过**（§2）。
-6. **提交前在 PR 描述里列出「影响面」**：
+3. **涉及上游 rule-provider 时必须执行生成链路**：
+   - `node tools/sync-mihomo-mrs-rule-providers.js`
+   - `node tools/apply-mihomo-mrs-overrides.js`
+   - `node tools/generate-stash-from-cmfa.js`
+   - `node tools/generate-egern-supplemental.js`
+   - `node tools/generate-egern-from-cmfa.js`
+   - `node "SingBox/SingBox(sing-box)-generator.js"`
+4. **同步更新每个产物头部的「介绍 / 更新日志 / 版本号」注释块**（见 §1.3 强制注释字段）。
+5. **同步更新文档**：根 `README.md` + 对应子目录的 `README.md`（原 `使用方法.md` / `使用教程.md` 已统一重命名为 `README.md`，GitHub 子目录视图会自动渲染），必要时 `CHANGELOG`。
+6. **自检命令必须通过**（§2）。
+7. **提交前在 PR 描述里列出「影响面」**：
    - 改动的代理组 / rule-provider / 规则行数
+   - `.mrs` manifest 统计（converted / split / existing_mrs / retained / failed）
    - 每个产物的同步位置（行号或 commit diff 摘要）
    - 手动跳过同步的产物及原因
 
@@ -544,6 +574,8 @@ done
 | **Stash rule-providers** | provider 下载代理 / health-check / exclude-filter | Stash Wiki 未列出这些 Mihomo 字段；从 CMFA 生成时删除 | `Stash/REFERENCE-Stash-wiki.md` |
 | **Shadowrocket** | rule-provider 节 | **不支持**；必须把 URL 直接写在 `RULE-SET,<url>,<policy>` 中 | §3.2 + §3.5.2 |
 | **Surge / Loon / QX** | 进程匹配 | iOS 进程命名空间不支持 `PROCESS-NAME`；Surge/Loon iOS 14+ 部分支持，QX 不支持 | 各官方 wiki |
+| **Mihomo `.mrs`** | 规则类型 | 只允许 `domain` / `ipcidr`；混合 classical 必须拆分；`GEOIP`、端口、进程、逻辑组合保留原格式 | `tools/sync-mihomo-mrs-rule-providers.js` + MetaCubeX docs |
+| **Egern** | Mihomo `.mrs` | 官方文档未声明支持，禁止把 `.mrs` URL 直接写进 Egern；必须经 `tools/generate-egern-from-cmfa.js` 输出 Egern 原生 YAML | `Egern/REFERENCE-Egern.md` |
 
 #### 3.5.5 添加新条目的工作流
 
@@ -570,6 +602,14 @@ done
 ## 5. 自检脚本（提交前必须本地跑一遍）
 
 ```bash
+# 0) Mihomo .mrs 与派生产物生成链路（改 rule-provider / 上游规则源时必跑）
+node tools/sync-mihomo-mrs-rule-providers.js
+node tools/apply-mihomo-mrs-overrides.js
+node tools/generate-stash-from-cmfa.js
+node tools/generate-egern-supplemental.js
+node tools/generate-egern-from-cmfa.js
+node "SingBox/SingBox(sing-box)-generator.js"
+
 # 1) 数代理组数（必须为 33 业务组 + 22 区域组；sing-box 另加 1 个顶层节点选择）
 #    CMFA：业务组用 "- name:"、区域组用 "- type: url-test" + 缩进 "  name:"，需两种模式
 grep -cE "^- name: |^  name: " "Clash Meta For Android/CMFA(mihomo).yaml"  # 期望 55
@@ -616,10 +656,7 @@ ruby -ryaml -e '
   puts "OC full override yaml: providers=#{d["rule-providers"].size} rules=#{d["rules"].size}"
 '
 
-# 5) 产物合同验证（--strict-ruby 会实际解析 CMFA/OpenClash/Egern YAML）
-node tools/generate-stash-from-cmfa.js
-node tools/generate-egern-supplemental.js
-node tools/generate-egern-from-cmfa.js
+# 5) 产物合同验证（--strict-ruby 会实际解析 CMFA/OpenClash/Egern YAML，并检查 .mrs manifest）
 node tools/validate-artifact-contracts.js --strict-ruby
 
 # 6) JS 覆写与 PROCESS-NAME 合同
@@ -637,10 +674,12 @@ node tools/validate-process-name-direct.js
 ① 读 Clash Party JS（基线）→ 搞清楚要改什么
 ② 读目标 APP 官方文档 → 确认新字段/新组在每个产物上的等价写法
 ③ 改 Clash Party JS → 主线先落地
-④ 同步 CMFA → Stash(由 CMFA 生成) → OpenClash(Normal+Smart) → Shadowrocket → Surge → Loon → QX → SingBox Full → v2rayN → Passwall/Passwall2 → FlClash（按适用性说明豁免）
-⑤ 跑 §5 自检命令
-⑥ 更新根 README.md + 各子目录 README.md
-⑦ PR 描述里写：改动摘要 / 影响矩阵 / 官方文档链接 / 自检输出
+④ 同步 CMFA / OpenClash / FlClash 等 Mihomo 产物
+⑤ 若涉及 rule-provider：sync-mihomo-mrs → apply-mihomo-mrs → regenerate Stash/Egern/SingBox
+⑥ 同步 Shadowrocket → Surge → Loon → QX → v2rayN → Passwall/Passwall2（按适用性说明豁免）
+⑦ 跑 §5 自检命令
+⑧ 更新根 README.md + 各子目录 README.md + CHANGELOG
+⑨ PR 描述里写：改动摘要 / 影响矩阵 / .mrs manifest 统计 / 官方文档链接 / 自检输出
 ```
 
 ---
@@ -667,7 +706,10 @@ PR 提交后会自动运行两个验证工作流：
    - 验证内容：节点分类、组顺序、规则引用、订阅清理、TikTok 目标隔离等
 2. **Validate Artifact Contracts** — 跨客户端产物一致性验证（含 Ruby YAML 解析）
    - 触发条件：PR/push 修改任何产物文件（JS/YAML/JSON/conf）
-   - 验证内容：JS 覆写 + CMFA/Stash/OpenClash/SR/Surge/Loon/QX/SingBox/v2rayN/Passwall 组计数 + JSON 合法性 + YAML 重复键
+   - 验证内容：JS 覆写 + CMFA/Stash/OpenClash/SR/Surge/Loon/QX/SingBox/v2rayN/Passwall/Egern 组计数 + Mihomo `.mrs` manifest + JSON 合法性 + YAML 重复键
+3. **Sync Mihomo MRS Rule Providers** — 定时同步上游规则并自动转换 `.mrs`
+   - 触发条件：每周定时 + 手动 workflow_dispatch
+   - 固定顺序：sync `.mrs` → apply overrides → regenerate Stash/Egern/SingBox → validate → 中文提交
 
 任一工作流失败 → PR 不得合入。
 

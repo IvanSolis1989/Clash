@@ -135,6 +135,24 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
 3. 混合 classical 规则集必须拆分为 `-domain` / `-ipcidr` 两个 `.mrs` provider；含 `GEOIP`、端口、进程、逻辑组合等 `.mrs` 不支持类型的 provider 保留原格式，并在 manifest / CHANGELOG 说明原因。
 4. Egern、SingBox、Shadowrocket、Surge、Loon、Quantumult X、v2rayN、Passwall/Passwall2 不得硬套 Mihomo `.mrs`；应使用各自原生格式或生成器映射。
 
+### 约束 E：生成链路顺序不可倒置
+
+后续规则扩容、上游替换、provider 清理时，必须按以下顺序执行：
+
+1. Clash Party 主线先落地语义。
+2. 同步 CMFA / OpenClash / FlClash 等 Mihomo 产物。
+3. 若涉及 rule-provider，运行：
+   - `node tools/sync-mihomo-mrs-rule-providers.js`
+   - `node tools/apply-mihomo-mrs-overrides.js`
+4. 再生成派生产物：
+   - `node tools/generate-stash-from-cmfa.js`
+   - `node tools/generate-egern-supplemental.js`
+   - `node tools/generate-egern-from-cmfa.js`
+   - `node SingBox/SingBox(sing-box)-generator.js`
+5. 最后同步 Shadowrocket / Surge / Loon / Quantumult X / v2rayN / Passwall / Passwall2 中仍需手工维护的部分，并跑完整验收。
+
+禁止从 Stash、Egern、SingBox 等派生产物反向手工改主线；禁止只改生成目录不更新生成脚本；禁止 `.mrs` manifest 中出现 failed 项后继续提交。
+
 ---
 
 ## 3. 跨代理协作约定
@@ -196,9 +214,11 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
 - [ ] PR 描述引用了所有涉及 APP 的**官方文档锚点**
 - [ ] 代理组数仍为 55（22 区域〔11 全部 + 11 家宽〕 + 33 业务），未新增/删除/改名
 - [ ] 规则-provider 下载代理仍为 `🚫 受限网站`（Shadowrocket / sing-box / Stash 例外）
+- [ ] 支持 `.mrs` 的 Mihomo 产物已优先使用 `.mrs`；`rulesets/generated/mihomo-mrs/manifest.json` 中 `failed` 必须为 0
 - [ ] sing-box full 产物是通过 `node SingBox/SingBox(sing-box)-generator.js` **重新生成**的
 - [ ] Stash YAML 是通过 `node tools/generate-stash-from-cmfa.js` **重新生成**的
 - [ ] Egern YAML 是通过 `node tools/generate-egern-from-cmfa.js` **重新生成**的
+- [ ] Egern 未直接引用 Mihomo `.mrs`，而是使用 `rulesets/generated/egern/*.yaml` 的原生规则集
 
 未全部打勾 → 不得合入。
 
@@ -218,6 +238,8 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
 | 单边改 Clash Party JS 不同步其他产物 | 多次 | 用户同一账号跨设备策略不一致 | 全端联动 |
 | 凭训练数据说「sing-box 支持某字段」 | 潜在 | 版本字段频繁变更（1.11 重构 route action） | 必须引用 sing-box.sagernet.org 官方文档 |
 | 手工修改 `Stash/Stash.yaml` 或把 CMFA 全量字段直接复制给 Stash | Issue #173 | Stash Wiki 未确认 Mihomo GeoX/sniffer/provider proxy/health-check/exclude-filter 等字段，直接复制可能导入失败 | 只改 CMFA 或生成器，再运行 `node tools/generate-stash-from-cmfa.js`，依据 `Stash/REFERENCE-Stash-wiki.md` 裁剪 |
+| 把 Mihomo `.mrs` 直接写进 Egern | v5.4.38-egern.2 | Egern 官方规则文档未声明支持 Mihomo `.mrs`，直接引用会造成不可验证兼容性 | 运行 `node tools/generate-egern-from-cmfa.js` 生成 `rulesets/generated/egern/*.yaml`，Egern 只引用原生 YAML |
+| 增加上游 rule-provider 后不跑 `.mrs` 同步脚本 | v5.4.38-mrs | 支持 `.mrs` 的 Mihomo 产物会退回 YAML/TEXT，冷启动和内存优化失效，Stash/OpenClash 也可能不同步 | 先跑 `sync-mihomo-mrs-rule-providers.js`，再跑 `apply-mihomo-mrs-overrides.js` 和完整验证 |
 | QX `[dns] server=https://doh.pub/dns-query` | v5.2.10-QX.2 | QX `server=` 仅接受 IP / IP:port / `/域名/IP`，DoH URL 必须用独立 `doh-server=` 字段，否则导入报"line N 配置文件语法错误" | 改 `doh-server=https://...`；详见 `CLAUDE.md §3.5.1` |
 | QX `running_mode_trigger=filter, filter, auto` | v5.2.10-QX.1 | `filter` 不是合法值；合法值仅 `direct`/`proxy`/`auto`/`follower`/`none` | 改 `auto, auto, auto`；详见 `CLAUDE.md §3.5.4` |
 | Loon `[Rule] DST-PORT,...` | v5.2.10-Loon.1 | Loon 是端口规则前缀的唯一异类（其他全用 `DST-PORT`），其解析器对 `DST-` 报错 | 改 `DEST-PORT,...`；详见 `CLAUDE.md §3.5.2` |
