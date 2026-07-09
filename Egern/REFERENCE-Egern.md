@@ -2,20 +2,21 @@
 
 ## 结论
 
-有必要增加 Egern，但应分阶段接入。
+Egern 有必要并且已经作为正式同步产物纳入仓库。
 
-Egern 的能力足够承载本仓库的分流模型：它有订阅型 `external` 策略组、区域自动测速 `auto_test`、业务 `select` 组、顺序匹配规则、远端 `rule_set` 和 DNS forward。限制在于规则集格式：Egern `rule_set` 需要 YAML set 结构，而不是 Clash classical 行格式，也不是 Mihomo `.mrs`。
+Egern 的能力足够承载本仓库的分流模型：它有订阅型 `external` 策略组、区域 `smart` 选择、业务 `select` 组、顺序匹配规则、远端 `rule_set` 和 DNS forward。限制在于规则集格式：Egern 官方文档没有声明可直接消费 Mihomo `.mrs`，而是使用 Egern 自己的规则集字段。
 
-因此 v5.4.38-egern.1 先做：
+因此 v5.4.38-egern.2 做正式同步：
 
-- Egern 原生 Profile。
+- 从 CMFA 生成 `Egern/Egern.yaml`。
+- 保留 22 个区域组 + 33 个业务组。
+- 渲染 882 条 Egern 主规则 + 439 个顶层 `rule_set`。
 - Egern 原生补充规则集。
 - 不把零星单条域名/IP散写进主规则。
 
-暂不做：
+明确不做：
 
-- 全量 bm7 / Accademia / szkane / VPSDance 规则源转换。
-- Mihomo `.mrs` 直接复用。
+- Mihomo `.mrs` 不直接复用，映射为本仓库生成的 Egern 原生 YAML 规则集。
 - 桌面 `PROCESS-NAME` 规则同步。
 
 ## 官方语法依据
@@ -30,18 +31,13 @@ Egern 的能力足够承载本仓库的分流模型：它有订阅型 `external`
   <https://egernapp.com/docs/configuration/dns/>
 - Profile：主配置支持 `policy_groups`、`rules`、`dns`、`default_subscription_group`、`default_proxy_group` 等顶层字段。
   <https://egernapp.com/docs/configuration/example/>
+- Mihomo Rule Providers：`format` 支持 `yaml` / `text` / `mrs`，`.mrs` 当前支持 `domain` / `ipcidr`；因此 `.mrs` 保留给 Clash Party / CMFA 使用。
+  <https://wiki.metacubex.one/en/config/rule-providers/>
 
-## 后续完整等价迁移条件
+## 转换边界
 
-1. 为每类上游规则源建立稳定转换器：
-   - Clash classical -> Egern YAML set。
-   - Surge/Loon 远端 list -> Egern YAML set。
-   - Mihomo `.mrs` 不直接复用，除非 Egern 官方明确支持。
-2. 建立 Egern 合同校验：
-   - 22 区域组 + 33 业务组存在。
-   - 补充规则集早于广告/国外尾部/AI 宽规则。
-   - 规则集 URL 全部可下载。
-3. 明确不支持项：
-   - `PROCESS-NAME` 不同步。
-   - Mihomo `GEOSITE` / `GEOIP` provider 语法不直接照搬。
-   - Mihomo DNS `nameserver-policy` 不逐字段照搬，改用 Egern `dns.forward`。
+1. Clash Party / CMFA 继续优先使用 `.mrs`，因为它是 Mihomo 官方支持的紧凑格式。
+2. Egern 生成器把 `.mrs` URL 映射到 `rulesets/generated/egern/*.yaml`；Hagezi TIF 也落成本仓库 Egern 原生 YAML 规则集。
+3. `GEOSITE` / 非国家 `GEOIP` 通过 MetaCubeX YAML 规则源表达；国家 `GEOIP,CN` 使用 Egern 原生 `geoip`。
+4. `PROCESS-NAME` 不同步；这是平台规则能力缺失，不是预览范围缺口。
+5. Mihomo DNS `nameserver-policy` 不逐字段照搬，改用 Egern `dns.forward`。

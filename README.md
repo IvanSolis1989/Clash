@@ -1,8 +1,8 @@
 # 🚀 科学上网智能分流配置中心
 
-> 一套以 **Mihomo Smart 内核 JS 覆写脚本**为基线、同步产出 13 种客户端等价配置，并新增 Egern Preview 配置的分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免”设备 A 可用、设备 B 抽风”。
+> 一套以 **Mihomo Smart 内核 JS 覆写脚本**为基线、同步产出 14 种客户端等价配置的分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免”设备 A 可用、设备 B 抽风”。
 >
-> - 🧩 **22 区域组 + 33 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），391 rule-provider 全覆盖
+> - 🧩 **22 区域组 + 33 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），429 rule-provider 全覆盖
 > - ⚡ **Smart / Normal 双内核**：同规则量，按内核能力选 `smart`（LightGBM ML 择路）或经典 `url-test`
 > - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
 > - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
@@ -217,7 +217,7 @@ flowchart TB
 
 **💡 选客户端**：常用协议（SS / VMess / Trojan）→ 按设备挑；VLESS + REALITY → Mihomo / sing-box / SR / Loon / v2rayN；Hysteria 2 / TUIC → 避开 Surge 旧版 / QX / Xray；想要 **LightGBM 自动择优** → 只能走 Clash Party / OpenClash + Smart Alpha 内核。
 
-**🔌 软路由 / Apple 端**：ShellClash（mihomo 核）→ 用 CMFA YAML · HomeProxy（sing-box 核）→ 用 SingBox JSON · Stash → 用 Stash YAML · Egern → 用 `Egern/Egern.yaml` Preview · Passwall / Passwall2（无 mihomo）→ 首选迁移到 OpenClash，或用 `Passwall2/` 展平参考 · SSR Plus+（已停更）→ 换 OpenClash · Happ（Xray 核）→ 用 v2rayN Xray JSON。详见各子目录 `README.md`。
+**🔌 软路由 / Apple 端**：ShellClash（mihomo 核）→ 用 CMFA YAML · HomeProxy（sing-box 核）→ 用 SingBox JSON · Stash → 用 Stash YAML · Egern → 用 `Egern/Egern.yaml` · Passwall / Passwall2（无 mihomo）→ 首选迁移到 OpenClash，或用 `Passwall2/` 展平参考 · SSR Plus+（已停更）→ 换 OpenClash · Happ（Xray 核）→ 用 v2rayN Xray JSON。详见各子目录 `README.md`。
 
 ---
 

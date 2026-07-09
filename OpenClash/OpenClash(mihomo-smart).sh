@@ -518,11 +518,12 @@ OVERRIDE_EOF
 # ============================================================================
 cat >> "$OVERRIDE_YAML" << 'OVERRIDE_EOF'
 rule-providers:
-  '56':
+  56:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/56/56.yaml
-    path: "./ruleset/bm7-56.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/56.mrs
+    path: "./ruleset/scki-mrs-56.mrs"
     interval: 87883
     proxy: "\U0001F6AB 受限网站"
   anti-ad:
@@ -543,16 +544,18 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   claude:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Claude/Claude.yaml
-    path: "./ruleset/bm7-Claude.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/claude.mrs
+    path: "./ruleset/scki-mrs-claude.mrs"
     interval: 85554
     proxy: "\U0001F6AB 受限网站"
   gemini:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml
-    path: "./ruleset/bm7-Gemini.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/gemini.mrs
+    path: "./ruleset/scki-mrs-gemini.mrs"
     interval: 85567
     proxy: "\U0001F6AB 受限网站"
   copilot:
@@ -564,9 +567,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   cryptocurrency:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Cryptocurrency/Cryptocurrency.yaml
-    path: "./ruleset/bm7-Cryptocurrency.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cryptocurrency.mrs
+    path: "./ruleset/scki-mrs-cryptocurrency.mrs"
     interval: 85599
     proxy: "\U0001F6AB 受限网站"
   telegram:
@@ -587,30 +591,58 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   discord:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Discord/Discord.yaml
-    path: "./ruleset/bm7-Discord.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/discord.mrs
+    path: "./ruleset/scki-mrs-discord.mrs"
     interval: 85639
     proxy: "\U0001F6AB 受限网站"
-  line:
+  line-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Line/Line.yaml
-    path: "./ruleset/bm7-Line.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/line-domain.mrs
+    path: "./ruleset/scki-mrs-line-domain.mrs"
     interval: 85646
     proxy: "\U0001F6AB 受限网站"
-  whatsapp:
+  line-ipcidr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Whatsapp/Whatsapp.yaml
-    path: "./ruleset/bm7-Whatsapp.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/line-ipcidr.mrs
+    path: "./ruleset/scki-mrs-line-ipcidr.mrs"
+    interval: 85646
+    proxy: "\U0001F6AB 受限网站"
+  whatsapp-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/whatsapp-domain.mrs
+    path: "./ruleset/scki-mrs-whatsapp-domain.mrs"
     interval: 85694
     proxy: "\U0001F6AB 受限网站"
-  kakaotalk:
+  whatsapp-ipcidr:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/KakaoTalk/KakaoTalk.yaml
-    path: "./ruleset/bm7-KakaoTalk.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/whatsapp-ipcidr.mrs
+    path: "./ruleset/scki-mrs-whatsapp-ipcidr.mrs"
+    interval: 85694
+    proxy: "\U0001F6AB 受限网站"
+  kakaotalk-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kakaotalk-domain.mrs
+    path: "./ruleset/scki-mrs-kakaotalk-domain.mrs"
+    interval: 85670
+    proxy: "\U0001F6AB 受限网站"
+  kakaotalk-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kakaotalk-ipcidr.mrs
+    path: "./ruleset/scki-mrs-kakaotalk-ipcidr.mrs"
     interval: 85670
     proxy: "\U0001F6AB 受限网站"
   twitter:
@@ -639,9 +671,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   reddit:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Reddit/Reddit.yaml
-    path: "./ruleset/bm7-Reddit.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/reddit.mrs
+    path: "./ruleset/scki-mrs-reddit.mrs"
     interval: 85767
     proxy: "\U0001F6AB 受限网站"
   facebook:
@@ -653,9 +686,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   instagram:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Instagram/Instagram.yaml
-    path: "./ruleset/bm7-Instagram.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/instagram.mrs
+    path: "./ruleset/scki-mrs-instagram.mrs"
     interval: 85796
     proxy: "\U0001F6AB 受限网站"
   snapchat:
@@ -668,16 +702,18 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   pinterest:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Pinterest/Pinterest.yaml
-    path: "./ruleset/bm7-Pinterest.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pinterest.mrs
+    path: "./ruleset/scki-mrs-pinterest.mrs"
     interval: 85816
     proxy: "\U0001F6AB 受限网站"
   linkedin:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LinkedIn/LinkedIn.yaml
-    path: "./ruleset/bm7-LinkedIn.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/linkedin.mrs
+    path: "./ruleset/scki-mrs-linkedin.mrs"
     interval: 85807
     proxy: "\U0001F6AB 受限网站"
   facebook-ip:
@@ -690,23 +726,26 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   slack:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Slack/Slack.yaml
-    path: "./ruleset/bm7-Slack.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/slack.mrs
+    path: "./ruleset/scki-mrs-slack.mrs"
     interval: 85885
     proxy: "\U0001F6AB 受限网站"
   zoom:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Providers/Ruleset/Zoom.yaml
-    path: "./ruleset/acl4ssr-Zoom.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/zoom.mrs
+    path: "./ruleset/scki-mrs-zoom.mrs"
     interval: 85891
     proxy: "\U0001F6AB 受限网站"
   teams:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Teams/Teams.yaml
-    path: "./ruleset/bm7-Teams.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/teams.mrs
+    path: "./ruleset/scki-mrs-teams.mrs"
     interval: 85902
     proxy: "\U0001F6AB 受限网站"
   google:
@@ -727,9 +766,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   bing:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Bing/Bing.yaml
-    path: "./ruleset/bm7-Bing.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/bing.mrs
+    path: "./ruleset/scki-mrs-bing.mrs"
     interval: 85933
     proxy: "\U0001F6AB 受限网站"
   youtube:
@@ -780,9 +820,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   primevideo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PrimeVideo/PrimeVideo.yaml
-    path: "./ruleset/bm7-PrimeVideo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/primevideo.mrs
+    path: "./ruleset/scki-mrs-primevideo.mrs"
     interval: 86080
     proxy: "\U0001F6AB 受限网站"
   hulu:
@@ -794,9 +835,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   paramount:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ParamountPlus/ParamountPlus.yaml
-    path: "./ruleset/bm7-ParamountPlus.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/paramount.mrs
+    path: "./ruleset/scki-mrs-paramount.mrs"
     interval: 86100
     proxy: "\U0001F6AB 受限网站"
   amazon:
@@ -808,9 +850,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   peacock:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Peacock/Peacock.yaml
-    path: "./ruleset/bm7-Peacock.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/peacock.mrs
+    path: "./ruleset/scki-mrs-peacock.mrs"
     interval: 86095
     proxy: "\U0001F6AB 受限网站"
   twitch:
@@ -830,9 +873,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   kktv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/KKTV/KKTV.yaml
-    path: "./ruleset/bm7-KKTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kktv.mrs
+    path: "./ruleset/scki-mrs-kktv.mrs"
     interval: 86166
     proxy: "\U0001F6AB 受限网站"
   abema:
@@ -845,9 +889,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   dazn:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DAZN/DAZN.yaml
-    path: "./ruleset/bm7-DAZN.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dazn.mrs
+    path: "./ruleset/scki-mrs-dazn.mrs"
     interval: 86160
     proxy: "\U0001F6AB 受限网站"
   bbc:
@@ -860,51 +905,74 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   steam:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml
-    path: "./ruleset/bm7-Steam.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/steam.mrs
+    path: "./ruleset/scki-mrs-steam.mrs"
     interval: 86210
     proxy: "\U0001F6AB 受限网站"
   epic:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Epic/Epic.yaml
-    path: "./ruleset/bm7-Epic.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/epic.mrs
+    path: "./ruleset/scki-mrs-epic.mrs"
     interval: 86251
     proxy: "\U0001F6AB 受限网站"
   playstation:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PlayStation/PlayStation.yaml
-    path: "./ruleset/bm7-PlayStation.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/playstation.mrs
+    path: "./ruleset/scki-mrs-playstation.mrs"
     interval: 86220
     proxy: "\U0001F6AB 受限网站"
-  nintendo:
+  nintendo-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Nintendo/Nintendo.yaml
-    path: "./ruleset/bm7-Nintendo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nintendo-domain.mrs
+    path: "./ruleset/scki-mrs-nintendo-domain.mrs"
+    interval: 86285
+    proxy: "\U0001F6AB 受限网站"
+  nintendo-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nintendo-ipcidr.mrs
+    path: "./ruleset/scki-mrs-nintendo-ipcidr.mrs"
     interval: 86285
     proxy: "\U0001F6AB 受限网站"
   xbox:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Xbox/Xbox.yaml
-    path: "./ruleset/bm7-Xbox.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/xbox.mrs
+    path: "./ruleset/scki-mrs-xbox.mrs"
     interval: 86280
     proxy: "\U0001F6AB 受限网站"
   ea:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/EA/EA.yaml
-    path: "./ruleset/bm7-EA.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ea.mrs
+    path: "./ruleset/scki-mrs-ea.mrs"
     interval: 86272
     proxy: "\U0001F6AB 受限网站"
-  blizzard:
+  blizzard-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Blizzard/Blizzard.yaml
-    path: "./ruleset/bm7-Blizzard.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/blizzard-domain.mrs
+    path: "./ruleset/scki-mrs-blizzard-domain.mrs"
+    interval: 86301
+    proxy: "\U0001F6AB 受限网站"
+  blizzard-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/blizzard-ipcidr.mrs
+    path: "./ruleset/scki-mrs-blizzard-ipcidr.mrs"
     interval: 86301
     proxy: "\U0001F6AB 受限网站"
   microsoft:
@@ -956,23 +1024,26 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   docker:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Docker/Docker.yaml
-    path: "./ruleset/bm7-Docker.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/docker.mrs
+    path: "./ruleset/scki-mrs-docker.mrs"
     interval: 86426
     proxy: "\U0001F6AB 受限网站"
   gitlab:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitLab/GitLab.yaml
-    path: "./ruleset/bm7-GitLab.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/gitlab.mrs
+    path: "./ruleset/scki-mrs-gitlab.mrs"
     interval: 86450
     proxy: "\U0001F6AB 受限网站"
   paypal:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PayPal/PayPal.yaml
-    path: "./ruleset/bm7-PayPal.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/paypal.mrs
+    path: "./ruleset/scki-mrs-paypal.mrs"
     interval: 86454
     proxy: "\U0001F6AB 受限网站"
   cloudflare-ip:
@@ -1001,9 +1072,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   systemota:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SystemOTA/SystemOTA.yaml
-    path: "./ruleset/bm7-SystemOTA.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/systemota.mrs
+    path: "./ruleset/scki-mrs-systemota.mrs"
     interval: 86498
     proxy: "\U0001F6AB 受限网站"
   viu:
@@ -1061,172 +1133,236 @@ rule-providers:
     path: "./ruleset/meta-geolocation-!cn.mrs"
     interval: 86624
     proxy: "\U0001F6AB 受限网站"
-  advertising:
+  advertising-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Advertising/Advertising.yaml
-    path: "./ruleset/bm7-Advertising.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/advertising-domain.mrs
+    path: "./ruleset/scki-mrs-advertising-domain.mrs"
+    interval: 86609
+    proxy: "\U0001F6AB 受限网站"
+  advertising-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/advertising-ipcidr.mrs
+    path: "./ruleset/scki-mrs-advertising-ipcidr.mrs"
     interval: 86609
     proxy: "\U0001F6AB 受限网站"
   advertisingmitv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AdvertisingMiTV/AdvertisingMiTV.yaml
-    path: "./ruleset/bm7-AdvertisingMiTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/advertisingmitv.mrs
+    path: "./ruleset/scki-mrs-advertisingmitv.mrs"
     interval: 86596
     proxy: "\U0001F6AB 受限网站"
-  adobeactivation:
+  adobeactivation-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AdobeActivation/AdobeActivation.yaml
-    path: "./ruleset/bm7-AdobeActivation.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/adobeactivation-domain.mrs
+    path: "./ruleset/scki-mrs-adobeactivation-domain.mrs"
     interval: 86648
     proxy: "\U0001F6AB 受限网站"
-  blockhttpdns:
+  adobeactivation-ipcidr:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/BlockHttpDNS/BlockHttpDNS.yaml
-    path: "./ruleset/bm7-BlockHttpDNS.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/adobeactivation-ipcidr.mrs
+    path: "./ruleset/scki-mrs-adobeactivation-ipcidr.mrs"
+    interval: 86648
+    proxy: "\U0001F6AB 受限网站"
+  blockhttpdns-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/blockhttpdns-domain.mrs
+    path: "./ruleset/scki-mrs-blockhttpdns-domain.mrs"
+    interval: 86641
+    proxy: "\U0001F6AB 受限网站"
+  blockhttpdns-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/blockhttpdns-ipcidr.mrs
+    path: "./ruleset/scki-mrs-blockhttpdns-ipcidr.mrs"
     interval: 86641
     proxy: "\U0001F6AB 受限网站"
   domob:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Domob/Domob.yaml
-    path: "./ruleset/bm7-Domob.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/domob.mrs
+    path: "./ruleset/scki-mrs-domob.mrs"
     interval: 86662
     proxy: "\U0001F6AB 受限网站"
-  hijacking:
+  hijacking-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Hijacking/Hijacking.yaml
-    path: "./ruleset/bm7-Hijacking.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hijacking-domain.mrs
+    path: "./ruleset/scki-mrs-hijacking-domain.mrs"
+    interval: 86685
+    proxy: "\U0001F6AB 受限网站"
+  hijacking-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hijacking-ipcidr.mrs
+    path: "./ruleset/scki-mrs-hijacking-ipcidr.mrs"
     interval: 86685
     proxy: "\U0001F6AB 受限网站"
   jiguangtuisong:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/JiGuangTuiSong/JiGuangTuiSong.yaml
-    path: "./ruleset/bm7-JiGuangTuiSong.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/jiguangtuisong.mrs
+    path: "./ruleset/scki-mrs-jiguangtuisong.mrs"
     interval: 86712
     proxy: "\U0001F6AB 受限网站"
   miuiprivacy:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MIUIPrivacy/MIUIPrivacy.yaml
-    path: "./ruleset/bm7-MIUIPrivacy.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/miuiprivacy.mrs
+    path: "./ruleset/scki-mrs-miuiprivacy.mrs"
     interval: 86754
     proxy: "\U0001F6AB 受限网站"
-  privacy:
+  privacy-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Privacy/Privacy.yaml
-    path: "./ruleset/bm7-Privacy.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/privacy-domain.mrs
+    path: "./ruleset/scki-mrs-privacy-domain.mrs"
+    interval: 86764
+    proxy: "\U0001F6AB 受限网站"
+  privacy-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/privacy-ipcidr.mrs
+    path: "./ruleset/scki-mrs-privacy-ipcidr.mrs"
     interval: 86764
     proxy: "\U0001F6AB 受限网站"
   youmengchuangxiang:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouMengChuangXiang/YouMengChuangXiang.yaml
-    path: "./ruleset/bm7-YouMengChuangXiang.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/youmengchuangxiang.mrs
+    path: "./ruleset/scki-mrs-youmengchuangxiang.mrs"
     interval: 86765
     proxy: "\U0001F6AB 受限网站"
   civitai:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Civitai/Civitai.yaml
-    path: "./ruleset/bm7-Civitai.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/civitai.mrs
+    path: "./ruleset/scki-mrs-civitai.mrs"
     interval: 86763
     proxy: "\U0001F6AB 受限网站"
   binance:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Binance/Binance.yaml
-    path: "./ruleset/bm7-Binance.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/binance.mrs
+    path: "./ruleset/scki-mrs-binance.mrs"
     interval: 86814
     proxy: "\U0001F6AB 受限网站"
   stripe:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Stripe/Stripe.yaml
-    path: "./ruleset/bm7-Stripe.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/stripe.mrs
+    path: "./ruleset/scki-mrs-stripe.mrs"
     interval: 86820
     proxy: "\U0001F6AB 受限网站"
   visa:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/VISA/VISA.yaml
-    path: "./ruleset/bm7-VISA.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/visa.mrs
+    path: "./ruleset/scki-mrs-visa.mrs"
     interval: 86847
     proxy: "\U0001F6AB 受限网站"
   tigerfintech:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TigerFintech/TigerFintech.yaml
-    path: "./ruleset/bm7-TigerFintech.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tigerfintech.mrs
+    path: "./ruleset/scki-mrs-tigerfintech.mrs"
     interval: 86851
     proxy: "\U0001F6AB 受限网站"
   mail:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Mail/Mail.yaml
-    path: "./ruleset/bm7-Mail.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/mail.mrs
+    path: "./ruleset/scki-mrs-mail.mrs"
     interval: 86856
     proxy: "\U0001F6AB 受限网站"
   mailru:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Mailru/Mailru.yaml
-    path: "./ruleset/bm7-Mailru.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/mailru.mrs
+    path: "./ruleset/scki-mrs-mailru.mrs"
     interval: 86885
     proxy: "\U0001F6AB 受限网站"
   protonmail:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Protonmail/Protonmail.yaml
-    path: "./ruleset/bm7-Protonmail.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/protonmail.mrs
+    path: "./ruleset/scki-mrs-protonmail.mrs"
     interval: 86885
     proxy: "\U0001F6AB 受限网站"
   spark:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Spark/Spark.yaml
-    path: "./ruleset/bm7-Spark.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/spark.mrs
+    path: "./ruleset/scki-mrs-spark.mrs"
     interval: 86900
     proxy: "\U0001F6AB 受限网站"
   telegramnl:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TelegramNL/TelegramNL.yaml
-    path: "./ruleset/bm7-TelegramNL.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/telegramnl.mrs
+    path: "./ruleset/scki-mrs-telegramnl.mrs"
     interval: 86881
     proxy: "\U0001F6AB 受限网站"
   telegramsg:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TelegramSG/TelegramSG.yaml
-    path: "./ruleset/bm7-TelegramSG.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/telegramsg.mrs
+    path: "./ruleset/scki-mrs-telegramsg.mrs"
     interval: 86921
     proxy: "\U0001F6AB 受限网站"
   telegramus:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TelegramUS/TelegramUS.yaml
-    path: "./ruleset/bm7-TelegramUS.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/telegramus.mrs
+    path: "./ruleset/scki-mrs-telegramus.mrs"
     interval: 86927
     proxy: "\U0001F6AB 受限网站"
   zalo:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Zalo/Zalo.yaml
-    path: "./ruleset/bm7-Zalo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/zalo.mrs
+    path: "./ruleset/scki-mrs-zalo.mrs"
     interval: 86962
     proxy: "\U0001F6AB 受限网站"
   googlevoice:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleVoice/GoogleVoice.yaml
-    path: "./ruleset/bm7-GoogleVoice.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/googlevoice.mrs
+    path: "./ruleset/scki-mrs-googlevoice.mrs"
     interval: 86945
     proxy: "\U0001F6AB 受限网站"
   italkbb:
@@ -1238,121 +1374,154 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   tumblr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Tumblr/Tumblr.yaml
-    path: "./ruleset/bm7-Tumblr.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tumblr.mrs
+    path: "./ruleset/scki-mrs-tumblr.mrs"
     interval: 86988
     proxy: "\U0001F6AB 受限网站"
   clubhouse:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Clubhouse/Clubhouse.yaml
-    path: "./ruleset/bm7-Clubhouse.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/clubhouse.mrs
+    path: "./ruleset/scki-mrs-clubhouse.mrs"
     interval: 87026
     proxy: "\U0001F6AB 受限网站"
-  clubhouseip:
+  clubhouseip-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ClubhouseIP/ClubhouseIP.yaml
-    path: "./ruleset/bm7-ClubhouseIP.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/clubhouseip-domain.mrs
+    path: "./ruleset/scki-mrs-clubhouseip-domain.mrs"
+    interval: 87024
+    proxy: "\U0001F6AB 受限网站"
+  clubhouseip-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/clubhouseip-ipcidr.mrs
+    path: "./ruleset/scki-mrs-clubhouseip-ipcidr.mrs"
     interval: 87024
     proxy: "\U0001F6AB 受限网站"
   pixiv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Pixiv/Pixiv.yaml
-    path: "./ruleset/bm7-Pixiv.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pixiv.mrs
+    path: "./ruleset/scki-mrs-pixiv.mrs"
     interval: 87052
     proxy: "\U0001F6AB 受限网站"
   truthsocial:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TruthSocial/TruthSocial.yaml
-    path: "./ruleset/bm7-TruthSocial.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/truthsocial.mrs
+    path: "./ruleset/scki-mrs-truthsocial.mrs"
     interval: 87054
     proxy: "\U0001F6AB 受限网站"
   vk:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/VK/VK.yaml
-    path: "./ruleset/bm7-VK.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/vk.mrs
+    path: "./ruleset/scki-mrs-vk.mrs"
     interval: 87091
     proxy: "\U0001F6AB 受限网站"
   blued:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Blued/Blued.yaml
-    path: "./ruleset/bm7-Blued.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/blued.mrs
+    path: "./ruleset/scki-mrs-blued.mrs"
     interval: 87077
     proxy: "\U0001F6AB 受限网站"
   disqus:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Disqus/Disqus.yaml
-    path: "./ruleset/bm7-Disqus.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/disqus.mrs
+    path: "./ruleset/scki-mrs-disqus.mrs"
     interval: 87078
     proxy: "\U0001F6AB 受限网站"
   imgur:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Imgur/Imgur.yaml
-    path: "./ruleset/bm7-Imgur.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/imgur.mrs
+    path: "./ruleset/scki-mrs-imgur.mrs"
     interval: 87115
     proxy: "\U0001F6AB 受限网站"
   pixnet:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Pixnet/Pixnet.yaml
-    path: "./ruleset/bm7-Pixnet.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pixnet.mrs
+    path: "./ruleset/scki-mrs-pixnet.mrs"
     interval: 87111
     proxy: "\U0001F6AB 受限网站"
   atlassian:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Atlassian/Atlassian.yaml
-    path: "./ruleset/bm7-Atlassian.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/atlassian.mrs
+    path: "./ruleset/scki-mrs-atlassian.mrs"
     interval: 87174
     proxy: "\U0001F6AB 受限网站"
   notion:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Notion/Notion.yaml
-    path: "./ruleset/bm7-Notion.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/notion.mrs
+    path: "./ruleset/scki-mrs-notion.mrs"
     interval: 87150
     proxy: "\U0001F6AB 受限网站"
-  teamviewer:
+  teamviewer-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TeamViewer/TeamViewer.yaml
-    path: "./ruleset/bm7-TeamViewer.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/teamviewer-domain.mrs
+    path: "./ruleset/scki-mrs-teamviewer-domain.mrs"
+    interval: 87191
+    proxy: "\U0001F6AB 受限网站"
+  teamviewer-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/teamviewer-ipcidr.mrs
+    path: "./ruleset/scki-mrs-teamviewer-ipcidr.mrs"
     interval: 87191
     proxy: "\U0001F6AB 受限网站"
   zoho:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Zoho/Zoho.yaml
-    path: "./ruleset/bm7-Zoho.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/zoho.mrs
+    path: "./ruleset/scki-mrs-zoho.mrs"
     interval: 87223
     proxy: "\U0001F6AB 受限网站"
   salesforce:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Salesforce/Salesforce.yaml
-    path: "./ruleset/bm7-Salesforce.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/salesforce.mrs
+    path: "./ruleset/scki-mrs-salesforce.mrs"
     interval: 87231
     proxy: "\U0001F6AB 受限网站"
   zendesk:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Zendesk/Zendesk.yaml
-    path: "./ruleset/bm7-Zendesk.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/zendesk.mrs
+    path: "./ruleset/scki-mrs-zendesk.mrs"
     interval: 87221
     proxy: "\U0001F6AB 受限网站"
   intercom:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Intercom/Intercom.yaml
-    path: "./ruleset/bm7-Intercom.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/intercom.mrs
+    path: "./ruleset/scki-mrs-intercom.mrs"
     interval: 87218
     proxy: "\U0001F6AB 受限网站"
   remotedesktop:
@@ -1369,25 +1538,44 @@ rule-providers:
     path: "./ruleset/bm7-iQIYI.yaml"
     interval: 87261
     proxy: "\U0001F6AB 受限网站"
-  youku:
+  youku-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Youku/Youku.yaml
-    path: "./ruleset/bm7-Youku.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/youku-domain.mrs
+    path: "./ruleset/scki-mrs-youku-domain.mrs"
     interval: 87268
     proxy: "\U0001F6AB 受限网站"
-  tencentvideo:
+  youku-ipcidr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TencentVideo/TencentVideo.yaml
-    path: "./ruleset/bm7-TencentVideo.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/youku-ipcidr.mrs
+    path: "./ruleset/scki-mrs-youku-ipcidr.mrs"
+    interval: 87268
+    proxy: "\U0001F6AB 受限网站"
+  tencentvideo-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tencentvideo-domain.mrs
+    path: "./ruleset/scki-mrs-tencentvideo-domain.mrs"
+    interval: 87270
+    proxy: "\U0001F6AB 受限网站"
+  tencentvideo-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tencentvideo-ipcidr.mrs
+    path: "./ruleset/scki-mrs-tencentvideo-ipcidr.mrs"
     interval: 87270
     proxy: "\U0001F6AB 受限网站"
   douyin:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DouYin/DouYin.yaml
-    path: "./ruleset/bm7-DouYin.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/douyin.mrs
+    path: "./ruleset/scki-mrs-douyin.mrs"
     interval: 87313
     proxy: "\U0001F6AB 受限网站"
   bytedance:
@@ -1399,254 +1587,314 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   kuaishou:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/KuaiShou/KuaiShou.yaml
-    path: "./ruleset/bm7-KuaiShou.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kuaishou.mrs
+    path: "./ruleset/scki-mrs-kuaishou.mrs"
     interval: 87339
     proxy: "\U0001F6AB 受限网站"
   weibo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Weibo/Weibo.yaml
-    path: "./ruleset/bm7-Weibo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/weibo.mrs
+    path: "./ruleset/scki-mrs-weibo.mrs"
     interval: 87384
     proxy: "\U0001F6AB 受限网站"
   xiaohongshu:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/XiaoHongShu/XiaoHongShu.yaml
-    path: "./ruleset/bm7-XiaoHongShu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/xiaohongshu.mrs
+    path: "./ruleset/scki-mrs-xiaohongshu.mrs"
     interval: 87357
     proxy: "\U0001F6AB 受限网站"
-  neteasemusic:
+  neteasemusic-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml
-    path: "./ruleset/bm7-NetEaseMusic.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/neteasemusic-domain.mrs
+    path: "./ruleset/scki-mrs-neteasemusic-domain.mrs"
     interval: 87376
     proxy: "\U0001F6AB 受限网站"
-  kugoukuwo:
+  neteasemusic-ipcidr:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/KugouKuwo/KugouKuwo.yaml
-    path: "./ruleset/bm7-KugouKuwo.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/neteasemusic-ipcidr.mrs
+    path: "./ruleset/scki-mrs-neteasemusic-ipcidr.mrs"
+    interval: 87376
+    proxy: "\U0001F6AB 受限网站"
+  kugoukuwo-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kugoukuwo-domain.mrs
+    path: "./ruleset/scki-mrs-kugoukuwo-domain.mrs"
+    interval: 87413
+    proxy: "\U0001F6AB 受限网站"
+  kugoukuwo-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kugoukuwo-ipcidr.mrs
+    path: "./ruleset/scki-mrs-kugoukuwo-ipcidr.mrs"
     interval: 87413
     proxy: "\U0001F6AB 受限网站"
   sohu:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Sohu/Sohu.yaml
-    path: "./ruleset/bm7-Sohu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/sohu.mrs
+    path: "./ruleset/scki-mrs-sohu.mrs"
     interval: 87402
     proxy: "\U0001F6AB 受限网站"
   douyu:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Douyu/Douyu.yaml
-    path: "./ruleset/bm7-Douyu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/douyu.mrs
+    path: "./ruleset/scki-mrs-douyu.mrs"
     interval: 87422
     proxy: "\U0001F6AB 受限网站"
   huya:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HuYa/HuYa.yaml
-    path: "./ruleset/bm7-HuYa.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/huya.mrs
+    path: "./ruleset/scki-mrs-huya.mrs"
     interval: 87436
     proxy: "\U0001F6AB 受限网站"
   himalaya:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Himalaya/Himalaya.yaml
-    path: "./ruleset/bm7-Himalaya.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/himalaya.mrs
+    path: "./ruleset/scki-mrs-himalaya.mrs"
     interval: 87453
     proxy: "\U0001F6AB 受限网站"
   cctv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CCTV/CCTV.yaml
-    path: "./ruleset/bm7-CCTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cctv.mrs
+    path: "./ruleset/scki-mrs-cctv.mrs"
     interval: 87522
     proxy: "\U0001F6AB 受限网站"
   hunantv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HunanTV/HunanTV.yaml
-    path: "./ruleset/bm7-HunanTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hunantv.mrs
+    path: "./ruleset/scki-mrs-hunantv.mrs"
     interval: 87509
     proxy: "\U0001F6AB 受限网站"
   pptv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PPTV/PPTV.yaml
-    path: "./ruleset/bm7-PPTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pptv.mrs
+    path: "./ruleset/scki-mrs-pptv.mrs"
     interval: 87512
     proxy: "\U0001F6AB 受限网站"
   funshion:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Funshion/Funshion.yaml
-    path: "./ruleset/bm7-Funshion.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/funshion.mrs
+    path: "./ruleset/scki-mrs-funshion.mrs"
     interval: 87568
     proxy: "\U0001F6AB 受限网站"
   letv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LeTV/LeTV.yaml
-    path: "./ruleset/bm7-LeTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/letv.mrs
+    path: "./ruleset/scki-mrs-letv.mrs"
     interval: 87574
     proxy: "\U0001F6AB 受限网站"
   taihemusic:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TaiheMusic/TaiheMusic.yaml
-    path: "./ruleset/bm7-TaiheMusic.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/taihemusic.mrs
+    path: "./ruleset/scki-mrs-taihemusic.mrs"
     interval: 87581
     proxy: "\U0001F6AB 受限网站"
   kukemusic:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/KuKeMusic/KuKeMusic.yaml
-    path: "./ruleset/bm7-KuKeMusic.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/kukemusic.mrs
+    path: "./ruleset/scki-mrs-kukemusic.mrs"
     interval: 87556
     proxy: "\U0001F6AB 受限网站"
   hibymusic:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HibyMusic/HibyMusic.yaml
-    path: "./ruleset/bm7-HibyMusic.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hibymusic.mrs
+    path: "./ruleset/scki-mrs-hibymusic.mrs"
     interval: 87601
     proxy: "\U0001F6AB 受限网站"
   miwu:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MiWu/MiWu.yaml
-    path: "./ruleset/bm7-MiWu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/miwu.mrs
+    path: "./ruleset/scki-mrs-miwu.mrs"
     interval: 87644
     proxy: "\U0001F6AB 受限网站"
   migu:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Migu/Migu.yaml
-    path: "./ruleset/bm7-Migu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/migu.mrs
+    path: "./ruleset/scki-mrs-migu.mrs"
     interval: 87633
     proxy: "\U0001F6AB 受限网站"
   iptvmainland:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/IPTVMainland/IPTVMainland.yaml
-    path: "./ruleset/bm7-IPTVMainland.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/iptvmainland.mrs
+    path: "./ruleset/scki-mrs-iptvmainland.mrs"
     interval: 87649
     proxy: "\U0001F6AB 受限网站"
   iptvother:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/IPTVOther/IPTVOther.yaml
-    path: "./ruleset/bm7-IPTVOther.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/iptvother.mrs
+    path: "./ruleset/scki-mrs-iptvother.mrs"
     interval: 87654
     proxy: "\U0001F6AB 受限网站"
   cibn:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CIBN/CIBN.yaml
-    path: "./ruleset/bm7-CIBN.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cibn.mrs
+    path: "./ruleset/scki-mrs-cibn.mrs"
     interval: 87672
     proxy: "\U0001F6AB 受限网站"
   bestv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/BesTV/BesTV.yaml
-    path: "./ruleset/bm7-BesTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/bestv.mrs
+    path: "./ruleset/scki-mrs-bestv.mrs"
     interval: 87674
     proxy: "\U0001F6AB 受限网站"
   huashutv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HuaShuTV/HuaShuTV.yaml
-    path: "./ruleset/bm7-HuaShuTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/huashutv.mrs
+    path: "./ruleset/scki-mrs-huashutv.mrs"
     interval: 87677
     proxy: "\U0001F6AB 受限网站"
   smg:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SMG/SMG.yaml
-    path: "./ruleset/bm7-SMG.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/smg.mrs
+    path: "./ruleset/scki-mrs-smg.mrs"
     interval: 87720
     proxy: "\U0001F6AB 受限网站"
   hwtv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HWTV/HWTV.yaml
-    path: "./ruleset/bm7-HWTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hwtv.mrs
+    path: "./ruleset/scki-mrs-hwtv.mrs"
     interval: 87718
     proxy: "\U0001F6AB 受限网站"
   nivodtv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NivodTV/NivodTV.yaml
-    path: "./ruleset/bm7-NivodTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nivodtv.mrs
+    path: "./ruleset/scki-mrs-nivodtv.mrs"
     interval: 87752
     proxy: "\U0001F6AB 受限网站"
   olevod:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Olevod/Olevod.yaml
-    path: "./ruleset/bm7-Olevod.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/olevod.mrs
+    path: "./ruleset/scki-mrs-olevod.mrs"
     interval: 87761
     proxy: "\U0001F6AB 受限网站"
   dandanzan:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DanDanZan/DanDanZan.yaml
-    path: "./ruleset/bm7-DanDanZan.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dandanzan.mrs
+    path: "./ruleset/scki-mrs-dandanzan.mrs"
     interval: 87769
     proxy: "\U0001F6AB 受限网站"
   dandanplay:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Dandanplay/Dandanplay.yaml
-    path: "./ruleset/bm7-Dandanplay.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dandanplay.mrs
+    path: "./ruleset/scki-mrs-dandanplay.mrs"
     interval: 87821
     proxy: "\U0001F6AB 受限网站"
   tiantiankankan:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TianTianKanKan/TianTianKanKan.yaml
-    path: "./ruleset/bm7-TianTianKanKan.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tiantiankankan.mrs
+    path: "./ruleset/scki-mrs-tiantiankankan.mrs"
     interval: 87835
     proxy: "\U0001F6AB 受限网站"
   yizhibo:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YiZhiBo/YiZhiBo.yaml
-    path: "./ruleset/bm7-YiZhiBo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/yizhibo.mrs
+    path: "./ruleset/scki-mrs-yizhibo.mrs"
     interval: 87800
     proxy: "\U0001F6AB 受限网站"
   ku6:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Ku6/Ku6.yaml
-    path: "./ruleset/bm7-Ku6.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ku6.mrs
+    path: "./ruleset/scki-mrs-ku6.mrs"
     interval: 87828
     proxy: "\U0001F6AB 受限网站"
   cetv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CETV/CETV.yaml
-    path: "./ruleset/bm7-CETV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cetv.mrs
+    path: "./ruleset/scki-mrs-cetv.mrs"
     interval: 87865
     proxy: "\U0001F6AB 受限网站"
   yyets:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YYeTs/YYeTs.yaml
-    path: "./ruleset/bm7-YYeTs.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/yyets.mrs
+    path: "./ruleset/scki-mrs-yyets.mrs"
     interval: 87909
     proxy: "\U0001F6AB 受限网站"
-  asianmedia:
+  asianmedia-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AsianMedia/AsianMedia.yaml
-    path: "./ruleset/bm7-AsianMedia.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/asianmedia-domain.mrs
+    path: "./ruleset/scki-mrs-asianmedia-domain.mrs"
+    interval: 87888
+    proxy: "\U0001F6AB 受限网站"
+  asianmedia-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/asianmedia-ipcidr.mrs
+    path: "./ruleset/scki-mrs-asianmedia-ipcidr.mrs"
     interval: 87888
     proxy: "\U0001F6AB 受限网站"
   iqiyiintl:
@@ -1665,16 +1913,18 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   mewatch:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MeWatch/MeWatch.yaml
-    path: "./ruleset/bm7-MeWatch.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/mewatch.mrs
+    path: "./ruleset/scki-mrs-mewatch.mrs"
     interval: 87930
     proxy: "\U0001F6AB 受限网站"
   viki:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Viki/Viki.yaml
-    path: "./ruleset/bm7-Viki.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/viki.mrs
+    path: "./ruleset/scki-mrs-viki.mrs"
     interval: 87961
     proxy: "\U0001F6AB 受限网站"
   wetv:
@@ -1686,9 +1936,10 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   zee:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Zee/Zee.yaml
-    path: "./ruleset/bm7-Zee.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/zee.mrs
+    path: "./ruleset/scki-mrs-zee.mrs"
     interval: 88013
     proxy: "\U0001F6AB 受限网站"
   cbs:
@@ -1700,142 +1951,170 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   nbc:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NBC/NBC.yaml
-    path: "./ruleset/bm7-NBC.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nbc.mrs
+    path: "./ruleset/scki-mrs-nbc.mrs"
     interval: 87990
     proxy: "\U0001F6AB 受限网站"
   pbs:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PBS/PBS.yaml
-    path: "./ruleset/bm7-PBS.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pbs.mrs
+    path: "./ruleset/scki-mrs-pbs.mrs"
     interval: 88022
     proxy: "\U0001F6AB 受限网站"
   attwatchtv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ATTWatchTV/ATTWatchTV.yaml
-    path: "./ruleset/bm7-ATTWatchTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/attwatchtv.mrs
+    path: "./ruleset/scki-mrs-attwatchtv.mrs"
     interval: 88074
     proxy: "\U0001F6AB 受限网站"
   fox:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Fox/Fox.yaml
-    path: "./ruleset/bm7-Fox.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/fox.mrs
+    path: "./ruleset/scki-mrs-fox.mrs"
     interval: 88081
     proxy: "\U0001F6AB 受限网站"
   fubotv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/FuboTV/FuboTV.yaml
-    path: "./ruleset/bm7-FuboTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/fubotv.mrs
+    path: "./ruleset/scki-mrs-fubotv.mrs"
     interval: 88100
     proxy: "\U0001F6AB 受限网站"
   sling:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Sling/Sling.yaml
-    path: "./ruleset/bm7-Sling.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/sling.mrs
+    path: "./ruleset/scki-mrs-sling.mrs"
     interval: 88103
     proxy: "\U0001F6AB 受限网站"
   soundcloud:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SoundCloud/SoundCloud.yaml
-    path: "./ruleset/bm7-SoundCloud.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/soundcloud.mrs
+    path: "./ruleset/scki-mrs-soundcloud.mrs"
     interval: 88085
     proxy: "\U0001F6AB 受限网站"
   pandora:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Pandora/Pandora.yaml
-    path: "./ruleset/bm7-Pandora.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pandora.mrs
+    path: "./ruleset/scki-mrs-pandora.mrs"
     interval: 88131
     proxy: "\U0001F6AB 受限网站"
   pandoratv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PandoraTV/PandoraTV.yaml
-    path: "./ruleset/bm7-PandoraTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/pandoratv.mrs
+    path: "./ruleset/scki-mrs-pandoratv.mrs"
     interval: 88163
     proxy: "\U0001F6AB 受限网站"
   tidal:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TIDAL/TIDAL.yaml
-    path: "./ruleset/bm7-TIDAL.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tidal.mrs
+    path: "./ruleset/scki-mrs-tidal.mrs"
     interval: 88128
     proxy: "\U0001F6AB 受限网站"
   vimeo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Vimeo/Vimeo.yaml
-    path: "./ruleset/bm7-Vimeo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/vimeo.mrs
+    path: "./ruleset/scki-mrs-vimeo.mrs"
     interval: 88156
     proxy: "\U0001F6AB 受限网站"
   dailymotion:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Dailymotion/Dailymotion.yaml
-    path: "./ruleset/bm7-Dailymotion.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dailymotion.mrs
+    path: "./ruleset/scki-mrs-dailymotion.mrs"
     interval: 88176
     proxy: "\U0001F6AB 受限网站"
   deezer:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Deezer/Deezer.yaml
-    path: "./ruleset/bm7-Deezer.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/deezer.mrs
+    path: "./ruleset/scki-mrs-deezer.mrs"
     interval: 88197
     proxy: "\U0001F6AB 受限网站"
   discoveryplus:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DiscoveryPlus/DiscoveryPlus.yaml
-    path: "./ruleset/bm7-DiscoveryPlus.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/discoveryplus.mrs
+    path: "./ruleset/scki-mrs-discoveryplus.mrs"
     interval: 88188
     proxy: "\U0001F6AB 受限网站"
   overcast:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Overcast/Overcast.yaml
-    path: "./ruleset/bm7-Overcast.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/overcast.mrs
+    path: "./ruleset/scki-mrs-overcast.mrs"
     interval: 88212
     proxy: "\U0001F6AB 受限网站"
   americasvoice:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Americasvoice/Americasvoice.yaml
-    path: "./ruleset/bm7-Americasvoice.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/americasvoice.mrs
+    path: "./ruleset/scki-mrs-americasvoice.mrs"
     interval: 88217
     proxy: "\U0001F6AB 受限网站"
   cake:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Cake/Cake.yaml
-    path: "./ruleset/bm7-Cake.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cake.mrs
+    path: "./ruleset/scki-mrs-cake.mrs"
     interval: 88236
     proxy: "\U0001F6AB 受限网站"
   dood:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Dood/Dood.yaml
-    path: "./ruleset/bm7-Dood.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dood.mrs
+    path: "./ruleset/scki-mrs-dood.mrs"
     interval: 88257
     proxy: "\U0001F6AB 受限网站"
-  ehgallery:
+  ehgallery-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/EHGallery/EHGallery.yaml
-    path: "./ruleset/bm7-EHGallery.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ehgallery-domain.mrs
+    path: "./ruleset/scki-mrs-ehgallery-domain.mrs"
+    interval: 88314
+    proxy: "\U0001F6AB 受限网站"
+  ehgallery-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ehgallery-ipcidr.mrs
+    path: "./ruleset/scki-mrs-ehgallery-ipcidr.mrs"
     interval: 88314
     proxy: "\U0001F6AB 受限网站"
   lastfm:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LastFM/LastFM.yaml
-    path: "./ruleset/bm7-LastFM.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/lastfm.mrs
+    path: "./ruleset/scki-mrs-lastfm.mrs"
     interval: 88285
     proxy: "\U0001F6AB 受限网站"
   emby:
@@ -1847,65 +2126,74 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   mytvsuper:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/myTVSUPER/myTVSUPER.yaml
-    path: "./ruleset/bm7-myTVSUPER.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/mytvsuper.mrs
+    path: "./ruleset/scki-mrs-mytvsuper.mrs"
     interval: 88346
     proxy: "\U0001F6AB 受限网站"
   tvb:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TVB/TVB.yaml
-    path: "./ruleset/bm7-TVB.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tvb.mrs
+    path: "./ruleset/scki-mrs-tvb.mrs"
     interval: 88367
     proxy: "\U0001F6AB 受限网站"
   nowe:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NowE/NowE.yaml
-    path: "./ruleset/bm7-NowE.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nowe.mrs
+    path: "./ruleset/scki-mrs-nowe.mrs"
     interval: 88386
     proxy: "\U0001F6AB 受限网站"
   rthk:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/RTHK/RTHK.yaml
-    path: "./ruleset/bm7-RTHK.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/rthk.mrs
+    path: "./ruleset/scki-mrs-rthk.mrs"
     interval: 88373
     proxy: "\U0001F6AB 受限网站"
   cabletv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CableTV/CableTV.yaml
-    path: "./ruleset/bm7-CableTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cabletv.mrs
+    path: "./ruleset/scki-mrs-cabletv.mrs"
     interval: 88410
     proxy: "\U0001F6AB 受限网站"
   moov:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MOOV/MOOV.yaml
-    path: "./ruleset/bm7-MOOV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/moov.mrs
+    path: "./ruleset/scki-mrs-moov.mrs"
     interval: 88396
     proxy: "\U0001F6AB 受限网站"
   litv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LiTV/LiTV.yaml
-    path: "./ruleset/bm7-LiTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/litv.mrs
+    path: "./ruleset/scki-mrs-litv.mrs"
     interval: 88434
     proxy: "\U0001F6AB 受限网站"
   friday:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/friDay/friDay.yaml
-    path: "./ruleset/bm7-friDay.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/friday.mrs
+    path: "./ruleset/scki-mrs-friday.mrs"
     interval: 88475
     proxy: "\U0001F6AB 受限网站"
   hamivideo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HamiVideo/HamiVideo.yaml
-    path: "./ruleset/bm7-HamiVideo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hamivideo.mrs
+    path: "./ruleset/scki-mrs-hamivideo.mrs"
     interval: 88451
     proxy: "\U0001F6AB 受限网站"
   linetv:
@@ -1917,205 +2205,266 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   vidoltv:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/VidolTV/VidolTV.yaml
-    path: "./ruleset/bm7-VidolTV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/vidoltv.mrs
+    path: "./ruleset/scki-mrs-vidoltv.mrs"
     interval: 88474
     proxy: "\U0001F6AB 受限网站"
   taiwangood:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TaiWanGood/TaiWanGood.yaml
-    path: "./ruleset/bm7-TaiWanGood.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/taiwangood.mrs
+    path: "./ruleset/scki-mrs-taiwangood.mrs"
     interval: 88525
     proxy: "\U0001F6AB 受限网站"
   cht:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CHT/CHT.yaml
-    path: "./ruleset/bm7-CHT.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cht.mrs
+    path: "./ruleset/scki-mrs-cht.mrs"
     interval: 88543
     proxy: "\U0001F6AB 受限网站"
-  dmm:
+  dmm-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DMM/DMM.yaml
-    path: "./ruleset/bm7-DMM.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dmm-domain.mrs
+    path: "./ruleset/scki-mrs-dmm-domain.mrs"
+    interval: 88559
+    proxy: "\U0001F6AB 受限网站"
+  dmm-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dmm-ipcidr.mrs
+    path: "./ruleset/scki-mrs-dmm-ipcidr.mrs"
     interval: 88559
     proxy: "\U0001F6AB 受限网站"
   tver:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TVer/TVer.yaml
-    path: "./ruleset/bm7-TVer.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tver.mrs
+    path: "./ruleset/scki-mrs-tver.mrs"
     interval: 88571
     proxy: "\U0001F6AB 受限网站"
   niconico:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Niconico/Niconico.yaml
-    path: "./ruleset/bm7-Niconico.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/niconico.mrs
+    path: "./ruleset/scki-mrs-niconico.mrs"
     interval: 88586
     proxy: "\U0001F6AB 受限网站"
   rakuten:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Rakuten/Rakuten.yaml
-    path: "./ruleset/bm7-Rakuten.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/rakuten.mrs
+    path: "./ruleset/scki-mrs-rakuten.mrs"
     interval: 88563
     proxy: "\U0001F6AB 受限网站"
   japonx:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Japonx/Japonx.yaml
-    path: "./ruleset/bm7-Japonx.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/japonx.mrs
+    path: "./ruleset/scki-mrs-japonx.mrs"
     interval: 88595
     proxy: "\U0001F6AB 受限网站"
   nikkei:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Nikkei/Nikkei.yaml
-    path: "./ruleset/bm7-Nikkei.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nikkei.mrs
+    path: "./ruleset/scki-mrs-nikkei.mrs"
     interval: 88645
     proxy: "\U0001F6AB 受限网站"
   itv:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ITV/ITV.yaml
-    path: "./ruleset/bm7-ITV.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/itv.mrs
+    path: "./ruleset/scki-mrs-itv.mrs"
     interval: 88608
     proxy: "\U0001F6AB 受限网站"
   all4:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/All4/All4.yaml
-    path: "./ruleset/bm7-All4.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/all4.mrs
+    path: "./ruleset/scki-mrs-all4.mrs"
     interval: 88656
     proxy: "\U0001F6AB 受限网站"
   my5:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/My5/My5.yaml
-    path: "./ruleset/bm7-My5.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/my5.mrs
+    path: "./ruleset/scki-mrs-my5.mrs"
     interval: 88658
     proxy: "\U0001F6AB 受限网站"
   skygo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SkyGO/SkyGO.yaml
-    path: "./ruleset/bm7-SkyGO.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/skygo.mrs
+    path: "./ruleset/scki-mrs-skygo.mrs"
     interval: 88664
     proxy: "\U0001F6AB 受限网站"
   britboxuk:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/BritboxUK/BritboxUK.yaml
-    path: "./ruleset/bm7-BritboxUK.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/britboxuk.mrs
+    path: "./ruleset/scki-mrs-britboxuk.mrs"
     interval: 88668
     proxy: "\U0001F6AB 受限网站"
   londonreal:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LondonReal/LondonReal.yaml
-    path: "./ruleset/bm7-LondonReal.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/londonreal.mrs
+    path: "./ruleset/scki-mrs-londonreal.mrs"
     interval: 88703
     proxy: "\U0001F6AB 受限网站"
-  qobuz:
+  qobuz-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Qobuz/Qobuz.yaml
-    path: "./ruleset/bm7-Qobuz.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/qobuz-domain.mrs
+    path: "./ruleset/scki-mrs-qobuz-domain.mrs"
+    interval: 88695
+    proxy: "\U0001F6AB 受限网站"
+  qobuz-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/qobuz-ipcidr.mrs
+    path: "./ruleset/scki-mrs-qobuz-ipcidr.mrs"
     interval: 88695
     proxy: "\U0001F6AB 受限网站"
   steamcn:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SteamCN/SteamCN.yaml
-    path: "./ruleset/bm7-SteamCN.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/steamcn.mrs
+    path: "./ruleset/scki-mrs-steamcn.mrs"
     interval: 88721
     proxy: "\U0001F6AB 受限网站"
   wanmeishijie:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WanMeiShiJie/WanMeiShiJie.yaml
-    path: "./ruleset/bm7-WanMeiShiJie.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/wanmeishijie.mrs
+    path: "./ruleset/scki-mrs-wanmeishijie.mrs"
     interval: 88729
     proxy: "\U0001F6AB 受限网站"
   wankahuanju:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WanKaHuanJu/WanKaHuanJu.yaml
-    path: "./ruleset/bm7-WanKaHuanJu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/wankahuanju.mrs
+    path: "./ruleset/scki-mrs-wankahuanju.mrs"
     interval: 88754
     proxy: "\U0001F6AB 受限网站"
   majsoul:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Majsoul/Majsoul.yaml
-    path: "./ruleset/bm7-Majsoul.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/majsoul.mrs
+    path: "./ruleset/scki-mrs-majsoul.mrs"
     interval: 88774
     proxy: "\U0001F6AB 受限网站"
   rockstar:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Rockstar/Rockstar.yaml
-    path: "./ruleset/bm7-Rockstar.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/rockstar.mrs
+    path: "./ruleset/scki-mrs-rockstar.mrs"
     interval: 88822
     proxy: "\U0001F6AB 受限网站"
   riot:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Riot/Riot.yaml
-    path: "./ruleset/bm7-Riot.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/riot.mrs
+    path: "./ruleset/scki-mrs-riot.mrs"
     interval: 88824
     proxy: "\U0001F6AB 受限网站"
   gog:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gog/Gog.yaml
-    path: "./ruleset/bm7-Gog.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/gog.mrs
+    path: "./ruleset/scki-mrs-gog.mrs"
     interval: 88829
     proxy: "\U0001F6AB 受限网站"
-  supercell:
+  supercell-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Supercell/Supercell.yaml
-    path: "./ruleset/bm7-Supercell.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/supercell-domain.mrs
+    path: "./ruleset/scki-mrs-supercell-domain.mrs"
+    interval: 88873
+    proxy: "\U0001F6AB 受限网站"
+  supercell-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/supercell-ipcidr.mrs
+    path: "./ruleset/scki-mrs-supercell-ipcidr.mrs"
     interval: 88873
     proxy: "\U0001F6AB 受限网站"
   garena:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Garena/Garena.yaml
-    path: "./ruleset/bm7-Garena.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/garena.mrs
+    path: "./ruleset/scki-mrs-garena.mrs"
     interval: 88833
     proxy: "\U0001F6AB 受限网站"
   hoyoverse:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HoYoverse/HoYoverse.yaml
-    path: "./ruleset/bm7-HoYoverse.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hoyoverse.mrs
+    path: "./ruleset/scki-mrs-hoyoverse.mrs"
     interval: 88903
     proxy: "\U0001F6AB 受限网站"
   ubi:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/UBI/UBI.yaml
-    path: "./ruleset/bm7-UBI.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ubi.mrs
+    path: "./ruleset/scki-mrs-ubi.mrs"
     interval: 88883
     proxy: "\U0001F6AB 受限网站"
   sony:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Sony/Sony.yaml
-    path: "./ruleset/bm7-Sony.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/sony.mrs
+    path: "./ruleset/scki-mrs-sony.mrs"
     interval: 88901
     proxy: "\U0001F6AB 受限网站"
-  yandex:
+  yandex-domain:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Yandex/Yandex.yaml
-    path: "./ruleset/bm7-Yandex.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/yandex-domain.mrs
+    path: "./ruleset/scki-mrs-yandex-domain.mrs"
+    interval: 88922
+    proxy: "\U0001F6AB 受限网站"
+  yandex-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/yandex-ipcidr.mrs
+    path: "./ruleset/scki-mrs-yandex-ipcidr.mrs"
     interval: 88922
     proxy: "\U0001F6AB 受限网站"
   naver:
@@ -2127,79 +2476,90 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   scholar:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Scholar/Scholar.yaml
-    path: "./ruleset/bm7-Scholar.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/scholar.mrs
+    path: "./ruleset/scki-mrs-scholar.mrs"
     interval: 89020
     proxy: "\U0001F6AB 受限网站"
   developer:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Developer/Developer.yaml
-    path: "./ruleset/bm7-Developer.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/developer.mrs
+    path: "./ruleset/scki-mrs-developer.mrs"
     interval: 89033
     proxy: "\U0001F6AB 受限网站"
   python:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Python/Python.yaml
-    path: "./ruleset/bm7-Python.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/python.mrs
+    path: "./ruleset/scki-mrs-python.mrs"
     interval: 89030
     proxy: "\U0001F6AB 受限网站"
   gitbook:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitBook/GitBook.yaml
-    path: "./ruleset/bm7-GitBook.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/gitbook.mrs
+    path: "./ruleset/scki-mrs-gitbook.mrs"
     interval: 89022
     proxy: "\U0001F6AB 受限网站"
   jfrog:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Jfrog/Jfrog.yaml
-    path: "./ruleset/bm7-Jfrog.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/jfrog.mrs
+    path: "./ruleset/scki-mrs-jfrog.mrs"
     interval: 89033
     proxy: "\U0001F6AB 受限网站"
   sublimetext:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SublimeText/SublimeText.yaml
-    path: "./ruleset/bm7-SublimeText.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/sublimetext.mrs
+    path: "./ruleset/scki-mrs-sublimetext.mrs"
     interval: 89048
     proxy: "\U0001F6AB 受限网站"
   wordpress:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Wordpress/Wordpress.yaml
-    path: "./ruleset/bm7-Wordpress.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/wordpress.mrs
+    path: "./ruleset/scki-mrs-wordpress.mrs"
     interval: 89099
     proxy: "\U0001F6AB 受限网站"
   wix:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WIX/WIX.yaml
-    path: "./ruleset/bm7-WIX.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/wix.mrs
+    path: "./ruleset/scki-mrs-wix.mrs"
     interval: 89124
     proxy: "\U0001F6AB 受限网站"
   cisco:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Cisco/Cisco.yaml
-    path: "./ruleset/bm7-Cisco.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cisco.mrs
+    path: "./ruleset/scki-mrs-cisco.mrs"
     interval: 89107
     proxy: "\U0001F6AB 受限网站"
   ibm:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/IBM/IBM.yaml
-    path: "./ruleset/bm7-IBM.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ibm.mrs
+    path: "./ruleset/scki-mrs-ibm.mrs"
     interval: 89102
     proxy: "\U0001F6AB 受限网站"
   oracle:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Oracle/Oracle.yaml
-    path: "./ruleset/bm7-Oracle.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/oracle.mrs
+    path: "./ruleset/scki-mrs-oracle.mrs"
     interval: 89126
     proxy: "\U0001F6AB 受限网站"
   unity:
@@ -2211,16 +2571,18 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   microsoftedge:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MicrosoftEdge/MicrosoftEdge.yaml
-    path: "./ruleset/bm7-MicrosoftEdge.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/microsoftedge.mrs
+    path: "./ruleset/scki-mrs-microsoftedge.mrs"
     interval: 89172
     proxy: "\U0001F6AB 受限网站"
   appstore:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppStore/AppStore.yaml
-    path: "./ruleset/bm7-AppStore.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/appstore.mrs
+    path: "./ruleset/scki-mrs-appstore.mrs"
     interval: 89193
     proxy: "\U0001F6AB 受限网站"
   appletv:
@@ -2232,16 +2594,18 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   applenews:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleNews/AppleNews.yaml
-    path: "./ruleset/bm7-AppleNews.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/applenews.mrs
+    path: "./ruleset/scki-mrs-applenews.mrs"
     interval: 89200
     proxy: "\U0001F6AB 受限网站"
   appledev:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleDev/AppleDev.yaml
-    path: "./ruleset/bm7-AppleDev.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/appledev.mrs
+    path: "./ruleset/scki-mrs-appledev.mrs"
     interval: 89260
     proxy: "\U0001F6AB 受限网站"
   appleproxy:
@@ -2253,16 +2617,18 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   siri:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Siri/Siri.yaml
-    path: "./ruleset/bm7-Siri.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/siri.mrs
+    path: "./ruleset/scki-mrs-siri.mrs"
     interval: 89265
     proxy: "\U0001F6AB 受限网站"
   testflight:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TestFlight/TestFlight.yaml
-    path: "./ruleset/bm7-TestFlight.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/testflight.mrs
+    path: "./ruleset/scki-mrs-testflight.mrs"
     interval: 89282
     proxy: "\U0001F6AB 受限网站"
   applefirmware:
@@ -2281,198 +2647,258 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   ubuntu:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Ubuntu/Ubuntu.yaml
-    path: "./ruleset/bm7-Ubuntu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ubuntu.mrs
+    path: "./ruleset/scki-mrs-ubuntu.mrs"
     interval: 89345
     proxy: "\U0001F6AB 受限网站"
   mozilla:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Mozilla/Mozilla.yaml
-    path: "./ruleset/bm7-Mozilla.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/mozilla.mrs
+    path: "./ruleset/scki-mrs-mozilla.mrs"
     interval: 89368
     proxy: "\U0001F6AB 受限网站"
   apkpure:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apkpure/Apkpure.yaml
-    path: "./ruleset/bm7-Apkpure.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/apkpure.mrs
+    path: "./ruleset/scki-mrs-apkpure.mrs"
     interval: 89352
     proxy: "\U0001F6AB 受限网站"
   android:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Android/Android.yaml
-    path: "./ruleset/bm7-Android.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/android.mrs
+    path: "./ruleset/scki-mrs-android.mrs"
     interval: 89411
     proxy: "\U0001F6AB 受限网站"
-  googlefcm:
+  googlefcm-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GoogleFCM/GoogleFCM.yaml
-    path: "./ruleset/bm7-GoogleFCM.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/googlefcm-domain.mrs
+    path: "./ruleset/scki-mrs-googlefcm-domain.mrs"
+    interval: 89382
+    proxy: "\U0001F6AB 受限网站"
+  googlefcm-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/googlefcm-ipcidr.mrs
+    path: "./ruleset/scki-mrs-googlefcm-ipcidr.mrs"
     interval: 89382
     proxy: "\U0001F6AB 受限网站"
   intel:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Intel/Intel.yaml
-    path: "./ruleset/bm7-Intel.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/intel.mrs
+    path: "./ruleset/scki-mrs-intel.mrs"
     interval: 89435
     proxy: "\U0001F6AB 受限网站"
   nvidia:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Nvidia/Nvidia.yaml
-    path: "./ruleset/bm7-Nvidia.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nvidia.mrs
+    path: "./ruleset/scki-mrs-nvidia.mrs"
     interval: 89446
     proxy: "\U0001F6AB 受限网站"
   dell:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Dell/Dell.yaml
-    path: "./ruleset/bm7-Dell.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dell.mrs
+    path: "./ruleset/scki-mrs-dell.mrs"
     interval: 89456
     proxy: "\U0001F6AB 受限网站"
   hp:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HP/HP.yaml
-    path: "./ruleset/bm7-HP.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/hp.mrs
+    path: "./ruleset/scki-mrs-hp.mrs"
     interval: 89477
     proxy: "\U0001F6AB 受限网站"
   canon:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Canon/Canon.yaml
-    path: "./ruleset/bm7-Canon.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/canon.mrs
+    path: "./ruleset/scki-mrs-canon.mrs"
     interval: 89485
     proxy: "\U0001F6AB 受限网站"
-  lg:
+  lg-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LG/LG.yaml
-    path: "./ruleset/bm7-LG.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/lg-domain.mrs
+    path: "./ruleset/scki-mrs-lg-domain.mrs"
     interval: 89499
     proxy: "\U0001F6AB 受限网站"
-  cloudflare:
+  lg-ipcidr:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Cloudflare/Cloudflare.yaml
-    path: "./ruleset/bm7-Cloudflare.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/lg-ipcidr.mrs
+    path: "./ruleset/scki-mrs-lg-ipcidr.mrs"
+    interval: 89499
+    proxy: "\U0001F6AB 受限网站"
+  cloudflare-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cloudflare-domain.mrs
+    path: "./ruleset/scki-mrs-cloudflare-domain.mrs"
+    interval: 89494
+    proxy: "\U0001F6AB 受限网站"
+  cloudflare-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cloudflare-ipcidr.mrs
+    path: "./ruleset/scki-mrs-cloudflare-ipcidr.mrs"
     interval: 89494
     proxy: "\U0001F6AB 受限网站"
   akamai:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Akamai/Akamai.yaml
-    path: "./ruleset/bm7-Akamai.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/akamai.mrs
+    path: "./ruleset/scki-mrs-akamai.mrs"
     interval: 89513
     proxy: "\U0001F6AB 受限网站"
   digicert:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DigiCert/DigiCert.yaml
-    path: "./ruleset/bm7-DigiCert.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/digicert.mrs
+    path: "./ruleset/scki-mrs-digicert.mrs"
     interval: 89535
     proxy: "\U0001F6AB 受限网站"
   globalsign:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GlobalSign/GlobalSign.yaml
-    path: "./ruleset/bm7-GlobalSign.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/globalsign.mrs
+    path: "./ruleset/scki-mrs-globalsign.mrs"
     interval: 89547
     proxy: "\U0001F6AB 受限网站"
   sectigo:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Sectigo/Sectigo.yaml
-    path: "./ruleset/bm7-Sectigo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/sectigo.mrs
+    path: "./ruleset/scki-mrs-sectigo.mrs"
     interval: 89550
     proxy: "\U0001F6AB 受限网站"
   brightcove:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/BrightCove/BrightCove.yaml
-    path: "./ruleset/bm7-BrightCove.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/brightcove.mrs
+    path: "./ruleset/scki-mrs-brightcove.mrs"
     interval: 89551
     proxy: "\U0001F6AB 受限网站"
   jwplayer:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Jwplayer/Jwplayer.yaml
-    path: "./ruleset/bm7-Jwplayer.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/jwplayer.mrs
+    path: "./ruleset/scki-mrs-jwplayer.mrs"
     interval: 89618
     proxy: "\U0001F6AB 受限网站"
-  privatetracker:
+  privatetracker-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PrivateTracker/PrivateTracker.yaml
-    path: "./ruleset/bm7-PrivateTracker.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/privatetracker-domain.mrs
+    path: "./ruleset/scki-mrs-privatetracker-domain.mrs"
+    interval: 89594
+    proxy: "\U0001F6AB 受限网站"
+  privatetracker-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/privatetracker-ipcidr.mrs
+    path: "./ruleset/scki-mrs-privatetracker-ipcidr.mrs"
     interval: 89594
     proxy: "\U0001F6AB 受限网站"
   cnn:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CNN/CNN.yaml
-    path: "./ruleset/bm7-CNN.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/cnn.mrs
+    path: "./ruleset/scki-mrs-cnn.mrs"
     interval: 89641
     proxy: "\U0001F6AB 受限网站"
   nytimes:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NYTimes/NYTimes.yaml
-    path: "./ruleset/bm7-NYTimes.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nytimes.mrs
+    path: "./ruleset/scki-mrs-nytimes.mrs"
     interval: 89655
     proxy: "\U0001F6AB 受限网站"
   bloomberg:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Bloomberg/Bloomberg.yaml
-    path: "./ruleset/bm7-Bloomberg.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/bloomberg.mrs
+    path: "./ruleset/scki-mrs-bloomberg.mrs"
     interval: 89666
     proxy: "\U0001F6AB 受限网站"
   ebay:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/eBay/eBay.yaml
-    path: "./ruleset/bm7-eBay.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/ebay.mrs
+    path: "./ruleset/scki-mrs-ebay.mrs"
     interval: 89673
     proxy: "\U0001F6AB 受限网站"
   nike:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Nike/Nike.yaml
-    path: "./ruleset/bm7-Nike.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/nike.mrs
+    path: "./ruleset/scki-mrs-nike.mrs"
     interval: 89699
     proxy: "\U0001F6AB 受限网站"
   adobe:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Adobe/Adobe.yaml
-    path: "./ruleset/bm7-Adobe.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/adobe.mrs
+    path: "./ruleset/scki-mrs-adobe.mrs"
     interval: 89678
     proxy: "\U0001F6AB 受限网站"
   samsung:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Samsung/Samsung.yaml
-    path: "./ruleset/bm7-Samsung.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/samsung.mrs
+    path: "./ruleset/scki-mrs-samsung.mrs"
     interval: 89696
     proxy: "\U0001F6AB 受限网站"
   tesla:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Tesla/Tesla.yaml
-    path: "./ruleset/bm7-Tesla.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/tesla.mrs
+    path: "./ruleset/scki-mrs-tesla.mrs"
     interval: 89702
     proxy: "\U0001F6AB 受限网站"
   dropbox:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Dropbox/Dropbox.yaml
-    path: "./ruleset/bm7-Dropbox.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/dropbox.mrs
+    path: "./ruleset/scki-mrs-dropbox.mrs"
     interval: 89762
     proxy: "\U0001F6AB 受限网站"
   mega:
@@ -2484,24 +2910,26 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   wikipedia:
     type: http
-    behavior: classical
-    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Wikipedia/Wikipedia.yaml
-    path: "./ruleset/bm7-Wikipedia.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/wikipedia.mrs
+    path: "./ruleset/scki-mrs-wikipedia.mrs"
     interval: 89758
     proxy: "\U0001F6AB 受限网站"
   duolingo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Duolingo/Duolingo.yaml
-    path: "./ruleset/bm7-Duolingo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/duolingo.mrs
+    path: "./ruleset/scki-mrs-duolingo.mrs"
     interval: 89784
     proxy: "\U0001F6AB 受限网站"
   sukka-phishing:
     type: http
     behavior: domain
-    format: text
-    url: https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt
-    path: "./ruleset/sukka-reject-phishing.txt"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/sukka-phishing.mrs
+    path: "./ruleset/scki-mrs-sukka-phishing.mrs"
     interval: 89786
     proxy: "\U0001F6AB 受限网站"
   hagezi-tif:
@@ -2549,53 +2977,66 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   szkane-khan:
     type: http
-    behavior: classical
-    format: text
-    url: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Khan.list
-    path: "./ruleset/szkane-Khan.list"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-khan.mrs
+    path: "./ruleset/scki-mrs-szkane-khan.mrs"
     interval: 89873
     proxy: "\U0001F6AB 受限网站"
   szkane-edutools:
     type: http
-    behavior: classical
-    format: text
-    url: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Edutools.list
-    path: "./ruleset/szkane-Edutools.list"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-edutools.mrs
+    path: "./ruleset/scki-mrs-szkane-edutools.mrs"
     interval: 89927
     proxy: "\U0001F6AB 受限网站"
-  # v5.2.7 FIX#27-P1: upstream UK.list 含 USER-AGENT,BBCiPlayer* (mihomo classical 触发
-  # `parse classical rule [USER-AGENT,BBCiPlayer*] error: unsupported rule type: USER-AGENT`)
-  # 改用本仓库 mirrors/ 清洗副本；BBC 域名已由 geosite:bbc 覆盖。
   szkane-uk:
     type: http
-    behavior: classical
-    format: text
-    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/UK.list
-    path: "./ruleset/szkane-UK.list"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-uk.mrs
+    path: "./ruleset/scki-mrs-szkane-uk.mrs"
     interval: 89896
     proxy: "\U0001F6AB 受限网站"
-  szkane-bilihmt:
+  szkane-bilihmt-domain:
     type: http
-    behavior: classical
-    format: text
-    url: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/BilibiliHMT.list
-    path: "./ruleset/szkane-BilibiliHMT.list"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-bilihmt-domain.mrs
+    path: "./ruleset/scki-mrs-szkane-bilihmt-domain.mrs"
+    interval: 89933
+    proxy: "\U0001F6AB 受限网站"
+  szkane-bilihmt-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-bilihmt-ipcidr.mrs
+    path: "./ruleset/scki-mrs-szkane-bilihmt-ipcidr.mrs"
     interval: 89933
     proxy: "\U0001F6AB 受限网站"
   szkane-netflixip:
     type: http
-    behavior: classical
-    format: text
-    url: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/NetflixIP.list
-    path: "./ruleset/szkane-NetflixIP.list"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-netflixip.mrs
+    path: "./ruleset/scki-mrs-szkane-netflixip.mrs"
     interval: 89941
     proxy: "\U0001F6AB 受限网站"
-  szkane-proxygfw:
+  szkane-proxygfw-domain:
     type: http
-    behavior: classical
-    format: text
-    url: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/ProxyGFWlist.list
-    path: "./ruleset/szkane-ProxyGFWlist.list"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-proxygfw-domain.mrs
+    path: "./ruleset/scki-mrs-szkane-proxygfw-domain.mrs"
+    interval: 89998
+    proxy: "\U0001F6AB 受限网站"
+  szkane-proxygfw-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/szkane-proxygfw-ipcidr.mrs
+    path: "./ruleset/scki-mrs-szkane-proxygfw-ipcidr.mrs"
     interval: 89998
     proxy: "\U0001F6AB 受限网站"
   loyalsoldier-gfw:
@@ -2616,33 +3057,34 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   acc-appleai:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/AppleAI/AppleAI.yaml
-    path: "./ruleset/acc-AppleAI.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-appleai.mrs
+    path: "./ruleset/scki-mrs-acc-appleai.mrs"
     interval: 90028
     proxy: "\U0001F6AB 受限网站"
-  # v5.2.7 FIX#27-P1: upstream Grok.yaml 含 `IP-CIDR         , 17.253.4.125`
-  # (多余空格 + 缺 CIDR 掩码 → `parse classical rule [IP-CIDR , 17.253.4.125] error: payloadRule error`)
-  # 改用本仓库 mirrors/ 清洗副本（仅删该行 + 规整空格）。
   acc-grok:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/Grok.yaml
-    path: "./ruleset/acc-Grok.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-grok.mrs
+    path: "./ruleset/scki-mrs-acc-grok.mrs"
     interval: 90049
     proxy: "\U0001F6AB 受限网站"
   acc-gemini:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Gemini/Gemini.yaml
-    path: "./ruleset/acc-Gemini.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-gemini.mrs
+    path: "./ruleset/scki-mrs-acc-gemini.mrs"
     interval: 90072
     proxy: "\U0001F6AB 受限网站"
   acc-copilot:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Copilot/Copilot.yaml
-    path: "./ruleset/acc-Copilot.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-copilot.mrs
+    path: "./ruleset/scki-mrs-acc-copilot.mrs"
     interval: 90038
     proxy: "\U0001F6AB 受限网站"
   vpsdance-ai-coding:
@@ -2654,437 +3096,578 @@ rule-providers:
     proxy: "\U0001F6AB 受限网站"
   acc-bank-us:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankUS.yaml
-    path: "./ruleset/acc-BankUS.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-us.mrs
+    path: "./ruleset/scki-mrs-acc-bank-us.mrs"
     interval: 90071
     proxy: "\U0001F6AB 受限网站"
   acc-bank-uk:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankUK.yaml
-    path: "./ruleset/acc-BankUK.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-uk.mrs
+    path: "./ruleset/scki-mrs-acc-bank-uk.mrs"
     interval: 90079
     proxy: "\U0001F6AB 受限网站"
   acc-bank-hk:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankHK.yaml
-    path: "./ruleset/acc-BankHK.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-hk.mrs
+    path: "./ruleset/scki-mrs-acc-bank-hk.mrs"
     interval: 90075
     proxy: "\U0001F6AB 受限网站"
   acc-bank-sg:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankSG.yaml
-    path: "./ruleset/acc-BankSG.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-sg.mrs
+    path: "./ruleset/scki-mrs-acc-bank-sg.mrs"
     interval: 90134
     proxy: "\U0001F6AB 受限网站"
   acc-bank-jp:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankJP.yaml
-    path: "./ruleset/acc-BankJP.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-jp.mrs
+    path: "./ruleset/scki-mrs-acc-bank-jp.mrs"
     interval: 90138
     proxy: "\U0001F6AB 受限网站"
   acc-bank-au:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankAU.yaml
-    path: "./ruleset/acc-BankAU.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-au.mrs
+    path: "./ruleset/scki-mrs-acc-bank-au.mrs"
     interval: 90146
     proxy: "\U0001F6AB 受限网站"
   acc-bank-ca:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankCA.yaml
-    path: "./ruleset/acc-BankCA.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-ca.mrs
+    path: "./ruleset/scki-mrs-acc-bank-ca.mrs"
     interval: 90154
     proxy: "\U0001F6AB 受限网站"
   acc-bank-de:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankDE.yaml
-    path: "./ruleset/acc-BankDE.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-de.mrs
+    path: "./ruleset/scki-mrs-acc-bank-de.mrs"
     interval: 90205
     proxy: "\U0001F6AB 受限网站"
   acc-bank-nl:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankNL.yaml
-    path: "./ruleset/acc-BankNL.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-nl.mrs
+    path: "./ruleset/scki-mrs-acc-bank-nl.mrs"
     interval: 90223
     proxy: "\U0001F6AB 受限网站"
   acc-bank-fr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankFR.yaml
-    path: "./ruleset/acc-BankFR.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-bank-fr.mrs
+    path: "./ruleset/scki-mrs-acc-bank-fr.mrs"
     interval: 90205
     proxy: "\U0001F6AB 受限网站"
   acc-vf-wise:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Wise.yaml
-    path: "./ruleset/acc-Wise.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-vf-wise.mrs
+    path: "./ruleset/scki-mrs-acc-vf-wise.mrs"
     interval: 90254
     proxy: "\U0001F6AB 受限网站"
   acc-vf-monzo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Monzo.yaml
-    path: "./ruleset/acc-Monzo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-vf-monzo.mrs
+    path: "./ruleset/scki-mrs-acc-vf-monzo.mrs"
     interval: 90231
     proxy: "\U0001F6AB 受限网站"
   acc-vf-revolut:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Revolut.yaml
-    path: "./ruleset/acc-Revolut.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-vf-revolut.mrs
+    path: "./ruleset/scki-mrs-acc-vf-revolut.mrs"
     interval: 90296
     proxy: "\U0001F6AB 受限网站"
   acc-applenews:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/AppleNews/AppleNews.yaml
-    path: "./ruleset/acc-AppleNews.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-applenews.mrs
+    path: "./ruleset/scki-mrs-acc-applenews.mrs"
     interval: 90270
     proxy: "\U0001F6AB 受限网站"
-  acc-apple:
+  acc-apple-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Apple/Apple.yaml
-    path: "./ruleset/acc-Apple.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-apple-domain.mrs
+    path: "./ruleset/scki-mrs-acc-apple-domain.mrs"
+    interval: 90321
+    proxy: "\U0001F6AB 受限网站"
+  acc-apple-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-apple-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-apple-ipcidr.mrs"
     interval: 90321
     proxy: "\U0001F6AB 受限网站"
   acc-microsoftapps:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/MicrosoftAPPs/MicrosoftAPPs.yaml
-    path: "./ruleset/acc-MicrosoftAPPs.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-microsoftapps.mrs
+    path: "./ruleset/scki-mrs-acc-microsoftapps.mrs"
     interval: 90323
     proxy: "\U0001F6AB 受限网站"
   acc-signal:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Signal/Signal.yaml
-    path: "./ruleset/acc-Signal.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-signal.mrs
+    path: "./ruleset/scki-mrs-acc-signal.mrs"
     interval: 90316
     proxy: "\U0001F6AB 受限网站"
   acc-rustdesk:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/RustDesk/RustDesk.yaml
-    path: "./ruleset/acc-RustDesk.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-rustdesk.mrs
+    path: "./ruleset/scki-mrs-acc-rustdesk.mrs"
     interval: 90359
     proxy: "\U0001F6AB 受限网站"
   acc-parsec:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Parsec/Parsec.yaml
-    path: "./ruleset/acc-Parsec.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-parsec.mrs
+    path: "./ruleset/scki-mrs-acc-parsec.mrs"
     interval: 90379
     proxy: "\U0001F6AB 受限网站"
   acc-alipan:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Alipan/Alipan.yaml
-    path: "./ruleset/acc-Alipan.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-alipan.mrs
+    path: "./ruleset/scki-mrs-acc-alipan.mrs"
     interval: 90376
     proxy: "\U0001F6AB 受限网站"
   acc-baidunetdisk:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/BaiduNetDisk/BaiduNetDisk.yaml
-    path: "./ruleset/acc-BaiduNetDisk.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-baidunetdisk.mrs
+    path: "./ruleset/scki-mrs-acc-baidunetdisk.mrs"
     interval: 90370
     proxy: "\U0001F6AB 受限网站"
-  acc-weiyun:
+  acc-weiyun-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/WeiYun/WeiYun.yaml
-    path: "./ruleset/acc-WeiYun.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-weiyun-domain.mrs
+    path: "./ruleset/scki-mrs-acc-weiyun-domain.mrs"
+    interval: 90425
+    proxy: "\U0001F6AB 受限网站"
+  acc-weiyun-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-weiyun-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-weiyun-ipcidr.mrs"
     interval: 90425
     proxy: "\U0001F6AB 受限网站"
   acc-kwai:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Kwai/Kwai.yaml
-    path: "./ruleset/acc-Kwai.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-kwai.mrs
+    path: "./ruleset/scki-mrs-acc-kwai.mrs"
     interval: 90404
     proxy: "\U0001F6AB 受限网站"
-  acc-fl-bilibili:
+  acc-fl-bilibili-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationBiliBili.yaml
-    path: "./ruleset/acc-FakeLocationBiliBili.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-bilibili-domain.mrs
+    path: "./ruleset/scki-mrs-acc-fl-bilibili-domain.mrs"
+    interval: 90405
+    proxy: "\U0001F6AB 受限网站"
+  acc-fl-bilibili-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-bilibili-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-fl-bilibili-ipcidr.mrs"
     interval: 90405
     proxy: "\U0001F6AB 受限网站"
   acc-fl-kuaishou:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationKuaiShou.yaml
-    path: "./ruleset/acc-FakeLocationKuaiShou.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-kuaishou.mrs
+    path: "./ruleset/scki-mrs-acc-fl-kuaishou.mrs"
     interval: 90489
     proxy: "\U0001F6AB 受限网站"
   acc-fl-xigua:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationXiGua.yaml
-    path: "./ruleset/acc-FakeLocationXiGua.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-xigua.mrs
+    path: "./ruleset/scki-mrs-acc-fl-xigua.mrs"
     interval: 90489
     proxy: "\U0001F6AB 受限网站"
   acc-fl-weibo:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationWeiBo.yaml
-    path: "./ruleset/acc-FakeLocationWeiBo.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-weibo.mrs
+    path: "./ruleset/scki-mrs-acc-fl-weibo.mrs"
     interval: 90488
     proxy: "\U0001F6AB 受限网站"
-  acc-fl-zhihu:
+  acc-fl-zhihu-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationZhiHu.yaml
-    path: "./ruleset/acc-FakeLocationZhiHu.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-zhihu-domain.mrs
+    path: "./ruleset/scki-mrs-acc-fl-zhihu-domain.mrs"
     interval: 90505
     proxy: "\U0001F6AB 受限网站"
-  acc-fl-tieba:
+  acc-fl-zhihu-ipcidr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationTieBa.yaml
-    path: "./ruleset/acc-FakeLocationTieBa.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-zhihu-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-fl-zhihu-ipcidr.mrs"
+    interval: 90505
+    proxy: "\U0001F6AB 受限网站"
+  acc-fl-tieba-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-tieba-domain.mrs
+    path: "./ruleset/scki-mrs-acc-fl-tieba-domain.mrs"
     interval: 90528
     proxy: "\U0001F6AB 受限网站"
-  acc-fl-douban:
+  acc-fl-tieba-ipcidr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationDouBan.yaml
-    path: "./ruleset/acc-FakeLocationDouBan.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-tieba-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-fl-tieba-ipcidr.mrs"
+    interval: 90528
+    proxy: "\U0001F6AB 受限网站"
+  acc-fl-douban-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-douban-domain.mrs
+    path: "./ruleset/scki-mrs-acc-fl-douban-domain.mrs"
     interval: 90560
     proxy: "\U0001F6AB 受限网站"
-  acc-fl-xianyu:
+  acc-fl-douban-ipcidr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationXianYu.yaml
-    path: "./ruleset/acc-FakeLocationXianYu.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-douban-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-fl-douban-ipcidr.mrs"
+    interval: 90560
+    proxy: "\U0001F6AB 受限网站"
+  acc-fl-xianyu-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-xianyu-domain.mrs
+    path: "./ruleset/scki-mrs-acc-fl-xianyu-domain.mrs"
     interval: 90540
     proxy: "\U0001F6AB 受限网站"
-  acc-hijackingplus:
+  acc-fl-xianyu-ipcidr:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HijackingPlus/HijackingPlus.yaml
-    path: "./ruleset/acc-HijackingPlus.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fl-xianyu-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-fl-xianyu-ipcidr.mrs"
+    interval: 90540
+    proxy: "\U0001F6AB 受限网站"
+  acc-hijackingplus-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-hijackingplus-domain.mrs
+    path: "./ruleset/scki-mrs-acc-hijackingplus-domain.mrs"
+    interval: 90594
+    proxy: "\U0001F6AB 受限网站"
+  acc-hijackingplus-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-hijackingplus-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-hijackingplus-ipcidr.mrs"
     interval: 90594
     proxy: "\U0001F6AB 受限网站"
   acc-blockhttpdnsplus:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/BlockHttpDNSPlus/BlockHttpDNSPlus.yaml
-    path: "./ruleset/acc-BlockHttpDNSPlus.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-blockhttpdnsplus.mrs
+    path: "./ruleset/scki-mrs-acc-blockhttpdnsplus.mrs"
     interval: 90613
     proxy: "\U0001F6AB 受限网站"
   acc-prerepaireasyprivacy:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/PreRepairEasyPrivacy/PreRepairEasyPrivacy.yaml
-    path: "./ruleset/acc-PreRepairEasyPrivacy.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-prerepaireasyprivacy.mrs
+    path: "./ruleset/scki-mrs-acc-prerepaireasyprivacy.mrs"
     interval: 90585
     proxy: "\U0001F6AB 受限网站"
   acc-unsupportvpn:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/UnsupportVPN/UnsupportVPN.yaml
-    path: "./ruleset/acc-UnsupportVPN.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-unsupportvpn.mrs
+    path: "./ruleset/scki-mrs-acc-unsupportvpn.mrs"
     interval: 90635
     proxy: "\U0001F6AB 受限网站"
   acc-macappupgrade:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/MacAppUpgrade/MacAppUpgrade.yaml
-    path: "./ruleset/acc-MacAppUpgrade.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-macappupgrade.mrs
+    path: "./ruleset/scki-mrs-acc-macappupgrade.mrs"
     interval: 90615
     proxy: "\U0001F6AB 受限网站"
   acc-fastly:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Fastly/Fastly.yaml
-    path: "./ruleset/acc-Fastly.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-fastly.mrs
+    path: "./ruleset/scki-mrs-acc-fastly.mrs"
     interval: 90669
     proxy: "\U0001F6AB 受限网站"
-  # v5.2.5 FIX#23-P1: acc-geositecn / acc-china 删除（与 geosite:cn 纯重复）
   acc-chinamax:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/ChinaMax/ChinaMax.yaml
-    path: "./ruleset/acc-ChinaMax.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-chinamax.mrs
+    path: "./ruleset/scki-mrs-acc-chinamax.mrs"
     interval: 90693
     proxy: "\U0001F6AB 受限网站"
   acc-homeip-us:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HomeIP/HomeIPUS.yaml
-    path: "./ruleset/acc-HomeIPUS.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-homeip-us.mrs
+    path: "./ruleset/scki-mrs-acc-homeip-us.mrs"
     interval: 90703
     proxy: "\U0001F6AB 受限网站"
   acc-homeip-jp:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HomeIP/HomeIPJP.yaml
-    path: "./ruleset/acc-HomeIPJP.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-homeip-jp.mrs
+    path: "./ruleset/scki-mrs-acc-homeip-jp.mrs"
     interval: 90762
     proxy: "\U0001F6AB 受限网站"
-  acc-waybackmachine:
+  acc-waybackmachine-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/WaybackMachine/WaybackMachine.yaml
-    path: "./ruleset/acc-WaybackMachine.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-waybackmachine-domain.mrs
+    path: "./ruleset/scki-mrs-acc-waybackmachine-domain.mrs"
+    interval: 90730
+    proxy: "\U0001F6AB 受限网站"
+  acc-waybackmachine-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-waybackmachine-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-waybackmachine-ipcidr.mrs"
     interval: 90730
     proxy: "\U0001F6AB 受限网站"
   acc-pornhub:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Pornhub/Pornhub.yaml
-    path: "./ruleset/acc-Pornhub.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-pornhub.mrs
+    path: "./ruleset/scki-mrs-acc-pornhub.mrs"
     interval: 90755
     proxy: "\U0001F6AB 受限网站"
   acc-aqara-cn:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Aqara/AqaraCN.yaml
-    path: "./ruleset/acc-AqaraCN.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-aqara-cn.mrs
+    path: "./ruleset/scki-mrs-acc-aqara-cn.mrs"
     interval: 90756
     proxy: "\U0001F6AB 受限网站"
-  acc-aqara-global:
+  acc-aqara-global-domain:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Aqara/AqaraGlobal.yaml
-    path: "./ruleset/acc-AqaraGlobal.yaml"
+    behavior: domain
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-aqara-global-domain.mrs
+    path: "./ruleset/scki-mrs-acc-aqara-global-domain.mrs"
+    interval: 90781
+    proxy: "\U0001F6AB 受限网站"
+  acc-aqara-global-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-aqara-global-ipcidr.mrs
+    path: "./ruleset/scki-mrs-acc-aqara-global-ipcidr.mrs"
     interval: 90781
     proxy: "\U0001F6AB 受限网站"
   acc-emuleserver:
     type: http
-    behavior: classical
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/eMuleServer/eMuleServer.yaml
-    path: "./ruleset/acc-eMuleServer.yaml"
+    behavior: ipcidr
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-emuleserver.mrs
+    path: "./ruleset/scki-mrs-acc-emuleserver.mrs"
     interval: 90803
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-asia-east:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Asia_East_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Asia_East.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-asia-east.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-asia-east.mrs"
     interval: 90816
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-asia-eastsouth:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Asia_EastSouth_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Asia_EastSouth.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-asia-eastsouth.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-asia-eastsouth.mrs"
     interval: 90841
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-asia-south:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Asia_South_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Asia_South.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-asia-south.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-asia-south.mrs"
     interval: 90866
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-asia-central:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Asia_Central_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Asia_Central.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-asia-central.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-asia-central.mrs"
     interval: 90865
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-asia-west:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Asia_West_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Asia_West.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-asia-west.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-asia-west.mrs"
     interval: 90869
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-asia-china:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Asia_China_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Asia_China.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-asia-china.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-asia-china.mrs"
     interval: 90928
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-america-north:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_America_North_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-America_North.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-america-north.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-america-north.mrs"
     interval: 90902
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-america-south:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_America_South_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-America_South.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-america-south.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-america-south.mrs"
     interval: 90932
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-europe-west:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Europe_West_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Europe_West.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-europe-west.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-europe-west.mrs"
     interval: 90960
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-europe-east:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Europe_East_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Europe_East.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-europe-east.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-europe-east.mrs"
     interval: 90954
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-oceania:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Oceania_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Oceania.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-oceania.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-oceania.mrs"
     interval: 90980
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-antarctica:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Antarctica_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Antarctica.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-antarctica.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-antarctica.mrs"
     interval: 91002
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-africa-north:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Africa_North_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Africa_North.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-africa-north.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-africa-north.mrs"
     interval: 91012
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-africa-south:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Africa_South_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Africa_South.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-africa-south.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-africa-south.mrs"
     interval: 91047
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-africa-west:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Africa_West_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Africa_West.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-africa-west.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-africa-west.mrs"
     interval: 91043
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-africa-east:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Africa_East_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Africa_East.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-africa-east.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-africa-east.mrs"
     interval: 91029
     proxy: "\U0001F6AB 受限网站"
   acc-geo-d-africa-central:
     type: http
     behavior: domain
-    url: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/GeoRouting_For_Domain/GeoRouting_Africa_Central_ccTLD_Domain.yaml
-    path: "./ruleset/acc-GeoD-Africa_Central.yaml"
+    format: mrs
+    url: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/mihomo-mrs/acc-geo-d-africa-central.mrs
+    path: "./ruleset/scki-mrs-acc-geo-d-africa-central.mrs"
     interval: 91084
     proxy: "\U0001F6AB 受限网站"
   acc-geo-ip-asia-east:
@@ -3334,20 +3917,26 @@ rules:
 - "RULE-SET,anti-ad,🛑 广告拦截"
 - "RULE-SET,sukka-phishing,🛑 广告拦截"
 - "RULE-SET,hagezi-tif,🛑 广告拦截"
-- "RULE-SET,acc-hijackingplus,🛑 广告拦截"
+- "RULE-SET,acc-hijackingplus-domain,🛑 广告拦截"
+- "RULE-SET,acc-hijackingplus-ipcidr,🛑 广告拦截"
 - "RULE-SET,acc-blockhttpdnsplus,🛑 广告拦截"
 - "RULE-SET,acc-prerepaireasyprivacy,🛑 广告拦截"
 - "RULE-SET,acc-unsupportvpn,🛑 广告拦截"
 - "GEOSITE,category-ads-all,🛑 广告拦截"
-- "RULE-SET,advertising,🛑 广告拦截"
+- "RULE-SET,advertising-domain,🛑 广告拦截"
+- "RULE-SET,advertising-ipcidr,🛑 广告拦截"
 - "RULE-SET,advertisingmitv,🛑 广告拦截"
-- "RULE-SET,adobeactivation,🛑 广告拦截"
-- "RULE-SET,blockhttpdns,🛑 广告拦截"
+- "RULE-SET,adobeactivation-domain,🛑 广告拦截"
+- "RULE-SET,adobeactivation-ipcidr,🛑 广告拦截"
+- "RULE-SET,blockhttpdns-domain,🛑 广告拦截"
+- "RULE-SET,blockhttpdns-ipcidr,🛑 广告拦截"
 - "RULE-SET,domob,🛑 广告拦截"
-- "RULE-SET,hijacking,🛑 广告拦截"
+- "RULE-SET,hijacking-domain,🛑 广告拦截"
+- "RULE-SET,hijacking-ipcidr,🛑 广告拦截"
 - "RULE-SET,jiguangtuisong,🛑 广告拦截"
 - "RULE-SET,miuiprivacy,🛑 广告拦截"
-- "RULE-SET,privacy,🛑 广告拦截"
+- "RULE-SET,privacy-domain,🛑 广告拦截"
+- "RULE-SET,privacy-ipcidr,🛑 广告拦截"
 - "RULE-SET,youmengchuangxiang,🛑 广告拦截"
 - "RULE-SET,amap,🏠 国内网站"
 - "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube"
@@ -3388,7 +3977,8 @@ rules:
 - "RULE-SET,googlevoice,💬 即时通讯"
 - "RULE-SET,scki-google-work,🧑‍💼 会议协作"
 - "RULE-SET,scki-download-guard,📥 下载更新"
-- "RULE-SET,googlefcm,📥 下载更新"
+- "RULE-SET,googlefcm-domain,📥 下载更新"
+- "RULE-SET,googlefcm-ipcidr,📥 下载更新"
 - "RULE-SET,google,🔍 Google 服务"
 - "RULE-SET,google-ip,🔍 Google 服务,no-resolve"
 - "RULE-SET,szkane-ai,🤖 AI 服务"
@@ -3477,9 +4067,12 @@ rules:
 - "RULE-SET,telegram,💬 即时通讯"
 - "RULE-SET,telegram-ip,💬 即时通讯,no-resolve"
 - "RULE-SET,discord,💬 即时通讯"
-- "RULE-SET,whatsapp,💬 即时通讯"
-- "RULE-SET,line,💬 即时通讯"
-- "RULE-SET,kakaotalk,💬 即时通讯"
+- "RULE-SET,whatsapp-domain,💬 即时通讯"
+- "RULE-SET,whatsapp-ipcidr,💬 即时通讯"
+- "RULE-SET,line-domain,💬 即时通讯"
+- "RULE-SET,line-ipcidr,💬 即时通讯"
+- "RULE-SET,kakaotalk-domain,💬 即时通讯"
+- "RULE-SET,kakaotalk-ipcidr,💬 即时通讯"
 - "DOMAIN-SUFFIX,skype.com,💬 即时通讯"
 - "DOMAIN-SUFFIX,skypeecs.net,💬 即时通讯"
 - "DOMAIN-SUFFIX,skypeforbusiness.com,💬 即时通讯"
@@ -3523,7 +4116,8 @@ rules:
 - "DOMAIN-SUFFIX,lemon8-app.com,📱 社交媒体"
 - "RULE-SET,tumblr,📱 社交媒体"
 - "RULE-SET,clubhouse,📱 社交媒体"
-- "RULE-SET,clubhouseip,📱 社交媒体,no-resolve"
+- "RULE-SET,clubhouseip-domain,📱 社交媒体"
+- "RULE-SET,clubhouseip-ipcidr,📱 社交媒体,no-resolve"
 - "RULE-SET,pixiv,📱 社交媒体"
 - "RULE-SET,truthsocial,📱 社交媒体"
 - "RULE-SET,vk,📱 社交媒体"
@@ -3556,7 +4150,8 @@ rules:
 - "DOMAIN-SUFFIX,goto.com,🧑‍💼 会议协作"
 - "RULE-SET,atlassian,🧑‍💼 会议协作"
 - "RULE-SET,notion,🧑‍💼 会议协作"
-- "RULE-SET,teamviewer,🧑‍💼 会议协作"
+- "RULE-SET,teamviewer-domain,🧑‍💼 会议协作"
+- "RULE-SET,teamviewer-ipcidr,🧑‍💼 会议协作"
 - "RULE-SET,zoho,🧑‍💼 会议协作"
 - "RULE-SET,salesforce,🧑‍💼 会议协作"
 - "RULE-SET,zendesk,🧑‍💼 会议协作"
@@ -3586,8 +4181,10 @@ rules:
 - "RULE-SET,deezer,🎵 音乐流媒体"
 - "RULE-SET,overcast,🎵 音乐流媒体"
 - "RULE-SET,lastfm,🎵 音乐流媒体"
-- "RULE-SET,qobuz,🎵 音乐流媒体"
-- "RULE-SET,szkane-bilihmt,🇭🇰 香港流媒体"
+- "RULE-SET,qobuz-domain,🎵 音乐流媒体"
+- "RULE-SET,qobuz-ipcidr,🎵 音乐流媒体"
+- "RULE-SET,szkane-bilihmt-domain,🇭🇰 香港流媒体"
+- "RULE-SET,szkane-bilihmt-ipcidr,🇭🇰 香港流媒体"
 - "DOMAIN-SUFFIX,mytv.com.hk,🇭🇰 香港流媒体"
 - "DOMAIN-SUFFIX,viu.com,🇭🇰 香港流媒体"
 - "DOMAIN-SUFFIX,viu.tv,🇭🇰 香港流媒体"
@@ -3646,7 +4243,8 @@ rules:
 - "DOMAIN-SUFFIX,navertv.naver.com,🇯🇵 日韩流媒体"
 - "DOMAIN-SUFFIX,kakaotv.daum.net,🇯🇵 日韩流媒体"
 - "DOMAIN-SUFFIX,navercorp.com,🇯🇵 日韩流媒体"
-- "RULE-SET,dmm,🇯🇵 日韩流媒体"
+- "RULE-SET,dmm-domain,🇯🇵 日韩流媒体"
+- "RULE-SET,dmm-ipcidr,🇯🇵 日韩流媒体"
 - "RULE-SET,tver,🇯🇵 日韩流媒体"
 - "RULE-SET,niconico,🇯🇵 日韩流媒体"
 - "RULE-SET,rakuten,🇯🇵 日韩流媒体"
@@ -3697,7 +4295,8 @@ rules:
 - "DOMAIN-SUFFIX,catchplay.com,🌐 其他国外流媒体"
 - "DOMAIN-SUFFIX,trueid.net,🌐 其他国外流媒体"
 - "DOMAIN-SUFFIX,dimsum.my,🌐 其他国外流媒体"
-- "RULE-SET,asianmedia,🌐 其他国外流媒体"
+- "RULE-SET,asianmedia-domain,🌐 其他国外流媒体"
+- "RULE-SET,asianmedia-ipcidr,🌐 其他国外流媒体"
 - "RULE-SET,iqiyiintl,🌐 其他国外流媒体"
 - "RULE-SET,joox,🌐 其他国外流媒体"
 - "RULE-SET,mewatch,🌐 其他国外流媒体"
@@ -3741,7 +4340,8 @@ rules:
 - "DOMAIN-SUFFIX,you.com,🔧 工具与服务"
 - "DOMAIN-SUFFIX,search.naver.com,🔧 工具与服务"
 - "RULE-SET,scholar,🔍 Google 服务"
-- "RULE-SET,yandex,🔧 工具与服务"
+- "RULE-SET,yandex-domain,🔧 工具与服务"
+- "RULE-SET,yandex-ipcidr,🔧 工具与服务"
 - "RULE-SET,github,🔧 工具与服务"
 - "RULE-SET,docker,🔧 工具与服务"
 - "RULE-SET,gitlab,🔧 工具与服务"
@@ -3816,7 +4416,8 @@ rules:
 - "RULE-SET,testflight,🍎 苹果服务"
 - "RULE-SET,applefirmware,🍎 苹果服务"
 - "RULE-SET,acc-applenews,🍎 苹果服务"
-- "RULE-SET,acc-apple,🍎 苹果服务"
+- "RULE-SET,acc-apple-domain,🍎 苹果服务"
+- "RULE-SET,acc-apple-ipcidr,🍎 苹果服务"
 - "RULE-SET,systemota,📥 下载更新"
 - "DOMAIN-SUFFIX,windowsupdate.com,📥 下载更新"
 - "DOMAIN-SUFFIX,update.microsoft.com,📥 下载更新"
@@ -3849,7 +4450,8 @@ rules:
 - "RULE-SET,dell,📥 下载更新"
 - "RULE-SET,hp,📥 下载更新"
 - "RULE-SET,canon,📥 下载更新"
-- "RULE-SET,lg,📥 下载更新"
+- "RULE-SET,lg-domain,📥 下载更新"
+- "RULE-SET,lg-ipcidr,📥 下载更新"
 - "RULE-SET,acc-macappupgrade,📥 下载更新"
 - "GEOSITE,tracker,🛰️ BT/PT Tracker"
 - "DOMAIN-SUFFIX,tracker.opentrackr.org,🛰️ BT/PT Tracker"
@@ -3859,14 +4461,16 @@ rules:
 - "DOMAIN-SUFFIX,tracker.openbittorrent.com,🛰️ BT/PT Tracker"
 - "DOMAIN-SUFFIX,tracker.publicbt.com,🛰️ BT/PT Tracker"
 - "DOMAIN-SUFFIX,tracker.dler.org,🛰️ BT/PT Tracker"
-- "RULE-SET,privatetracker,🛰️ BT/PT Tracker"
+- "RULE-SET,privatetracker-domain,🛰️ BT/PT Tracker"
+- "RULE-SET,privatetracker-ipcidr,🛰️ BT/PT Tracker"
 - "RULE-SET,acc-emuleserver,🛰️ BT/PT Tracker"
 - "DOMAIN-SUFFIX,jsdelivr.net,🚫 受限网站"
 - "DOMAIN-SUFFIX,cloudflare-dns.com,🚫 受限网站"
 - "GEOSITE,gfw,🚫 受限网站"
 - "RULE-SET,loyalsoldier-gfw,🚫 受限网站"
 - "RULE-SET,loyalsoldier-greatfire,🚫 受限网站"
-- "RULE-SET,szkane-proxygfw,🚫 受限网站"
+- "RULE-SET,szkane-proxygfw-domain,🚫 受限网站"
+- "RULE-SET,szkane-proxygfw-ipcidr,🚫 受限网站"
 - "DOMAIN-SUFFIX,mihoyo.com,🕹️ 国内游戏"
 - "DOMAIN-SUFFIX,miyoushe.com,🕹️ 国内游戏"
 - "DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏"
@@ -3897,15 +4501,18 @@ rules:
 - "RULE-SET,steam,🎮 国外游戏"
 - "RULE-SET,epic,🎮 国外游戏"
 - "RULE-SET,playstation,🎮 国外游戏"
-- "RULE-SET,nintendo,🎮 国外游戏"
+- "RULE-SET,nintendo-domain,🎮 国外游戏"
+- "RULE-SET,nintendo-ipcidr,🎮 国外游戏"
 - "RULE-SET,xbox,🎮 国外游戏"
 - "RULE-SET,ea,🎮 国外游戏"
-- "RULE-SET,blizzard,🎮 国外游戏"
+- "RULE-SET,blizzard-domain,🎮 国外游戏"
+- "RULE-SET,blizzard-ipcidr,🎮 国外游戏"
 - "GEOSITE,category-games,🎮 国外游戏"
 - "RULE-SET,rockstar,🎮 国外游戏"
 - "RULE-SET,riot,🎮 国外游戏"
 - "RULE-SET,gog,🎮 国外游戏"
-- "RULE-SET,supercell,🎮 国外游戏"
+- "RULE-SET,supercell-domain,🎮 国外游戏"
+- "RULE-SET,supercell-ipcidr,🎮 国外游戏"
 - "RULE-SET,garena,🎮 国外游戏"
 - "RULE-SET,hoyoverse,🎮 国外游戏"
 - "RULE-SET,ubi,🎮 国外游戏"
@@ -3940,7 +4547,8 @@ rules:
 - "DOMAIN-SUFFIX,ziffstatic.com,🌐 国外网站"
 - "DOMAIN-SUFFIX,ucoz.ru,🌐 国外网站"
 - "DOMAIN-SUFFIX,ucoz.net,🌐 国外网站"
-- "RULE-SET,cloudflare,🌐 国外网站"
+- "RULE-SET,cloudflare-domain,🌐 国外网站"
+- "RULE-SET,cloudflare-ipcidr,🌐 国外网站"
 - "RULE-SET,akamai,🌐 国外网站"
 - "RULE-SET,digicert,🌐 国外网站"
 - "RULE-SET,globalsign,🌐 国外网站"
@@ -3989,7 +4597,8 @@ rules:
 - "GEOIP,ID,🌐 国外网站,no-resolve"
 - "RULE-SET,acc-homeip-us,🌐 国外网站,no-resolve"
 - "RULE-SET,acc-homeip-jp,🌐 国外网站,no-resolve"
-- "RULE-SET,acc-aqara-global,🌐 国外网站"
+- "RULE-SET,acc-aqara-global-domain,🌐 国外网站"
+- "RULE-SET,acc-aqara-global-ipcidr,🌐 国外网站"
 - "RULE-SET,cnn,🌐 国外网站"
 - "RULE-SET,nytimes,🌐 国外网站"
 - "RULE-SET,bloomberg,🌐 国外网站"
@@ -4003,12 +4612,14 @@ rules:
 - "RULE-SET,wikipedia,🌐 国外网站"
 - "RULE-SET,duolingo,🌐 国外网站"
 - "RULE-SET,proxy,🌐 国外网站"
-- "RULE-SET,acc-waybackmachine,🌐 国外网站"
+- "RULE-SET,acc-waybackmachine-domain,🌐 国外网站"
+- "RULE-SET,acc-waybackmachine-ipcidr,🌐 国外网站"
 - "RULE-SET,acc-pornhub,🌐 国外网站"
 - "RULE-SET,szkane-khan,🌐 国外网站"
 - "RULE-SET,szkane-edutools,🌐 国外网站"
 - "RULE-SET,naver,🌐 国外网站"
-- "RULE-SET,ehgallery,🌐 国外网站"
+- "RULE-SET,ehgallery-domain,🌐 国外网站"
+- "RULE-SET,ehgallery-ipcidr,🌐 国外网站"
 - "RULE-SET,acc-geo-d-asia-east,🌐 国外网站"
 - "RULE-SET,acc-geo-d-asia-eastsouth,🌐 国外网站"
 - "RULE-SET,acc-geo-d-asia-south,🌐 国外网站"
@@ -4095,15 +4706,19 @@ rules:
 - "DOMAIN-SUFFIX,weibo.cn,📺 国内流媒体"
 - "DOMAIN-SUFFIX,sinaimg.cn,📺 国内流媒体"
 - "RULE-SET,iqiyi,📺 国内流媒体"
-- "RULE-SET,youku,📺 国内流媒体"
-- "RULE-SET,tencentvideo,📺 国内流媒体"
+- "RULE-SET,youku-domain,📺 国内流媒体"
+- "RULE-SET,youku-ipcidr,📺 国内流媒体"
+- "RULE-SET,tencentvideo-domain,📺 国内流媒体"
+- "RULE-SET,tencentvideo-ipcidr,📺 国内流媒体"
 - "RULE-SET,douyin,📺 国内流媒体"
 - "RULE-SET,bytedance,📺 国内流媒体"
 - "RULE-SET,kuaishou,📺 国内流媒体"
 - "RULE-SET,weibo,📺 国内流媒体"
 - "RULE-SET,xiaohongshu,📺 国内流媒体"
-- "RULE-SET,neteasemusic,📺 国内流媒体"
-- "RULE-SET,kugoukuwo,📺 国内流媒体"
+- "RULE-SET,neteasemusic-domain,📺 国内流媒体"
+- "RULE-SET,neteasemusic-ipcidr,📺 国内流媒体"
+- "RULE-SET,kugoukuwo-domain,📺 国内流媒体"
+- "RULE-SET,kugoukuwo-ipcidr,📺 国内流媒体"
 - "RULE-SET,sohu,📺 国内流媒体"
 - "RULE-SET,douyu,📺 国内流媒体"
 - "RULE-SET,huya,📺 国内流媒体"
@@ -4137,15 +4752,21 @@ rules:
 - "RULE-SET,yyets,📺 国内流媒体"
 - "RULE-SET,acc-alipan,📺 国内流媒体"
 - "RULE-SET,acc-baidunetdisk,📺 国内流媒体"
-- "RULE-SET,acc-weiyun,📺 国内流媒体"
-- "RULE-SET,acc-fl-bilibili,📺 国内流媒体"
+- "RULE-SET,acc-weiyun-domain,📺 国内流媒体"
+- "RULE-SET,acc-weiyun-ipcidr,📺 国内流媒体"
+- "RULE-SET,acc-fl-bilibili-domain,📺 国内流媒体"
+- "RULE-SET,acc-fl-bilibili-ipcidr,📺 国内流媒体"
 - "RULE-SET,acc-fl-kuaishou,📺 国内流媒体"
 - "RULE-SET,acc-fl-xigua,📺 国内流媒体"
 - "RULE-SET,acc-fl-weibo,📺 国内流媒体"
-- "RULE-SET,acc-fl-zhihu,📺 国内流媒体"
-- "RULE-SET,acc-fl-tieba,📺 国内流媒体"
-- "RULE-SET,acc-fl-douban,📺 国内流媒体"
-- "RULE-SET,acc-fl-xianyu,📺 国内流媒体"
+- "RULE-SET,acc-fl-zhihu-domain,📺 国内流媒体"
+- "RULE-SET,acc-fl-zhihu-ipcidr,📺 国内流媒体"
+- "RULE-SET,acc-fl-tieba-domain,📺 国内流媒体"
+- "RULE-SET,acc-fl-tieba-ipcidr,📺 国内流媒体"
+- "RULE-SET,acc-fl-douban-domain,📺 国内流媒体"
+- "RULE-SET,acc-fl-douban-ipcidr,📺 国内流媒体"
+- "RULE-SET,acc-fl-xianyu-domain,📺 国内流媒体"
+- "RULE-SET,acc-fl-xianyu-ipcidr,📺 国内流媒体"
 - "DOMAIN-SUFFIX,163.com,🏠 国内网站"
 - "DOMAIN-SUFFIX,126.com,🏠 国内网站"
 - "DOMAIN-SUFFIX,126.net,🏠 国内网站"

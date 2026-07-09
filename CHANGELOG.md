@@ -2,16 +2,17 @@
 
 > 仓库级变更摘要。各产物的详细变更见对应子目录 `CHANGELOG.md`。
 > 主版本号由 `Clash Party/ClashParty(mihomo-smart).js` 内 `const VERSION` 唯一决定。
-> 覆盖 13 个客户端形态的等价实现：Clash Party JS / CMFA / Stash / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / v2rayN / Passwall / Passwall2 / FlClash；另提供 Egern Preview。
+> 覆盖 14 个客户端形态的等价实现：Clash Party JS / CMFA / Stash / OpenClash(Normal+Smart) / Shadowrocket / Surge / Loon / Quantumult X / SingBox / Egern / v2rayN / Passwall / Passwall2 / FlClash。
 
 ---
 
 ## v5.4.38 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：新增 `rulesets/supplemental/` 公共补充规则集，将广告误伤、抖音 Web、RustDesk、Google Workspace、下载更新等零星直写域名/IP/进程整理为规则集引用。
-- EGERN：新增 `Egern/` Preview 目录与 Egern 原生 YAML 补充规则集；Egern 先接入订阅、策略组、DNS 与 supplemental rule_set，不声明 Mihomo 391 provider 完全等价。
-- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2 元数据和产物同步到 v5.4.38。
-- VERIFY：合同校验改为检查 `scki-*` 补充规则集引用、顺序和 Egern YAML 结构；JS 产物为 55 组、846 条规则、391 providers。
+- MIHOMO-MRS：支持 `.mrs` 的 Mihomo 产物（Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash）迁移上游规则源：35 个复用上游 `.mrs`，255 个纯 domain/ipcidr provider 转为本仓库 `.mrs`，38 个混合 provider 拆分为 domain/ipcidr 双 `.mrs`，48 个含 GEOIP/端口/进程等不支持类型的 provider 保留原格式。
+- EGERN：`Egern/` 从 Preview 升级为正式同步产物，由 CMFA 生成 22 个 `smart` 区域组、33 个业务组、882 条 Egern 主规则与 439 个顶层 `rule_set`；Egern 不直接消费 Mihomo `.mrs`，而是映射到本仓库生成的 Egern 原生 YAML 规则集。
+- SYNC：Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash、Egern、Shadowrocket、Surge、Loon、Quantumult X、SingBox、v2rayN、Passwall、Passwall2 元数据和产物同步到 v5.4.38。
+- VERIFY：合同校验改为检查 `scki-*` 补充规则集引用、`.mrs` 清单、正式 Egern YAML 结构；JS 产物为 55 组、884 条规则、429 providers。
 
 ## v5.4.37-stash.1 (2026-07-07)
 

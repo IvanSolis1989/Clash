@@ -12,6 +12,9 @@ Run:
 ```bash
 node tools/generate-stash-from-cmfa.js
 node tools/generate-egern-supplemental.js
+node tools/generate-egern-from-cmfa.js
+node tools/sync-mihomo-mrs-rule-providers.js
+node tools/apply-mihomo-mrs-overrides.js
 ```
 
 Scope:
@@ -28,6 +31,15 @@ Scope:
   `domain_suffix_set` / `domain_set` / `ip_cidr_set` fields;
 - skips process rule sets because Egern does not expose Clash-style
   `PROCESS-NAME` matching.
+- reads `Clash Meta For Android/CMFA(mihomo).yaml` as the formal Egern source;
+- writes `Egern/Egern.yaml` with 22 smart region groups, 33 business groups,
+  CMFA rule order, and Egern-compatible YAML / text `rule_set` URLs;
+- keeps Mihomo `.mrs` in Clash Party / CMFA, but does not emit `.mrs` URLs into
+  Egern because Egern official docs do not document `.mrs` rule-set support.
+- writes `rulesets/generated/mihomo-mrs/*.mrs` and
+  `rulesets/generated/mihomo-mrs/manifest.json` for Mihomo-compatible
+  products; mixed classical providers are split into `-domain` and `-ipcidr`
+  rule providers.
 
 ## JS overwrite smoke contract
 
@@ -76,8 +88,10 @@ Scope:
   Quantumult X;
 - verifies Stash YAML is a generated CMFA derivative and does not carry
   unverified Mihomo-only keys;
-- validates Egern Preview metadata, 22 region auto-test groups, 33 business
-  groups, and 13 native supplemental rule-set references;
+- validates Mihomo `.mrs` conversion counts and generated file presence;
+- validates formal Egern metadata, 22 region smart groups, 33 business groups,
+  882 generated rules, 439 top-level rule-set references, and the absence of
+  `.mrs` / process rule-set files in Egern;
 - validates SingBox and v2rayN JSON structure and baseline metadata;
 - extracts OpenClash heredoc YAML and, when Ruby is available, parses it through
   Ruby/Psych to catch duplicate top-level `rule-providers` / `rules` keys;

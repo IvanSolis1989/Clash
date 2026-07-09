@@ -7,7 +7,8 @@
 
 ## v5.4.38-cmfa.1 (2026-07-09)
 
-- SCKI-SUPPLEMENTAL：同步 Clash Party v5.4.38 的 15 个 `scki-*` rule-provider 与 846 条规则。
+- SCKI-SUPPLEMENTAL：同步 Clash Party v5.4.38 的 15 个 `scki-*` rule-provider。
+- MIHOMO-MRS：上游规则源同步迁移到 429 providers、884 条规则，其中 366 个 provider 使用 `.mrs`，38 个混合 classical provider 拆分为 domain/ipcidr 双 `.mrs`。
 - VERIFY：合同校验改为检查补充规则集引用，不再要求主规则散写单条白名单。
 
 ## v5.4.37-cmfa.1 (2026-06-29)

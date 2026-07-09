@@ -9,7 +9,8 @@
 
 ## v5.4.38-oc-normal.1 / v5.4.38-oc-smart.1 (2026-07-09)
 
-- SCKI-SUPPLEMENTAL：Normal / Smart heredoc 同步 15 个 `scki-*` rule-provider 与 846 条规则。
+- SCKI-SUPPLEMENTAL：Normal / Smart heredoc 同步 15 个 `scki-*` rule-provider。
+- MIHOMO-MRS：Normal / Smart heredoc 同步 429 providers、884 条规则，其中 366 个 provider 使用 `.mrs`，38 个混合 classical provider 拆分为 domain/ipcidr 双 `.mrs`。
 - META：`VERSION_TAG` 与内嵌 Ruby `VERSION` 同步到 v5.4.38。
 
 ## v5.4.37-oc-normal.1 / v5.4.37-oc-smart.1 (2026-06-29)

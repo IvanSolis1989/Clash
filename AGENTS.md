@@ -10,7 +10,7 @@
 
 ## 1. 为什么需要这份文件
 
-Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 13 个产物目录）。它们必须在语义上一致，但语法完全不同：
+Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 14 个产物目录）。它们必须在语义上一致，但语法完全不同：
 
 - Mihomo JS 覆写（Clash Party，**基线**）
 - Mihomo YAML（CMFA）
@@ -23,6 +23,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 - Surge `.conf`（iOS / macOS 付费正版；与 SR 语法 ~90% 兼容）
 - Loon `.conf`（iOS 付费正版；兼容 Surge 风格但 [General] 字段不同）
 - Quantumult X `.conf`（iOS 付费正版；自家 `[policy]` / `[filter_remote]` / `[filter_local]` 结构）
+- Egern YAML（iOS / macOS 付费正版；由 CMFA 生成正式 Profile，平台限制仅 `PROCESS-NAME`）
 - Passwall（OpenWrt 全功能 LuCI；四列表 + shunt_rules + ACL 三层）
 - Passwall2（OpenWrt 精简分流 LuCI；仅 shunt_rules；与 Passwall 规则语法同源、`.list` 互通）
 
@@ -54,7 +55,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 对「规则、策略组、DNS、嗅探、GeoX、LightGBM、rule-provider」的任何修改，代理必须：
 
 1. **先改 Clash Party 主线** `Clash Party/ClashParty(mihomo-smart).js`
-2. **再同步到其余 12 份产物**：
+2. **再同步到其余 13 份产物**：
    - `Clash Meta For Android/CMFA(mihomo).yaml`
    - `Stash/Stash.yaml`（通过 `node tools/generate-stash-from-cmfa.js` 从 CMFA **重新生成**，禁止手工改）
    - `OpenClash/OpenClash(mihomo).sh`（Normal）
@@ -65,6 +66,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
    - `Surge/Surge.conf`（跟随 Shadowrocket 的规则变化；DNS/MMDB 字段独立维护）
    - `Loon/Loon.conf`（跟随 Surge；[General] 字段对齐 Loon 原生）
    - `Quantumult X/QuantumultX.conf`（独立手工维护的 QX 产物；当前仓库无 `srk_to_qx.py`，恢复自动转换前必须先提交并验证脚本）
+   - `Egern/Egern.yaml`（通过 `node tools/generate-egern-from-cmfa.js` 从 CMFA **重新生成**，禁止手工改）
    - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（展平降级参考；仅当业务组/规则类别变化时需同步；与 Passwall2 联动）
    - `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list`（同上；与 Passwall 联动）
    - `FlClash/FlClash(mihomo).js`（Clash Party Normal JS 移植版）
@@ -77,7 +79,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 
 #### 约束 A 补丁 — 同构 bug 全产物审计（自 v5.2.6 起强制）
 
-只要修复命中以下任一**运行时逻辑点**，即使本次 bug 只在一份产物里显式报告，也**必须**对全部 13 份产物做同构审计：
+只要修复命中以下任一**运行时逻辑点**，即使本次 bug 只在一份产物里显式报告，也**必须**对全部 14 份产物做同构审计：
 
 1. **节点名 → 区域分类**（`REGION_DB` / `REGIONS` / mihomo `filter:` / SR `policy-regex-filter` / Loon `NameRegex FilterKey` / QX `server-tag-regex`）
 2. **区域组 fallback 链**（空区域回落到 `apacNodes` / `c.ALL` / 全局组）
@@ -87,10 +89,10 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 审计最小步骤（每条 bug 一次，**不得跳过**）：
 
 1. 列出当前触发 bug 的**样例输入**（如 "TWN 01 AnyRoute IEPL x2.5"）。
-2. 逐个打开 13 份产物的对应位置，对样例输入**做一次心算或小脚本回归**。
+2. 逐个打开 14 份产物的对应位置，对样例输入**做一次心算或小脚本回归**。
 3. 任何一份命中同构漏洞 → 本 PR 必须同步修复。
 4. 任何一份**结构上**不存在该逻辑点（如 SingBox 静态 outbound）→ 在 CHANGELOG + PR 描述里写清楚"不适用"理由。
-5. 在 PR 描述里放一张 13×1 审计矩阵表（产物 × 是否受影响 / 是否已修）。
+5. 在 PR 描述里放一张 14×1 审计矩阵表（产物 × 是否受影响 / 是否已修）。
 
 ⚠️ **关键陷阱：正则语义差异**。同一个字符串，不同产物判定结果可能不同：
 - **JS (Clash Party)**: word-boundary regex `(^|[^a-zA-Z])TW([^a-zA-Z]|$)` → `TW` **不**匹配 `TWN`
@@ -121,6 +123,17 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 3. 临时排障规则，但必须在同一 PR 中给出迁移进补充规则集或删除的后续处理结论。
 
 新增规则时，默认先问：「能否加入 `rulesets/supplemental/`？」只有答案明确为不能时，才允许写单条规则。
+
+### 约束 D：Mihomo `.mrs` 优先与定时转换
+
+对支持 Mihomo `rule-providers.format: mrs` 的产物（Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash），上游规则源凡是可表达为 `domain` 或 `ipcidr`，必须优先使用 `.mrs`。
+
+若上游没有现成 `.mrs`：
+
+1. 运行 `node tools/sync-mihomo-mrs-rule-providers.js` 在 `rulesets/generated/mihomo-mrs/` 生成本仓库托管的 `.mrs` 与 `manifest.json`。
+2. 运行 `node tools/apply-mihomo-mrs-overrides.js` 同步到所有 Mihomo 兼容产物。
+3. 混合 classical 规则集必须拆分为 `-domain` / `-ipcidr` 两个 `.mrs` provider；含 `GEOIP`、端口、进程、逻辑组合等 `.mrs` 不支持类型的 provider 保留原格式，并在 manifest / CHANGELOG 说明原因。
+4. Egern、SingBox、Shadowrocket、Surge、Loon、Quantumult X、v2rayN、Passwall/Passwall2 不得硬套 Mihomo `.mrs`；应使用各自原生格式或生成器映射。
 
 ---
 
@@ -173,7 +186,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 ## 5. 验收门（PR 必须同时满足）
 
 - [ ] Clash Party JS 主线已改 / 明确说明本次无需改
-- [ ] 全部 13 份产物同步 / 明确说明某产物为何不需改
+- [ ] 全部 14 份产物同步 / 明确说明某产物为何不需改
 - [ ] **每个被动过的产物文件头已 bump 版本号 + Build 日期**（保持轻量：只改版本行，不加大段变更历史）
 - [ ] **对应 `<子目录>/CHANGELOG.md` 顶部已追加一节**（至少 1 行摘要 + 必要时细节子条目；禁止把详细变更塞回产物文件头）
 - [ ] **根 `CHANGELOG.md` 已追加一节**（仓库级摘要，不重复子目录细节）
@@ -185,6 +198,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 - [ ] 规则-provider 下载代理仍为 `🚫 受限网站`（Shadowrocket / sing-box / Stash 例外）
 - [ ] sing-box full 产物是通过 `node SingBox/SingBox(sing-box)-generator.js` **重新生成**的
 - [ ] Stash YAML 是通过 `node tools/generate-stash-from-cmfa.js` **重新生成**的
+- [ ] Egern YAML 是通过 `node tools/generate-egern-from-cmfa.js` **重新生成**的
 
 未全部打勾 → 不得合入。
 
@@ -209,7 +223,7 @@ Smart-Config-Kit 同时发布 **13 种客户端形态的等价产物**（分属 
 | Loon `[Rule] DST-PORT,...` | v5.2.10-Loon.1 | Loon 是端口规则前缀的唯一异类（其他全用 `DST-PORT`），其解析器对 `DST-` 报错 | 改 `DEST-PORT,...`；详见 `CLAUDE.md §3.5.2` |
 | 把 Surge `encrypted-dns-server=` 直接复制到 Loon / SR | 潜在 | Loon/QX 用 `doh-server=`、SR 用同一 `dns-server=`，三家字段不同 | 查 `CLAUDE.md §3.5.1` 表对应字段名 |
 | 把 Clash `DOMAIN-SUFFIX,` 复制到 Passwall `.list` | 潜在 | Passwall shunt_rules.lua 不识别 Clash 前缀 | 改 `domain:` / `full:` / `regexp:` / `geosite:` 等；详见 `CLAUDE.md §3.5.2` |
-| 假设单平台 bug 修复无需联动 | v5.2.5 FIX#24~#26 | 误判为 JS 专属，实际波及 4 份产物（CMFA/OC Normal/OC Smart/JS） | 任何运行时逻辑 bug 必须按 §1.5 同构审计 13 份产物 |
+| 假设单平台 bug 修复无需联动 | v5.2.5 FIX#24~#26 | 误判为 JS 专属，实际波及 4 份产物（CMFA/OC Normal/OC Smart/JS） | 任何运行时逻辑 bug 必须按 §1.5 同构审计 14 份产物 |
 
 ---
 

@@ -17,8 +17,16 @@ const EXPECTED_SINGBOX_URLTEST_GROUPS = 2;
 const EXPECTED_PASSWALL_RULES = 33;
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
-const MIN_FULL_PROVIDERS = 391;
-const MIN_FULL_RULES = 840;
+const MIN_FULL_PROVIDERS = 429;
+const MIN_FULL_RULES = 884;
+const EXPECTED_MIHOMO_MRS_CONVERTED = 255;
+const EXPECTED_MIHOMO_MRS_SPLIT = 38;
+const EXPECTED_MIHOMO_MRS_EXISTING = 35;
+const EXPECTED_MIHOMO_MRS_RETAINED = 48;
+const EXPECTED_MIHOMO_MRS_FILES = EXPECTED_MIHOMO_MRS_CONVERTED + (EXPECTED_MIHOMO_MRS_SPLIT * 2);
+const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
+const EXPECTED_EGERN_RULES = 882;
+const EXPECTED_EGERN_RULE_SETS = 439;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -247,6 +255,46 @@ function checkNeedleBefore(record, id, source, beforeNeedle, afterNeedle) {
 
 function supplementalUrl(flavor, file) {
   return `${SUPPLEMENTAL_RULESET_BASE}/${flavor}/${file}.list`;
+}
+
+function validateMihomoMrsRuleSets(record) {
+  const manifest = readJson('rulesets/generated/mihomo-mrs/manifest.json');
+  const mrsDir = relPath('rulesets/generated/mihomo-mrs');
+  const mrsFiles = fs.readdirSync(mrsDir).filter((file) => file.endsWith('.mrs'));
+  const generatedRows = [...manifest.converted, ...manifest.split];
+  const generatedFiles = generatedRows.flatMap((row) => row.generated || []);
+  const generatedFileNames = generatedFiles.map((row) => row.file);
+  const missingFiles = generatedFileNames.filter((file) => !fs.existsSync(path.join(mrsDir, file)));
+  const emptyFiles = generatedFileNames.filter((file) => {
+    const fullPath = path.join(mrsDir, file);
+    return fs.existsSync(fullPath) && fs.statSync(fullPath).size === 0;
+  });
+  const badBehaviors = generatedFiles.filter((row) => !['domain', 'ipcidr'].includes(row.behavior));
+  const retainedWithoutReason = manifest.retained.filter((row) => !row.reason);
+
+  record.check('mihomo-mrs.converted-count', manifest.converted.length === EXPECTED_MIHOMO_MRS_CONVERTED, { value: manifest.converted.length });
+  record.check('mihomo-mrs.split-count', manifest.split.length === EXPECTED_MIHOMO_MRS_SPLIT, { value: manifest.split.length });
+  record.check('mihomo-mrs.existing-count', manifest.existing_mrs.length === EXPECTED_MIHOMO_MRS_EXISTING, { value: manifest.existing_mrs.length });
+  record.check('mihomo-mrs.retained-count', manifest.retained.length === EXPECTED_MIHOMO_MRS_RETAINED, { value: manifest.retained.length });
+  record.check('mihomo-mrs.failed-count', manifest.failed.length === 0, { value: manifest.failed.length });
+  record.check('mihomo-mrs.generated-file-count', mrsFiles.length === EXPECTED_MIHOMO_MRS_FILES, { value: mrsFiles.length });
+  record.check('mihomo-mrs.generated-files-present', missingFiles.length === 0, { message: missingFiles.join(', ') });
+  record.check('mihomo-mrs.generated-files-nonempty', emptyFiles.length === 0, { message: emptyFiles.join(', ') });
+  record.check('mihomo-mrs.domain-ipcidr-only', badBehaviors.length === 0, { message: badBehaviors.map((row) => `${row.file}:${row.behavior}`).join(', ') });
+  record.check('mihomo-mrs.retained-has-reason', retainedWithoutReason.length === 0, { message: retainedWithoutReason.map((row) => row.id).join(', ') });
+
+  for (const spec of [
+    { id: 'cmfa', file: 'Clash Meta For Android/CMFA(mihomo).yaml' },
+    { id: 'stash', file: 'Stash/Stash.yaml' },
+    { id: 'openclash-normal', file: 'OpenClash/OpenClash(mihomo).sh' },
+    { id: 'openclash-smart', file: 'OpenClash/OpenClash(mihomo-smart).sh' },
+  ]) {
+    const source = readText(spec.file);
+    const mrsFormatCount = countMatches(source, /format:\s*mrs/g);
+    const generatedRefCount = countMatches(source, /rulesets\/generated\/mihomo-mrs\/[^"'\s]+\.mrs/g);
+    record.check(`mihomo-mrs.${spec.id}.format-count`, mrsFormatCount === EXPECTED_MIHOMO_MRS_PROVIDER_REFS, { value: mrsFormatCount });
+    record.check(`mihomo-mrs.${spec.id}.generated-ref-count`, generatedRefCount >= EXPECTED_MIHOMO_MRS_FILES, { value: generatedRefCount });
+  }
 }
 
 function checkSupplementalProviderRefs(record, id, providersBlock) {
@@ -1326,9 +1374,13 @@ function validateJsonProducts(record, baselineVersion) {
 function validateEgern(record, baselineVersion, options) {
   const file = 'Egern/Egern.yaml';
   const source = readText(file);
+  const rulesStart = source.search(/\r?\nrules:\r?\n/);
+  const rulesSource = rulesStart === -1 ? '' : source.slice(rulesStart);
+  const smartCount = countMatches(source, /^\s+- smart:\s*$/gm);
   const autoTestCount = countMatches(source, /^\s+- auto_test:\s*$/gm);
   const selectCount = countMatches(source, /^\s+- select:\s*$/gm);
-  const ruleSetCount = countMatches(source, /^\s+- rule_set:\s*$/gm);
+  const ruleSetCount = countMatches(rulesSource, /^  - rule_set:\s*$/gm);
+  const ruleCount = countMatches(rulesSource, /^  - [a-z_]+:\s*$/gm);
 
   record.check('egern.version-prefix', source.includes(`Egern Smart ${baselineVersion}-egern.`), {
     message: `missing Egern Smart ${baselineVersion}-egern.*`,
@@ -1336,22 +1388,51 @@ function validateEgern(record, baselineVersion, options) {
   record.check('egern.baseline-header', source.includes(`Baseline: Clash Party ${baselineVersion}`), {
     message: `missing Clash Party ${baselineVersion}`,
   });
+  record.check('egern.not-preview', !/Preview/i.test(source), {
+    message: 'Egern is a formal generated artifact, not a Preview profile',
+  });
+  record.check('egern.generated-from-cmfa', source.includes('Generated from Clash Meta For Android/CMFA(mihomo).yaml.'), {
+    message: 'missing CMFA generation marker',
+  });
+  record.check('egern.rule-parity-header', source.includes(`Rule parity: generated from CMFA ${MIN_FULL_PROVIDERS} rule-providers and ${MIN_FULL_RULES} rules.`), {
+    message: 'missing formal CMFA parity header',
+  });
   record.check('egern.external-subscription', /^\s+- external:\s*$/m.test(source) && source.includes('name: Subscribe'));
-  record.check('egern.region-auto-test-count', autoTestCount === EXPECTED_REGION_GROUPS, { value: autoTestCount });
+  record.check('egern.region-smart-count', smartCount === EXPECTED_REGION_GROUPS, { value: smartCount });
+  record.check('egern.no-region-auto-test', autoTestCount === 0, { value: autoTestCount });
   record.check('egern.business-select-count', selectCount === EXPECTED_BUSINESS_GROUPS + 1, { value: selectCount });
   for (const group of SINGBOX_BUSINESS_ORDER) {
     const hasGroup = source.includes(`name: ${group}`);
     record.check(`egern.business-group.${group}`, hasGroup, failureMessage(hasGroup, `missing ${group}`));
   }
-  record.check('egern.rule-set-count', ruleSetCount === SUPPLEMENTAL_MOBILE_CLASH_RULESETS.length, { value: ruleSetCount });
-  record.check('egern.no-process-rulesets', !/local-process-direct|work-process|PROCESS-NAME/.test(source), {
-    message: 'Egern must not include Clash-style process rule sets',
+  record.check('egern.rule-count', ruleCount === EXPECTED_EGERN_RULES, { value: ruleCount });
+  record.check('egern.rule-set-count', ruleSetCount === EXPECTED_EGERN_RULE_SETS, { value: ruleSetCount });
+  record.check('egern.no-mrs-url', !source.includes('.mrs'), {
+    message: 'Egern official rule_set docs do not document Mihomo .mrs consumption',
+  });
+  record.check('egern.no-process-rulesets', !/local-process-direct|work-process/.test(source), {
+    message: 'Egern must not include Clash-style process rule set files',
+  });
+  record.check('egern.generated-geosite-yaml', source.includes('/rulesets/generated/egern/geosite-category-ads-all.yaml'), {
+    message: 'missing generated Egern geosite YAML mapping',
+  });
+  record.check('egern.generated-geoip-yaml', source.includes('/rulesets/generated/egern/geoip-cloudflare.yaml'), {
+    message: 'missing generated Egern geoip YAML mapping',
+  });
+  record.check('egern.generated-hagezi-tif', source.includes('/rulesets/generated/egern/provider-hagezi-tif.yaml'), {
+    message: 'missing generated Egern-compatible Hagezi TIF mapping',
+  });
+  record.check('egern.generated-rule-set-file-count', fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length === MIN_FULL_PROVIDERS, {
+    value: fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length,
+  });
+  record.check('egern.country-geoip-native', /-\s+geoip:\s*\n\s+match: "CN"\s*\n\s+policy: "🏠 国内网站"/.test(source), {
+    message: 'missing native Egern geoip country rule',
   });
   for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
     const egernFile = `rulesets/supplemental/egern/${spec.file}.yaml`;
     const egernSource = readText(egernFile);
     const url = supplementalUrl('egern', spec.file).replace(/\.list$/, '.yaml');
-    const hasRule = source.includes(url) && source.includes(`policy: ${spec.policy}`);
+    const hasRule = source.includes(url) && (source.includes(`policy: ${spec.policy}`) || source.includes(`policy: "${spec.policy}"`));
     record.check(`egern.supplemental-rule.${spec.id}`, hasRule, {
       message: `missing ${url} -> ${spec.policy}`,
     });
@@ -1507,6 +1588,7 @@ function main() {
   const options = parseArgs(process.argv.slice(2));
   const record = makeRecorder();
   const { baselineVersion } = validateJsProducts(record);
+  validateMihomoMrsRuleSets(record);
   validateClashYaml(record, baselineVersion, options);
   validateStashYaml(record, baselineVersion, options);
   validateOpenClash(record, baselineVersion, options);

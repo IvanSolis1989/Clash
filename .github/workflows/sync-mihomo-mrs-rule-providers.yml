@@ -1,0 +1,77 @@
+name: Sync Mihomo MRS Rule Providers
+
+on:
+  schedule:
+    - cron: '17 20 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+
+      - name: Sync Mihomo MRS rule providers
+        run: node tools/sync-mihomo-mrs-rule-providers.js
+
+      - name: Apply Mihomo MRS overrides
+        run: node tools/apply-mihomo-mrs-overrides.js
+
+      - name: Regenerate derived artifacts
+        run: |
+          node tools/generate-stash-from-cmfa.js
+          node tools/generate-egern-supplemental.js
+          node tools/generate-egern-from-cmfa.js
+          node "SingBox/SingBox(sing-box)-generator.js"
+
+      - name: Validate artifacts
+        run: |
+          node tools/validate-js-overwrites.js
+          node tools/validate-process-name-direct.js
+          node tools/validate-artifact-contracts.js --strict-ruby
+          git diff --check
+
+      - name: Commit synced MRS artifacts
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No MRS changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            "Clash Party" \
+            "Clash Meta For Android" \
+            "FlClash" \
+            "OpenClash" \
+            "Stash" \
+            "Egern" \
+            "SingBox" \
+            "rulesets/generated/mihomo-mrs" \
+            "rulesets/generated/egern" \
+            "rulesets/supplemental/egern" \
+            "tools" \
+            "README.md" \
+            "CHANGELOG.md" \
+            "CLAUDE.md" \
+            "AGENTS.md"
+          git commit -m "定时同步 Mihomo MRS 规则集"
+          git push

@@ -8,6 +8,7 @@
 ## v5.4.38-flclash.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：同步 Clash Party Normal v5.4.38，主 rules 改为引用补充规则集。
+- MIHOMO-MRS：同步 429 providers、884 条规则，其中 366 个 provider 使用 `.mrs`；保持 QuickJS/Dart bridge 的数组/对象原地更新契约。
 - FIX：保持 FlClash 原数组引用，避免覆写后规则数组身份变化。
 
 ## v5.4.37-flclash.1 (2026-06-29)

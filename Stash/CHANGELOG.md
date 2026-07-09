@@ -6,7 +6,8 @@
 
 ## v5.4.38-stash.1 (2026-07-09)
 
-- SCKI-SUPPLEMENTAL：由 CMFA v5.4.38-cmfa.1 重新生成，保留 391 rule-provider 与 846 条规则。
+- SCKI-SUPPLEMENTAL：由 CMFA v5.4.38-cmfa.1 重新生成，保留 429 rule-provider 与 884 条规则。
+- MIHOMO-MRS：继承 CMFA 的 `.mrs` 迁移结果，366 个 provider 使用 `.mrs`，同时继续裁剪 Stash Wiki 未确认的 Mihomo-only 字段。
 - COMPAT：Stash 继续裁剪 Mihomo-only 字段；补充规则集使用 Stash 可识别的 rule-provider 结构。
 
 ## v5.4.37-stash.1 (2026-07-07)

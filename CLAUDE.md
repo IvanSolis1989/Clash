@@ -48,13 +48,17 @@ node "SingBox/SingBox(sing-box)-generator.js"
 
 # 重新生成 Stash YAML（禁止手工改 Stash/Stash.yaml）
 node tools/generate-stash-from-cmfa.js
+
+# 重新生成 Egern YAML（禁止手工改 Egern/Egern.yaml）
+node tools/generate-egern-supplemental.js
+node tools/generate-egern-from-cmfa.js
 ```
 
 ---
 
 ## 0. 仓库定位
 
-本仓库维护「**同一套 Mihomo Smart 分流策略**」在 13 个客户端形态下的等价实现：
+本仓库维护「**同一套 Mihomo Smart 分流策略**」在 14 个客户端形态下的等价实现：
 
 | # | 形态 | 文件 | 角色 |
 |---|------|------|------|
@@ -72,6 +76,7 @@ node tools/generate-stash-from-cmfa.js
 | 10B | Passwall2（OpenWrt 精简分流 LuCI） | `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list` | 从属（展平降级；与 #10 共享规则语法） |
 | 11 | FlClash（JS 覆写脚本） | `FlClash/FlClash(mihomo).js` | 从属（Clash Party Normal JS 的 FlClash 移植版；url-test 区域组，无 Smart+LightGBM） |
 | 12 | Stash（Clash Premium 兼容 YAML） | `Stash/Stash.yaml` + `tools/generate-stash-from-cmfa.js` | 从属（由 CMFA 自动裁剪生成；无 Smart+LightGBM） |
+| 13 | Egern（iOS / macOS YAML） | `Egern/Egern.yaml` + `tools/generate-egern-from-cmfa.js` | 从属（由 CMFA 生成；`.mrs` 映射为 Egern 兼容 YAML / 文本规则源） |
 
 **基线原则：** Clash Party JS 脚本是唯一的「**策略权威源**」。其他产物必须在语义上与其一致；仅在平台能力受限处允许差异（见 §3）。
 
@@ -88,6 +93,8 @@ node tools/generate-stash-from-cmfa.js
 > **关于 FlClash（`chen08209/FlClash`，跨平台 Flutter GUI，覆盖 Android/Windows/macOS/Linux）：** 内核是标准 Mihomo（**非** Smart fork），自 v0.8.85 起支持 JS 覆写脚本。本仓库提供两条路径：（1）**覆写脚本** `FlClash/FlClash(mihomo).js`（推荐；动态节点分类 + 订阅垃圾清理 + 家宽识别）；（2）**静态 YAML** `Clash Meta For Android/CMFA(mihomo).yaml`（备选；直接导入无需脚本）。两者规则等价，仅区域组类型不同（url-test）。FlClash 覆写脚本与 Clash Party Normal JS 同构（同 REGION_DB + 同 rule-providers + 同 rules），差异仅在于 overwriteGeneral 裁剪（TUN/端口由 FlClash App UI 托管）和 console.log 条件包装（兼容 QuickJS）。
 >
 > **关于 Stash：** Stash 兼容 Clash Premium 配置，但不等于 Mihomo Smart，也不支持本仓库的 LightGBM Smart 择路。`Stash/Stash.yaml` 是从 CMFA 自动裁剪生成的独立 YAML 产物，必须通过 `node tools/generate-stash-from-cmfa.js` 重新生成，禁止手工改生成结果。裁剪规则见 `Stash/REFERENCE-Stash-wiki.md`：保留 `proxy-groups` / `rule-providers` / `rules` / `nameserver-policy`，删除 Stash Wiki 未确认的 Mihomo GeoX、sniffer、provider health-check / exclude-filter、rule-provider 下载 `proxy` 等字段。
+>
+> **关于 Egern：** Egern 是正式同步产物，`Egern/Egern.yaml` 必须通过 `node tools/generate-egern-from-cmfa.js` 从 CMFA 生成，禁止手工改生成结果。Mihomo `.mrs` 继续保留给 Clash Party / CMFA 使用；Egern 官方文档没有声明可消费 `.mrs`，生成器会映射为 Egern 可消费的 YAML / 文本 `rule_set` URL。Egern 官方规则类型不含 Clash 风格 `PROCESS-NAME`，因此两条桌面进程补充规则是明确的平台例外。
 >
 > **关于 Passwall / Passwall2：** 这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已于 2025 年前后迁入该组织，访问旧 URL 会 301 跳转）**并行维护**的两款独立 OpenWrt 插件（**不是**新旧关系；2026-04 两者发版仅差 4 天）。**Passwall** = 全功能（直连/屏蔽/GFW/代理 4 列表 + 分流 + ACL + `trojan-plus` 节点 + TCP/UDP 节点分选）；**Passwall2** = 精简分流（砍掉四列表 + ACL，只保留 keyword/domain/geosite/geoip 匹配 + 统一节点选择）。两者底层都是 **xray-core + sing-box 双栈**（都**不打包** mihomo），都**没有** mihomo 的 proxy-groups 嵌套选择器（两级 `select`/`url-test` + Smart + LightGBM）——Lua CBI 表单式 UI 没有 YAML 嵌套组语义。**规则语法两者完全相同**（共用 [`shunt_rules.lua`](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua)：纯字符串 / `domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote|local:` / `geoip:` + CIDR；**不支持** Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` / `IP-CIDR,` 前缀）。**本仓库提供两个独立目录**：
 >
@@ -136,7 +143,7 @@ node tools/generate-stash-from-cmfa.js
 若本次改动命中上述任一触发条件，PR 必须：
 
 1. **先改 Clash Party JS 主线**（`Clash Party/ClashParty(mihomo-smart).js`），作为唯一权威源。
-2. **同步修改全部 13 个目录产物**（或明确在 PR 说明里标注为何某个产物不受影响）：
+2. **同步修改全部 14 个目录产物**（或明确在 PR 说明里标注为何某个产物不受影响）：
    - `Clash Meta For Android/CMFA(mihomo).yaml`
    - `Stash/Stash.yaml`（通过 `node tools/generate-stash-from-cmfa.js` 从 CMFA 重新生成，不允许手工改）
    - `OpenClash/OpenClash(mihomo).sh`
@@ -147,6 +154,7 @@ node tools/generate-stash-from-cmfa.js
    - `Surge/Surge.conf`（与 Shadowrocket 保持 ~1:1 规则行；仅 [General] DNS/MMDB 不同）
    - `Loon/Loon.conf`（从 Surge 迁移；头部 + [General] 不同，[Rule] 段基本同 Surge）
    - `Quantumult X/QuantumultX.conf`（独立 QX 产物；policy / filter_remote / filter_local 三段结构；当前手工维护并由合同验证覆盖）
+   - `Egern/Egern.yaml`（通过 `node tools/generate-egern-from-cmfa.js` 从 CMFA 重新生成，不允许手工改）
    - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（展平降级参考；仅当业务组/规则类别变化时需同步）
    - `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list`（同上；与 Passwall 同步联动）
    - `FlClash/FlClash(mihomo).js`（Clash Party Normal JS 的 FlClash 移植版；规则/组/DNS 与主线对齐，overwriteGeneral 裁剪 TUN/端口）
@@ -260,7 +268,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 
 ### 1.5 同构 bug 全产物审计（自 v5.2.6 起强制）⚠️
 
-**触发条件**：只要本次修复命中以下任一运行时逻辑点，**必须对全部 13 份产物做同构审计**：
+**触发条件**：只要本次修复命中以下任一运行时逻辑点，**必须对全部 14 份产物做同构审计**：
 
 1. **节点名 → 区域分类**：`REGION_DB` / `REGIONS` / `filter:` / `policy-regex-filter` / `server-tag-regex` / `NameRegex FilterKey`
 2. **区域组 fallback 链**：区域为空时回落到 `apacNodes` / `c.ALL` / 全局组
@@ -317,7 +325,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 默认处理规则：
 
 1. `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` / `IP-CIDR` / `PROCESS-NAME` 等零星补丁，优先加入 `rulesets/supplemental/` 下对应补充规则集。
-2. 各产物只负责引用补充规则集：Mihomo 家族使用 `rule-providers` + `RULE-SET`；Surge/Shadowrocket 使用 URL `RULE-SET`；Loon 使用 `[Remote Rule]`；Quantumult X 使用 `[filter_remote]`；SingBox 由生成器展开为原生 route rule。
+2. 各产物只负责引用补充规则集：Mihomo 家族使用 `rule-providers` + `RULE-SET`；Surge/Shadowrocket 使用 URL `RULE-SET`；Loon 使用 `[Remote Rule]`；Quantumult X 使用 `[filter_remote]`；Egern 使用 `rule_set`；SingBox 由生成器展开为原生 route rule。
 3. 同一补丁若目标策略不同，必须拆成多个规则集；不要把 DIRECT / 支付 / 国外网站等不同策略混进同一个 rule-set。
 4. 只有端口规则、逻辑组合规则（`AND` / `OR` / `NOT`）、`MATCH` / `FINAL`、平台无法表达的字段，或已记录原因的平台专属例外，才允许继续保留为主规则内联。
 5. 临时排障单条规则不得长期留在主规则；同一 PR 必须给出迁入补充规则集或删除的结论。
@@ -357,6 +365,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
    - 例：mihomo Smart 内核的 `uselightgbm` 属于 Alpha 分支能力，不能下放到稳定分支的 Clash 核心。
 3. **格式核对**：
    - Clash YAML：`rule-providers` 的 `behavior` ∈ {`domain`, `ipcidr`, `classical`}；`format` ∈ {`yaml`, `text`, `mrs`}。
+   - Mihomo `.mrs`：仅用于支持 `rule-providers.format: mrs` 的 Mihomo 兼容产物；当前只承载 `domain` / `ipcidr`。上游无 `.mrs` 时，必须通过 `tools/sync-mihomo-mrs-rule-providers.js` 生成到 `rulesets/generated/mihomo-mrs/`，再用 `tools/apply-mihomo-mrs-overrides.js` 同步。混合 classical provider 拆分为 `-domain` / `-ipcidr`；含 `GEOIP` / 端口 / 进程 / 逻辑组合等不支持类型时保留原格式并说明原因。
    - Shadowrocket：`RULE-SET,<url>,<policy>` 不支持 `rule-provider` 节。策略名里的 emoji **必须与组定义完全一致**（含 ZWJ `\u200D`）。
    - sing-box：`rule_set` 的 `format` ∈ {`binary`, `source`}；`.srs` 必须配 `binary`。
 4. **PR 描述里粘贴官方文档锚点**（URL + 字段名），审阅者可一键验证。
@@ -602,13 +611,15 @@ grep -cE "^rule-providers:$" /tmp/oc_full_override_probe.yaml   # 期望 1
 grep -cE "^rules:$" /tmp/oc_full_override_probe.yaml             # 期望 1
 ruby -ryaml -e '
   d = YAML.load_file("/tmp/oc_full_override_probe.yaml", permitted_classes: [Symbol], aliases: true)
-  raise "providers < 376" if (d["rule-providers"] || {}).size < 376   # full 期望 ≈376
-  raise "rules    < 900" if (d["rules"]         || []).size < 900     # full 期望 ≈975
+  raise "providers < 429" if (d["rule-providers"] || {}).size < 429   # full 期望 429
+  raise "rules    < 884" if (d["rules"]         || []).size < 884     # full 期望 884
   puts "OC full override yaml: providers=#{d["rule-providers"].size} rules=#{d["rules"].size}"
 '
 
-# 5) 产物合同验证（--strict-ruby 会实际解析 CMFA/OpenClash YAML）
+# 5) 产物合同验证（--strict-ruby 会实际解析 CMFA/OpenClash/Egern YAML）
 node tools/generate-stash-from-cmfa.js
+node tools/generate-egern-supplemental.js
+node tools/generate-egern-from-cmfa.js
 node tools/validate-artifact-contracts.js --strict-ruby
 
 # 6) JS 覆写与 PROCESS-NAME 合同

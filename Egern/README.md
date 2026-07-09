@@ -1,34 +1,36 @@
 # Egern 使用教程
 
-> 版本：**v5.4.38-egern.1**（Build 2026-07-09，Preview；跟随 Clash Party v5.4.38 基线）
+> 版本：**v5.4.38-egern.2**（Build 2026-07-09；正式跟随 Clash Party v5.4.38 / CMFA 基线）
 
 ## 定位
 
-Egern 值得纳入仓库，但不适合直接复制 Mihomo/Clash 的 `rule-providers`。
+Egern 已纳入正式同步产物，但不能直接复制 Mihomo/Clash 的 `rule-providers`。
 
-原因很明确：Egern 支持远端 `rule_set`，但它的 rule set 文件是 YAML 结构，例如 `domain_suffix_set` / `ip_cidr_set`，不能直接消费 Clash classical 或 Mihomo `.mrs`。所以本目录先提供 Egern 原生首版：
+原因很明确：Mihomo 的 `.mrs` 是 Clash Party / CMFA 最小、加载更快的规则集格式，应继续保留；Egern 官方文档没有声明可直接消费 `.mrs`，它的 `rule_set` 使用 Egern 自己的远端规则集结构。所以本目录提供 Egern 正式 Profile，由 CMFA 规则顺序生成 Egern 可导入语法：
 
-- `Egern.yaml`：Egern Profile，可导入，可接订阅，可使用 22 个区域选择思路和 33 个业务组。
+- `Egern.yaml`：Egern Profile，可导入，可接订阅，包含 22 个 `smart` 区域组、33 个业务组、882 条 Egern 主规则和 439 个顶层 `rule_set` 引用。
 - `rulesets/supplemental/egern/*.yaml`：由 `rulesets/supplemental/clash/*.list` 转换来的 Egern 专用补充规则集。
 - `tools/generate-egern-supplemental.js`：补充规则集转换工具。
+- `tools/generate-egern-from-cmfa.js`：从 `Clash Meta For Android/CMFA(mihomo).yaml` 生成正式 Egern Profile。
 
 ## 快速导入
 
 1. 打开 `Egern/Egern.yaml`。
 2. 把 `policy_groups -> Subscribe -> urls` 里的示例订阅改成你的订阅地址。
 3. 导入 Egern。
-4. 在 Egern 里检查 `rulesets/supplemental/egern/*.yaml` 远端规则集是否下载成功。
+4. 在 Egern 里检查远端 `rule_set` 是否下载成功。
 
-## 当前边界
+## 平台边界
 
-- 本版不是 391 个 Mihomo provider 的完全等价迁移。
-- 桌面 `PROCESS-NAME` 补充规则不进入 Egern；Egern 官方规则类型没有 Clash 风格 `PROCESS-NAME`。
-- 后续如果要做到完全等价，需要为 bm7 / Accademia / szkane / VPSDance 等上游规则统一建立 Egern YAML 转换链路。
+- Egern Profile 正式跟随 CMFA 的 429 个 rule-provider 和 884 条规则顺序生成。
+- Egern 实际渲染 882 条主规则：两条桌面 `PROCESS-NAME` 补充规则不进入 Egern，因为 Egern 官方规则类型没有 Clash 风格进程名匹配。
+- Mihomo `.mrs` 不在 Egern 中直接引用；生成器会映射到 `rulesets/generated/egern/*.yaml` 的 Egern 原生规则集。
 
 ## 官方依据
 
 - Egern Policy Groups：支持 `select`、`auto_test`、`smart`、`fallback`、`load_balance`、`external`、`conditional`。
 - Egern Rules：规则按顺序首个命中生效，支持 `rule_set` 引用本地或远端规则集。
 - Egern DNS：支持 `bootstrap`、`upstreams`、`forward`、`proxy_nameservers`。
+- MetaCubeX Rule Providers：Mihomo `format` 支持 `yaml` / `text` / `mrs`，其中 `.mrs` 当前支持 `domain` / `ipcidr`。
 
 详见 [REFERENCE-Egern.md](./REFERENCE-Egern.md)。
