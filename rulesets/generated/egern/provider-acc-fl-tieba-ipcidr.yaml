@@ -2,6 +2,4 @@
 # Source id: provider-acc-fl-tieba-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationTieBa.yaml
 ip_cidr_set:
-  - "DOMAIN"
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

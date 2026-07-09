@@ -3,10 +3,3 @@
 # Source URL: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/WaybackMachine/WaybackMachine.yaml
 domain_suffix_set:
   - "archive.org"
-ip_cidr_set:
-  - "142.104.123.50/24            #"
-  - "149.20.65.4/24               #"
-  - "165.22.30.252/32             #"
-  - "184.105.203.169/24           #"
-  - "207.241.224.0/20             #"
-  - "208.70.24.0/21               #"

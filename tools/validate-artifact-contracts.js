@@ -17,16 +17,19 @@ const EXPECTED_SINGBOX_URLTEST_GROUPS = 2;
 const EXPECTED_PASSWALL_RULES = 33;
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
-const MIN_FULL_PROVIDERS = 429;
-const MIN_FULL_RULES = 884;
-const EXPECTED_MIHOMO_MRS_CONVERTED = 255;
-const EXPECTED_MIHOMO_MRS_SPLIT = 38;
+const MIN_FULL_PROVIDERS = 474;
+const MIN_FULL_RULES = 929;
+const EXPECTED_MIHOMO_MRS_CONVERTED = 267;
+const EXPECTED_MIHOMO_MRS_SPLIT = 39;
+const EXPECTED_MIHOMO_MRS_PARTIAL = 30;
 const EXPECTED_MIHOMO_MRS_EXISTING = 35;
-const EXPECTED_MIHOMO_MRS_RETAINED = 48;
-const EXPECTED_MIHOMO_MRS_FILES = EXPECTED_MIHOMO_MRS_CONVERTED + (EXPECTED_MIHOMO_MRS_SPLIT * 2);
+const EXPECTED_MIHOMO_MRS_RETAINED = 20;
+const EXPECTED_MIHOMO_MRS_FILES = 389;
+const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 30;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
-const EXPECTED_EGERN_RULES = 882;
-const EXPECTED_EGERN_RULE_SETS = 439;
+const EXPECTED_EGERN_RULES = 927;
+const EXPECTED_EGERN_RULE_SETS = 484;
+const EXPECTED_EGERN_GENERATED_RULE_SETS = 487;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -257,30 +260,85 @@ function supplementalUrl(flavor, file) {
   return `${SUPPLEMENTAL_RULESET_BASE}/${flavor}/${file}.list`;
 }
 
+function generatedMihomoMrsUrl(file) {
+  return `rulesets/generated/mihomo-mrs/${file}`;
+}
+
+function generatedEgernUrl(id) {
+  return `${SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/egern')}/provider-${id}.yaml`;
+}
+
+function supplementalMihomoProviderExpectations(spec) {
+  if (spec.process) {
+    return [{ id: spec.id, url: supplementalUrl('clash', spec.file) }];
+  }
+  if (spec.id === 'scki-local-direct') {
+    return [
+      { id: 'scki-local-direct-domain', url: generatedMihomoMrsUrl('scki-local-direct-domain.mrs') },
+      { id: 'scki-local-direct-ipcidr', url: generatedMihomoMrsUrl('scki-local-direct-ipcidr.mrs') },
+    ];
+  }
+  return [{ id: spec.id, url: generatedMihomoMrsUrl(`${spec.id}.mrs`) }];
+}
+
+function supplementalMihomoRuleExpectations(spec) {
+  if (spec.id === 'scki-local-direct') {
+    return [
+      { id: 'scki-local-direct-domain', policy: spec.policy },
+      { id: 'scki-local-direct-ipcidr', policy: spec.policy },
+    ];
+  }
+  return [{ id: spec.id, policy: spec.policy }];
+}
+
+function supplementalEgernExpectations(spec) {
+  if (spec.id === 'scki-local-direct') {
+    return [
+      { id: 'scki-local-direct-domain', file: 'provider-scki-local-direct-domain.yaml', policy: spec.policy },
+      { id: 'scki-local-direct-ipcidr', file: 'provider-scki-local-direct-ipcidr.yaml', policy: spec.policy },
+    ];
+  }
+  return [{ id: spec.id, file: `provider-${spec.id}.yaml`, policy: spec.policy }];
+}
+
 function validateMihomoMrsRuleSets(record) {
   const manifest = readJson('rulesets/generated/mihomo-mrs/manifest.json');
   const mrsDir = relPath('rulesets/generated/mihomo-mrs');
   const mrsFiles = fs.readdirSync(mrsDir).filter((file) => file.endsWith('.mrs'));
-  const generatedRows = [...manifest.converted, ...manifest.split];
+  const residualFilesOnDisk = fs.readdirSync(mrsDir).filter((file) => file.endsWith('.yaml'));
+  const generatedRows = [...manifest.converted, ...manifest.split, ...(manifest.partial || [])];
   const generatedFiles = generatedRows.flatMap((row) => row.generated || []);
   const generatedFileNames = generatedFiles.map((row) => row.file);
+  const residualFiles = (manifest.partial || []).map((row) => row.residual).filter(Boolean);
+  const residualFileNames = residualFiles.map((row) => row.file);
   const missingFiles = generatedFileNames.filter((file) => !fs.existsSync(path.join(mrsDir, file)));
   const emptyFiles = generatedFileNames.filter((file) => {
     const fullPath = path.join(mrsDir, file);
     return fs.existsSync(fullPath) && fs.statSync(fullPath).size === 0;
   });
+  const missingResidualFiles = residualFileNames.filter((file) => !fs.existsSync(path.join(mrsDir, file)));
+  const emptyResidualFiles = residualFileNames.filter((file) => {
+    const fullPath = path.join(mrsDir, file);
+    return fs.existsSync(fullPath) && fs.statSync(fullPath).size === 0;
+  });
   const badBehaviors = generatedFiles.filter((row) => !['domain', 'ipcidr'].includes(row.behavior));
+  const badResiduals = residualFiles.filter((row) => row.behavior !== 'classical' || !row.file.endsWith('.yaml'));
   const retainedWithoutReason = manifest.retained.filter((row) => !row.reason);
 
   record.check('mihomo-mrs.converted-count', manifest.converted.length === EXPECTED_MIHOMO_MRS_CONVERTED, { value: manifest.converted.length });
   record.check('mihomo-mrs.split-count', manifest.split.length === EXPECTED_MIHOMO_MRS_SPLIT, { value: manifest.split.length });
+  record.check('mihomo-mrs.partial-count', (manifest.partial || []).length === EXPECTED_MIHOMO_MRS_PARTIAL, { value: (manifest.partial || []).length });
   record.check('mihomo-mrs.existing-count', manifest.existing_mrs.length === EXPECTED_MIHOMO_MRS_EXISTING, { value: manifest.existing_mrs.length });
   record.check('mihomo-mrs.retained-count', manifest.retained.length === EXPECTED_MIHOMO_MRS_RETAINED, { value: manifest.retained.length });
   record.check('mihomo-mrs.failed-count', manifest.failed.length === 0, { value: manifest.failed.length });
   record.check('mihomo-mrs.generated-file-count', mrsFiles.length === EXPECTED_MIHOMO_MRS_FILES, { value: mrsFiles.length });
+  record.check('mihomo-mrs.residual-file-count', residualFilesOnDisk.length === EXPECTED_MIHOMO_MRS_RESIDUAL_FILES, { value: residualFilesOnDisk.length });
   record.check('mihomo-mrs.generated-files-present', missingFiles.length === 0, { message: missingFiles.join(', ') });
   record.check('mihomo-mrs.generated-files-nonempty', emptyFiles.length === 0, { message: emptyFiles.join(', ') });
+  record.check('mihomo-mrs.residual-files-present', missingResidualFiles.length === 0, { message: missingResidualFiles.join(', ') });
+  record.check('mihomo-mrs.residual-files-nonempty', emptyResidualFiles.length === 0, { message: emptyResidualFiles.join(', ') });
   record.check('mihomo-mrs.domain-ipcidr-only', badBehaviors.length === 0, { message: badBehaviors.map((row) => `${row.file}:${row.behavior}`).join(', ') });
+  record.check('mihomo-mrs.residual-classical-yaml', badResiduals.length === 0, { message: badResiduals.map((row) => `${row.file}:${row.behavior}`).join(', ') });
   record.check('mihomo-mrs.retained-has-reason', retainedWithoutReason.length === 0, { message: retainedWithoutReason.map((row) => row.id).join(', ') });
 
   for (const spec of [
@@ -292,27 +350,33 @@ function validateMihomoMrsRuleSets(record) {
     const source = readText(spec.file);
     const mrsFormatCount = countMatches(source, /format:\s*mrs/g);
     const generatedRefCount = countMatches(source, /rulesets\/generated\/mihomo-mrs\/[^"'\s]+\.mrs/g);
+    const residualRefCount = countMatches(source, /rulesets\/generated\/mihomo-mrs\/[^"'\s]+\.yaml/g);
     record.check(`mihomo-mrs.${spec.id}.format-count`, mrsFormatCount === EXPECTED_MIHOMO_MRS_PROVIDER_REFS, { value: mrsFormatCount });
     record.check(`mihomo-mrs.${spec.id}.generated-ref-count`, generatedRefCount >= EXPECTED_MIHOMO_MRS_FILES, { value: generatedRefCount });
+    record.check(`mihomo-mrs.${spec.id}.residual-ref-count`, residualRefCount === EXPECTED_MIHOMO_MRS_RESIDUAL_FILES, { value: residualRefCount });
   }
 }
 
 function checkSupplementalProviderRefs(record, id, providersBlock) {
   for (const spec of SUPPLEMENTAL_CLASH_RULESETS) {
-    const hasProvider = new RegExp(`^\\s{2}${spec.id}:\\s*$`, 'm').test(providersBlock);
-    const hasUrl = providersBlock.includes(supplementalUrl('clash', spec.file));
-    record.check(`${id}.supplemental-provider.${spec.id}`, hasProvider && hasUrl, {
-      message: `${spec.id} must point to ${supplementalUrl('clash', spec.file)}`,
-    });
+    for (const expected of supplementalMihomoProviderExpectations(spec)) {
+      const hasProvider = new RegExp(`^\\s{2}${expected.id}:\\s*$`, 'm').test(providersBlock);
+      const hasUrl = providersBlock.includes(expected.url);
+      record.check(`${id}.supplemental-provider.${expected.id}`, hasProvider && hasUrl, {
+        message: `${expected.id} must point to ${expected.url}`,
+      });
+    }
   }
 }
 
 function checkSupplementalMihomoRules(record, id, rulesSource) {
   for (const spec of SUPPLEMENTAL_CLASH_RULESETS) {
-    const needle = `RULE-SET,${spec.id},${spec.policy}`;
-    record.check(`${id}.supplemental-rule.${spec.id}`, rulesSource.includes(needle), {
-      message: `missing ${needle}`,
-    });
+    for (const expected of supplementalMihomoRuleExpectations(spec)) {
+      const needle = `RULE-SET,${expected.id},${expected.policy}`;
+      record.check(`${id}.supplemental-rule.${expected.id}`, rulesSource.includes(needle), {
+        message: `missing ${needle}`,
+      });
+    }
   }
   checkNeedleBefore(record, `${id}.supplemental.adfp-before-ads`, rulesSource, 'RULE-SET,scki-adfp-intl-site,🌐 国外网站', 'RULE-SET,anti-ad,🛑 广告拦截');
   checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-tiktok`, rulesSource, 'RULE-SET,scki-cnmedia-guard,📺 国内流媒体', 'RULE-SET,tiktok,🎵 TikTok');
@@ -1422,26 +1486,28 @@ function validateEgern(record, baselineVersion, options) {
   record.check('egern.generated-hagezi-tif', source.includes('/rulesets/generated/egern/provider-hagezi-tif.yaml'), {
     message: 'missing generated Egern-compatible Hagezi TIF mapping',
   });
-  record.check('egern.generated-rule-set-file-count', fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length === MIN_FULL_PROVIDERS, {
+  record.check('egern.generated-rule-set-file-count', fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length === EXPECTED_EGERN_GENERATED_RULE_SETS, {
     value: fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length,
   });
   record.check('egern.country-geoip-native', /-\s+geoip:\s*\n\s+match: "CN"\s*\n\s+policy: "🏠 国内网站"/.test(source), {
     message: 'missing native Egern geoip country rule',
   });
   for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
-    const egernFile = `rulesets/supplemental/egern/${spec.file}.yaml`;
-    const egernSource = readText(egernFile);
-    const url = supplementalUrl('egern', spec.file).replace(/\.list$/, '.yaml');
-    const hasRule = source.includes(url) && (source.includes(`policy: ${spec.policy}`) || source.includes(`policy: "${spec.policy}"`));
-    record.check(`egern.supplemental-rule.${spec.id}`, hasRule, {
-      message: `missing ${url} -> ${spec.policy}`,
-    });
-    record.check(`egern.supplemental-file.${spec.file}`, /_set:\s*$/m.test(egernSource), {
-      message: `${egernFile} must contain Egern YAML set fields`,
-    });
-    record.check(`egern.supplemental-file-no-process.${spec.file}`, !/PROCESS-NAME|process/i.test(egernSource), {
-      message: `${egernFile} must not contain process rules`,
-    });
+    for (const expected of supplementalEgernExpectations(spec)) {
+      const egernFile = `rulesets/generated/egern/${expected.file}`;
+      const egernSource = readText(egernFile);
+      const url = generatedEgernUrl(expected.id);
+      const hasRule = source.includes(url) && (source.includes(`policy: ${expected.policy}`) || source.includes(`policy: "${expected.policy}"`));
+      record.check(`egern.supplemental-rule.${expected.id}`, hasRule, {
+        message: `missing ${url} -> ${expected.policy}`,
+      });
+      record.check(`egern.supplemental-file.${expected.id}`, /_set:\s*$/m.test(egernSource), {
+        message: `${egernFile} must contain Egern YAML set fields`,
+      });
+      record.check(`egern.supplemental-file-no-process.${expected.id}`, !/PROCESS-NAME|process/i.test(egernSource), {
+        message: `${egernFile} must not contain process rules`,
+      });
+    }
   }
 
   const rubyPath = findRuby();
@@ -1453,7 +1519,9 @@ function validateEgern(record, baselineVersion, options) {
     try {
       rubyYamlFileProbe(file, rubyPath);
       for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
-        rubyYamlFileProbe(`rulesets/supplemental/egern/${spec.file}.yaml`, rubyPath);
+        for (const expected of supplementalEgernExpectations(spec)) {
+          rubyYamlFileProbe(`rulesets/generated/egern/${expected.file}`, rubyPath);
+        }
       }
       record.check('egern.ruby-parse', true);
     } catch (error) {

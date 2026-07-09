@@ -3,8 +3,3 @@
 # Source URL: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationDouBan.yaml
 domain_suffix_set:
   - "douban.com"
-ip_cidr_set:
-  - "140.143.177.206/32                                        #"
-  - "49.233.242.15/32                                          #"
-  - "81.70.124.99/32                                           #"
-  - "81.70.125.19/32                                           #"

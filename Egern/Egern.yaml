@@ -1,11 +1,11 @@
 ---
 # ======================================================================
-# Egern Smart v5.4.38-egern.2 - Egern Profile
+# Egern Smart v5.4.39-egern.1 - Egern Profile
 # Build: 2026-07-09
-# Baseline: Clash Party v5.4.38
+# Baseline: Clash Party v5.4.39
 # Architecture: 22 smart region groups + 33 business groups + CMFA rule order.
-# Rule parity: generated from CMFA 429 rule-providers and 884 rules.
-# Egern rule sets: 429 generated native YAML files + supplemental YAML files.
+# Rule parity: generated from CMFA 474 rule-providers and 929 rules.
+# Egern rule sets: 487 generated native YAML files.
 # Platform limit: Egern official rules do not expose Clash PROCESS-NAME.
 # Change history: see Egern/CHANGELOG.md
 # ======================================================================
@@ -318,19 +318,19 @@ policy_groups:
 # does not document a process-name rule or process-name rule-set field.
 rules:
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/adfp-direct.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-adfp-direct.yaml"
       policy: "DIRECT"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/adfp-intl-site.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-adfp-intl-site.yaml"
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/adfp-payments.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-adfp-payments.yaml"
       policy: "🏦 金融支付"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/cnmedia-guard.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-cnmedia-guard.yaml"
       policy: "📺 国内流媒体"
       update_interval: 86400
   - rule_set:
@@ -521,7 +521,11 @@ rules:
             match: "255.255.255.255/32"
       policy: "DIRECT"
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/local-direct.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-local-direct-domain.yaml"
+      policy: "DIRECT"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-local-direct-ipcidr.yaml"
       policy: "DIRECT"
       update_interval: 86400
   - dest_port:
@@ -564,15 +568,15 @@ rules:
       match: "binance.org"
       policy: "💰 加密货币"
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/gfw-guard.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-gfw-guard.yaml"
       policy: "🚫 受限网站"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/youtube-guard.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-youtube-guard.yaml"
       policy: "📹 YouTube"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/cnsite-guard.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-cnsite-guard.yaml"
       policy: "🏠 国内网站"
       update_interval: 86400
   - rule_set:
@@ -588,15 +592,23 @@ rules:
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/work-guard.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-work-guard.yaml"
       policy: "🧑‍💼 会议协作"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-copilot.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-copilot-domain.yaml"
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/ai-supplement.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-copilot-ipcidr.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-copilot-classical.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-ai-supplement.yaml"
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
@@ -604,7 +616,7 @@ rules:
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/google-mail-intl.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-google-mail-intl.yaml"
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
@@ -612,11 +624,11 @@ rules:
       policy: "💬 即时通讯"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/google-work.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-google-work.yaml"
       policy: "🧑‍💼 会议协作"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/egern/download-guard.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-download-guard.yaml"
       policy: "📥 下载更新"
       update_interval: 86400
   - rule_set:
@@ -636,11 +648,27 @@ rules:
       policy: "🔍 Google 服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ai.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ai-domain.yaml"
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ciciai.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ai-ipcidr.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ai-classical.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ciciai-domain.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ciciai-ipcidr.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-ciciai-classical.yaml"
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
@@ -660,7 +688,15 @@ rules:
       policy: "🤖 AI 服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-vpsdance-ai-coding.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-vpsdance-ai-coding-domain.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-vpsdance-ai-coding-ipcidr.yaml"
+      policy: "🤖 AI 服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-vpsdance-ai-coding-classical.yaml"
       policy: "🤖 AI 服务"
       update_interval: 86400
   - domain_suffix:
@@ -693,7 +729,11 @@ rules:
       policy: "💰 加密货币"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-web3.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-web3-domain.yaml"
+      policy: "💰 加密货币"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-web3-classical.yaml"
       policy: "💰 加密货币"
       update_interval: 86400
   - rule_set:
@@ -1016,7 +1056,11 @@ rules:
       policy: "💬 即时通讯"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-italkbb.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-italkbb-domain.yaml"
+      policy: "💬 即时通讯"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-italkbb-classical.yaml"
       policy: "💬 即时通讯"
       update_interval: 86400
   - rule_set:
@@ -1039,7 +1083,15 @@ rules:
       policy: "📱 社交媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-facebook.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-facebook-domain.yaml"
+      policy: "📱 社交媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-facebook-ipcidr.yaml"
+      policy: "📱 社交媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-facebook-classical.yaml"
       policy: "📱 社交媒体"
       update_interval: 86400
   - rule_set:
@@ -1283,15 +1335,27 @@ rules:
       policy: "🎥 Netflix"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-disney.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-disney-domain.yaml"
       policy: "🎬 Disney+"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-hbo.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-disney-classical.yaml"
+      policy: "🎬 Disney+"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-hbo-domain.yaml"
       policy: "📡 HBO/Max"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-hulu.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-hbo-classical.yaml"
+      policy: "📡 HBO/Max"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-hulu-domain.yaml"
+      policy: "📺 Hulu"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-hulu-classical.yaml"
       policy: "📺 Hulu"
       update_interval: 86400
   - rule_set:
@@ -1299,7 +1363,15 @@ rules:
       policy: "🎬 Prime Video"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-amazon.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-amazon-domain.yaml"
+      policy: "🎬 Prime Video"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-amazon-ipcidr.yaml"
+      policy: "🎬 Prime Video"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-amazon-classical.yaml"
       policy: "🎬 Prime Video"
       update_interval: 86400
   - rule_set:
@@ -1434,7 +1506,11 @@ rules:
       policy: "🇹🇼 台湾流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-linetv.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-linetv-domain.yaml"
+      policy: "🇹🇼 台湾流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-linetv-classical.yaml"
       policy: "🇹🇼 台湾流媒体"
       update_interval: 86400
   - rule_set:
@@ -1671,7 +1747,11 @@ rules:
       policy: "🇪🇺 欧洲流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-viu.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-viu-domain.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-viu-classical.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - domain_suffix:
@@ -1723,11 +1803,27 @@ rules:
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyiintl.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyiintl-domain.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-joox.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyiintl-ipcidr.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyiintl-classical.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-joox-domain.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-joox-ipcidr.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-joox-classical.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
@@ -1739,7 +1835,15 @@ rules:
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-wetv.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-wetv-domain.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-wetv-ipcidr.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-wetv-classical.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
@@ -1759,7 +1863,15 @@ rules:
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-twitch.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-twitch-domain.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-twitch-ipcidr.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-twitch-classical.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - domain_suffix:
@@ -1781,7 +1893,11 @@ rules:
       match: "appletv.com"
       policy: "🌐 其他国外流媒体"
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-cbs.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-cbs-domain.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-cbs-classical.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
@@ -1833,7 +1949,11 @@ rules:
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-emby.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-emby-domain.yaml"
+      policy: "🌐 其他国外流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-emby-classical.yaml"
       policy: "🌐 其他国外流媒体"
       update_interval: 86400
   - domain_suffix:
@@ -2068,11 +2188,19 @@ rules:
       policy: "🔧 工具与服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-unity.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-unity-domain.yaml"
       policy: "🔧 工具与服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-developer.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-unity-classical.yaml"
+      policy: "🔧 工具与服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-developer-domain.yaml"
+      policy: "🔧 工具与服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-szkane-developer-classical.yaml"
       policy: "🔧 工具与服务"
       update_interval: 86400
   - rule_set:
@@ -2092,7 +2220,11 @@ rules:
       policy: "Ⓜ️ 微软服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-applemusic.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-applemusic-domain.yaml"
+      policy: "🍎 苹果服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-applemusic-classical.yaml"
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
@@ -2108,7 +2240,11 @@ rules:
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-appletv.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-appletv-domain.yaml"
+      policy: "🍎 苹果服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-appletv-classical.yaml"
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
@@ -2120,7 +2256,11 @@ rules:
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-appleproxy.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-appleproxy-domain.yaml"
+      policy: "🍎 苹果服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-appleproxy-classical.yaml"
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
@@ -2132,7 +2272,11 @@ rules:
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-applefirmware.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-applefirmware-domain.yaml"
+      policy: "🍎 苹果服务"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-applefirmware-classical.yaml"
       policy: "🍎 苹果服务"
       update_interval: 86400
   - rule_set:
@@ -2215,7 +2359,11 @@ rules:
       match: "registry.k8s.io"
       policy: "📥 下载更新"
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-download.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-download-domain.yaml"
+      policy: "📥 下载更新"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-download-classical.yaml"
       policy: "📥 下载更新"
       update_interval: 86400
   - rule_set:
@@ -2790,7 +2938,15 @@ rules:
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-mega.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-mega-domain.yaml"
+      policy: "🌐 国外网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-mega-ipcidr.yaml"
+      policy: "🌐 国外网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-mega-classical.yaml"
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
@@ -2826,7 +2982,15 @@ rules:
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-naver.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-naver-domain.yaml"
+      policy: "🌐 国外网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-naver-ipcidr.yaml"
+      policy: "🌐 国外网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-naver-classical.yaml"
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
@@ -3125,7 +3289,15 @@ rules:
       match: "sinaimg.cn"
       policy: "📺 国内流媒体"
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyi.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyi-domain.yaml"
+      policy: "📺 国内流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyi-ipcidr.yaml"
+      policy: "📺 国内流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-iqiyi-classical.yaml"
       policy: "📺 国内流媒体"
       update_interval: 86400
   - rule_set:
@@ -3149,7 +3321,15 @@ rules:
       policy: "📺 国内流媒体"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-bytedance.yaml"
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-bytedance-domain.yaml"
+      policy: "📺 国内流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-bytedance-ipcidr.yaml"
+      policy: "📺 国内流媒体"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-bytedance-classical.yaml"
       policy: "📺 国内流媒体"
       update_interval: 86400
   - rule_set:

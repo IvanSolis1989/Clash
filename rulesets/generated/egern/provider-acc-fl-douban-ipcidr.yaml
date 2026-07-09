@@ -2,5 +2,4 @@
 # Source id: provider-acc-fl-douban-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationDouBan.yaml
 ip_cidr_set:
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

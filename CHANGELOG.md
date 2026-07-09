@@ -6,6 +6,14 @@
 
 ---
 
+## v5.4.39 (2026-07-09)
+
+- MRS-PARTIAL：全量复查剩余 `YamlRule` / `TextRule`，可迁移部分全部迁移；`.mrs` manifest 当前为 converted=267、split=39、partial=30、existing_mrs=35、retained=20、failed=0。
+- MIHOMO-MRS：Mihomo 系产物同步到 474 providers / 929 rules；424 个 provider 使用 `.mrs`，30 个 provider 使用本仓库残余 classical YAML，20 个确认为全量不可迁移保留原格式。
+- SCKI-SUPPLEMENTAL：补充规则集里可表达为 domain/ipcidr 的 `scki-*` 已迁移到 `.mrs`；两个 `PROCESS-NAME` 规则集继续保留为平台例外。
+- DERIVED：Egern 重新生成为 927 条主规则、484 个 rule_set；SingBox 生成器改为从 `.mrs` manifest 回溯 `scki-*` 源规则并展开为原生 route rules。
+- VERIFY：`.mrs` 映射表在 JS 产物中改为压缩生成层，静态 YAML 产物直接写最终规则集地址；合同校验同步检查 partial / residual 文件数量与引用。
+
 ## v5.4.38 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：新增 `rulesets/supplemental/` 公共补充规则集，将广告误伤、抖音 Web、RustDesk、Google Workspace、下载更新等零星直写域名/IP/进程整理为规则集引用。

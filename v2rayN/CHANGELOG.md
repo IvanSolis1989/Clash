@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.39-v2n.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.39 更新版本元数据。
+- N/A：Xray 路由 JSON 不消费 Mihomo `.mrs` rule-provider；mihomo / sing-box 路径分别复用 CMFA / SingBox 产物。
+
 ## v5.4.38-v2n.1 (2026-07-09)
 
 - META：跟随 Clash Party v5.4.38 更新版本元数据。

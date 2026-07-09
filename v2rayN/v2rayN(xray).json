@@ -2,7 +2,7 @@
     {
         "id": "scki-000-meta",
         "enabled": false,
-        "remarks": "Smart-Config-Kit v5.4.38-v2n.1 | Build 2026-07-09 | Baseline Clash Party v5.4.38 | changelog: v2rayN/CHANGELOG.md | SCKI-SUPPLEMENTAL: Xray 路由 JSON 使用展平规则清单，不直接引用 rulesets/supplemental",
+        "remarks": "Smart-Config-Kit v5.4.39-v2n.1 | Build 2026-07-09 | Baseline Clash Party v5.4.39 | changelog: v2rayN/CHANGELOG.md | SCKI-SUPPLEMENTAL: Xray 路由 JSON 使用展平规则清单，不直接引用 rulesets/supplemental",
         "outboundTag": "direct",
         "domain": [
             "domain:smart-config-kit.invalid"

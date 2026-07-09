@@ -12,7 +12,7 @@ const CMFA_FILE = path.join(REPO_ROOT, 'Clash Meta For Android/CMFA(mihomo).yaml
 const OUTPUT_DIR = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs');
 const CACHE_DIR = path.join(REPO_ROOT, '.cache/mihomo-mrs');
 const MIHOMO_REPO_API = 'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest';
-const SCKI_SUPPLEMENTAL_MARKER = '/rulesets/supplemental/';
+const SCKI_GENERATED_MARKER = '/rulesets/generated/mihomo-mrs/';
 const CONCURRENCY = 8;
 
 const DOMAIN_RULE_TYPES = new Set([
@@ -84,6 +84,57 @@ function parseProviders(source) {
     if (fieldMatch && current) current[fieldMatch[1]] = unquote(fieldMatch[2]);
   }
   return providers;
+}
+
+function readPreviousManifest() {
+  const manifests = [];
+  const file = path.join(OUTPUT_DIR, 'manifest.json');
+  if (fs.existsSync(file)) {
+    try {
+      manifests.push(JSON.parse(readText(file)));
+    } catch {
+      // Ignore a broken worktree manifest; the git fallback below can still seed a full rebuild.
+    }
+  }
+  try {
+    const fromGit = childProcess.execFileSync('git', ['show', 'HEAD:rulesets/generated/mihomo-mrs/manifest.json'], {
+      cwd: REPO_ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    manifests.push(JSON.parse(fromGit));
+  } catch {
+    // First-time generation may not have a committed manifest yet.
+  }
+  if (manifests.length === 0) return null;
+
+  const merged = { converted: [], split: [], partial: [] };
+  for (const key of Object.keys(merged)) {
+    const byId = new Map();
+    for (const manifest of manifests) {
+      for (const row of manifest[key] || []) byId.set(row.id, row);
+    }
+    merged[key] = [...byId.values()];
+  }
+  return merged;
+}
+
+function providersFromPreviousManifest(manifest) {
+  if (!manifest) return [];
+  const rows = [
+    ...(manifest.converted || []),
+    ...(manifest.split || []),
+    ...(manifest.partial || []),
+  ];
+  return rows
+    .filter((row) => row.id && row.source_url)
+    .map((row) => ({
+      name: row.id,
+      type: 'http',
+      behavior: row.source_behavior || 'classical',
+      format: row.source_format || 'yaml',
+      url: row.source_url,
+    }));
 }
 
 function splitTopLevel(rule) {
@@ -170,16 +221,25 @@ function safeFileName(name) {
   return `${String(name).toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'ruleset'}.mrs`;
 }
 
+function safeYamlFileName(name) {
+  return `${String(name).toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'ruleset'}.yaml`;
+}
+
 async function fetchText(url) {
   const candidates = [url];
   if (url.includes('fastly.jsdelivr.net/gh/')) candidates.push(url.replace('https://fastly.jsdelivr.net/gh/', 'https://cdn.jsdelivr.net/gh/'));
   if (url.includes('cdn.jsdelivr.net/gh/')) candidates.push(url.replace('https://cdn.jsdelivr.net/gh/', 'https://fastly.jsdelivr.net/gh/'));
   if (url.includes('raw.githubusercontent.com/')) candidates.push(url.replace('https://raw.githubusercontent.com/', 'https://fastly.jsdelivr.net/gh/').replace('/main/', '@main/').replace('/master/', '@master/'));
+  const jsdelivrMatch = url.match(/^https:\/\/(?:fastly\.|cdn\.|testingcf\.)?jsdelivr\.net\/gh\/([^/]+)\/([^@/]+)@([^/]+)\/(.+)$/);
+  if (jsdelivrMatch) {
+    const [, owner, repo, ref, filePath] = jsdelivrMatch;
+    candidates.push(`https://raw.githubusercontent.com/${owner}/${repo}/${ref}/${filePath}`);
+  }
 
   const errors = [];
-  for (const candidate of candidates) {
+  for (const candidate of [...new Set(candidates)]) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 45000);
+    const timer = setTimeout(() => controller.abort(), 90000);
     try {
       const response = await fetch(candidate, {
         signal: controller.signal,
@@ -276,6 +336,12 @@ function writeNormalizedSource(tempDir, id, behavior, entries) {
   return { file, count: normalized.length };
 }
 
+function writeResidualRuleSet(id, entries) {
+  const fileName = safeYamlFileName(`${id}-classical`);
+  fs.writeFileSync(path.join(OUTPUT_DIR, fileName), renderPayload(entries), 'utf8');
+  return { behavior: 'classical', file: fileName, entries: entries.length };
+}
+
 async function runLimited(items, limit, worker) {
   let cursor = 0;
   const results = [];
@@ -293,10 +359,16 @@ async function runLimited(items, limit, worker) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const mihomoBin = await ensureMihomoBinary(options.mihomoBin);
-  const providers = parseProviders(readText(CMFA_FILE))
+  const previousManifest = readPreviousManifest();
+  const providerByName = new Map();
+  for (const provider of providersFromPreviousManifest(previousManifest)) providerByName.set(provider.name, provider);
+  for (const provider of parseProviders(readText(CMFA_FILE))
     .filter((provider) => provider.url)
     .filter((provider) => provider.type === 'http')
-    .filter((provider) => !provider.url.includes(SCKI_SUPPLEMENTAL_MARKER));
+    .filter((provider) => !provider.url.includes(SCKI_GENERATED_MARKER))) {
+    providerByName.set(provider.name, provider);
+  }
+  const providers = [...providerByName.values()];
 
   const tempDir = path.join(CACHE_DIR, 'sources');
   fs.rmSync(tempDir, { recursive: true, force: true });
@@ -311,6 +383,7 @@ async function main() {
     output_dir: 'rulesets/generated/mihomo-mrs',
     converted: [],
     split: [],
+    partial: [],
     existing_mrs: [],
     retained: [],
     failed: [],
@@ -337,26 +410,31 @@ async function main() {
       const types = Object.keys(typeCounts).sort();
       const domainEntries = entries.filter((entry) => classifyEntry(entry) === 'domain');
       const ipcidrEntries = entries.filter((entry) => classifyEntry(entry) === 'ipcidr');
+      const residualEntries = entries.filter((entry) => {
+        const type = classifyEntry(entry);
+        return type !== 'domain' && type !== 'ipcidr';
+      });
 
       if (entries.length === 0) {
         manifest.retained.push({ id: provider.name, reason: 'empty-source', url: provider.url });
         return;
       }
 
-      if (types.every((type) => type === 'domain' || type === 'ipcidr')) {
-        const generated = [];
-        if (domainEntries.length > 0) {
-          const fileName = domainEntries.length === entries.length ? safeFileName(provider.name) : safeFileName(`${provider.name}-domain`);
-          const source = writeNormalizedSource(tempDir, provider.name, 'domain', domainEntries);
-          convertWithMihomo(mihomoBin, 'domain', source.file, path.join(OUTPUT_DIR, fileName));
-          generated.push({ behavior: 'domain', file: fileName, entries: source.count });
-        }
-        if (ipcidrEntries.length > 0) {
-          const fileName = ipcidrEntries.length === entries.length ? safeFileName(provider.name) : safeFileName(`${provider.name}-ipcidr`);
-          const source = writeNormalizedSource(tempDir, provider.name, 'ipcidr', ipcidrEntries);
-          convertWithMihomo(mihomoBin, 'ipcidr', source.file, path.join(OUTPUT_DIR, fileName));
-          generated.push({ behavior: 'ipcidr', file: fileName, entries: source.count });
-        }
+      const generated = [];
+      if (domainEntries.length > 0) {
+        const fileName = domainEntries.length === entries.length ? safeFileName(provider.name) : safeFileName(`${provider.name}-domain`);
+        const source = writeNormalizedSource(tempDir, provider.name, 'domain', domainEntries);
+        convertWithMihomo(mihomoBin, 'domain', source.file, path.join(OUTPUT_DIR, fileName));
+        generated.push({ behavior: 'domain', file: fileName, entries: source.count });
+      }
+      if (ipcidrEntries.length > 0) {
+        const fileName = ipcidrEntries.length === entries.length ? safeFileName(provider.name) : safeFileName(`${provider.name}-ipcidr`);
+        const source = writeNormalizedSource(tempDir, provider.name, 'ipcidr', ipcidrEntries);
+        convertWithMihomo(mihomoBin, 'ipcidr', source.file, path.join(OUTPUT_DIR, fileName));
+        generated.push({ behavior: 'ipcidr', file: fileName, entries: source.count });
+      }
+
+      if (residualEntries.length === 0) {
         const row = {
           id: provider.name,
           source_behavior: provider.behavior || 'classical',
@@ -367,6 +445,19 @@ async function main() {
         };
         if (generated.length === 1) manifest.converted.push(row);
         else manifest.split.push(row);
+        return;
+      }
+
+      if (generated.length > 0) {
+        manifest.partial.push({
+          id: provider.name,
+          source_behavior: provider.behavior || 'classical',
+          source_format: provider.format || 'yaml',
+          source_url: provider.url,
+          type_counts: typeCounts,
+          generated,
+          residual: writeResidualRuleSet(provider.name, residualEntries),
+        });
         return;
       }
 
@@ -385,13 +476,14 @@ async function main() {
 
   manifest.converted.sort((a, b) => a.id.localeCompare(b.id));
   manifest.split.sort((a, b) => a.id.localeCompare(b.id));
+  manifest.partial.sort((a, b) => a.id.localeCompare(b.id));
   manifest.existing_mrs.sort((a, b) => a.id.localeCompare(b.id));
   manifest.retained.sort((a, b) => a.id.localeCompare(b.id));
   manifest.failed.sort((a, b) => a.id.localeCompare(b.id));
   fs.writeFileSync(path.join(OUTPUT_DIR, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 
   if (!options.keepCache) fs.rmSync(tempDir, { recursive: true, force: true });
-  console.log(`mihomo mrs sync: converted=${manifest.converted.length} split=${manifest.split.length} existing=${manifest.existing_mrs.length} retained=${manifest.retained.length} failed=${manifest.failed.length}`);
+  console.log(`mihomo mrs sync: converted=${manifest.converted.length} split=${manifest.split.length} partial=${manifest.partial.length} existing=${manifest.existing_mrs.length} retained=${manifest.retained.length} failed=${manifest.failed.length}`);
   if (manifest.failed.length > 0) {
     for (const failure of manifest.failed) console.error(`${failure.id}: ${failure.error}`);
     process.exit(1);

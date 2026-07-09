@@ -2,5 +2,4 @@
 # Source id: provider-youku-ipcidr
 # Source URL: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Youku/Youku.yaml
 ip_cidr_set:
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

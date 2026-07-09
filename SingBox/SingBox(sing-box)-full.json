@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v5.4.38-sing.1",
+    "version": "v5.4.39-sing.1",
     "build": "2026-07-09",
-    "baseline": "Clash Party v5.4.38",
+    "baseline": "Clash Party v5.4.39",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {
@@ -1814,16 +1814,6 @@
       },
       {
         "type": "remote",
-        "tag": "vpsdance-ai-coding",
-        "format": "source",
-        "url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/sing-box/coding.json",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
         "tag": "geosite-category-ads-all",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
@@ -2187,13 +2177,6 @@
         "outbound": "DIRECT"
       },
       {
-        "ip_cidr": [
-          "172.90.1.130/32"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
         "domain": [
           "ip.cip.cc"
         ],
@@ -2217,6 +2200,13 @@
       {
         "domain_suffix": [
           "cdn.weixin.qq.com"
+        ],
+        "action": "route",
+        "outbound": "DIRECT"
+      },
+      {
+        "ip_cidr": [
+          "172.90.1.130/32"
         ],
         "action": "route",
         "outbound": "DIRECT"
@@ -3284,13 +3274,6 @@
         ],
         "action": "route",
         "outbound": "🔍 Google 服务"
-      },
-      {
-        "rule_set": [
-          "vpsdance-ai-coding"
-        ],
-        "action": "route",
-        "outbound": "🤖 AI 服务"
       },
       {
         "domain_suffix": [

@@ -5,6 +5,12 @@
 
 ---
 
+## v5.4.39-flclash.1 (2026-07-09)
+
+- SYNC：同步 Clash Party Normal v5.4.39，规则规模更新为 474 providers、929 条规则。
+- MIHOMO-MRS：424 个 provider 使用 `.mrs`；30 个 partial provider 追加残余 YAML；20 个全量不可转 provider 保留原格式。
+- SOURCE-SIZE：继承压缩 `.mrs` 映射表，避免 QuickJS 覆写源码因多行兼容表继续膨胀。
+
 ## v5.4.38-flclash.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：同步 Clash Party Normal v5.4.38，主 rules 改为引用补充规则集。

@@ -1,0 +1,4 @@
+payload:
+  - "PROCESS-NAME,Binance.exe"
+  - "PROCESS-NAME,Huobi.exe"
+  - "PROCESS-NAME,OKX.exe"

@@ -5,6 +5,12 @@
 
 ---
 
+## v5.4.39-sing.1 (2026-07-09)
+
+- SYNC：生成器基线更新到 Clash Party v5.4.39，并重新生成 Full JSON。
+- SCKI-MRS-BRIDGE：SingBox 不消费 Mihomo `.mrs`；生成器改为读取 `rulesets/generated/mihomo-mrs/manifest.json`，把已迁移为 `.mrs` 的 `scki-*` 补充规则回溯到原始 `.list` 并展开为原生 route rules。
+- VERIFY：Full JSON 当前 40 个 remote rule_set、660 条 route rules；Cloudflare R2 与 Douyin / `zjcdn.com` 前置守卫继续位于广告、TikTok 和国外兜底之前。
+
 ## v5.4.38-sing.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：生成器会读取 `rulesets/supplemental/clash/*.list` 并展开为 sing-box route rules。

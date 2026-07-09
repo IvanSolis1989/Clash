@@ -2,6 +2,4 @@
 # Source id: provider-szkane-bilihmt-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/BilibiliHMT.list
 ip_cidr_set:
-  - "DOMAIN"
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

@@ -6,12 +6,12 @@ Egern 有必要并且已经作为正式同步产物纳入仓库。
 
 Egern 的能力足够承载本仓库的分流模型：它有订阅型 `external` 策略组、区域 `smart` 选择、业务 `select` 组、顺序匹配规则、远端 `rule_set` 和 DNS forward。限制在于规则集格式：Egern 官方文档没有声明可直接消费 Mihomo `.mrs`，而是使用 Egern 自己的规则集字段。
 
-因此 v5.4.38-egern.2 做正式同步：
+因此 v5.4.39-egern.1 做正式同步：
 
 - 从 CMFA 生成 `Egern/Egern.yaml`。
 - 保留 22 个区域组 + 33 个业务组。
-- 渲染 882 条 Egern 主规则 + 439 个顶层 `rule_set`。
-- Egern 原生补充规则集。
+- 渲染 927 条 Egern 主规则 + 484 个顶层 `rule_set`。
+- `rulesets/generated/egern/*.yaml` 的 Egern 原生规则集，其中包含由补充规则集转换来的 `provider-scki-*.yaml`。
 - 不把零星单条域名/IP散写进主规则。
 
 明确不做：

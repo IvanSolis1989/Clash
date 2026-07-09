@@ -2,5 +2,4 @@
 # Source id: provider-acc-weiyun-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/WeiYun/WeiYun.yaml
 ip_cidr_set:
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

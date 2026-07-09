@@ -2,6 +2,4 @@
 # Source id: provider-neteasemusic-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NetEaseMusic/NetEaseMusic.yaml
 ip_cidr_set:
-  - "DOMAIN"
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

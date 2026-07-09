@@ -6,5 +6,3 @@ domain_set:
 domain_suffix_set:
   - "httpdns.baidu.com            #"
   - "httpdns.baidubce.com         #"
-ip_cidr_set:
-  - "180.76.76.0/24                                #"

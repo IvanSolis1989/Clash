@@ -7,6 +7,13 @@
 
 ---
 
+## v5.4.39 / v5.4.39-normal.1 (2026-07-09)
+
+- MRS-PARTIAL：Smart / Normal 全量复查剩余 `YamlRule` / `TextRule`，可迁移部分全部拆入 `.mrs`，只为 `PROCESS-NAME` / `GEOIP` / 端口等不支持类型保留残余 YAML 或原格式。
+- MIHOMO-MRS：规则规模更新为 474 providers、929 条规则；424 个 provider 使用 `.mrs`，30 个 partial provider 追加 `-classical.yaml` 残余规则集。
+- SOURCE-SIZE：`.mrs` 覆写映射表改为压缩 JSON 单行，避免多行兼容表把 Clash Party 源码行数撑大；运行时仍能自动把动态 provider 改写为最终规则集。
+- SCKI-SUPPLEMENTAL：可表达为 domain/ipcidr 的 `scki-*` 补充规则集已迁移到 `.mrs`，进程规则继续保留为必要例外。
+
 ## v5.4.38 / v5.4.38-normal.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：新增公共补充规则集常量与 15 个 `scki-*` rule-provider，将零星域名/IP/进程补丁从主 rules 中移出。

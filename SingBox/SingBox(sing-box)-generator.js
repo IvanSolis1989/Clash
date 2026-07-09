@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const VERSION = 'v5.4.38-sing.1';
+const VERSION = 'v5.4.39-sing.1';
 const BUILD = '2026-07-09';
-const BASELINE = 'Clash Party v5.4.38';
+const BASELINE = 'Clash Party v5.4.39';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -511,15 +511,57 @@ function supplementalFileFromUrl(url) {
   return path.join(__dirname, '..', 'rulesets', 'supplemental', 'clash', match[1]);
 }
 
+function loadMihomoMrsSupplementalSources() {
+  const manifestPath = path.join(__dirname, '..', 'rulesets', 'generated', 'mihomo-mrs', 'manifest.json');
+  if (!fs.existsSync(manifestPath)) return new Map();
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const rows = []
+    .concat(manifest.converted || [])
+    .concat(manifest.split || [])
+    .concat(manifest.partial || []);
+  const result = new Map();
+  for (const row of rows) {
+    if (!row || !String(row.id || '').startsWith('scki-')) continue;
+    const filePath = supplementalFileFromUrl(row.source_url);
+    if (!filePath) continue;
+    for (const generated of row.generated || []) {
+      if (!generated || !generated.file) continue;
+      const providerTag = path.basename(generated.file, path.extname(generated.file));
+      result.set(providerTag, { filePath, behavior: generated.behavior });
+    }
+    if (row.residual && row.residual.file) {
+      const providerTag = path.basename(row.residual.file, path.extname(row.residual.file));
+      result.set(providerTag, { filePath, behavior: 'classical' });
+    }
+  }
+  return result;
+}
+
+function supplementalEntryMatchesBehavior(entry, behavior) {
+  if (!behavior || behavior === 'classical') return true;
+  const type = String(entry).split(',')[0];
+  if (behavior === 'domain') return ['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD'].includes(type);
+  if (behavior === 'ipcidr') return ['IP-CIDR', 'IP-CIDR6', 'SRC-IP-CIDR'].includes(type);
+  return false;
+}
+
 function loadSupplementalProviderRules(providerMap) {
   const result = new Map();
+  const mrsSupplementalSources = loadMihomoMrsSupplementalSources();
   for (const [tag, info] of Object.entries(providerMap)) {
-    const filePath = supplementalFileFromUrl(info && info.url);
+    let filePath = supplementalFileFromUrl(info && info.url);
+    let behavior = info && info.behavior;
+    if (!filePath && mrsSupplementalSources.has(tag)) {
+      const source = mrsSupplementalSources.get(tag);
+      filePath = source.filePath;
+      behavior = source.behavior;
+    }
     if (!filePath) continue;
     const entries = fs.readFileSync(filePath, 'utf8')
       .split(/\r?\n/)
       .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith('#'));
+      .filter((line) => line && !line.startsWith('#'))
+      .filter((line) => supplementalEntryMatchesBehavior(line, behavior));
     result.set(tag, entries);
   }
   return result;

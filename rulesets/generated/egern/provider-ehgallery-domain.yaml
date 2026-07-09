@@ -8,5 +8,3 @@ domain_suffix_set:
   - "exhentai.org"
   - "hath.network"
   - "hentaiverse.org"
-ip_cidr_set:
-  - "178.175.128.0/21"

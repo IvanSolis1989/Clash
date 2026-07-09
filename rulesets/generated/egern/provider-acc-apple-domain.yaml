@@ -25,5 +25,3 @@ domain_keyword_set:
   - "me.com                                                    #"
   - "mzstatic.com                                              #"
   - "sectigo.com                                               #"
-ip_cidr_set:
-  - "17.0.0.0/8                          #"

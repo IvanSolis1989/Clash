@@ -2,7 +2,4 @@
 # Source id: provider-acc-fl-xianyu-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationXianYu.yaml
 ip_cidr_set:
-  - "DOMAIN"
-  - "DOMAIN-KEYWORD"
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

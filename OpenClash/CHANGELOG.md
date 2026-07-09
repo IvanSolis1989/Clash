@@ -7,6 +7,13 @@
 
 ---
 
+## v5.4.39-oc-normal.1 / v5.4.39-oc-smart.1 (2026-07-09)
+
+- MRS-PARTIAL：Normal / Smart heredoc 全量同步剩余可迁移规则源，当前为 474 providers、929 条规则。
+- MIHOMO-MRS：424 个 provider 使用 `.mrs`，30 个 provider 使用残余 classical YAML，20 个 provider 因不支持 `.mrs` 类型保留原格式。
+- SCKI-SUPPLEMENTAL：补充规则集 domain/ipcidr 部分改为 `.mrs`；进程规则保持 classical 文本，路由器端可导入但仅 Mihomo 能识别对应语义。
+- META：`VERSION_TAG` 与内嵌 Ruby `VERSION` 同步到 v5.4.39。
+
 ## v5.4.38-oc-normal.1 / v5.4.38-oc-smart.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：Normal / Smart heredoc 同步 15 个 `scki-*` rule-provider。

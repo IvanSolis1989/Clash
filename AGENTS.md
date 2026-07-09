@@ -132,8 +132,9 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
 
 1. 运行 `node tools/sync-mihomo-mrs-rule-providers.js` 在 `rulesets/generated/mihomo-mrs/` 生成本仓库托管的 `.mrs` 与 `manifest.json`。
 2. 运行 `node tools/apply-mihomo-mrs-overrides.js` 同步到所有 Mihomo 兼容产物。
-3. 混合 classical 规则集必须拆分为 `-domain` / `-ipcidr` 两个 `.mrs` provider；含 `GEOIP`、端口、进程、逻辑组合等 `.mrs` 不支持类型的 provider 保留原格式，并在 manifest / CHANGELOG 说明原因。
-4. Egern、SingBox、Shadowrocket、Surge、Loon、Quantumult X、v2rayN、Passwall/Passwall2 不得硬套 Mihomo `.mrs`；应使用各自原生格式或生成器映射。
+3. 混合 classical 规则集必须拆分为 `-domain` / `-ipcidr` 两个 `.mrs` provider；部分可转 provider 必须生成可转 `.mrs` 并把剩余不支持条目写入 `-classical.yaml` 残余规则集；只有全量不可转的 `GEOIP`、端口、进程、逻辑组合等 provider 才保留原格式，并在 manifest / CHANGELOG 说明原因。
+4. JS 覆写产物允许保留压缩 `.mrs` 映射表，用于把动态注入的上游 provider 自动改写为最终规则集；CMFA / OpenClash / Stash 等静态 YAML 产物必须直接写最终 `.mrs` / 残余 YAML 地址，不需要兼容映射表，禁止把映射表展开成多行大表。
+5. Egern、SingBox、Shadowrocket、Surge、Loon、Quantumult X、v2rayN、Passwall/Passwall2 不得硬套 Mihomo `.mrs`；应使用各自原生格式或生成器映射。
 
 ### 约束 E：生成链路顺序不可倒置
 

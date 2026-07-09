@@ -126,7 +126,7 @@ node tools/generate-egern-from-cmfa.js
 
 这些目录的修改**不需要**触发 §1 全版本联动，但 `tools/` 和 `.github/workflows/` 的改动应在 PR 描述中说明。
 
-### 0.2 规则生成链路架构（v5.4.38 起强制）
+### 0.2 规则生成链路架构（v5.4.39 起强制）
 
 本仓库现在有两条生成链路，不能混用：
 
@@ -135,7 +135,8 @@ node tools/generate-egern-from-cmfa.js
    - 同步脚本：`node tools/sync-mihomo-mrs-rule-providers.js`。
    - 输出目录：`rulesets/generated/mihomo-mrs/` + `manifest.json`。
    - 应用脚本：`node tools/apply-mihomo-mrs-overrides.js`。
-   - 规则：`domain` / `ipcidr` 才能转 `.mrs`；混合 classical 必须拆成 `-domain` / `-ipcidr`；含 `GEOIP`、端口、进程、逻辑组合等不支持类型必须保留原格式，并写入 manifest 的 retained 原因。
+   - 规则：`domain` / `ipcidr` 才能转 `.mrs`；混合 classical 必须拆成 `-domain` / `-ipcidr`；若同一 provider 只有部分条目可转，必须生成可转 `.mrs` 并把剩余不支持条目写入 `-classical.yaml` 残余规则集；完全无法转换时才进入 manifest 的 `retained`，且必须写明原因。
+   - JS 覆写产物允许保留压缩后的 `.mrs` 映射表，用于把动态注入的上游 provider 自动改写成最终规则集；CMFA / OpenClash / Stash 等静态 YAML 产物必须直接写最终 `.mrs` / 残余 YAML 地址，不需要兼容映射表。禁止把映射表展开成多行大表制造源码膨胀。
 2. **Egern 原生规则链路**：面向 `Egern/Egern.yaml`。
    - Egern 不直接消费 Mihomo `.mrs`。
    - `node tools/generate-egern-from-cmfa.js` 会读取 CMFA 规则顺序和 `.mrs` manifest，把上游规则映射为 `rulesets/generated/egern/*.yaml` 的 Egern 原生 YAML 规则集。
@@ -192,7 +193,7 @@ node tools/generate-egern-from-cmfa.js
 6. **自检命令必须通过**（§2）。
 7. **提交前在 PR 描述里列出「影响面」**：
    - 改动的代理组 / rule-provider / 规则行数
-   - `.mrs` manifest 统计（converted / split / existing_mrs / retained / failed）
+   - `.mrs` manifest 统计（converted / split / partial / existing_mrs / retained / failed）
    - 每个产物的同步位置（行号或 commit diff 摘要）
    - 手动跳过同步的产物及原因
 
@@ -395,7 +396,7 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
    - 例：mihomo Smart 内核的 `uselightgbm` 属于 Alpha 分支能力，不能下放到稳定分支的 Clash 核心。
 3. **格式核对**：
    - Clash YAML：`rule-providers` 的 `behavior` ∈ {`domain`, `ipcidr`, `classical`}；`format` ∈ {`yaml`, `text`, `mrs`}。
-   - Mihomo `.mrs`：仅用于支持 `rule-providers.format: mrs` 的 Mihomo 兼容产物；当前只承载 `domain` / `ipcidr`。上游无 `.mrs` 时，必须通过 `tools/sync-mihomo-mrs-rule-providers.js` 生成到 `rulesets/generated/mihomo-mrs/`，再用 `tools/apply-mihomo-mrs-overrides.js` 同步。混合 classical provider 拆分为 `-domain` / `-ipcidr`；含 `GEOIP` / 端口 / 进程 / 逻辑组合等不支持类型时保留原格式并说明原因。
+   - Mihomo `.mrs`：仅用于支持 `rule-providers.format: mrs` 的 Mihomo 兼容产物；当前只承载 `domain` / `ipcidr`。上游无 `.mrs` 时，必须通过 `tools/sync-mihomo-mrs-rule-providers.js` 生成到 `rulesets/generated/mihomo-mrs/`，再用 `tools/apply-mihomo-mrs-overrides.js` 同步。混合 classical provider 拆分为 `-domain` / `-ipcidr`；部分可转 provider 必须拆出可转 `.mrs` 并保留 `-classical.yaml` 残余；只有全量不可转的 `GEOIP` / 端口 / 进程 / 逻辑组合等 provider 才保留原格式并说明原因。
    - Shadowrocket：`RULE-SET,<url>,<policy>` 不支持 `rule-provider` 节。策略名里的 emoji **必须与组定义完全一致**（含 ZWJ `\u200D`）。
    - sing-box：`rule_set` 的 `format` ∈ {`binary`, `source`}；`.srs` 必须配 `binary`。
 4. **PR 描述里粘贴官方文档锚点**（URL + 字段名），审阅者可一键验证。
@@ -574,7 +575,7 @@ done
 | **Stash rule-providers** | provider 下载代理 / health-check / exclude-filter | Stash Wiki 未列出这些 Mihomo 字段；从 CMFA 生成时删除 | `Stash/REFERENCE-Stash-wiki.md` |
 | **Shadowrocket** | rule-provider 节 | **不支持**；必须把 URL 直接写在 `RULE-SET,<url>,<policy>` 中 | §3.2 + §3.5.2 |
 | **Surge / Loon / QX** | 进程匹配 | iOS 进程命名空间不支持 `PROCESS-NAME`；Surge/Loon iOS 14+ 部分支持，QX 不支持 | 各官方 wiki |
-| **Mihomo `.mrs`** | 规则类型 | 只允许 `domain` / `ipcidr`；混合 classical 必须拆分；`GEOIP`、端口、进程、逻辑组合保留原格式 | `tools/sync-mihomo-mrs-rule-providers.js` + MetaCubeX docs |
+| **Mihomo `.mrs`** | 规则类型 | 只允许 `domain` / `ipcidr`；混合 classical 必须拆分；部分可转必须生成 `.mrs` + `-classical.yaml` 残余；全量不可转才保留原格式 | `tools/sync-mihomo-mrs-rule-providers.js` + MetaCubeX docs |
 | **Egern** | Mihomo `.mrs` | 官方文档未声明支持，禁止把 `.mrs` URL 直接写进 Egern；必须经 `tools/generate-egern-from-cmfa.js` 输出 Egern 原生 YAML | `Egern/REFERENCE-Egern.md` |
 
 #### 3.5.5 添加新条目的工作流
@@ -651,8 +652,8 @@ grep -cE "^rule-providers:$" /tmp/oc_full_override_probe.yaml   # 期望 1
 grep -cE "^rules:$" /tmp/oc_full_override_probe.yaml             # 期望 1
 ruby -ryaml -e '
   d = YAML.load_file("/tmp/oc_full_override_probe.yaml", permitted_classes: [Symbol], aliases: true)
-  raise "providers < 429" if (d["rule-providers"] || {}).size < 429   # full 期望 429
-  raise "rules    < 884" if (d["rules"]         || []).size < 884     # full 期望 884
+  raise "providers < 474" if (d["rule-providers"] || {}).size < 474   # full 期望 474
+  raise "rules    < 929" if (d["rules"]         || []).size < 929     # full 期望 929
   puts "OC full override yaml: providers=#{d["rule-providers"].size} rules=#{d["rules"].size}"
 '
 

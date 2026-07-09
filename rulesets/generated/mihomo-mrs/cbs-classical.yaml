@@ -1,0 +1,3 @@
+payload:
+  - "PROCESS-NAME,com.cbs.app"
+  - "PROCESS-NAME,com.showtime.standalone"

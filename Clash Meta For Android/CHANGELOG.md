@@ -5,6 +5,13 @@
 
 ---
 
+## v5.4.39-cmfa.1 (2026-07-09)
+
+- MRS-PARTIAL：全量复查并迁移剩余可转 `YamlRule` / `TextRule`，CMFA 当前为 474 providers、929 条规则。
+- MIHOMO-MRS：424 个 provider 使用 `.mrs`，30 个 provider 使用 `rulesets/generated/mihomo-mrs/*-classical.yaml` 承载不支持 `.mrs` 的残余规则，20 个 provider 因全量不可转继续保留。
+- SCKI-SUPPLEMENTAL：domain/ipcidr 补充规则集改为引用本仓库生成 `.mrs`；`scki-local-process-direct` / `scki-work-process` 保持 Clash classical 文本规则集。
+- VERIFY：合同校验新增 partial / residual 计数与 `scki-*` `.mrs` 引用检查。
+
 ## v5.4.38-cmfa.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：同步 Clash Party v5.4.38 的 15 个 `scki-*` rule-provider。

@@ -148,25 +148,40 @@ function safeAssetFileName(name) {
 }
 
 function sourceUrlForProvider(provider) {
-  if (provider.name === 'hagezi-tif') return HAGEZI_TIF_DOMAINS;
+  const sourceInfo = sourceInfoForProvider(provider);
+  return sourceInfo ? sourceInfo.sourceUrl : null;
+}
+
+function sourceInfoForProvider(provider) {
+  if (!provider) return null;
+  if (provider.name === 'hagezi-tif') return { sourceUrl: HAGEZI_TIF_DOMAINS, sourceFilter: null };
   if (!provider.url) return null;
-  const localMrsSource = sourceUrlForGeneratedMihomoMrs(provider.url);
+  const localMrsSource = sourceInfoForGeneratedMihomoMrs(provider.url);
   if (localMrsSource) return localMrsSource;
   let url = provider.url;
   if (url.endsWith('.mrs')) url = url.replace(/\.mrs$/, '.yaml').replace('geolocation-!cn', 'geolocation-%21cn');
-  return url.replace('https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/', 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/');
+  return {
+    sourceUrl: url.replace('https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/', 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/'),
+    sourceFilter: null,
+  };
 }
 
 let mihomoMrsSourceByFile = null;
 
-function sourceUrlForGeneratedMihomoMrs(url) {
+function sourceInfoForGeneratedMihomoMrs(url) {
   if (!String(url || '').includes(MIHOMO_MRS_BASE_PATH)) return null;
   if (!mihomoMrsSourceByFile) {
     const manifest = JSON.parse(readText(MIHOMO_MRS_MANIFEST_FILE));
     mihomoMrsSourceByFile = new Map();
-    for (const row of [...manifest.converted, ...manifest.split]) {
+    for (const row of [...manifest.converted, ...manifest.split, ...(manifest.partial || [])]) {
       for (const generated of row.generated) {
-        mihomoMrsSourceByFile.set(generated.file, row.source_url);
+        mihomoMrsSourceByFile.set(generated.file, { sourceUrl: row.source_url, sourceFilter: generated.behavior });
+      }
+      if (row.residual) {
+        mihomoMrsSourceByFile.set(row.residual.file, {
+          sourceUrl: `${SCKI_BASE}/${MIHOMO_MRS_BASE_PATH.replace(/^\//, '')}${row.residual.file}`,
+          sourceFilter: null,
+        });
       }
     }
   }
@@ -174,11 +189,17 @@ function sourceUrlForGeneratedMihomoMrs(url) {
   return mihomoMrsSourceByFile.get(file) || null;
 }
 
-function addGeneratedAsset(assets, id, sourceUrl, behavior) {
+function addGeneratedAsset(assets, id, sourceInfo, behavior) {
   const file = safeAssetFileName(id);
   const existing = assets.get(file);
   if (existing) return `${SCKI_GENERATED_BASE}/${file}`;
-  assets.set(file, { file, id, sourceUrl, behavior: behavior || 'classical' });
+  assets.set(file, {
+    file,
+    id,
+    sourceUrl: sourceInfo && sourceInfo.sourceUrl,
+    sourceFilter: sourceInfo && sourceInfo.sourceFilter,
+    behavior: behavior || 'classical',
+  });
   return `${SCKI_GENERATED_BASE}/${file}`;
 }
 
@@ -188,15 +209,15 @@ function providerUrlToEgern(provider, assets) {
   if (provider.url.includes('/rulesets/supplemental/clash/')) {
     return provider.url.replace('/rulesets/supplemental/clash/', '/rulesets/supplemental/egern/').replace(/\.list$/, '.yaml');
   }
-  return addGeneratedAsset(assets, `provider-${provider.name}`, sourceUrlForProvider(provider), provider.behavior || 'classical');
+  return addGeneratedAsset(assets, `provider-${provider.name}`, sourceInfoForProvider(provider), provider.behavior || 'classical');
 }
 
 function geositeEgernUrl(name, assets) {
-  return addGeneratedAsset(assets, `geosite-${name}`, geositeUrl(name), 'domain');
+  return addGeneratedAsset(assets, `geosite-${name}`, { sourceUrl: geositeUrl(name), sourceFilter: null }, 'domain');
 }
 
 function geoipEgernUrl(name, assets) {
-  return addGeneratedAsset(assets, `geoip-${name}`, geoipUrl(name), 'ipcidr');
+  return addGeneratedAsset(assets, `geoip-${name}`, { sourceUrl: geoipUrl(name), sourceFilter: null }, 'ipcidr');
 }
 
 function renderRuleBlock(type, fields, indent = '  ') {
@@ -310,12 +331,12 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
   return [
     '---',
     '# ======================================================================',
-    '# Egern Smart v5.4.38-egern.2 - Egern Profile',
+    '# Egern Smart v5.4.39-egern.1 - Egern Profile',
     '# Build: 2026-07-09',
-    '# Baseline: Clash Party v5.4.38',
+    '# Baseline: Clash Party v5.4.39',
     '# Architecture: 22 smart region groups + 33 business groups + CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
-    `# Egern rule sets: ${assetCount} generated native YAML files + supplemental YAML files.`,
+    `# Egern rule sets: ${assetCount} generated native YAML files.`,
     '# Platform limit: Egern official rules do not expose Clash PROCESS-NAME.',
     '# Change history: see Egern/CHANGELOG.md',
     '# ======================================================================',
@@ -357,6 +378,17 @@ function parsePayloadEntries(text) {
     if (value && !value.startsWith('#')) entries.push(value);
   }
   return entries;
+}
+
+function classifyClashEntry(entry) {
+  if (!String(entry).includes(',')) {
+    if (/^[0-9a-fA-F:.]+\/\d+$/.test(String(entry).trim())) return 'ipcidr';
+    return 'domain';
+  }
+  const type = splitTopLevel(entry)[0].toUpperCase().replace(/\s+/g, '');
+  if (['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD', 'DOMAIN-REGEX', 'DOMAIN-WILDCARD'].includes(type)) return 'domain';
+  if (['IP-CIDR', 'IP-CIDR6'].includes(type)) return 'ipcidr';
+  return type || 'unknown';
 }
 
 function addDomainLike(sets, value, exactBareDomain) {
@@ -481,7 +513,19 @@ function fetchCandidates(url) {
   return [...new Set(candidates)];
 }
 
+function localSckiPath(url) {
+  const prefix = `${SCKI_BASE}/`;
+  if (!String(url || '').startsWith(prefix)) return null;
+  const relative = decodeURIComponent(String(url).slice(prefix.length).split(/[?#]/)[0]);
+  const target = path.resolve(REPO_ROOT, relative);
+  if (!target.startsWith(REPO_ROOT + path.sep)) return null;
+  return target;
+}
+
 async function fetchText(url) {
+  const local = localSckiPath(url);
+  if (local && fs.existsSync(local)) return readText(local);
+
   const candidates = fetchCandidates(url);
 
   const errors = [];
@@ -527,7 +571,10 @@ async function generateNativeRuleSets(assets) {
   const skippedTypes = new Set();
   await runLimited(assetList, FETCH_CONCURRENCY, async (asset) => {
     const source = await fetchText(asset.sourceUrl);
-    const entries = parsePayloadEntries(source);
+    let entries = parsePayloadEntries(source);
+    if (asset.sourceFilter === 'domain' || asset.sourceFilter === 'ipcidr') {
+      entries = entries.filter((entry) => classifyClashEntry(entry) === asset.sourceFilter);
+    }
     const converted = convertEntriesToSets(entries, asset.behavior);
     for (const type of converted.skipped) skippedTypes.add(type);
     totalEntries += entries.length;

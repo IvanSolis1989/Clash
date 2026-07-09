@@ -1,5 +1,12 @@
 # Egern — 变更日志
 
+## v5.4.39-egern.1 (2026-07-09)
+
+- SYNC：由 CMFA v5.4.39-cmfa.1 重新生成，跟随 474 rule-provider / 929 rules 的主线顺序。
+- EGERN-NATIVE：Egern 不直接引用 Mihomo `.mrs`；生成器通过 `.mrs` manifest 回溯上游来源，输出 487 个 Egern 原生 YAML 规则集。
+- PARITY：`Egern/Egern.yaml` 当前渲染 927 条主规则与 484 个顶层 `rule_set`；两个桌面 `PROCESS-NAME` 补充规则继续作为官方能力限制跳过。
+- VERIFY：合同校验改为检查 generated Egern `scki-*` 规则集，而不是旧的 supplemental preview 路径。
+
 ## v5.4.38-egern.2 (2026-07-09)
 
 - EGERN-FORMAL：`Egern/Egern.yaml` 从 Preview 升级为正式同步产物，跟随 CMFA 规则顺序生成。

@@ -125,7 +125,7 @@ function buildHeader(versions) {
     '# ================================================================',
     `# Stash Smart ${versions.stashVersion} - Stash (Clash Premium) 配置`,
     `# Build: ${BUILD_DATE}`,
-    '# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 391 rule-providers',
+    '# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组（含 14 流媒体平台组）+ 474 rule-providers',
     `# 基线：Clash Party ${versions.baselineVersion}（唯一主线） / 派生：CMFA ${versions.cmfaVersion}`,
     '# 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）',
     '# 变更历史：见 `Stash/CHANGELOG.md`',

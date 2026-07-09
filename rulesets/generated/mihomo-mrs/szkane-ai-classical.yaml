@@ -1,0 +1,13 @@
+payload:
+  - "PROCESS-NAME,Claude"
+  - "PROCESS-NAME,Claude Helper"
+  - "PROCESS-NAME,Claude Helper (Renderer)"
+  - "PROCESS-NAME,LM Studio"
+  - "PROCESS-NAME,grok"
+  - "PROCESS-NAME,Code Helper"
+  - "PROCESS-NAME,Code Helper (Plugin)"
+  - "PROCESS-NAME,Antigravity Helper"
+  - "PROCESS-NAME,Antigravity Helper (Renderer)"
+  - "PROCESS-NAME,Antigravity Helper (GPU)"
+  - "PROCESS-NAME,Antigravity Helper (Plugin)"
+  - "PROCESS-NAME,Google Drive"

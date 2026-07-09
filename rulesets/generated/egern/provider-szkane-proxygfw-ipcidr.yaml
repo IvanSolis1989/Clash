@@ -2,7 +2,4 @@
 # Source id: provider-szkane-proxygfw-ipcidr
 # Source URL: https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/ProxyGFWlist.list
 ip_cidr_set:
-  - "DOMAIN"
-  - "DOMAIN-KEYWORD"
-  - "DOMAIN-SUFFIX"
   - "IP-CIDR"

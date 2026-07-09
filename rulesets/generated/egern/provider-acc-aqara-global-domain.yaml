@@ -45,7 +45,3 @@ domain_keyword_set:
   - "aqara-camera-ru."
   - "aqara-camera-sg."
   - "aqara-camera-usa."
-ip_cidr_set:
-  - "3.23.78.166/32       #"
-  - "54.214.103.243/32    #"
-  - "54.71.80.151/32      #"

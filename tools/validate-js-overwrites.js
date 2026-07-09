@@ -346,6 +346,13 @@ function extractRuleTarget(rule) {
   return null;
 }
 
+function firstExistingRuleIndex(rules, candidates) {
+  const indexes = candidates
+    .map((rule) => rules.indexOf(rule))
+    .filter((index) => index !== -1);
+  return indexes.length === 0 ? -1 : Math.min(...indexes);
+}
+
 function validateClassification(target, api, fixture, record) {
   record.expect(typeof api.classifyNode === 'function', 'classifyNode is exported by the VM harness');
   record.expect(typeof api.classifyAllNodes === 'function', 'classifyAllNodes is exported by the VM harness');
@@ -547,7 +554,12 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
   const rustDeskGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.workGuard);
-  const copilotIndex = rules.indexOf('RULE-SET,copilot,🤖 AI 服务');
+  const copilotIndex = firstExistingRuleIndex(rules, [
+    'RULE-SET,copilot-domain,🤖 AI 服务',
+    'RULE-SET,copilot-ipcidr,🤖 AI 服务',
+    'RULE-SET,copilot-classical,🤖 AI 服务',
+    'RULE-SET,copilot,🤖 AI 服务',
+  ]);
   record.expect(rustDeskGuardIndex !== -1, 'RustDesk domain guard supplemental rule-set exists before broad Copilot ASN rules');
   record.expect(
     rustDeskGuardIndex !== -1 && copilotIndex !== -1 && rustDeskGuardIndex < copilotIndex,
@@ -556,7 +568,12 @@ function validateRulesAndProviders(output, record, target) {
   // v5.4.26 FIX#164: 腾讯 WorkBuddy copilot.tencent.com 必须在 szkane AiDomain.list
   // （含 DOMAIN-KEYWORD,copilot 子串）之前锁定国内直连，否则被误吞到 🤖 AI 服务（国外代理）。
   const copilotTencentGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.cnsiteGuard);
-  const szkaneAiIndex = rules.indexOf('RULE-SET,szkane-ai,🤖 AI 服务');
+  const szkaneAiIndex = firstExistingRuleIndex(rules, [
+    'RULE-SET,szkane-ai-domain,🤖 AI 服务',
+    'RULE-SET,szkane-ai-ipcidr,🤖 AI 服务',
+    'RULE-SET,szkane-ai-classical,🤖 AI 服务',
+    'RULE-SET,szkane-ai,🤖 AI 服务',
+  ]);
   record.expect(copilotTencentGuardIndex !== -1, 'copilot.tencent.com domestic guard supplemental rule-set exists (FIX#164)');
   record.expect(
     copilotTencentGuardIndex !== -1 && szkaneAiIndex !== -1 && copilotTencentGuardIndex < szkaneAiIndex,

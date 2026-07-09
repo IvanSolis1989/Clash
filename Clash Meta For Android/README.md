@@ -6,7 +6,7 @@
 > 适用客户端：**Clash Meta For Android（CMFA）** / **FlClash** / **mihomo-party-android**（Android 原生）· **[ClashMi](https://github.com/KaringX/clashmi)**（跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，复用同一 YAML；详见 §九）
 > 内核要求：**Mihomo**（原生 YAML 导入；区域组用 `url-test`，**不含 Smart + LightGBM**——CMFA 的静态 YAML 不支持 JS 覆写）
 > **FlClash 用户**：推荐使用 [FlClash 覆写脚本](../FlClash/FlClash(mihomo).js)（动态节点分类 + 家宽识别 + 订阅清理）。详见 [`FlClash/README.md`](../FlClash/README.md)。
-> 当前版本：**v5.4.38-cmfa.1**（Build 2026-07-09，跟随 Clash Party v5.4.38 主线；区域 url-test 与 provider health-check 默认 300s）
+> 当前版本：**v5.4.39-cmfa.1**（Build 2026-07-09，跟随 Clash Party v5.4.39 主线；区域 url-test 与 provider health-check 默认 300s）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -253,7 +253,7 @@ proxy-providers:
 1. 在 CMFA 首页选择刚导入的配置，点击「**启动**」按钮。
 2. 首次启动 CMFA 会自动完成以下动作（需保持网络畅通）：
    - 下载机场节点列表（`subscribe.yaml`）
-   - 下载 **391 rule-providers**（`blackmatrix7 / MetaCubeX` 等规则集）
+   - 下载 **474 rule-providers**（`blackmatrix7 / MetaCubeX` 等规则集）
    - 下载 **Loyalsoldier 增强版** `geoip.dat` / `Country.mmdb` / `GeoLite2-ASN.mmdb`
    - 下载 **MetaCubeX** `geosite.dat`
    - 下载 **LightGBM 模型** `Model.bin`（用于 Smart 组自动择优）

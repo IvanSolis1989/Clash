@@ -5,6 +5,11 @@
 
 ---
 
+## v5.4.39-SR.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.39 更新版本元数据。
+- N/A：Shadowrocket 不支持 Mihomo `.mrs` rule-provider；规则语义延续 v5.4.38-SR.1。
+
 ## v5.4.38-SR.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：删除零星本地白名单直写，改为 13 个仓库维护的 supplemental `RULE-SET`。

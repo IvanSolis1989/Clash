@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T05:07:19.289Z",
+  "generated_at": "2026-07-09T06:25:16.794Z",
   "source": "Clash Meta For Android/CMFA(mihomo).yaml",
-  "mihomo_bin": "mihomo-windows-amd64-compatible.exe",
+  "mihomo_bin": "mihomo-v1.19.28.exe",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
     {
@@ -3157,6 +3157,198 @@
       ]
     },
     {
+      "id": "scki-adfp-direct",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-direct.list",
+      "type_counts": {
+        "domain": 17
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-adfp-direct.mrs",
+          "entries": 17
+        }
+      ]
+    },
+    {
+      "id": "scki-adfp-intl-site",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-intl-site.list",
+      "type_counts": {
+        "domain": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-adfp-intl-site.mrs",
+          "entries": 1
+        }
+      ]
+    },
+    {
+      "id": "scki-adfp-payments",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-payments.list",
+      "type_counts": {
+        "domain": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-adfp-payments.mrs",
+          "entries": 1
+        }
+      ]
+    },
+    {
+      "id": "scki-ai-supplement",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/ai-supplement.list",
+      "type_counts": {
+        "domain": 27
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-ai-supplement.mrs",
+          "entries": 27
+        }
+      ]
+    },
+    {
+      "id": "scki-cnmedia-guard",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/cnmedia-guard.list",
+      "type_counts": {
+        "domain": 10
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-cnmedia-guard.mrs",
+          "entries": 10
+        }
+      ]
+    },
+    {
+      "id": "scki-cnsite-guard",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/cnsite-guard.list",
+      "type_counts": {
+        "domain": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-cnsite-guard.mrs",
+          "entries": 2
+        }
+      ]
+    },
+    {
+      "id": "scki-download-guard",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/download-guard.list",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-download-guard.mrs",
+          "entries": 4
+        }
+      ]
+    },
+    {
+      "id": "scki-gfw-guard",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/gfw-guard.list",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-gfw-guard.mrs",
+          "entries": 4
+        }
+      ]
+    },
+    {
+      "id": "scki-google-mail-intl",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/google-mail-intl.list",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-google-mail-intl.mrs",
+          "entries": 4
+        }
+      ]
+    },
+    {
+      "id": "scki-google-work",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/google-work.list",
+      "type_counts": {
+        "domain": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-google-work.mrs",
+          "entries": 2
+        }
+      ]
+    },
+    {
+      "id": "scki-work-guard",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/work-guard.list",
+      "type_counts": {
+        "domain": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-work-guard.mrs",
+          "entries": 1
+        }
+      ]
+    },
+    {
+      "id": "scki-youtube-guard",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/youtube-guard.list",
+      "type_counts": {
+        "domain": 7
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-youtube-guard.mrs",
+          "entries": 7
+        }
+      ]
+    },
+    {
       "id": "sectigo",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -4747,6 +4939,28 @@
       ]
     },
     {
+      "id": "scki-local-direct",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/local-direct.list",
+      "type_counts": {
+        "ipcidr": 1,
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-local-direct-domain.mrs",
+          "entries": 4
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "scki-local-direct-ipcidr.mrs",
+          "entries": 1
+        }
+      ]
+    },
+    {
       "id": "supercell",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -4921,6 +5135,752 @@
           "entries": 1
         }
       ]
+    }
+  ],
+  "partial": [
+    {
+      "id": "amazon",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Amazon/Amazon.yaml",
+      "type_counts": {
+        "domain": 187,
+        "ipcidr": 15,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "amazon-domain.mrs",
+          "entries": 187
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "amazon-ipcidr.mrs",
+          "entries": 15
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "amazon-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "applefirmware",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleFirmware/AppleFirmware.yaml",
+      "type_counts": {
+        "domain": 174,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "applefirmware-domain.mrs",
+          "entries": 174
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "applefirmware-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "applemusic",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleMusic/AppleMusic.yaml",
+      "type_counts": {
+        "domain": 9,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "applemusic-domain.mrs",
+          "entries": 9
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "applemusic-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "appleproxy",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleProxy/AppleProxy.yaml",
+      "type_counts": {
+        "domain": 39,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "appleproxy-domain.mrs",
+          "entries": 39
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "appleproxy-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "appletv",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleTV/AppleTV.yaml",
+      "type_counts": {
+        "domain": 7,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "appletv-domain.mrs",
+          "entries": 7
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "appletv-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "bytedance",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ByteDance/ByteDance.yaml",
+      "type_counts": {
+        "domain": 369,
+        "ipcidr": 1,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "bytedance-domain.mrs",
+          "entries": 369
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "bytedance-ipcidr.mrs",
+          "entries": 1
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "bytedance-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "cbs",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CBS/CBS.yaml",
+      "type_counts": {
+        "domain": 34,
+        "PROCESS-NAME": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "cbs-domain.mrs",
+          "entries": 34
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "cbs-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
+      "id": "copilot",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Copilot/Copilot.yaml",
+      "type_counts": {
+        "domain": 47,
+        "ipcidr": 2,
+        "IP-ASN": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "copilot-domain.mrs",
+          "entries": 47
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "copilot-ipcidr.mrs",
+          "entries": 2
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "copilot-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
+      "id": "disney",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Disney/Disney.yaml",
+      "type_counts": {
+        "domain": 172,
+        "PROCESS-NAME": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "disney-domain.mrs",
+          "entries": 172
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "disney-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
+      "id": "download",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Download/Download.yaml",
+      "type_counts": {
+        "domain": 6,
+        "PROCESS-NAME": 28
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "download-domain.mrs",
+          "entries": 6
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "download-classical.yaml",
+        "entries": 28
+      }
+    },
+    {
+      "id": "emby",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Emby/Emby.yaml",
+      "type_counts": {
+        "domain": 51,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "emby-domain.mrs",
+          "entries": 51
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "emby-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "facebook",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Facebook/Facebook.yaml",
+      "type_counts": {
+        "domain": 546,
+        "ipcidr": 23,
+        "IP-ASN": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "facebook-domain.mrs",
+          "entries": 546
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "facebook-ipcidr.mrs",
+          "entries": 23
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "facebook-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "hbo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HBO/HBO.yaml",
+      "type_counts": {
+        "domain": 47,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "hbo-domain.mrs",
+          "entries": 47
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "hbo-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "hulu",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Hulu/Hulu.yaml",
+      "type_counts": {
+        "domain": 58,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "hulu-domain.mrs",
+          "entries": 58
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "hulu-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "iqiyi",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/iQIYI/iQIYI.yaml",
+      "type_counts": {
+        "domain": 35,
+        "ipcidr": 21,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "iqiyi-domain.mrs",
+          "entries": 35
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "iqiyi-ipcidr.mrs",
+          "entries": 21
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "iqiyi-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "iqiyiintl",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/iQIYIIntl/iQIYIIntl.yaml",
+      "type_counts": {
+        "domain": 6,
+        "ipcidr": 13,
+        "PROCESS-NAME": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "iqiyiintl-domain.mrs",
+          "entries": 6
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "iqiyiintl-ipcidr.mrs",
+          "entries": 13
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "iqiyiintl-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
+      "id": "italkbb",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/iTalkBB/iTalkBB.yaml",
+      "type_counts": {
+        "domain": 3,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "italkbb-domain.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "italkbb-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "joox",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/JOOX/JOOX.yaml",
+      "type_counts": {
+        "domain": 4,
+        "ipcidr": 2,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "joox-domain.mrs",
+          "entries": 4
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "joox-ipcidr.mrs",
+          "entries": 2
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "joox-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "linetv",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LineTV/LineTV.yaml",
+      "type_counts": {
+        "domain": 8,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "linetv-domain.mrs",
+          "entries": 8
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "linetv-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "mega",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MEGA/MEGA.yaml",
+      "type_counts": {
+        "domain": 3,
+        "ipcidr": 10,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "mega-domain.mrs",
+          "entries": 3
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "mega-ipcidr.mrs",
+          "entries": 10
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "mega-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "naver",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Naver/Naver.yaml",
+      "type_counts": {
+        "domain": 26,
+        "ipcidr": 33,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "naver-domain.mrs",
+          "entries": 26
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "naver-ipcidr.mrs",
+          "entries": 33
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "naver-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "szkane-ai",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/AiDomain.list",
+      "type_counts": {
+        "domain": 229,
+        "PROCESS-NAME": 12,
+        "ipcidr": 28
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-ai-domain.mrs",
+          "entries": 229
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "szkane-ai-ipcidr.mrs",
+          "entries": 28
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-ai-classical.yaml",
+        "entries": 12
+      }
+    },
+    {
+      "id": "szkane-ciciai",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/CiciAi.list",
+      "type_counts": {
+        "PROCESS-NAME": 11,
+        "domain": 52,
+        "ipcidr": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-ciciai-domain.mrs",
+          "entries": 52
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "szkane-ciciai-ipcidr.mrs",
+          "entries": 1
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-ciciai-classical.yaml",
+        "entries": 11
+      }
+    },
+    {
+      "id": "szkane-developer",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Developer.list",
+      "type_counts": {
+        "domain": 40,
+        "PROCESS-NAME": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-developer-domain.mrs",
+          "entries": 40
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-developer-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
+      "id": "szkane-web3",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Web3.list",
+      "type_counts": {
+        "domain": 295,
+        "PROCESS-NAME": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-web3-domain.mrs",
+          "entries": 295
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-web3-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "twitch",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitch/Twitch.yaml",
+      "type_counts": {
+        "domain": 9,
+        "ipcidr": 12,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "twitch-domain.mrs",
+          "entries": 9
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "twitch-ipcidr.mrs",
+          "entries": 12
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "twitch-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "unity",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Unity/Unity.yaml",
+      "type_counts": {
+        "domain": 9,
+        "PROCESS-NAME": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "unity-domain.mrs",
+          "entries": 9
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "unity-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "viu",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ViuTV/ViuTV.yaml",
+      "type_counts": {
+        "domain": 8,
+        "PROCESS-NAME": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "viu-domain.mrs",
+          "entries": 8
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "viu-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "vpsdance-ai-coding",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml",
+      "type_counts": {
+        "domain": 202,
+        "ipcidr": 6,
+        "IP-ASN": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "vpsdance-ai-coding-domain.mrs",
+          "entries": 202
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "vpsdance-ai-coding-ipcidr.mrs",
+          "entries": 6
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "vpsdance-ai-coding-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "wetv",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WeTV/WeTV.yaml",
+      "type_counts": {
+        "domain": 8,
+        "ipcidr": 1,
+        "PROCESS-NAME": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "wetv-domain.mrs",
+          "entries": 8
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "wetv-ipcidr.mrs",
+          "entries": 1
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "wetv-classical.yaml",
+        "entries": 2
+      }
     }
   ],
   "existing_mrs": [
@@ -5272,246 +6232,6 @@
       }
     },
     {
-      "id": "amazon",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Amazon/Amazon.yaml",
-      "type_counts": {
-        "domain": 187,
-        "ipcidr": 15,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "applefirmware",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleFirmware/AppleFirmware.yaml",
-      "type_counts": {
-        "domain": 174,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "applemusic",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleMusic/AppleMusic.yaml",
-      "type_counts": {
-        "domain": 9,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "appleproxy",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleProxy/AppleProxy.yaml",
-      "type_counts": {
-        "domain": 39,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "appletv",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AppleTV/AppleTV.yaml",
-      "type_counts": {
-        "domain": 7,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "bytedance",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ByteDance/ByteDance.yaml",
-      "type_counts": {
-        "domain": 369,
-        "ipcidr": 1,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "cbs",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/CBS/CBS.yaml",
-      "type_counts": {
-        "domain": 34,
-        "PROCESS-NAME": 2
-      }
-    },
-    {
-      "id": "copilot",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Copilot/Copilot.yaml",
-      "type_counts": {
-        "domain": 47,
-        "ipcidr": 2,
-        "IP-ASN": 2
-      }
-    },
-    {
-      "id": "disney",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Disney/Disney.yaml",
-      "type_counts": {
-        "domain": 172,
-        "PROCESS-NAME": 2
-      }
-    },
-    {
-      "id": "download",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Download/Download.yaml",
-      "type_counts": {
-        "domain": 6,
-        "PROCESS-NAME": 28
-      }
-    },
-    {
-      "id": "emby",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Emby/Emby.yaml",
-      "type_counts": {
-        "domain": 51,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "facebook",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Facebook/Facebook.yaml",
-      "type_counts": {
-        "domain": 546,
-        "ipcidr": 23,
-        "IP-ASN": 1
-      }
-    },
-    {
-      "id": "hbo",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HBO/HBO.yaml",
-      "type_counts": {
-        "domain": 47,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "hulu",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Hulu/Hulu.yaml",
-      "type_counts": {
-        "domain": 58,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "iqiyi",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/iQIYI/iQIYI.yaml",
-      "type_counts": {
-        "domain": 35,
-        "ipcidr": 21,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "iqiyiintl",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/iQIYIIntl/iQIYIIntl.yaml",
-      "type_counts": {
-        "domain": 6,
-        "ipcidr": 13,
-        "PROCESS-NAME": 2
-      }
-    },
-    {
-      "id": "italkbb",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/iTalkBB/iTalkBB.yaml",
-      "type_counts": {
-        "domain": 3,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "joox",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/JOOX/JOOX.yaml",
-      "type_counts": {
-        "domain": 4,
-        "ipcidr": 2,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "linetv",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LineTV/LineTV.yaml",
-      "type_counts": {
-        "domain": 8,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "mega",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/MEGA/MEGA.yaml",
-      "type_counts": {
-        "domain": 3,
-        "ipcidr": 10,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "naver",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Naver/Naver.yaml",
-      "type_counts": {
-        "domain": 26,
-        "ipcidr": 33,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
       "id": "remotedesktop",
       "reason": "unsupported-rule-types",
       "source_behavior": "classical",
@@ -5522,107 +6242,23 @@
       }
     },
     {
-      "id": "szkane-ai",
+      "id": "scki-local-process-direct",
       "reason": "unsupported-rule-types",
       "source_behavior": "classical",
       "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/AiDomain.list",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/local-process-direct.list",
       "type_counts": {
-        "domain": 229,
-        "PROCESS-NAME": 12,
-        "ipcidr": 28
+        "PROCESS-NAME": 81
       }
     },
     {
-      "id": "szkane-ciciai",
+      "id": "scki-work-process",
       "reason": "unsupported-rule-types",
       "source_behavior": "classical",
       "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/CiciAi.list",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/work-process.list",
       "type_counts": {
-        "PROCESS-NAME": 11,
-        "domain": 52,
-        "ipcidr": 1
-      }
-    },
-    {
-      "id": "szkane-developer",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Developer.list",
-      "type_counts": {
-        "domain": 40,
-        "PROCESS-NAME": 2
-      }
-    },
-    {
-      "id": "szkane-web3",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Web3.list",
-      "type_counts": {
-        "domain": 295,
-        "PROCESS-NAME": 3
-      }
-    },
-    {
-      "id": "twitch",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitch/Twitch.yaml",
-      "type_counts": {
-        "domain": 9,
-        "ipcidr": 12,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "unity",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Unity/Unity.yaml",
-      "type_counts": {
-        "domain": 9,
-        "PROCESS-NAME": 1
-      }
-    },
-    {
-      "id": "viu",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ViuTV/ViuTV.yaml",
-      "type_counts": {
-        "domain": 8,
-        "PROCESS-NAME": 3
-      }
-    },
-    {
-      "id": "vpsdance-ai-coding",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml",
-      "type_counts": {
-        "domain": 202,
-        "ipcidr": 6,
-        "IP-ASN": 3
-      }
-    },
-    {
-      "id": "wetv",
-      "reason": "unsupported-rule-types",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WeTV/WeTV.yaml",
-      "type_counts": {
-        "domain": 8,
-        "ipcidr": 1,
-        "PROCESS-NAME": 2
+        "PROCESS-NAME": 4
       }
     }
   ],

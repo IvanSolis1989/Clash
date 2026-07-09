@@ -33,6 +33,3 @@ domain_suffix_set:
   - "quobuz.com"
   - "quobuz.fr"
   - "static-qobuz.com"
-ip_cidr_set:
-  - "52.211.1.180/32"
-  - "99.81.97.56/32"

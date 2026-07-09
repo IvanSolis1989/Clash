@@ -4,6 +4,12 @@
 
 ---
 
+## v5.4.39-stash.1 (2026-07-09)
+
+- SYNC：由 CMFA v5.4.39-cmfa.1 重新生成，保留 474 rule-provider 与 929 条规则。
+- MIHOMO-MRS：继承 CMFA 的 `.mrs` partial 架构，424 个 provider 使用 `.mrs`，30 个 provider 使用残余 YAML，20 个 provider 保留原格式。
+- COMPAT：继续裁剪 Stash Wiki 未确认的 Mihomo-only 字段；静态 YAML 中直接写最终 `.mrs` / 残余 YAML 地址，不保留 JS 兼容映射表。
+
 ## v5.4.38-stash.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：由 CMFA v5.4.38-cmfa.1 重新生成，保留 429 rule-provider 与 884 条规则。

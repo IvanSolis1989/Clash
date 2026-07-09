@@ -6,6 +6,11 @@
 
 ---
 
+## v5.4.39-pw2.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.39 更新版本元数据。
+- N/A：Passwall2 展平 shunt rules 不消费 Mihomo `.mrs` rule-provider；`.list` 规则语义延续 v5.4.38-pw2.1。
+
 ## v5.4.38-pw2.1 (2026-07-09)
 
 - META：跟随 Clash Party v5.4.38 更新版本元数据。

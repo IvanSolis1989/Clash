@@ -6,6 +6,11 @@
 
 ---
 
+## v5.4.39-QX.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.39 更新版本元数据。
+- N/A：Quantumult X 不支持 Mihomo `.mrs` rule-provider；规则语义延续 v5.4.38-QX.1。
+
 ## v5.4.38-QX.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：`[filter_remote]` 新增 13 个 Quantumult X 原生 supplemental 规则集，替代 `filter_local` 零星白名单。

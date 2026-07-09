@@ -4,6 +4,11 @@
 
 ---
 
+## v5.4.39-Loon.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.39 更新版本元数据。
+- N/A：Loon 不支持 Mihomo `.mrs` rule-provider；规则语义延续 v5.4.38-Loon.1。
+
 ## v5.4.38-Loon.1 (2026-07-09)
 
 - SCKI-SUPPLEMENTAL：`[Remote Rule]` 新增 13 个仓库维护的 supplemental 规则集，替代主规则零星直写。
