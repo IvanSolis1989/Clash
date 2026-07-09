@@ -331,9 +331,9 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
   return [
     '---',
     '# ======================================================================',
-    '# Egern Smart v5.4.40-egern.1 - Egern Profile',
+    '# Egern Smart v6.0.0-egern.1 - Egern Profile',
     '# Build: 2026-07-09',
-    '# Baseline: Clash Party v5.4.40',
+    '# Baseline: Clash Party v6.0.0',
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
     `# Egern rule sets: ${assetCount} generated native YAML files.`,

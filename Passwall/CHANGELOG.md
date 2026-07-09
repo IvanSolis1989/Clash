@@ -7,9 +7,9 @@
 
 ---
 
-## v5.4.40-pw.1 (2026-07-09)
+## v6.0.0-pw.1 (2026-07-09)
 
-- META：跟随 Clash Party v5.4.40 更新版本元数据。
+- META：跟随 Clash Party v6.0.0 更新版本元数据。
 - SCOPE：Passwall 继续作为 shunt_rules 展平降级参考；融合规则集主线不从 Passwall 反向生成。
 
 ## v5.4.39-pw.1 (2026-07-09)

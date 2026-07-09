@@ -126,7 +126,7 @@ node tools/generate-egern-from-cmfa.js
 
 这些目录的修改**不需要**触发 §1 全版本联动，但 `tools/` 和 `.github/workflows/` 的改动应在 PR 描述中说明。
 
-### 0.2 规则生成链路架构（v5.4.40 起强制）
+### 0.2 规则生成链路架构（v6.0.0 起强制）
 
 本仓库现在是单向编译链路，**Clash Party 永远是唯一事实基线**；CMFA / Stash / Egern / SingBox 等只能作为派生产物或生成器输入，不得反向成为权威源。
 

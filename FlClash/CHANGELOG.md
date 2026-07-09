@@ -5,9 +5,9 @@
 
 ---
 
-## v5.4.40-flclash.1 (2026-07-09)
+## v6.0.0-flclash.1 (2026-07-09)
 
-- FUSED-RULESETS：同步 Clash Party Normal v5.4.40，标准 Mihomo 内核版本使用融合 `.mrs` / residual YAML。
+- FUSED-RULESETS：同步 Clash Party Normal v6.0.0，标准 Mihomo 内核版本使用融合 `.mrs` / residual YAML。
 - SCALE：规则规模压缩为 `120` 个融合 provider 与 `130` 条规则，保持 55 个代理组不变。
 
 ## v5.4.39-flclash.1 (2026-07-09)

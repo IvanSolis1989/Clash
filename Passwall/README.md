@@ -1,9 +1,9 @@
-# Passwall 使用教程（对齐 Clash Party v5.4.40 简化版）
+# Passwall 使用教程（对齐 Clash Party v6.0.0 简化版）
 
 > 目录简介：这里提供 Passwall 全功能版的展平分流参考、shunt rule 列表和 OpenWrt 导入教程。
 >
 > 配置参考：`Passwall/` 目录  
-> 版本：**v5.4.40-pw.1**（Build 2026-07-09；基线：Clash Party v5.4.40；变更历史：见 `Passwall/CHANGELOG.md`；展平降级参考，无自动区域测速字段）
+> 版本：**v6.0.0-pw.1**（Build 2026-07-09；基线：Clash Party v6.0.0；变更历史：见 `Passwall/CHANGELOG.md`；展平降级参考，无自动区域测速字段）
 > 目标：**[Passwall](https://github.com/Openwrt-Passwall/openwrt-passwall)**（全功能版）—— [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已迁入）维护。与 [Passwall2](https://github.com/Openwrt-Passwall/openwrt-passwall2)（精简分流版）**并行维护**（非新旧关系），规则语法同源（共用 [shunt_rules.lua](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua) 解析器），同一份 `.list` 两者通用。  
 > 架构：33 条 shunt rule（展平版，每条对应一个业务类别）+ xray/sing-box 原生域名匹配语法（纯字符串 / `regexp:` / `domain:` / `full:` / `geosite:` / `rule-set:remote|local:` / `geoip:` / CIDR）
 

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T08:28:08.432Z",
+  "generated_at": "2026-07-09T08:44:50.860Z",
   "authority": "Clash Party/ClashParty(mihomo-smart).js runtime output after Mihomo MRS normalization, with SCKI_DISABLE_FUSED_RULESETS=true",
-  "baseline_version": "v5.4.40",
+  "baseline_version": "v6.0.0",
   "source_provider_count": 474,
   "source_rule_count": 929,
   "fused_provider_count": 120,

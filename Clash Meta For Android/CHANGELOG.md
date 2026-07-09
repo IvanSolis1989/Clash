@@ -5,9 +5,9 @@
 
 ---
 
-## v5.4.40-cmfa.1 (2026-07-09)
+## v6.0.0-cmfa.1 (2026-07-09)
 
-- FUSED-RULESETS：跟随 Clash Party v5.4.40 融合规则集架构，CMFA 直接引用融合后的 `.mrs` / residual YAML。
+- FUSED-RULESETS：跟随 Clash Party v6.0.0 融合规则集架构，CMFA 直接引用融合后的 `.mrs` / residual YAML。
 - SCALE：规则区从 `474 providers / 929 rules` 压缩为 `120` 个融合 provider 与 `130` 条规则。
 - BASELINE：CMFA 继续是派生产物，不能作为上游权威源；权威输入固定为 Clash Party Smart 运行时输出。
 

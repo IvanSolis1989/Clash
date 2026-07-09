@@ -6,7 +6,7 @@
 
 ---
 
-## v5.4.40 (2026-07-09)
+## v6.0.0 (2026-07-09)
 
 - FUSED-RULESETS：新增 `tools/build-fused-rule-sets.js`，以 Clash Party Smart 运行时输出作为唯一基准，将源 `474 providers / 929 rules` 编译为 `68` 个策略顺序段、`120` 个融合 provider、`130` 条主规则，保留 `17` 条必要内联规则，`unresolved=0`。
 - MIHOMO-MRS：支持 `.mrs` 的 Mihomo 产物优先引用融合后的 `*-domain.mrs` / `*-ipcidr.mrs` / `*-ipcidr-no-resolve.mrs`；不可转部分落到 `*-residual.yaml`，不再依赖静态兼容映射表膨胀主配置。

@@ -1,13 +1,31 @@
-# 🚀 科学上网智能分流配置中心
+# 🚀 Smart-Config-Kit v6.0.0
 
-> 一套以 **Mihomo Smart 内核 JS 覆写脚本**为基线、同步产出 14 种客户端等价配置的分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免”设备 A 可用、设备 B 抽风”。
+> 一套以 **Clash Party Smart（Mihomo JS 覆写）**为唯一事实基线、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
-> - 🧩 **22 区域组 + 33 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），120 个融合 rule-provider 覆盖源 474 providers / 929 rules
-> - ⚡ **Smart / Normal 双内核**：同规则量，按内核能力选 `smart`（LightGBM ML 择路）或经典 `url-test`
+> 基准只认 `Clash Party/ClashParty(mihomo-smart).js`；CMFA、Stash、Egern、SingBox、OpenClash 和移动端配置都是从这条主线同步或生成。
+>
+> - 🧠 **v6.0.0 大版本：规则集融合编译器**：按最终分流目标把源 474 providers / 929 rules 编译为 120 个融合 rule-provider、130 条主规则引用
+> - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
+> - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，其余客户端使用最稳的远程规则格式
+> - ⚡ **Smart / Normal 双内核**：同规则量，按客户端能力选择 `smart`（LightGBM ML 择路）或经典 `url-test`
 > - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
 > - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
 
 <sub>💖 [支持本项目](./docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
+
+---
+
+## ✅ 该用哪个产物
+
+| 使用场景 | 推荐入口 | 说明 |
+|---|---|---|
+| Clash Party / Mihomo Smart | `Clash Party/ClashParty(mihomo-smart).js` | 唯一基准；Smart 内核 + LightGBM 择路 |
+| Clash Party 普通内核 / FlClash | `Clash Party/ClashParty(mihomo).js` / `FlClash/FlClash(mihomo).js` | 同规则语义，区域组选 `url-test` |
+| Android Mihomo | `Clash Meta For Android/CMFA(mihomo).yaml` | CMFA 是同步产物，不是基准 |
+| Stash | `Stash/Stash.yaml` | 从 CMFA 自动裁剪生成，保持 Clash Premium 兼容 |
+| sing-box / Hiddify / HomeProxy | `SingBox/SingBox(sing-box)-full.json` | 使用 `.srs` 融合规则集 |
+| iOS / macOS 其他客户端 | `Egern/`、`Shadowrocket/`、`Surge/`、`Loon/`、`Quantumult X/` | 按各 APP 原生语法同步 |
+| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | OpenClash 语义最接近 Clash Party |
 
 ---
 

@@ -1,6 +1,6 @@
 # Egern — 变更日志
 
-## v5.4.40-egern.1 (2026-07-09)
+## v6.0.0-egern.1 (2026-07-09)
 
 - FUSED-RULESETS：由融合后的 CMFA 规则顺序重新生成，Egern 不直接引用 Mihomo `.mrs`。
 - EGERN-NATIVE：输出 118 个 Egern 原生 YAML 规则集，主配置渲染 130 条规则、113 个 rule_set 引用。
