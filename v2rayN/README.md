@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v5.4.39）
+# v2rayN 使用教程（对齐 Clash Party v5.4.40）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON 兜底产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.39-v2n.1（详见 `v2rayN/CHANGELOG.md`；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v5.4.40-v2n.1（详见 `v2rayN/CHANGELOG.md`；Xray 路由 JSON 不承载 DNS 解析，mihomo / sing-box 路径复用对应产物）。
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 

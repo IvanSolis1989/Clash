@@ -1,0 +1,3055 @@
+{
+  "generated_at": "2026-07-09T08:28:08.432Z",
+  "authority": "Clash Party/ClashParty(mihomo-smart).js runtime output after Mihomo MRS normalization, with SCKI_DISABLE_FUSED_RULESETS=true",
+  "baseline_version": "v5.4.40",
+  "source_provider_count": 474,
+  "source_rule_count": 929,
+  "fused_provider_count": 120,
+  "fused_rule_count": 130,
+  "inline_rule_count": 17,
+  "segment_count": 68,
+  "generated_mrs_files": 96,
+  "generated_srs_files": 68,
+  "sing_box_binary": "sing-box.exe",
+  "unresolved_providers": [],
+  "unresolved_sources": [],
+  "passthrough_providers": [],
+  "required_support_providers": [
+    "apple",
+    "microsoft",
+    "youtube",
+    "google",
+    "cn",
+    "cn-ip",
+    "anti-ad"
+  ],
+  "segments": [
+    {
+      "id": "scki-fused-001-direct",
+      "policy": "DIRECT",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-001-direct-domain.mrs",
+          "source": "scki-fused-001-direct-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-001-direct.srs",
+          "source": "scki-fused-001-direct.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-001-direct.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-001-direct.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-001-direct.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-001-direct.yaml"
+        }
+      },
+      "counts": {
+        "domain": 17,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-002-intl-site",
+      "policy": "🌐 国外网站",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-002-intl-site-domain.mrs",
+          "source": "scki-fused-002-intl-site-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-002-intl-site.srs",
+          "source": "scki-fused-002-intl-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-002-intl-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-002-intl-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-002-intl-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-002-intl-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-003-payments",
+      "policy": "🏦 金融支付",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-003-payments-domain.mrs",
+          "source": "scki-fused-003-payments-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-003-payments.srs",
+          "source": "scki-fused-003-payments.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-003-payments.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-003-payments.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-003-payments.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-003-payments.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-004-cnmedia",
+      "policy": "📺 国内流媒体",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-004-cnmedia-domain.mrs",
+          "source": "scki-fused-004-cnmedia-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-004-cnmedia.srs",
+          "source": "scki-fused-004-cnmedia.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-004-cnmedia.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-004-cnmedia.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-004-cnmedia.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-004-cnmedia.yaml"
+        }
+      },
+      "counts": {
+        "domain": 10,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-005-ad",
+      "policy": "🛑 广告拦截",
+      "source_rules": 24,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-005-ad-domain.mrs",
+          "source": "scki-fused-005-ad-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-005-ad-ipcidr.mrs",
+          "source": "scki-fused-005-ad-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-005-ad.srs",
+          "source": "scki-fused-005-ad.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-005-ad.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-005-ad.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-005-ad.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-005-ad.yaml"
+        }
+      },
+      "counts": {
+        "domain": 2139625,
+        "ipcidr": 545,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-006-cn-site",
+      "policy": "🏠 国内网站",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-006-cn-site-domain.mrs",
+          "source": "scki-fused-006-cn-site-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-006-cn-site.srs",
+          "source": "scki-fused-006-cn-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-006-cn-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-006-cn-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-006-cn-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-006-cn-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 15,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-007-direct",
+      "policy": "DIRECT",
+      "source_rules": 5,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-007-direct-domain.mrs",
+          "source": "scki-fused-007-direct-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-007-direct-ipcidr.mrs",
+          "source": "scki-fused-007-direct-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-007-direct-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-007-direct-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-007-direct-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-007-direct.srs",
+          "source": "scki-fused-007-direct.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-007-direct.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-007-direct.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-007-direct.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-007-direct.yaml"
+        }
+      },
+      "counts": {
+        "domain": 134,
+        "ipcidr": 1,
+        "ipcidr_no_resolve": 18,
+        "residual": 81
+      }
+    },
+    {
+      "id": "scki-fused-008-work",
+      "policy": "🧑‍💼 会议协作",
+      "source_rules": 1,
+      "files": {
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-008-work-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-008-work.srs",
+          "source": "scki-fused-008-work.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-008-work.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-008-work.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-008-work.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-008-work.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 4
+      }
+    },
+    {
+      "id": "scki-fused-009-crypto",
+      "policy": "💰 加密货币",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-009-crypto-domain.mrs",
+          "source": "scki-fused-009-crypto-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-009-crypto.srs",
+          "source": "scki-fused-009-crypto.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-009-crypto.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-009-crypto.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-009-crypto.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-009-crypto.yaml"
+        }
+      },
+      "counts": {
+        "domain": 3,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-010-gfw",
+      "policy": "🚫 受限网站",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-010-gfw-domain.mrs",
+          "source": "scki-fused-010-gfw-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-010-gfw.srs",
+          "source": "scki-fused-010-gfw.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-010-gfw.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-010-gfw.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-010-gfw.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-010-gfw.yaml"
+        }
+      },
+      "counts": {
+        "domain": 4,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-011-youtube",
+      "policy": "📹 YouTube",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-011-youtube-domain.mrs",
+          "source": "scki-fused-011-youtube-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-011-youtube.srs",
+          "source": "scki-fused-011-youtube.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-011-youtube.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-011-youtube.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-011-youtube.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-011-youtube.yaml"
+        }
+      },
+      "counts": {
+        "domain": 7,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-012-cn-site",
+      "policy": "🏠 国内网站",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-012-cn-site-domain.mrs",
+          "source": "scki-fused-012-cn-site-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-012-cn-site.srs",
+          "source": "scki-fused-012-cn-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-012-cn-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-012-cn-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-012-cn-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-012-cn-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 2,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-013-ai",
+      "policy": "🤖 AI 服务",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-013-ai-domain.mrs",
+          "source": "scki-fused-013-ai-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-013-ai.srs",
+          "source": "scki-fused-013-ai.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-013-ai.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-013-ai.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-013-ai.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-013-ai.yaml"
+        }
+      },
+      "counts": {
+        "domain": 37,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-014-work",
+      "policy": "🧑‍💼 会议协作",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-014-work-domain.mrs",
+          "source": "scki-fused-014-work-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-014-work.srs",
+          "source": "scki-fused-014-work.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-014-work.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-014-work.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-014-work.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-014-work.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-015-ai",
+      "policy": "🤖 AI 服务",
+      "source_rules": 5,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-015-ai-domain.mrs",
+          "source": "scki-fused-015-ai-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-015-ai-ipcidr.mrs",
+          "source": "scki-fused-015-ai-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-015-ai.srs",
+          "source": "scki-fused-015-ai.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-015-ai.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-015-ai.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-015-ai.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-015-ai.yaml"
+        }
+      },
+      "counts": {
+        "domain": 75,
+        "ipcidr": 2,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-016-intl-site",
+      "policy": "🌐 国外网站",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-016-intl-site-domain.mrs",
+          "source": "scki-fused-016-intl-site-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-016-intl-site.srs",
+          "source": "scki-fused-016-intl-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-016-intl-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-016-intl-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-016-intl-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-016-intl-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 4,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-017-im",
+      "policy": "💬 即时通讯",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-017-im-domain.mrs",
+          "source": "scki-fused-017-im-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-017-im.srs",
+          "source": "scki-fused-017-im.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-017-im.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-017-im.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-017-im.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-017-im.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-018-work",
+      "policy": "🧑‍💼 会议协作",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-018-work-domain.mrs",
+          "source": "scki-fused-018-work-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-018-work.srs",
+          "source": "scki-fused-018-work.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-018-work.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-018-work.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-018-work.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-018-work.yaml"
+        }
+      },
+      "counts": {
+        "domain": 2,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-019-download",
+      "policy": "📥 下载更新",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-019-download-domain.mrs",
+          "source": "scki-fused-019-download-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-019-download-ipcidr.mrs",
+          "source": "scki-fused-019-download-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-019-download.srs",
+          "source": "scki-fused-019-download.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-019-download.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-019-download.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-019-download.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-019-download.yaml"
+        }
+      },
+      "counts": {
+        "domain": 19,
+        "ipcidr": 26,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-020-google",
+      "policy": "🔍 Google 服务",
+      "source_rules": 2,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-020-google-domain.mrs",
+          "source": "scki-fused-020-google-domain.yaml"
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-020-google-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-020-google-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-020-google.srs",
+          "source": "scki-fused-020-google.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-020-google.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-020-google.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-020-google.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-020-google.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1069,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 7372,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-021-ai",
+      "policy": "🤖 AI 服务",
+      "source_rules": 13,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-021-ai-domain.mrs",
+          "source": "scki-fused-021-ai-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-021-ai-ipcidr.mrs",
+          "source": "scki-fused-021-ai-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-021-ai-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-021-ai.srs",
+          "source": "scki-fused-021-ai.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-021-ai.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-021-ai.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-021-ai.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-021-ai.yaml"
+        }
+      },
+      "counts": {
+        "domain": 506,
+        "ipcidr": 35,
+        "ipcidr_no_resolve": 0,
+        "residual": 23
+      }
+    },
+    {
+      "id": "scki-fused-022-crypto",
+      "policy": "💰 加密货币",
+      "source_rules": 11,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-022-crypto-domain.mrs",
+          "source": "scki-fused-022-crypto-domain.yaml"
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-022-crypto-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-022-crypto.srs",
+          "source": "scki-fused-022-crypto.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-022-crypto.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-022-crypto.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-022-crypto.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-022-crypto.yaml"
+        }
+      },
+      "counts": {
+        "domain": 299,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 3
+      }
+    },
+    {
+      "id": "scki-fused-023-payments",
+      "policy": "🏦 金融支付",
+      "source_rules": 37,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-023-payments-domain.mrs",
+          "source": "scki-fused-023-payments-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-023-payments.srs",
+          "source": "scki-fused-023-payments.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-023-payments.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-023-payments.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-023-payments.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-023-payments.yaml"
+        }
+      },
+      "counts": {
+        "domain": 543,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-024-microsoft",
+      "policy": "Ⓜ️ 微软服务",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-024-microsoft-domain.mrs",
+          "source": "scki-fused-024-microsoft-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-024-microsoft.srs",
+          "source": "scki-fused-024-microsoft.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-024-microsoft.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-024-microsoft.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-024-microsoft.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-024-microsoft.yaml"
+        }
+      },
+      "counts": {
+        "domain": 3,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-025-intl-site",
+      "policy": "🌐 国外网站",
+      "source_rules": 21,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-025-intl-site-domain.mrs",
+          "source": "scki-fused-025-intl-site-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-025-intl-site.srs",
+          "source": "scki-fused-025-intl-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-025-intl-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-025-intl-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-025-intl-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-025-intl-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 42,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-026-direct",
+      "policy": "DIRECT",
+      "source_rules": 5,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-026-direct-domain.mrs",
+          "source": "scki-fused-026-direct-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-026-direct.srs",
+          "source": "scki-fused-026-direct.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-026-direct.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-026-direct.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-026-direct.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-026-direct.yaml"
+        }
+      },
+      "counts": {
+        "domain": 5,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-027-im",
+      "policy": "💬 即时通讯",
+      "source_rules": 33,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-027-im-domain.mrs",
+          "source": "scki-fused-027-im-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-027-im-ipcidr.mrs",
+          "source": "scki-fused-027-im-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-027-im-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-027-im-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-027-im-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-027-im.srs",
+          "source": "scki-fused-027-im.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-027-im.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-027-im.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-027-im.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-027-im.yaml"
+        }
+      },
+      "counts": {
+        "domain": 97,
+        "ipcidr": 33,
+        "ipcidr_no_resolve": 22,
+        "residual": 1
+      }
+    },
+    {
+      "id": "scki-fused-028-social",
+      "policy": "📱 社交媒体",
+      "source_rules": 27,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-028-social-domain.mrs",
+          "source": "scki-fused-028-social-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-028-social-ipcidr.mrs",
+          "source": "scki-fused-028-social-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-028-social-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-028-social-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-028-social.srs",
+          "source": "scki-fused-028-social.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-028-social.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-028-social.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-028-social.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-028-social.yaml"
+        }
+      },
+      "counts": {
+        "domain": 659,
+        "ipcidr": 23,
+        "ipcidr_no_resolve": 225,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-029-cn-site",
+      "policy": "🏠 国内网站",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-029-cn-site-domain.mrs",
+          "source": "scki-fused-029-cn-site-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-029-cn-site.srs",
+          "source": "scki-fused-029-cn-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-029-cn-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-029-cn-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-029-cn-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-029-cn-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 33,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-030-social",
+      "policy": "📱 社交媒体",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-030-social-domain.mrs",
+          "source": "scki-fused-030-social-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-030-social.srs",
+          "source": "scki-fused-030-social.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-030-social.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-030-social.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-030-social.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-030-social.yaml"
+        }
+      },
+      "counts": {
+        "domain": 14,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-031-work",
+      "policy": "🧑‍💼 会议协作",
+      "source_rules": 34,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-031-work-domain.mrs",
+          "source": "scki-fused-031-work-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-031-work-ipcidr.mrs",
+          "source": "scki-fused-031-work-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-031-work-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-031-work.srs",
+          "source": "scki-fused-031-work.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-031-work.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-031-work.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-031-work.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-031-work.yaml"
+        }
+      },
+      "counts": {
+        "domain": 91,
+        "ipcidr": 7,
+        "ipcidr_no_resolve": 0,
+        "residual": 9
+      }
+    },
+    {
+      "id": "scki-fused-032-direct",
+      "policy": "DIRECT",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-032-direct-domain.mrs",
+          "source": "scki-fused-032-direct-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-032-direct.srs",
+          "source": "scki-fused-032-direct.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-032-direct.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-032-direct.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-032-direct.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-032-direct.yaml"
+        }
+      },
+      "counts": {
+        "domain": 3,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-033-cnmedia",
+      "policy": "📺 国内流媒体",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-033-cnmedia-domain.mrs",
+          "source": "scki-fused-033-cnmedia-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-033-cnmedia.srs",
+          "source": "scki-fused-033-cnmedia.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-033-cnmedia.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-033-cnmedia.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-033-cnmedia.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-033-cnmedia.yaml"
+        }
+      },
+      "counts": {
+        "domain": 52,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-034-tiktok",
+      "policy": "🎵 TikTok",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-034-tiktok-domain.mrs",
+          "source": "scki-fused-034-tiktok-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-034-tiktok.srs",
+          "source": "scki-fused-034-tiktok.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-034-tiktok.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-034-tiktok.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-034-tiktok.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-034-tiktok.yaml"
+        }
+      },
+      "counts": {
+        "domain": 37,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-035-youtube",
+      "policy": "📹 YouTube",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-035-youtube-domain.mrs",
+          "source": "scki-fused-035-youtube-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-035-youtube.srs",
+          "source": "scki-fused-035-youtube.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-035-youtube.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-035-youtube.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-035-youtube.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-035-youtube.yaml"
+        }
+      },
+      "counts": {
+        "domain": 178,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-036-netflix",
+      "policy": "🎥 Netflix",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-036-netflix-domain.mrs",
+          "source": "scki-fused-036-netflix-domain.yaml"
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-036-netflix-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-036-netflix-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-036-netflix.srs",
+          "source": "scki-fused-036-netflix.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-036-netflix.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-036-netflix.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-036-netflix.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-036-netflix.yaml"
+        }
+      },
+      "counts": {
+        "domain": 24,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 946,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-037-disney",
+      "policy": "🎬 Disney+",
+      "source_rules": 2,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-037-disney-domain.mrs",
+          "source": "scki-fused-037-disney-domain.yaml"
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-037-disney-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-037-disney.srs",
+          "source": "scki-fused-037-disney.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-037-disney.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-037-disney.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-037-disney.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-037-disney.yaml"
+        }
+      },
+      "counts": {
+        "domain": 172,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 2
+      }
+    },
+    {
+      "id": "scki-fused-038-hbo-max",
+      "policy": "📡 HBO/Max",
+      "source_rules": 2,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-038-hbo-max-domain.mrs",
+          "source": "scki-fused-038-hbo-max-domain.yaml"
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-038-hbo-max-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-038-hbo-max.srs",
+          "source": "scki-fused-038-hbo-max.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-038-hbo-max.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-038-hbo-max.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-038-hbo-max.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-038-hbo-max.yaml"
+        }
+      },
+      "counts": {
+        "domain": 47,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 1
+      }
+    },
+    {
+      "id": "scki-fused-039-hulu",
+      "policy": "📺 Hulu",
+      "source_rules": 2,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-039-hulu-domain.mrs",
+          "source": "scki-fused-039-hulu-domain.yaml"
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-039-hulu-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-039-hulu.srs",
+          "source": "scki-fused-039-hulu.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-039-hulu.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-039-hulu.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-039-hulu.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-039-hulu.yaml"
+        }
+      },
+      "counts": {
+        "domain": 58,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 1
+      }
+    },
+    {
+      "id": "scki-fused-040-prime-video",
+      "policy": "🎬 Prime Video",
+      "source_rules": 4,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-040-prime-video-domain.mrs",
+          "source": "scki-fused-040-prime-video-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-040-prime-video-ipcidr.mrs",
+          "source": "scki-fused-040-prime-video-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-040-prime-video-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-040-prime-video.srs",
+          "source": "scki-fused-040-prime-video.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-040-prime-video.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-040-prime-video.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-040-prime-video.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-040-prime-video.yaml"
+        }
+      },
+      "counts": {
+        "domain": 196,
+        "ipcidr": 15,
+        "ipcidr_no_resolve": 0,
+        "residual": 1
+      }
+    },
+    {
+      "id": "scki-fused-041-music",
+      "policy": "🎵 音乐流媒体",
+      "source_rules": 10,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-041-music-domain.mrs",
+          "source": "scki-fused-041-music-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-041-music-ipcidr.mrs",
+          "source": "scki-fused-041-music-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-041-music.srs",
+          "source": "scki-fused-041-music.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-041-music.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-041-music.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-041-music.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-041-music.yaml"
+        }
+      },
+      "counts": {
+        "domain": 103,
+        "ipcidr": 2,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-042-stream-hk",
+      "policy": "🇭🇰 香港流媒体",
+      "source_rules": 16,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-042-stream-hk-domain.mrs",
+          "source": "scki-fused-042-stream-hk-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-042-stream-hk-ipcidr.mrs",
+          "source": "scki-fused-042-stream-hk-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-042-stream-hk.srs",
+          "source": "scki-fused-042-stream-hk.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-042-stream-hk.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-042-stream-hk.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-042-stream-hk.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-042-stream-hk.yaml"
+        }
+      },
+      "counts": {
+        "domain": 60,
+        "ipcidr": 13,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-043-stream-tw",
+      "policy": "🇹🇼 台湾流媒体",
+      "source_rules": 15,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-043-stream-tw-domain.mrs",
+          "source": "scki-fused-043-stream-tw-domain.yaml"
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-043-stream-tw-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-043-stream-tw.srs",
+          "source": "scki-fused-043-stream-tw.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-043-stream-tw.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-043-stream-tw.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-043-stream-tw.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-043-stream-tw.yaml"
+        }
+      },
+      "counts": {
+        "domain": 39,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 1
+      }
+    },
+    {
+      "id": "scki-fused-044-stream-jpkr",
+      "policy": "🇯🇵 日韩流媒体",
+      "source_rules": 37,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-044-stream-jpkr-domain.mrs",
+          "source": "scki-fused-044-stream-jpkr-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-044-stream-jpkr-ipcidr.mrs",
+          "source": "scki-fused-044-stream-jpkr-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-044-stream-jpkr.srs",
+          "source": "scki-fused-044-stream-jpkr.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-044-stream-jpkr.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-044-stream-jpkr.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-044-stream-jpkr.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-044-stream-jpkr.yaml"
+        }
+      },
+      "counts": {
+        "domain": 131,
+        "ipcidr": 2,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-045-stream-eu",
+      "policy": "🇪🇺 欧洲流媒体",
+      "source_rules": 31,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-045-stream-eu-domain.mrs",
+          "source": "scki-fused-045-stream-eu-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-045-stream-eu.srs",
+          "source": "scki-fused-045-stream-eu.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-045-stream-eu.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-045-stream-eu.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-045-stream-eu.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-045-stream-eu.yaml"
+        }
+      },
+      "counts": {
+        "domain": 103,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-046-stream-other",
+      "policy": "🌐 其他国外流媒体",
+      "source_rules": 57,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-046-stream-other-domain.mrs",
+          "source": "scki-fused-046-stream-other-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-046-stream-other-ipcidr.mrs",
+          "source": "scki-fused-046-stream-other-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-046-stream-other-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-046-stream-other.srs",
+          "source": "scki-fused-046-stream-other.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-046-stream-other.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-046-stream-other.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-046-stream-other.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-046-stream-other.yaml"
+        }
+      },
+      "counts": {
+        "domain": 554,
+        "ipcidr": 34,
+        "ipcidr_no_resolve": 0,
+        "residual": 12
+      }
+    },
+    {
+      "id": "scki-fused-047-tools",
+      "policy": "🔧 工具与服务",
+      "source_rules": 12,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-047-tools-domain.mrs",
+          "source": "scki-fused-047-tools-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-047-tools.srs",
+          "source": "scki-fused-047-tools.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-047-tools.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-047-tools.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-047-tools.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-047-tools.yaml"
+        }
+      },
+      "counts": {
+        "domain": 20,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-048-google",
+      "policy": "🔍 Google 服务",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-048-google-domain.mrs",
+          "source": "scki-fused-048-google-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-048-google.srs",
+          "source": "scki-fused-048-google.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-048-google.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-048-google.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-048-google.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-048-google.yaml"
+        }
+      },
+      "counts": {
+        "domain": 231,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-049-tools",
+      "policy": "🔧 工具与服务",
+      "source_rules": 62,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-049-tools-domain.mrs",
+          "source": "scki-fused-049-tools-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-049-tools-ipcidr.mrs",
+          "source": "scki-fused-049-tools-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-049-tools-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-049-tools.srs",
+          "source": "scki-fused-049-tools.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-049-tools.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-049-tools.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-049-tools.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-049-tools.yaml"
+        }
+      },
+      "counts": {
+        "domain": 999,
+        "ipcidr": 18,
+        "ipcidr_no_resolve": 0,
+        "residual": 3
+      }
+    },
+    {
+      "id": "scki-fused-050-microsoft",
+      "policy": "Ⓜ️ 微软服务",
+      "source_rules": 4,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-050-microsoft-domain.mrs",
+          "source": "scki-fused-050-microsoft-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-050-microsoft.srs",
+          "source": "scki-fused-050-microsoft.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-050-microsoft.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-050-microsoft.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-050-microsoft.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-050-microsoft.yaml"
+        }
+      },
+      "counts": {
+        "domain": 817,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-051-apple",
+      "policy": "🍎 苹果服务",
+      "source_rules": 18,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-051-apple-domain.mrs",
+          "source": "scki-fused-051-apple-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-051-apple-ipcidr.mrs",
+          "source": "scki-fused-051-apple-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-051-apple-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-051-apple.srs",
+          "source": "scki-fused-051-apple.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-051-apple.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-051-apple.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-051-apple.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-051-apple.yaml"
+        }
+      },
+      "counts": {
+        "domain": 2086,
+        "ipcidr": 1,
+        "ipcidr_no_resolve": 0,
+        "residual": 4
+      }
+    },
+    {
+      "id": "scki-fused-052-download",
+      "policy": "📥 下载更新",
+      "source_rules": 36,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-052-download-domain.mrs",
+          "source": "scki-fused-052-download-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-052-download-ipcidr.mrs",
+          "source": "scki-fused-052-download-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-052-download-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-052-download.srs",
+          "source": "scki-fused-052-download.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-052-download.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-052-download.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-052-download.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-052-download.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1180,
+        "ipcidr": 29,
+        "ipcidr_no_resolve": 0,
+        "residual": 28
+      }
+    },
+    {
+      "id": "scki-fused-053-tracker",
+      "policy": "🛰️ BT/PT Tracker",
+      "source_rules": 11,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-053-tracker-domain.mrs",
+          "source": "scki-fused-053-tracker-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-053-tracker-ipcidr.mrs",
+          "source": "scki-fused-053-tracker-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-053-tracker.srs",
+          "source": "scki-fused-053-tracker.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-053-tracker.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-053-tracker.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-053-tracker.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-053-tracker.yaml"
+        }
+      },
+      "counts": {
+        "domain": 493,
+        "ipcidr": 58,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-054-gfw",
+      "policy": "🚫 受限网站",
+      "source_rules": 7,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-054-gfw-domain.mrs",
+          "source": "scki-fused-054-gfw-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-054-gfw-ipcidr.mrs",
+          "source": "scki-fused-054-gfw-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-054-gfw.srs",
+          "source": "scki-fused-054-gfw.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-054-gfw.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-054-gfw.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-054-gfw.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-054-gfw.yaml"
+        }
+      },
+      "counts": {
+        "domain": 10741,
+        "ipcidr": 57,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-055-game-cn",
+      "policy": "🕹️ 国内游戏",
+      "source_rules": 27,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-055-game-cn-domain.mrs",
+          "source": "scki-fused-055-game-cn-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-055-game-cn.srs",
+          "source": "scki-fused-055-game-cn.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-055-game-cn.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-055-game-cn.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-055-game-cn.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-055-game-cn.yaml"
+        }
+      },
+      "counts": {
+        "domain": 91,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-056-game-intl",
+      "policy": "🎮 国外游戏",
+      "source_rules": 19,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-056-game-intl-domain.mrs",
+          "source": "scki-fused-056-game-intl-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-056-game-intl-ipcidr.mrs",
+          "source": "scki-fused-056-game-intl-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-056-game-intl.srs",
+          "source": "scki-fused-056-game-intl.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-056-game-intl.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-056-game-intl.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-056-game-intl.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-056-game-intl.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1741,
+        "ipcidr": 46,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-057-intl-site",
+      "policy": "🌐 国外网站",
+      "source_rules": 150,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-057-intl-site-domain.mrs",
+          "source": "scki-fused-057-intl-site-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-057-intl-site-ipcidr.mrs",
+          "source": "scki-fused-057-intl-site-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-057-intl-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-057-intl-site-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-057-intl-site-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-057-intl-site.srs",
+          "source": "scki-fused-057-intl-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-057-intl-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-057-intl-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-057-intl-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-057-intl-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 27738,
+        "ipcidr": 96,
+        "ipcidr_no_resolve": 763586,
+        "residual": 3
+      }
+    },
+    {
+      "id": "scki-fused-058-payments",
+      "policy": "🏦 金融支付",
+      "source_rules": 13,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-058-payments-domain.mrs",
+          "source": "scki-fused-058-payments-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-058-payments.srs",
+          "source": "scki-fused-058-payments.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-058-payments.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-058-payments.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-058-payments.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-058-payments.yaml"
+        }
+      },
+      "counts": {
+        "domain": 13,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-059-cnmedia",
+      "policy": "📺 国内流媒体",
+      "source_rules": 95,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-059-cnmedia-domain.mrs",
+          "source": "scki-fused-059-cnmedia-domain.yaml"
+        },
+        "ipcidr": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-059-cnmedia-ipcidr.mrs",
+          "source": "scki-fused-059-cnmedia-ipcidr.yaml",
+          "no_resolve": false
+        },
+        "residual": {
+          "behavior": "classical",
+          "format": "yaml",
+          "file": "scki-fused-059-cnmedia-residual.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-059-cnmedia.srs",
+          "source": "scki-fused-059-cnmedia.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-059-cnmedia.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-059-cnmedia.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-059-cnmedia.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-059-cnmedia.yaml"
+        }
+      },
+      "counts": {
+        "domain": 2619,
+        "ipcidr": 733,
+        "ipcidr_no_resolve": 0,
+        "residual": 2
+      }
+    },
+    {
+      "id": "scki-fused-060-cn-site",
+      "policy": "🏠 国内网站",
+      "source_rules": 15,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-060-cn-site-domain.mrs",
+          "source": "scki-fused-060-cn-site-domain.yaml"
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-060-cn-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-060-cn-site-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-060-cn-site.srs",
+          "source": "scki-fused-060-cn-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-060-cn-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-060-cn-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-060-cn-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-060-cn-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 210056,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 5752,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-061-direct",
+      "policy": "DIRECT",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-061-direct-domain.mrs",
+          "source": "scki-fused-061-direct-domain.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-061-direct.srs",
+          "source": "scki-fused-061-direct.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-061-direct.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-061-direct.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-061-direct.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-061-direct.yaml"
+        }
+      },
+      "counts": {
+        "domain": 1,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-062-cn-site",
+      "policy": "🏠 国内网站",
+      "source_rules": 3,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-062-cn-site-domain.mrs",
+          "source": "scki-fused-062-cn-site-domain.yaml"
+        },
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-062-cn-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-062-cn-site-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-062-cn-site.srs",
+          "source": "scki-fused-062-cn-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-062-cn-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-062-cn-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-062-cn-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-062-cn-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 16,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 5752,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-063-intl-site",
+      "policy": "🌐 国外网站",
+      "source_rules": 1,
+      "files": {
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-063-intl-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-063-intl-site-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-063-intl-site.srs",
+          "source": "scki-fused-063-intl-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-063-intl-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-063-intl-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-063-intl-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-063-intl-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 758,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-064-im",
+      "policy": "💬 即时通讯",
+      "source_rules": 1,
+      "files": {
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-064-im-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-064-im-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-064-im.srs",
+          "source": "scki-fused-064-im.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-064-im.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-064-im.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-064-im.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-064-im.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 12,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-065-netflix",
+      "policy": "🎥 Netflix",
+      "source_rules": 1,
+      "files": {
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-065-netflix-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-065-netflix-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-065-netflix.srs",
+          "source": "scki-fused-065-netflix.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-065-netflix.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-065-netflix.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-065-netflix.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-065-netflix.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 83,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-066-social",
+      "policy": "📱 社交媒体",
+      "source_rules": 2,
+      "files": {
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-066-social-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-066-social-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-066-social.srs",
+          "source": "scki-fused-066-social.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-066-social.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-066-social.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-066-social.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-066-social.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 141,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-067-google",
+      "policy": "🔍 Google 服务",
+      "source_rules": 1,
+      "files": {
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-067-google-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-067-google-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-067-google.srs",
+          "source": "scki-fused-067-google.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-067-google.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-067-google.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-067-google.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-067-google.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 7372,
+        "residual": 0
+      }
+    },
+    {
+      "id": "scki-fused-068-cn-site",
+      "policy": "🏠 国内网站",
+      "source_rules": 1,
+      "files": {
+        "ipcidr_no_resolve": {
+          "behavior": "ipcidr",
+          "format": "mrs",
+          "file": "scki-fused-068-cn-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-068-cn-site-ipcidr-no-resolve.yaml",
+          "no_resolve": true
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-068-cn-site.srs",
+          "source": "scki-fused-068-cn-site.json"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-068-cn-site.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-068-cn-site.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-068-cn-site.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-068-cn-site.yaml"
+        }
+      },
+      "counts": {
+        "domain": 0,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 5752,
+        "residual": 0
+      }
+    }
+  ],
+  "inline_rules": [
+    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,youtube)),📹 YouTube",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(GEOSITE,google)),🔍 Google 服务",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,microsoft)),Ⓜ️ 微软服务",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(RULE-SET,apple)),🍎 苹果服务",
+    "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT",
+    "DST-PORT,7680,REJECT",
+    "DST-PORT,26880,DIRECT",
+    "DST-PORT,6540,DIRECT",
+    "DST-PORT,33068,DIRECT",
+    "DST-PORT,123,DIRECT",
+    "DST-PORT,3478,DIRECT",
+    "DST-PORT,3479,DIRECT",
+    "DST-PORT,5349,DIRECT",
+    "DST-PORT,19302,DIRECT",
+    "DST-PORT,19305,DIRECT",
+    "DST-PORT,19307,DIRECT",
+    "MATCH,🐟 漏网之鱼"
+  ]
+}

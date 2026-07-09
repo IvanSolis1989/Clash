@@ -5,14 +5,18 @@ const childProcess = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const vm = require('node:vm');
 const zlib = require('node:zlib');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
-const CMFA_FILE = path.join(REPO_ROOT, 'Clash Meta For Android/CMFA(mihomo).yaml');
+const CLASH_PARTY_FILE = path.join(REPO_ROOT, 'Clash Party/ClashParty(mihomo-smart).js');
 const OUTPUT_DIR = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs');
 const CACHE_DIR = path.join(REPO_ROOT, '.cache/mihomo-mrs');
 const MIHOMO_REPO_API = 'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest';
-const SCKI_GENERATED_MARKER = '/rulesets/generated/mihomo-mrs/';
+const SCKI_GENERATED_MARKERS = [
+  '/rulesets/generated/mihomo-mrs/',
+  '/rulesets/generated/fused/',
+];
 const CONCURRENCY = 8;
 
 const DOMAIN_RULE_TYPES = new Set([
@@ -70,7 +74,7 @@ function yamlQuote(value) {
 
 function parseProviders(source) {
   const match = /\r?\nrule-providers:\r?\n([\s\S]*?)\r?\nrules:\r?\n/.exec(source);
-  if (!match) throw new Error('Cannot locate CMFA rule-providers section');
+  if (!match) throw new Error('Cannot locate rule-providers section');
   const providers = [];
   let current = null;
   for (const rawLine of match[1].split(/\r?\n/)) {
@@ -84,6 +88,59 @@ function parseProviders(source) {
     if (fieldMatch && current) current[fieldMatch[1]] = unquote(fieldMatch[2]);
   }
   return providers;
+}
+
+function generatedProviderUrl(url) {
+  return SCKI_GENERATED_MARKERS.some((marker) => String(url || '').includes(marker));
+}
+
+function loadClashPartySourceProviders() {
+  const source = readText(CLASH_PARTY_FILE);
+  const logs = [];
+  const sandbox = {
+    console: {
+      log(...args) { logs.push(args.join(' ')); },
+      warn(...args) { logs.push(args.join(' ')); },
+      error(...args) { logs.push(args.join(' ')); },
+    },
+    SCKI_DISABLE_FUSED_RULESETS: true,
+    SCKI_DISABLE_MIHOMO_MRS_OVERRIDES: true,
+  };
+  vm.createContext(sandbox);
+  vm.runInContext(`${source}\nthis.__main = main;`, sandbox, { filename: CLASH_PARTY_FILE, timeout: 15000 });
+  if (typeof sandbox.__main !== 'function') throw new Error('Clash Party main() not found');
+
+  const proxy = (name) => ({
+    name,
+    type: 'ss',
+    server: 'example.com',
+    port: 443,
+    cipher: 'aes-128-gcm',
+    password: 'x',
+  });
+  const output = sandbox.__main({
+    proxies: [
+      proxy('HK 01'),
+      proxy('HK Home 01'),
+      proxy('TW 01'),
+      proxy('JP 01'),
+      proxy('KR 01'),
+      proxy('SG 01'),
+      proxy('US 01'),
+      proxy('DE 01'),
+    ],
+    'proxy-groups': [],
+    'rule-providers': {},
+    rules: [],
+    dns: {},
+  });
+  return Object.entries(output['rule-providers'] || {}).map(([name, provider]) => ({
+    name,
+    type: provider.type,
+    behavior: provider.behavior,
+    format: provider.format,
+    url: provider.url,
+  }));
 }
 
 function readPreviousManifest() {
@@ -359,15 +416,21 @@ async function runLimited(items, limit, worker) {
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const mihomoBin = await ensureMihomoBinary(options.mihomoBin);
-  const previousManifest = readPreviousManifest();
+  const previousProviderByName = new Map(providersFromPreviousManifest(readPreviousManifest()).map((provider) => [provider.name, provider]));
   const providerByName = new Map();
-  for (const provider of providersFromPreviousManifest(previousManifest)) providerByName.set(provider.name, provider);
-  for (const provider of parseProviders(readText(CMFA_FILE))
+  const clashProviders = loadClashPartySourceProviders();
+  for (const provider of clashProviders
     .filter((provider) => provider.url)
     .filter((provider) => provider.type === 'http')
-    .filter((provider) => !provider.url.includes(SCKI_GENERATED_MARKER))) {
+    .filter((provider) => !generatedProviderUrl(provider.url))) {
     providerByName.set(provider.name, provider);
   }
+  for (const provider of clashProviders
+    .filter((provider) => provider.url)
+    .filter((provider) => provider.type === 'http')
+    .filter((provider) => generatedProviderUrl(provider.url))
+    .map((provider) => previousProviderByName.get(provider.name))
+    .filter(Boolean)) providerByName.set(provider.name, provider);
   const providers = [...providerByName.values()];
 
   const tempDir = path.join(CACHE_DIR, 'sources');
@@ -378,7 +441,7 @@ async function main() {
 
   const manifest = {
     generated_at: new Date().toISOString(),
-    source: 'Clash Meta For Android/CMFA(mihomo).yaml',
+    source: 'Clash Party/ClashParty(mihomo-smart).js runtime output with SCKI_DISABLE_FUSED_RULESETS=true and SCKI_DISABLE_MIHOMO_MRS_OVERRIDES=true',
     mihomo_bin: path.basename(mihomoBin),
     output_dir: 'rulesets/generated/mihomo-mrs',
     converted: [],

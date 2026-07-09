@@ -8,6 +8,8 @@ const vm = require('node:vm');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const RESTRICTED_SITE = '🚫 受限网站';
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
+const EXPECTED_FUSED_PROVIDERS = 120;
+const EXPECTED_FUSED_RULES = 130;
 
 const TARGETS = [
   {
@@ -439,63 +441,63 @@ function validateRulesAndProviders(output, record, target) {
   const providerNames = new Set(Object.keys(providers));
   const groupNames = new Set((output['proxy-groups'] || []).map((group) => group.name));
 
-  record.expect(rules.length >= 840, `injects a full ruleset, got ${rules.length}`);
-  record.expect(providerNames.size >= 376, `injects the full rule-provider set, got ${providerNames.size}`);
+  record.expectEqual(rules.length, EXPECTED_FUSED_RULES, `injects the fused ruleset`);
+  record.expectEqual(providerNames.size, EXPECTED_FUSED_PROVIDERS, `injects the fused rule-provider set`);
   record.expectEqual(rules[rules.length - 1], 'MATCH,🐟 漏网之鱼', 'keeps MATCH as the final fallback');
   record.expect(!rules.slice(0, -1).some((rule) => String(rule).startsWith('MATCH,')), 'does not place MATCH before the final rule');
   record.expect(!rules.some((rule) => String(rule).includes('机场自动选择')), 'subscription-native rules are removed');
   record.expect(!providerNames.has('legacy_provider'), 'subscription-native rule-providers are removed');
 
-  const antiAdIndex = rules.findIndex((rule) => String(rule).startsWith('RULE-SET,anti-ad,'));
-  const gfwIndex = rules.findIndex((rule) => (
-    String(rule).startsWith('GEOSITE,gfw,') ||
-    String(rule).startsWith('RULE-SET,loyalsoldier-gfw,')
-  ));
-  record.expect(antiAdIndex !== -1, 'anti-ad rule exists');
-  record.expect(gfwIndex !== -1, 'gfw tail rule exists');
-  record.expect(antiAdIndex !== -1 && gfwIndex !== -1 && antiAdIndex < gfwIndex, 'ad blocking stays before the GFW tail block');
+  const indexOfPrefix = (prefix) => rules.findIndex((rule) => String(rule).startsWith(prefix));
+  const fusedIntlPreAd = indexOfPrefix('RULE-SET,scki-fused-002-intl-site-domain,🌐 国外网站');
+  const fusedCnMediaPreTikTok = indexOfPrefix('RULE-SET,scki-fused-004-cnmedia-domain,📺 国内流媒体');
+  const fusedAd = indexOfPrefix('RULE-SET,scki-fused-005-ad-domain,🛑 广告拦截');
+  const fusedAmap = indexOfPrefix('RULE-SET,scki-fused-006-cn-site-domain,🏠 国内网站');
+  const fusedLocalProcess = indexOfPrefix('RULE-SET,scki-fused-007-direct-residual,DIRECT');
+  const fusedWorkProcess = indexOfPrefix('RULE-SET,scki-fused-008-work-residual,🧑‍💼 会议协作');
+  const fusedScholar = indexOfPrefix('RULE-SET,scki-fused-020-google-domain,🔍 Google 服务');
+  const fusedWork = indexOfPrefix('RULE-SET,scki-fused-031-work-residual,🧑‍💼 会议协作');
+  const fusedTikTok = indexOfPrefix('RULE-SET,scki-fused-034-tiktok-domain,🎵 TikTok');
+  const fusedGfw = indexOfPrefix('RULE-SET,scki-fused-054-gfw-domain,🚫 受限网站');
+  const fusedCnGame = indexOfPrefix('RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏');
+  const fusedIntlGame = indexOfPrefix('RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏');
+  const fusedForeignTail = indexOfPrefix('RULE-SET,scki-fused-057-intl-site-domain,🌐 国外网站');
 
-  const cloudflareR2Index = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.adfpIntlSite);
-  record.expect(cloudflareR2Index !== -1, 'Cloudflare R2 storage domain is covered by the supplemental allowlist rule-set');
-  record.expect(
-    cloudflareR2Index !== -1 && antiAdIndex !== -1 && cloudflareR2Index < antiAdIndex,
-    'Cloudflare R2 storage domain is evaluated before ad/phishing reject rules',
-  );
-  const tiktokIndex = rules.indexOf('RULE-SET,tiktok,🎵 TikTok');
-  const proxyIndex = rules.indexOf('RULE-SET,proxy,🌐 国外网站');
-  const amapIndex = rules.indexOf('RULE-SET,amap,🏠 国内网站');
-  record.expect(providerNames.has('amap'), 'MetaCubeX amap provider exists for GaoDe domestic routing');
-  record.expect(amapIndex !== -1, 'AMap/GaoDe dedicated rule routes to CN site');
-  record.expect(
-    amapIndex !== -1 && antiAdIndex !== -1 && antiAdIndex < amapIndex,
-    'AMap/GaoDe guard stays after ad/phishing rules so ad subdomains can still be rejected',
-  );
-  record.expect(
-    amapIndex !== -1 && proxyIndex !== -1 && amapIndex < proxyIndex,
-    'AMap/GaoDe guard is evaluated before foreign-site tail',
-  );
-  const douyinGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.cnmediaGuard);
-  record.expect(douyinGuardIndex !== -1, 'Douyin Web CN media guard is covered by the supplemental rule-set');
-  record.expect(
-    douyinGuardIndex !== -1 && tiktokIndex !== -1 && douyinGuardIndex < tiktokIndex,
-    'Douyin Web CN media guard is evaluated before TikTok',
-  );
-  record.expect(
-    douyinGuardIndex !== -1 && proxyIndex !== -1 && douyinGuardIndex < proxyIndex,
-    'Douyin Web CN media guard is evaluated before foreign-site tail',
-  );
-  for (const guardRule of CN_GAME_GUARD_RULES) {
-    const guardIndex = rules.indexOf(guardRule);
-    record.expect(guardIndex !== -1, `CN game guard exists: ${guardRule}`);
-    for (const wideRule of INTL_GAME_WIDE_RULES) {
-      const wideIndex = rules.indexOf(wideRule);
-      record.expect(wideIndex !== -1, `wide intl game rule exists: ${wideRule}`);
-      record.expect(
-        guardIndex !== -1 && wideIndex !== -1 && guardIndex < wideIndex,
-        `CN game guard is evaluated before wide intl game rule: ${guardRule} before ${wideRule}`,
-      );
-    }
+  for (const providerName of [
+    'scki-fused-002-intl-site-domain',
+    'scki-fused-004-cnmedia-domain',
+    'scki-fused-005-ad-domain',
+    'scki-fused-005-ad-ipcidr',
+    'scki-fused-006-cn-site-domain',
+    'scki-fused-007-direct-residual',
+    'scki-fused-008-work-residual',
+    'scki-fused-020-google-domain',
+    'scki-fused-031-work-residual',
+    'scki-fused-034-tiktok-domain',
+    'scki-fused-054-gfw-domain',
+    'scki-fused-055-game-cn-domain',
+    'scki-fused-056-game-intl-domain',
+    'scki-fused-057-intl-site-domain',
+  ]) {
+    record.expect(providerNames.has(providerName), `fused provider exists: ${providerName}`);
   }
+
+  record.expect(fusedIntlPreAd !== -1 && fusedAd !== -1 && fusedIntlPreAd < fusedAd, 'Cloudflare R2 allowlist fused segment stays before ad/phishing reject rules');
+  record.expect(fusedAmap !== -1 && fusedAd !== -1 && fusedAd < fusedAmap, 'AMap fused guard stays after ad/phishing rules');
+  record.expect(fusedAmap !== -1 && fusedForeignTail !== -1 && fusedAmap < fusedForeignTail, 'AMap fused guard stays before foreign-site tail');
+  record.expect(fusedCnMediaPreTikTok !== -1 && fusedTikTok !== -1 && fusedCnMediaPreTikTok < fusedTikTok, 'Douyin Web fused guard stays before TikTok');
+  record.expect(fusedCnMediaPreTikTok !== -1 && fusedForeignTail !== -1 && fusedCnMediaPreTikTok < fusedForeignTail, 'Douyin Web fused guard stays before foreign-site tail');
+  record.expect(fusedLocalProcess !== -1, 'local client process rules are fused into DIRECT residual segment');
+  record.expect(fusedWorkProcess !== -1, 'RustDesk process rules are fused into work residual segment');
+  record.expect(fusedWork !== -1, 'remote-work providers are fused into work collaboration segment');
+  record.expect(fusedScholar !== -1, 'Google Scholar is fused into Google service segment');
+  record.expect(fusedGfw !== -1, 'GFW tail is fused into restricted-site segment');
+  record.expect(fusedCnGame !== -1 && fusedIntlGame !== -1 && fusedCnGame < fusedIntlGame, 'CN game fused segment stays before wide international game segment');
+
+  record.expect(!rules.some((rule) => /^RULE-SET,(scholar|tiktok|amap|proxy|scki-(?!fused)[^,]+|remotedesktop|acc-rustdesk|acc-parsec),/.test(String(rule))), 'legacy individual rule-set names are not emitted in the main rule list');
+  record.expect(!rules.some((rule) => /^DOMAIN(-SUFFIX|-KEYWORD)?[,]/.test(String(rule))), 'foldable domain rules are not emitted inline');
+  record.expect(!rules.some((rule) => /^IP-CIDR6?[,]/.test(String(rule))), 'foldable IP-CIDR rules are not emitted inline');
+  record.expect(!rules.some((rule) => /^PROCESS-NAME[,]/.test(String(rule))), 'process rules are not emitted inline');
 
   for (const [providerName, provider] of Object.entries(providers)) {
     if (provider && provider.type === 'http') {
@@ -513,34 +515,6 @@ function validateRulesAndProviders(output, record, target) {
     record.expect(knownTarget, `rule target exists for ${rule}`);
   }
 
-  record.expect(
-    !rules.some((rule) => /^RULE-SET,tiktok,📱 社交媒体/.test(String(rule))),
-    'TikTok does not regress to the social-media target',
-  );
-  record.expect(
-    rules.some((rule) => /^RULE-SET,tiktok,🎵 TikTok/.test(String(rule))),
-    'TikTok has its dedicated rule target',
-  );
-  record.expect(
-    rules.includes('RULE-SET,scholar,🔍 Google 服务'),
-    'Google Scholar is split from tools into Google service target',
-  );
-  record.expect(
-    !rules.includes('RULE-SET,scholar,🔧 工具与服务'),
-    'Google Scholar does not regress to tools target',
-  );
-  const workGroupTarget = extractRuleTarget(rules.find((rule) => rule.startsWith('RULE-SET,remotedesktop,')));
-  record.expect(rules.includes(SCKI_SUPPLEMENTAL_RULES.localProcessDirect), 'local client process supplemental rule-set stays on DIRECT');
-  record.expect(
-    rules.includes(`RULE-SET,scki-work-process,${workGroupTarget}`),
-    'RustDesk process supplemental rule-set uses work group instead of broad DIRECT',
-  );
-  for (const providerName of WORK_PROVIDER_RULES) {
-    record.expect(
-      rules.includes(`RULE-SET,${providerName},🧑‍💼 会议协作`),
-      `remote-work provider stays in the work collaboration group: ${providerName}`,
-    );
-  }
   for (const port of STUN_DIRECT_PORTS) {
     record.expect(rules.includes(`DST-PORT,${port},DIRECT`), `STUN/TURN port stays on DIRECT: ${port}`);
   }
@@ -553,32 +527,11 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('RULE-SET,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
-  const rustDeskGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.workGuard);
-  const copilotIndex = firstExistingRuleIndex(rules, [
-    'RULE-SET,copilot-domain,🤖 AI 服务',
-    'RULE-SET,copilot-ipcidr,🤖 AI 服务',
-    'RULE-SET,copilot-classical,🤖 AI 服务',
-    'RULE-SET,copilot,🤖 AI 服务',
-  ]);
-  record.expect(rustDeskGuardIndex !== -1, 'RustDesk domain guard supplemental rule-set exists before broad Copilot ASN rules');
-  record.expect(
-    rustDeskGuardIndex !== -1 && copilotIndex !== -1 && rustDeskGuardIndex < copilotIndex,
-    'RustDesk domain guard is evaluated before RuleSet/copilot',
-  );
-  // v5.4.26 FIX#164: 腾讯 WorkBuddy copilot.tencent.com 必须在 szkane AiDomain.list
-  // （含 DOMAIN-KEYWORD,copilot 子串）之前锁定国内直连，否则被误吞到 🤖 AI 服务（国外代理）。
-  const copilotTencentGuardIndex = rules.indexOf(SCKI_SUPPLEMENTAL_RULES.cnsiteGuard);
-  const szkaneAiIndex = firstExistingRuleIndex(rules, [
-    'RULE-SET,szkane-ai-domain,🤖 AI 服务',
-    'RULE-SET,szkane-ai-ipcidr,🤖 AI 服务',
-    'RULE-SET,szkane-ai-classical,🤖 AI 服务',
-    'RULE-SET,szkane-ai,🤖 AI 服务',
-  ]);
-  record.expect(copilotTencentGuardIndex !== -1, 'copilot.tencent.com domestic guard supplemental rule-set exists (FIX#164)');
-  record.expect(
-    copilotTencentGuardIndex !== -1 && szkaneAiIndex !== -1 && copilotTencentGuardIndex < szkaneAiIndex,
-    'copilot.tencent.com domestic guard is evaluated before RuleSet/szkane-ai (FIX#164)',
-  );
+  const fusedRustDeskGuard = indexOfPrefix('RULE-SET,scki-fused-014-work-domain,🧑‍💼 会议协作');
+  const fusedCopilot = indexOfPrefix('RULE-SET,scki-fused-021-ai-domain,🤖 AI 服务');
+  record.expect(fusedRustDeskGuard !== -1 && fusedCopilot !== -1 && fusedRustDeskGuard < fusedCopilot, 'RustDesk domain guard fused segment stays before broad Copilot ASN rules');
+  const fusedCopilotTencent = indexOfPrefix('RULE-SET,scki-fused-012-cn-site-domain,🏠 国内网站');
+  record.expect(fusedCopilotTencent !== -1 && fusedCopilot !== -1 && fusedCopilotTencent < fusedCopilot, 'copilot.tencent.com domestic fused guard stays before AI provider segments');
 
   if (target.requireTunExcludes) {
     const excludes = output.tun && output.tun['exclude-process'];

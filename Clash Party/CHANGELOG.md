@@ -7,6 +7,13 @@
 
 ---
 
+## v5.4.40 / v5.4.40-normal.1 (2026-07-09)
+
+- FUSED-RULESETS：以 Clash Party Smart 运行时输出作为唯一基准，新增融合规则集编译层。
+- SCALE：源 `474 providers / 929 rules` 压缩为 `120` 个融合 provider 与 `130` 条主规则，主规则只保留 `17` 条端口/逻辑组合/兜底等必要内联规则。
+- MIHOMO-MRS：融合 provider 优先输出 `.mrs`，残余不可转条目写入 `*-residual.yaml`。
+- GOVERNANCE：后续零星域名/IP/进程补丁必须进入补充规则集并由融合编译器折叠，不得无必要散写单条规则。
+
 ## v5.4.39 / v5.4.39-normal.1 (2026-07-09)
 
 - MRS-PARTIAL：Smart / Normal 全量复查剩余 `YamlRule` / `TextRule`，可迁移部分全部拆入 `.mrs`，只为 `PROCESS-NAME` / `GEOIP` / 端口等不支持类型保留残余 YAML 或原格式。

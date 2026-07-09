@@ -1,0 +1,5 @@
+payload:
+  - "DOMAIN-SUFFIX,gmail.com"
+  - "DOMAIN-SUFFIX,googlemail.com"
+  - "DOMAIN,mail.google.com"
+  - "DOMAIN,inbox.google.com"

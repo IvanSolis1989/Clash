@@ -1,0 +1,22 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "bca.co.id",
+        "klikbca.com",
+        "bni.co.id",
+        "bri.co.id",
+        "bankmandiri.co.id",
+        "danamon.co.id",
+        "permatabank.com",
+        "cimbniaga.co.id",
+        "btn.co.id",
+        "ocbcnisp.com",
+        "banksinarmas.com",
+        "idx.co.id",
+        "ksei.co.id"
+      ]
+    }
+  ]
+}

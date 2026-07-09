@@ -130,29 +130,44 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
 
 若上游没有现成 `.mrs`：
 
-1. 运行 `node tools/sync-mihomo-mrs-rule-providers.js` 在 `rulesets/generated/mihomo-mrs/` 生成本仓库托管的 `.mrs` 与 `manifest.json`。
+1. 运行 `node tools/sync-mihomo-mrs-rule-providers.js` 在 `rulesets/generated/mihomo-mrs/` 生成本仓库托管的 `.mrs` 与 `manifest.json`；该脚本必须从 Clash Party Smart 运行时输出读取上游语义，不能从 CMFA 反向取权威。
 2. 运行 `node tools/apply-mihomo-mrs-overrides.js` 同步到所有 Mihomo 兼容产物。
 3. 混合 classical 规则集必须拆分为 `-domain` / `-ipcidr` 两个 `.mrs` provider；部分可转 provider 必须生成可转 `.mrs` 并把剩余不支持条目写入 `-classical.yaml` 残余规则集；只有全量不可转的 `GEOIP`、端口、进程、逻辑组合等 provider 才保留原格式，并在 manifest / CHANGELOG 说明原因。
 4. JS 覆写产物允许保留压缩 `.mrs` 映射表，用于把动态注入的上游 provider 自动改写为最终规则集；CMFA / OpenClash / Stash 等静态 YAML 产物必须直接写最终 `.mrs` / 残余 YAML 地址，不需要兼容映射表，禁止把映射表展开成多行大表。
 5. Egern、SingBox、Shadowrocket、Surge、Loon、Quantumult X、v2rayN、Passwall/Passwall2 不得硬套 Mihomo `.mrs`；应使用各自原生格式或生成器映射。
 
-### 约束 E：生成链路顺序不可倒置
+### 约束 E：融合规则集优先，生成链路顺序不可倒置
+
+Clash Party Smart 是唯一事实基线。规则扩容后，主分流规则应尽量只剩融合规则集引用和少量不可折叠内联规则。
+
+当前标准融合形态：
+
+1. 支持 `.mrs` 的 Mihomo 产物：按最终分流目标生成 `*-domain.mrs`、`*-ipcidr.mrs`、`*-ipcidr-no-resolve.mrs`，必要时保留 `*-residual.yaml`。
+2. 不支持 `.mrs` 的产物：使用各自性能最好的原生格式，Shadowrocket / Surge / Loon / Quantumult X 使用平台文本规则集，Egern 使用原生 YAML rule_set，SingBox 使用 `.srs`。
+3. 融合编译器必须保持 Clash Party 规则顺序语义；不能简单按目标策略做无序 union。
+4. 零星 `DOMAIN` / `IP-CIDR` / `PROCESS-NAME` 补丁应先进入 `rulesets/supplemental/`，再由融合编译器折叠。除端口、逻辑组合、`MATCH/FINAL`、平台能力例外外，主规则禁止新增单条规则。
 
 后续规则扩容、上游替换、provider 清理时，必须按以下顺序执行：
 
 1. Clash Party 主线先落地语义。
-2. 同步 CMFA / OpenClash / FlClash 等 Mihomo 产物。
-3. 若涉及 rule-provider，运行：
+2. 运行 Mihomo `.mrs` 归一化：
    - `node tools/sync-mihomo-mrs-rule-providers.js`
    - `node tools/apply-mihomo-mrs-overrides.js`
-4. 再生成派生产物：
+3. 运行融合规则集编译：
+   - `node tools/build-fused-rule-sets.js`
+4. 同步 / 生成各派生产物：
+   - CMFA / OpenClash / FlClash 等 Mihomo 产物直接消费融合后的 `.mrs` / residual YAML
+   - Shadowrocket / Surge / Loon / Quantumult X 消费 `rulesets/generated/fused/<platform>/`
+   - SingBox 消费 `rulesets/generated/fused/sing-box/*.srs`
+   - Egern 消费 `rulesets/generated/egern/*.yaml`
+5. 运行派生产物生成脚本：
    - `node tools/generate-stash-from-cmfa.js`
    - `node tools/generate-egern-supplemental.js`
    - `node tools/generate-egern-from-cmfa.js`
    - `node SingBox/SingBox(sing-box)-generator.js`
-5. 最后同步 Shadowrocket / Surge / Loon / Quantumult X / v2rayN / Passwall / Passwall2 中仍需手工维护的部分，并跑完整验收。
+6. 最后同步 v2rayN / Passwall / Passwall2 中仍需手工维护的降级参考部分，并跑完整验收。
 
-禁止从 Stash、Egern、SingBox 等派生产物反向手工改主线；禁止只改生成目录不更新生成脚本；禁止 `.mrs` manifest 中出现 failed 项后继续提交。
+禁止从 CMFA、Stash、Egern、SingBox 等派生产物反向手工改主线；禁止只改生成目录不更新生成脚本；禁止 `.mrs` manifest 中出现 failed 项后继续提交；禁止融合 manifest 出现 unresolved 项后继续提交。
 
 ---
 

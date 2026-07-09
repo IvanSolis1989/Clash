@@ -1,0 +1,13 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "process_name": [
+        "RustDesk.exe",
+        "rustdesk.exe",
+        "RustDesk",
+        "rustdesk"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "dns.google",
+        "dns.google.com"
+      ],
+      "domain_suffix": [
+        "inflection.ai",
+        "pi.ai"
+      ]
+    }
+  ]
+}

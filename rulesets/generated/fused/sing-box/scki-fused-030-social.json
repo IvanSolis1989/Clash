@@ -1,0 +1,23 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "disqus.com",
+        "disquscdn.com",
+        "disqusservice.com",
+        "imgur.com",
+        "imgurinc.com",
+        "pimg.tw",
+        "pixanalytics.com",
+        "pixfs.net",
+        "pixinsight.com.tw",
+        "pixnet.cc",
+        "pixnet.net",
+        "pixnet.pro",
+        "pixnet.tw",
+        "pixplug.in"
+      ]
+    }
+  ]
+}

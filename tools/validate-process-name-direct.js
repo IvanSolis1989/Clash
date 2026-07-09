@@ -13,11 +13,11 @@ const mihomoWorkNames = fixture.mihomoWorkProcessNames || [];
 const surgeNames = fixture.surgeMacProcessNames;
 const surgeWorkNames = fixture.surgeWorkProcessNames || [];
 const WORK_POLICY = '🧑‍💼 会议协作';
-const SCKI_REPO_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental';
-const MIHOMO_DIRECT_RULE_SET = 'scki-local-process-direct';
-const MIHOMO_WORK_RULE_SET = 'scki-work-process';
-const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/local-process-direct.list`;
-const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/work-process.list`;
+const SCKI_REPO_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused';
+const MIHOMO_DIRECT_RULE_SET = 'scki-fused-007-direct-residual';
+const MIHOMO_WORK_RULE_SET = 'scki-fused-008-work-residual';
+const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-007-direct.list`;
+const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-008-work.list`;
 
 const mihomoJsTargets = [
   'Clash Party/ClashParty(mihomo-smart).js',
@@ -76,23 +76,22 @@ for (const target of mihomoRuleTextTargets) {
 {
   const target = 'SingBox/SingBox(sing-box)-full.json';
   const data = JSON.parse(read(target));
-  const directProcessNames = new Set(
-    (data.route?.rules || [])
-      .filter((rule) => rule.action === 'route' && rule.outbound === 'DIRECT' && Array.isArray(rule.process_name))
-      .flatMap((rule) => rule.process_name)
-  );
-  const workProcessNames = new Set(
-    (data.route?.rules || [])
-      .filter((rule) => rule.action === 'route' && rule.outbound === WORK_POLICY && Array.isArray(rule.process_name))
-      .flatMap((rule) => rule.process_name)
-  );
+  const routeRuleSets = new Set((data.route?.rule_set || []).map((ruleSet) => ruleSet.tag));
+  if (!routeRuleSets.has('scki-fused-007-direct-residual')) {
+    failures.push(`${target}: missing scki-fused-007-direct-residual remote rule_set`);
+  }
+  if (!routeRuleSets.has('scki-fused-008-work-residual')) {
+    failures.push(`${target}: missing scki-fused-008-work-residual remote rule_set`);
+  }
+  const directProcessNames = readSingBoxFusedProcessNames('scki-fused-007-direct');
+  const workProcessNames = readSingBoxFusedProcessNames('scki-fused-008-work');
   const missing = mihomoNames.filter((name) => !directProcessNames.has(name));
   if (missing.length > 0) {
-    failures.push(`${target}: missing ${missing.length} generated process_name route rules: ${missing.join(', ')}`);
+    failures.push(`rulesets/generated/fused/sing-box/scki-fused-007-direct.json: missing ${missing.length} process_name entries: ${missing.join(', ')}`);
   }
   const missingWork = mihomoWorkNames.filter((name) => !workProcessNames.has(name));
   if (missingWork.length > 0) {
-    failures.push(`${target}: missing ${missingWork.length} generated RustDesk process_name WORK route rules: ${missingWork.join(', ')}`);
+    failures.push(`rulesets/generated/fused/sing-box/scki-fused-008-work.json: missing ${missingWork.length} RustDesk process_name entries: ${missingWork.join(', ')}`);
   }
 }
 
@@ -125,10 +124,10 @@ function validateMihomoJsTarget(target, text) {
 
 function validateMihomoRuleTextTarget(target, text) {
   if (!text.includes(`RULE-SET,${MIHOMO_DIRECT_RULE_SET},DIRECT`)) {
-    failures.push(`${target}: missing ${MIHOMO_DIRECT_RULE_SET} supplemental process RULE-SET`);
+    failures.push(`${target}: missing ${MIHOMO_DIRECT_RULE_SET} fused process RULE-SET`);
   }
   if (!text.includes(`RULE-SET,${MIHOMO_WORK_RULE_SET},`) || !text.includes('会议协作')) {
-    failures.push(`${target}: missing ${MIHOMO_WORK_RULE_SET} supplemental work-process RULE-SET`);
+    failures.push(`${target}: missing ${MIHOMO_WORK_RULE_SET} fused work-process RULE-SET`);
   }
 }
 
@@ -194,4 +193,12 @@ function readProcessRuleSet(relativePath) {
     .map((line) => line.split(','))
     .filter((parts) => parts[0] === 'PROCESS-NAME' && parts[1])
     .map((parts) => parts[1]));
+}
+
+function readSingBoxFusedProcessNames(id) {
+  const file = `rulesets/generated/fused/sing-box/${id}.json`;
+  const data = JSON.parse(read(file));
+  return new Set((data.rules || [])
+    .filter((rule) => Array.isArray(rule.process_name))
+    .flatMap((rule) => rule.process_name));
 }

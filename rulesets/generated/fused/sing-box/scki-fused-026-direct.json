@@ -1,0 +1,14 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "mail.qq.com",
+        "mail.163.com",
+        "mail.126.com",
+        "mail.sina.com.cn",
+        "mail.aliyun.com"
+      ]
+    }
+  ]
+}

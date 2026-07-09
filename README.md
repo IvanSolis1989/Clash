@@ -2,7 +2,7 @@
 
 > 一套以 **Mihomo Smart 内核 JS 覆写脚本**为基线、同步产出 14 种客户端等价配置的分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免”设备 A 可用、设备 B 抽风”。
 >
-> - 🧩 **22 区域组 + 33 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），474 rule-provider 全覆盖
+> - 🧩 **22 区域组 + 33 业务组**：按语义精细分流（AI / 流媒体 / 社交 / 游戏 / 广告拦截 …），120 个融合 rule-provider 覆盖源 474 providers / 929 rules
 > - ⚡ **Smart / Normal 双内核**：同规则量，按内核能力选 `smart`（LightGBM ML 择路）或经典 `url-test`
 > - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
 > - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
@@ -103,7 +103,7 @@ flowchart LR
 
 ---
 
-## 🎯 差异化价值：为什么在 geosite / geoip 之上还要叠加 300 个 rule-provider
+## 🎯 差异化价值：为什么在 geosite / geoip 之上还要叠加融合 rule-provider
 
 > IP 分类（国家码 / 服务标签）直接用原生 Loyalsoldier `geoip.dat`，**零增量**。补充全在域名分类层，且每条 rule-provider 必须回答「比原生 dat 多解决了什么」，否则拒绝加入。
 >

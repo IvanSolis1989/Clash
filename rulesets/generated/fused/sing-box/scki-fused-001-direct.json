@@ -1,0 +1,28 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "account.xiaomi.com",
+        "passport.xiaomi.com",
+        "micloud.xiaomi.com",
+        "jpush.cn",
+        "jpush.io",
+        "getui.com",
+        "getui.net",
+        "gepush.com"
+      ],
+      "domain": [
+        "i.mi.com",
+        "auth.be.sec.miui.com",
+        "idm.api.io.mi.com",
+        "api.installer.xiaomi.com",
+        "flash.sec.miui.com",
+        "mazu.sec.miui.com",
+        "ccc.sys.miui.com",
+        "register.xmpush.xiaomi.com",
+        "msg.umeng.com"
+      ]
+    }
+  ]
+}

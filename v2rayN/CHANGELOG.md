@@ -7,6 +7,11 @@
 
 ---
 
+## v5.4.40-v2n.1 (2026-07-09)
+
+- META：跟随 Clash Party v5.4.40 更新版本元数据。
+- SCOPE：Xray 路由 JSON 仍是 proxy/direct/block 三出站降级展平参考，不承载融合 rule-set，不反向影响 Clash Party 基准。
+
 ## v5.4.39-v2n.1 (2026-07-09)
 
 - META：跟随 Clash Party v5.4.39 更新版本元数据。

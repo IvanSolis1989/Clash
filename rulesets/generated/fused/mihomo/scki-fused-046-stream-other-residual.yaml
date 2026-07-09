@@ -1,0 +1,13 @@
+payload:
+  - "PROCESS-NAME,com.viu.pad"
+  - "PROCESS-NAME,com.viu.phone"
+  - "PROCESS-NAME,com.vuclip.viu"
+  - "PROCESS-NAME,com.iqiyi.i18n"
+  - "PROCESS-NAME,com.iqiyi.i18n.tv"
+  - "PROCESS-NAME,com.tencent.ibg.joox"
+  - "PROCESS-NAME,com.tencent.qqlivei18n"
+  - "PROCESS-NAME,com.tencent.qqlivei18n.us"
+  - "PROCESS-NAME,tv.twitch.android.app"
+  - "PROCESS-NAME,com.cbs.app"
+  - "PROCESS-NAME,com.showtime.standalone"
+  - "PROCESS-NAME,com.mb.android"

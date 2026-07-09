@@ -1,0 +1,55 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain": [
+        "gamer2-cds.cdn.hinet.net",
+        "gamer-cds.cdn.hinet.net",
+        "bahamut.akamaized.net",
+        "bahamut.com.tw",
+        "gamer.com.tw",
+        "kktv-theater.kk.stream",
+        "theater-kktv.cdn.hinet.net",
+        "litvfreemobile-hichannel.cdn.hinet.net",
+        "hls-hichannel.cdn.hinet.net",
+        "d17lx9ucc6k9fc.cloudfront.net",
+        "d3pgb93pk7bvxj.cloudfront.net",
+        "d3vm9lcxb6xcm4.cloudfront.net",
+        "hamifans.emome.net"
+      ],
+      "domain_suffix": [
+        "kktv.com.tw",
+        "kktv.me",
+        "elta.tv",
+        "mod.cht.com.tw",
+        "ofiii.com",
+        "pts.org.tw",
+        "4gtv.tv",
+        "litv.tv",
+        "fetnet.net",
+        "friday.tw",
+        "hamivideo.hinet.net",
+        "ott.hinet.net",
+        "chocotv.com.tw",
+        "d3c7rimkq79yfu.cloudfront.net",
+        "line-cdn.net",
+        "line-scdn.net",
+        "linetv.tw",
+        "vidol.tv",
+        "skyking.com.tw",
+        "cht.com.tw",
+        "chtf.org.tw",
+        "emome.net",
+        "gtlsca.nat.gov.tw",
+        "hinet.net",
+        "xuite.net"
+      ],
+      "domain_keyword": [
+        "hamivideo.cdn.hinet.net"
+      ],
+      "process_name": [
+        "com.linecorp.linetv"
+      ]
+    }
+  ]
+}

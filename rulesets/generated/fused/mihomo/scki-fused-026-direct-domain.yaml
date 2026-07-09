@@ -1,0 +1,6 @@
+payload:
+  - "DOMAIN-SUFFIX,mail.qq.com,DIRECT"
+  - "DOMAIN-SUFFIX,mail.163.com,DIRECT"
+  - "DOMAIN-SUFFIX,mail.126.com,DIRECT"
+  - "DOMAIN-SUFFIX,mail.sina.com.cn,DIRECT"
+  - "DOMAIN-SUFFIX,mail.aliyun.com,DIRECT"

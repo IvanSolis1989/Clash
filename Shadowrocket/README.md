@@ -3,7 +3,7 @@
 > 目录简介：这里维护 Shadowrocket 小火箭配置和使用教程，覆盖 iOS/macOS 私有 conf 语法下的分流实现。
 >
 > 配置文件：`Shadowrocket.conf`
-> 版本：**v5.4.39-SR.1**（Build 2026-07-09，跟随 Clash Party v5.4.39 基线；区域 url-test 默认 300s）
+> 版本：**v5.4.40-SR.1**（Build 2026-07-09，跟随 Clash Party v5.4.40 基线；使用 68 个融合远程 RULE-SET；区域 url-test 默认 300s）
 > 目标：**Shadowrocket iOS（App Store 正版）** / macOS 通用
 > 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 33 业务策略组 + 283 rule-set
 

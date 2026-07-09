@@ -126,23 +126,30 @@ node tools/generate-egern-from-cmfa.js
 
 这些目录的修改**不需要**触发 §1 全版本联动，但 `tools/` 和 `.github/workflows/` 的改动应在 PR 描述中说明。
 
-### 0.2 规则生成链路架构（v5.4.39 起强制）
+### 0.2 规则生成链路架构（v5.4.40 起强制）
 
-本仓库现在有两条生成链路，不能混用：
+本仓库现在是单向编译链路，**Clash Party 永远是唯一事实基线**；CMFA / Stash / Egern / SingBox 等只能作为派生产物或生成器输入，不得反向成为权威源。
 
-1. **Mihomo `.mrs` 链路**：面向 Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash。
-   - 权威输入：`Clash Meta For Android/CMFA(mihomo).yaml` 里的 `rule-providers`。
+1. **Mihomo `.mrs` 归一化链路**：面向 Clash Party Smart/Normal、CMFA、OpenClash Normal/Smart、FlClash、Stash。
+   - 权威输入：`Clash Party/ClashParty(mihomo-smart).js` 的运行时输出，工具会同时设置 `SCKI_DISABLE_FUSED_RULESETS=true` 与 `SCKI_DISABLE_MIHOMO_MRS_OVERRIDES=true`，读取未融合、未改写前的上游 provider 语义。
    - 同步脚本：`node tools/sync-mihomo-mrs-rule-providers.js`。
    - 输出目录：`rulesets/generated/mihomo-mrs/` + `manifest.json`。
    - 应用脚本：`node tools/apply-mihomo-mrs-overrides.js`。
    - 规则：`domain` / `ipcidr` 才能转 `.mrs`；混合 classical 必须拆成 `-domain` / `-ipcidr`；若同一 provider 只有部分条目可转，必须生成可转 `.mrs` 并把剩余不支持条目写入 `-classical.yaml` 残余规则集；完全无法转换时才进入 manifest 的 `retained`，且必须写明原因。
-   - JS 覆写产物允许保留压缩后的 `.mrs` 映射表，用于把动态注入的上游 provider 自动改写成最终规则集；CMFA / OpenClash / Stash 等静态 YAML 产物必须直接写最终 `.mrs` / 残余 YAML 地址，不需要兼容映射表。禁止把映射表展开成多行大表制造源码膨胀。
-2. **Egern 原生规则链路**：面向 `Egern/Egern.yaml`。
-   - Egern 不直接消费 Mihomo `.mrs`。
-   - `node tools/generate-egern-from-cmfa.js` 会读取 CMFA 规则顺序和 `.mrs` manifest，把上游规则映射为 `rulesets/generated/egern/*.yaml` 的 Egern 原生 YAML 规则集。
-   - 两个 `PROCESS-NAME` 补充规则集不进入 Egern，这是官方规则能力限制，不是同步遗漏。
+   - JS 覆写产物允许保留压缩 `.mrs` 映射层，用于动态注入时自动改写；CMFA / OpenClash / Stash 等静态 YAML 产物必须直接写最终 `.mrs` / 残余 YAML 地址，不需要兼容映射表。禁止把映射表展开成多行大表制造源码膨胀。
+2. **融合规则集编译链路**：面向所有支持远程规则集或原生规则集的产物。
+   - 权威输入：`Clash Party/ClashParty(mihomo-smart).js` 的运行时输出，工具只设置 `SCKI_DISABLE_FUSED_RULESETS=true`，因此读取的是已经过 `.mrs` 归一化但尚未融合的规则顺序。
+   - 编译脚本：`node tools/build-fused-rule-sets.js`。
+   - 输出目录：`rulesets/generated/fused/`；当前验收统计为源 `474 providers / 929 rules` → `68` 个策略顺序段 → `120` 个 Mihomo 融合 provider / `130` 条主规则 / `17` 条必要内联规则，`unresolved=0`。
+   - 支持 `.mrs` 的 Mihomo 产物优先引用 `*-domain.mrs`、`*-ipcidr.mrs`、`*-ipcidr-no-resolve.mrs`；确实不能转 `.mrs` 的端口、进程、逻辑组合、GEOIP 等写入 `*-residual.yaml`。
+   - 不支持 `.mrs` 的产物使用各自性能最好的原生格式：Shadowrocket / Surge / Loon / Quantumult X 使用平台文本规则集，Egern 使用原生 YAML rule_set，SingBox 使用 `.srs`。
+3. **派生产物生成链路**：
+   - `node tools/generate-stash-from-cmfa.js` 只裁剪 CMFA 的融合结果生成 Stash，不改变基线。
+   - `node tools/generate-egern-from-cmfa.js` 只把 CMFA 的融合顺序映射为 Egern 原生 YAML，不直接消费 Mihomo `.mrs`。
+   - `node SingBox/SingBox(sing-box)-generator.js` 只把融合 rule-provider 映射到本仓库 `.srs`。
+   - Egern 官方规则类型不含 Clash 风格 `PROCESS-NAME`，相关补充规则是明确的平台例外。
 
-**强制顺序**：改 rule-provider / 规则集后，先更新 Clash Party/CMFA 语义，再运行 `.mrs` 同步与应用，再生成 Stash/Egern/SingBox，最后跑 §5 自检。禁止反向从 Stash/Egern/SingBox 手工改回主线。
+**强制顺序**：改 rule-provider / 规则集后，先更新 Clash Party 语义，再运行 `.mrs` 同步与应用，然后运行融合规则集编译器，再生成 Stash/Egern/SingBox，最后跑 §5 自检。禁止反向从 CMFA / Stash / Egern / SingBox 手工改回主线。
 
 ---
 
@@ -154,7 +161,7 @@ node tools/generate-egern-from-cmfa.js
 
 - 新增/删除/重命名**任何代理组**（含 22 个区域组〔11 全部 + 11 家宽〕与 33 个业务组）
 - 新增/删除/修改**任何 rule-provider**（含 URL、behavior、format、interval、proxy 字段）
-- 新增/删除/修改 `rulesets/generated/mihomo-mrs/manifest.json`、`rulesets/generated/mihomo-mrs/*.mrs`、`rulesets/generated/egern/*.yaml` 的生成规则
+- 新增/删除/修改 `rulesets/generated/mihomo-mrs/manifest.json`、`rulesets/generated/mihomo-mrs/*.mrs`、`rulesets/generated/fused/**`、`rulesets/generated/egern/*.yaml` 的生成规则
 - 修改**规则条目的目标组**（例如把 `RULE-SET,tiktok` 从 `📱 社交媒体` 改到其他组）
 - 修改**规则顺序**中影响命中优先级的段（特别是广告拦截、GFW、FINAL 前置关系）
 - 修改 **DNS / Sniffer / fake-ip / GeoX URL / LightGBM URL** 等全局行为
@@ -184,6 +191,7 @@ node tools/generate-egern-from-cmfa.js
 3. **涉及上游 rule-provider 时必须执行生成链路**：
    - `node tools/sync-mihomo-mrs-rule-providers.js`
    - `node tools/apply-mihomo-mrs-overrides.js`
+   - `node tools/build-fused-rule-sets.js`
    - `node tools/generate-stash-from-cmfa.js`
    - `node tools/generate-egern-supplemental.js`
    - `node tools/generate-egern-from-cmfa.js`
@@ -356,12 +364,12 @@ Ruby 共 4 份产物都存在同构漏洞（见 v5.2.6 补丁），教训记在�
 默认处理规则：
 
 1. `DOMAIN` / `DOMAIN-SUFFIX` / `DOMAIN-KEYWORD` / `IP-CIDR` / `PROCESS-NAME` 等零星补丁，优先加入 `rulesets/supplemental/` 下对应补充规则集。
-2. 各产物只负责引用补充规则集：Mihomo 家族使用 `rule-providers` + `RULE-SET`；Surge/Shadowrocket 使用 URL `RULE-SET`；Loon 使用 `[Remote Rule]`；Quantumult X 使用 `[filter_remote]`；Egern 使用 `rule_set`；SingBox 由生成器展开为原生 route rule。
+2. 补充规则集会被 `tools/build-fused-rule-sets.js` 折叠进对应目标策略的融合规则集；各产物主规则只引用融合后的规则集，不再散写可折叠单条规则。
 3. 同一补丁若目标策略不同，必须拆成多个规则集；不要把 DIRECT / 支付 / 国外网站等不同策略混进同一个 rule-set。
 4. 只有端口规则、逻辑组合规则（`AND` / `OR` / `NOT`）、`MATCH` / `FINAL`、平台无法表达的字段，或已记录原因的平台专属例外，才允许继续保留为主规则内联。
 5. 临时排障单条规则不得长期留在主规则；同一 PR 必须给出迁入补充规则集或删除的结论。
 
-新增规则前的强制自问：**能否放进 `rulesets/supplemental/`？** 只要答案不是明确不能，就不允许散写单条规则。
+新增规则前的强制自问：**能否放进 `rulesets/supplemental/` 并由融合编译器折叠？** 只要答案不是明确不能，就不允许散写单条规则。
 
 ---
 

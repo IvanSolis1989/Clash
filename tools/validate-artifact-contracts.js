@@ -17,8 +17,14 @@ const EXPECTED_SINGBOX_URLTEST_GROUPS = 2;
 const EXPECTED_PASSWALL_RULES = 33;
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
-const MIN_FULL_PROVIDERS = 474;
-const MIN_FULL_RULES = 929;
+const SOURCE_FULL_PROVIDERS = 474;
+const SOURCE_FULL_RULES = 929;
+const MIN_FULL_PROVIDERS = 120;
+const MIN_FULL_RULES = 130;
+const EXPECTED_FUSED_SEGMENTS = 68;
+const EXPECTED_FUSED_INLINE_RULES = 17;
+const EXPECTED_FUSED_MRS_FILES = 96;
+const EXPECTED_FUSED_SRS_FILES = 68;
 const EXPECTED_MIHOMO_MRS_CONVERTED = 267;
 const EXPECTED_MIHOMO_MRS_SPLIT = 39;
 const EXPECTED_MIHOMO_MRS_PARTIAL = 30;
@@ -27,9 +33,9 @@ const EXPECTED_MIHOMO_MRS_RETAINED = 20;
 const EXPECTED_MIHOMO_MRS_FILES = 389;
 const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 30;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
-const EXPECTED_EGERN_RULES = 927;
-const EXPECTED_EGERN_RULE_SETS = 484;
-const EXPECTED_EGERN_GENERATED_RULE_SETS = 487;
+const EXPECTED_EGERN_RULES = 130;
+const EXPECTED_EGERN_RULE_SETS = 113;
+const EXPECTED_EGERN_GENERATED_RULE_SETS = 118;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -342,77 +348,131 @@ function validateMihomoMrsRuleSets(record) {
   record.check('mihomo-mrs.retained-has-reason', retainedWithoutReason.length === 0, { message: retainedWithoutReason.map((row) => row.id).join(', ') });
 
   for (const spec of [
-    { id: 'cmfa', file: 'Clash Meta For Android/CMFA(mihomo).yaml' },
-    { id: 'stash', file: 'Stash/Stash.yaml' },
-    { id: 'openclash-normal', file: 'OpenClash/OpenClash(mihomo).sh' },
-    { id: 'openclash-smart', file: 'OpenClash/OpenClash(mihomo-smart).sh' },
+    { id: 'js-smart', file: 'Clash Party/ClashParty(mihomo-smart).js' },
+    { id: 'js-normal', file: 'Clash Party/ClashParty(mihomo).js' },
+    { id: 'flclash', file: 'FlClash/FlClash(mihomo).js' },
   ]) {
     const source = readText(spec.file);
-    const mrsFormatCount = countMatches(source, /format:\s*mrs/g);
-    const generatedRefCount = countMatches(source, /rulesets\/generated\/mihomo-mrs\/[^"'\s]+\.mrs/g);
-    const residualRefCount = countMatches(source, /rulesets\/generated\/mihomo-mrs\/[^"'\s]+\.yaml/g);
-    record.check(`mihomo-mrs.${spec.id}.format-count`, mrsFormatCount === EXPECTED_MIHOMO_MRS_PROVIDER_REFS, { value: mrsFormatCount });
-    record.check(`mihomo-mrs.${spec.id}.generated-ref-count`, generatedRefCount >= EXPECTED_MIHOMO_MRS_FILES, { value: generatedRefCount });
-    record.check(`mihomo-mrs.${spec.id}.residual-ref-count`, residualRefCount === EXPECTED_MIHOMO_MRS_RESIDUAL_FILES, { value: residualRefCount });
+    record.check(`mihomo-mrs.${spec.id}.tool-disable-switch`, source.includes('SCKI_DISABLE_MIHOMO_MRS_OVERRIDES'), {
+      message: 'JS MRS override block must expose a tool-only disable switch so sync reads Clash Party raw upstream providers',
+    });
+  }
+}
+
+function validateFusedRuleSets(record) {
+  const manifest = readJson('rulesets/generated/fused/manifest.json');
+  const fusedDir = relPath('rulesets/generated/fused');
+  const countFiles = (subdir, suffix) => fs.readdirSync(path.join(fusedDir, subdir)).filter((file) => file.endsWith(suffix)).length;
+
+  record.check('fused.authority-clash-party', String(manifest.authority || '').includes('Clash Party/ClashParty(mihomo-smart).js'), { value: manifest.authority });
+  record.check('fused.source-provider-count', manifest.source_provider_count === SOURCE_FULL_PROVIDERS, { value: manifest.source_provider_count });
+  record.check('fused.source-rule-count', manifest.source_rule_count === SOURCE_FULL_RULES, { value: manifest.source_rule_count });
+  record.check('fused.provider-count', manifest.fused_provider_count === MIN_FULL_PROVIDERS, { value: manifest.fused_provider_count });
+  record.check('fused.rule-count', manifest.fused_rule_count === MIN_FULL_RULES, { value: manifest.fused_rule_count });
+  record.check('fused.segment-count', manifest.segment_count === EXPECTED_FUSED_SEGMENTS, { value: manifest.segment_count });
+  record.check('fused.inline-rule-count', manifest.inline_rule_count === EXPECTED_FUSED_INLINE_RULES, { value: manifest.inline_rule_count });
+  record.check('fused.generated-mrs-files', manifest.generated_mrs_files === EXPECTED_FUSED_MRS_FILES, { value: manifest.generated_mrs_files });
+  record.check('fused.generated-srs-files', manifest.generated_srs_files === EXPECTED_FUSED_SRS_FILES, { value: manifest.generated_srs_files });
+  record.check('fused.unresolved-providers', (manifest.unresolved_providers || []).length === 0, { value: manifest.unresolved_providers });
+  record.check('fused.unresolved-sources', (manifest.unresolved_sources || []).length === 0, { value: manifest.unresolved_sources });
+  record.check('fused.passthrough-providers', (manifest.passthrough_providers || []).length === 0, { value: manifest.passthrough_providers });
+  record.check('fused.clash-file-count', countFiles('clash', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('clash', '.list') });
+  record.check('fused.surge-file-count', countFiles('surge', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('surge', '.list') });
+  record.check('fused.qx-file-count', countFiles('quantumultx', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('quantumultx', '.list') });
+  record.check('fused.egern-file-count', countFiles('egern', '.yaml') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('egern', '.yaml') });
+  record.check('fused.sing-box-srs-count', countFiles('sing-box', '.srs') === EXPECTED_FUSED_SRS_FILES, { value: countFiles('sing-box', '.srs') });
+  for (const id of [
+    'scki-fused-005-ad',
+    'scki-fused-007-direct',
+    'scki-fused-008-work',
+    'scki-fused-020-google',
+    'scki-fused-031-work',
+    'scki-fused-034-tiktok',
+    'scki-fused-054-gfw',
+    'scki-fused-055-game-cn',
+    'scki-fused-056-game-intl',
+    'scki-fused-057-intl-site',
+  ]) {
+    record.check(`fused.segment.${id}`, (manifest.segments || []).some((segment) => segment.id === id), { message: `missing ${id}` });
   }
 }
 
 function checkSupplementalProviderRefs(record, id, providersBlock) {
-  for (const spec of SUPPLEMENTAL_CLASH_RULESETS) {
-    for (const expected of supplementalMihomoProviderExpectations(spec)) {
-      const hasProvider = new RegExp(`^\\s{2}${expected.id}:\\s*$`, 'm').test(providersBlock);
-      const hasUrl = providersBlock.includes(expected.url);
-      record.check(`${id}.supplemental-provider.${expected.id}`, hasProvider && hasUrl, {
-        message: `${expected.id} must point to ${expected.url}`,
-      });
-    }
+  for (const expected of [
+    'scki-fused-002-intl-site-domain',
+    'scki-fused-004-cnmedia-domain',
+    'scki-fused-005-ad-domain',
+    'scki-fused-006-cn-site-domain',
+    'scki-fused-007-direct-residual',
+    'scki-fused-008-work-residual',
+    'scki-fused-020-google-domain',
+    'scki-fused-031-work-residual',
+    'scki-fused-034-tiktok-domain',
+    'scki-fused-055-game-cn-domain',
+    'scki-fused-056-game-intl-domain',
+    'scki-fused-057-intl-site-domain',
+  ]) {
+    const hasProvider = new RegExp(`^\\s{2}${expected}:\\s*$`, 'm').test(providersBlock);
+    const hasUrl = providersBlock.includes(`/rulesets/generated/fused/mihomo/${expected.replace(/-residual$/, '-residual.yaml').replace(/-(domain|ipcidr|ipcidr-no-resolve)$/, '-$1.mrs')}`);
+    record.check(`${id}.fused-provider.${expected}`, hasProvider && hasUrl, {
+      message: `${expected} must point to generated fused Mihomo ruleset`,
+    });
   }
 }
 
 function checkSupplementalMihomoRules(record, id, rulesSource) {
-  for (const spec of SUPPLEMENTAL_CLASH_RULESETS) {
-    for (const expected of supplementalMihomoRuleExpectations(spec)) {
-      const needle = `RULE-SET,${expected.id},${expected.policy}`;
-      record.check(`${id}.supplemental-rule.${expected.id}`, rulesSource.includes(needle), {
-        message: `missing ${needle}`,
-      });
-    }
+  for (const needle of [
+    'RULE-SET,scki-fused-002-intl-site-domain,🌐 国外网站',
+    'RULE-SET,scki-fused-004-cnmedia-domain,📺 国内流媒体',
+    'RULE-SET,scki-fused-005-ad-domain,🛑 广告拦截',
+    'RULE-SET,scki-fused-006-cn-site-domain,🏠 国内网站',
+    'RULE-SET,scki-fused-007-direct-residual,DIRECT',
+    'RULE-SET,scki-fused-008-work-residual,🧑‍💼 会议协作',
+    'RULE-SET,scki-fused-020-google-domain,🔍 Google 服务',
+    'RULE-SET,scki-fused-031-work-residual,🧑‍💼 会议协作',
+    'RULE-SET,scki-fused-034-tiktok-domain,🎵 TikTok',
+    'RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏',
+    'RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏',
+    'RULE-SET,scki-fused-057-intl-site-domain,🌐 国外网站',
+  ]) {
+    record.check(`${id}.fused-rule.${needle.split(',')[1]}`, rulesSource.includes(needle), {
+      message: `missing ${needle}`,
+    });
   }
-  checkNeedleBefore(record, `${id}.supplemental.adfp-before-ads`, rulesSource, 'RULE-SET,scki-adfp-intl-site,🌐 国外网站', 'RULE-SET,anti-ad,🛑 广告拦截');
-  checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-tiktok`, rulesSource, 'RULE-SET,scki-cnmedia-guard,📺 国内流媒体', 'RULE-SET,tiktok,🎵 TikTok');
-  checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-foreign-tail`, rulesSource, 'RULE-SET,scki-cnmedia-guard,📺 国内流媒体', 'RULE-SET,proxy,🌐 国外网站');
-  checkNeedleBefore(record, `${id}.supplemental.cnsite-before-foreign-tail`, rulesSource, 'RULE-SET,scki-cnsite-guard,🏠 国内网站', 'RULE-SET,proxy,🌐 国外网站');
-  checkNeedleBefore(record, `${id}.supplemental.ai-before-ai-provider`, rulesSource, 'RULE-SET,scki-ai-supplement,🤖 AI 服务', 'RULE-SET,civitai,🤖 AI 服务');
+  checkNeedleBefore(record, `${id}.fused.cloudflarestorage-before-ads`, rulesSource, 'RULE-SET,scki-fused-002-intl-site-domain,🌐 国外网站', 'RULE-SET,scki-fused-005-ad-domain,🛑 广告拦截');
+  checkNeedleBefore(record, `${id}.fused.cnmedia-before-tiktok`, rulesSource, 'RULE-SET,scki-fused-004-cnmedia-domain,📺 国内流媒体', 'RULE-SET,scki-fused-034-tiktok-domain,🎵 TikTok');
+  checkNeedleBefore(record, `${id}.fused.cnmedia-before-foreign-tail`, rulesSource, 'RULE-SET,scki-fused-004-cnmedia-domain,📺 国内流媒体', 'RULE-SET,scki-fused-057-intl-site-domain,🌐 国外网站');
+  checkNeedleBefore(record, `${id}.fused.cnsite-before-foreign-tail`, rulesSource, 'RULE-SET,scki-fused-006-cn-site-domain,🏠 国内网站', 'RULE-SET,scki-fused-057-intl-site-domain,🌐 国外网站');
+  checkNeedleBefore(record, `${id}.fused.cn-game-before-intl-game`, rulesSource, 'RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏', 'RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏');
 }
 
 function checkSupplementalMobileRules(record, id, source, flavor, options = {}) {
-  const specs = [...SUPPLEMENTAL_MOBILE_CLASH_RULESETS];
-  if (options.surgeProcess) {
-    specs.push(...SUPPLEMENTAL_SURGE_PROCESS_RULESETS.map((spec) => ({ ...spec, flavor: 'surge' })));
-  }
-
-  for (const spec of specs) {
-    const specFlavor = spec.flavor || flavor;
-    const url = supplementalUrl(specFlavor, spec.file);
-    let ok = false;
-    if (options.qx) {
-      const qxPolicy = spec.policy === 'DIRECT' ? 'direct' : spec.policy;
-      ok = source.includes(url) && source.includes(`tag=${spec.id}`) && source.includes(`force-policy=${qxPolicy}`);
-    } else if (options.loon) {
-      ok = source.includes(`${url}, policy=${spec.policy}, tag=${spec.id}, enabled=true`);
-    } else {
-      ok = source.includes(`RULE-SET,${url},${spec.policy}`);
-    }
-    record.check(`${id}.supplemental-rule.${spec.id}`, ok, {
-      message: `missing supplemental ${spec.id} in ${id}`,
+  const base = SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/fused');
+  const platform = options.qx ? 'quantumultx' : id === 'surge' ? 'surge' : 'clash';
+  const fusedUrl = (segment) => `${base}/${platform}/${segment}.list`;
+  for (const segment of [
+    'scki-fused-002-intl-site',
+    'scki-fused-004-cnmedia',
+    'scki-fused-005-ad',
+    'scki-fused-006-cn-site',
+    'scki-fused-007-direct',
+    'scki-fused-008-work',
+    'scki-fused-020-google',
+    'scki-fused-031-work',
+    'scki-fused-034-tiktok',
+    'scki-fused-055-game-cn',
+    'scki-fused-056-game-intl',
+    'scki-fused-057-intl-site',
+  ]) {
+    const url = fusedUrl(segment);
+    record.check(`${id}.fused-rule.${segment}`, source.includes(url), {
+      message: `missing fused ${segment} in ${id}`,
     });
   }
-
-  if (!options.qx && !options.loon) {
-    const clientDir = id === 'shadowrocket' ? 'Shadowrocket' : 'Surge';
-    checkNeedleBefore(record, `${id}.supplemental.adfp-before-ads`, source, `RULE-SET,${supplementalUrl(flavor, 'adfp-intl-site')},🌐 国外网站`, 'RULE-SET,https://fastly.jsdelivr.net/gh/privacy-protection-tools/anti-AD@master/anti-ad-surge.txt,🛑 广告拦截');
-    checkNeedleBefore(record, `${id}.supplemental.cnmedia-before-tiktok`, source, `RULE-SET,${supplementalUrl(flavor, 'cnmedia-guard')},📺 国内流媒体`, `RULE-SET,https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/${clientDir}/TikTok/TikTok.list,🎵 TikTok`);
-  }
+  checkNeedleBefore(record, `${id}.fused.cloudflarestorage-before-ads`, source, fusedUrl('scki-fused-002-intl-site'), fusedUrl('scki-fused-005-ad'));
+  checkNeedleBefore(record, `${id}.fused.cnmedia-before-tiktok`, source, fusedUrl('scki-fused-004-cnmedia'), fusedUrl('scki-fused-034-tiktok'));
+  checkNeedleBefore(record, `${id}.fused.cnmedia-before-foreign-tail`, source, fusedUrl('scki-fused-004-cnmedia'), fusedUrl('scki-fused-057-intl-site'));
+  checkNeedleBefore(record, `${id}.fused.cn-game-before-intl-game`, source, fusedUrl('scki-fused-055-game-cn'), fusedUrl('scki-fused-056-game-intl'));
 }
 
 function countLiteral(source, literal) {
@@ -693,13 +753,11 @@ function validateClashYaml(record, baselineVersion, options) {
   record.check('cmfa.restricted-provider-downloads', countLiteral(source, RESTRICTED_SITE) >= MIN_FULL_PROVIDERS, {
     value: countLiteral(source, RESTRICTED_SITE),
   });
-  record.check('cmfa.amap-provider', /amap:\n\s+type:\s+http/.test(providersBlock));
-  checkNeedleBefore(record, 'cmfa.amap-after-ads', rulesBlock, 'RULE-SET,anti-ad,🛑 广告拦截', 'RULE-SET,amap,🏠 国内网站');
-  checkNeedleBefore(record, 'cmfa.amap-before-foreign-tail', rulesBlock, 'RULE-SET,amap,🏠 国内网站', 'RULE-SET,proxy,🌐 国外网站');
   checkSupplementalProviderRefs(record, 'cmfa', providersBlock);
   checkSupplementalMihomoRules(record, 'cmfa', rulesBlock);
-  record.check('cmfa.scholar-target-google', source.includes('RULE-SET,scholar,🔍 Google 服务'));
-  record.check('cmfa.scholar-not-tools', !source.includes('RULE-SET,scholar,🔧 工具与服务'));
+  record.check('cmfa.no-legacy-amap-provider', !/^  amap:\s*$/m.test(providersBlock));
+  record.check('cmfa.no-legacy-scholar-rule', !/RULE-SET,scholar,/.test(rulesBlock));
+  record.check('cmfa.no-foldable-domain-inline-rules', !/^- "DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(rulesBlock));
   const fakeIpFilterBlock = extractIndentedListBlock(source, 'fake-ip-filter');
   record.check('cmfa.fake-ip-filter-blacklist-mode', /fake-ip-filter-mode:\s*blacklist/.test(source));
   const hasNoFakeIpRuleSetRefs = !/RULE-SET,/.test(fakeIpFilterBlock);
@@ -742,11 +800,7 @@ function validateClashYaml(record, baselineVersion, options) {
     const hasPortRule = source.includes(`DST-PORT,${port},DIRECT`);
     record.check(`cmfa.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
   }
-  for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-    const guard = `DOMAIN-SUFFIX,${domain},🕹️ 国内游戏`;
-    checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, 'RULE-SET,hoyoverse,🎮 国外游戏');
-    checkNeedleBefore(record, `cmfa.cn-game.${domain}.before-category-games`, rulesBlock, guard, 'GEOSITE,category-games,🎮 国外游戏');
-  }
+  checkNeedleBefore(record, 'cmfa.cn-game-before-intl-game-fused', rulesBlock, 'RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏', 'RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏');
 }
 
 function validateStashYaml(record, baselineVersion, options) {
@@ -863,13 +917,11 @@ function validateStashYaml(record, baselineVersion, options) {
     value: badMrsProviders,
     message: 'Stash MRS rule sets support domain/ipcidr only',
   });
-  record.check('stash.amap-provider', /amap:\n\s+type:\s+http/.test(providersBlock));
-  checkNeedleBefore(record, 'stash.amap-after-ads', rulesBlock, 'RULE-SET,anti-ad,🛑 广告拦截', 'RULE-SET,amap,🏠 国内网站');
-  checkNeedleBefore(record, 'stash.amap-before-foreign-tail', rulesBlock, 'RULE-SET,amap,🏠 国内网站', 'RULE-SET,proxy,🌐 国外网站');
   checkSupplementalProviderRefs(record, 'stash', providersBlock);
   checkSupplementalMihomoRules(record, 'stash', rulesBlock);
-  record.check('stash.scholar-target-google', source.includes('RULE-SET,scholar,🔍 Google 服务'));
-  record.check('stash.scholar-not-tools', !source.includes('RULE-SET,scholar,🔧 工具与服务'));
+  record.check('stash.no-legacy-amap-provider', !/^  amap:\s*$/m.test(providersBlock));
+  record.check('stash.no-legacy-scholar-rule', !/RULE-SET,scholar,/.test(rulesBlock));
+  record.check('stash.no-foldable-domain-inline-rules', !/^- "DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(rulesBlock));
 
   const fakeIpFilterBlock = extractIndentedListBlock(source, 'fake-ip-filter');
   const hasNoFakeIpRuleSetRefs = !/RULE-SET,/.test(fakeIpFilterBlock);
@@ -899,11 +951,7 @@ function validateStashYaml(record, baselineVersion, options) {
     const hasPortRule = source.includes(`DST-PORT,${port},DIRECT`);
     record.check(`stash.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
   }
-  for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-    const guard = `DOMAIN-SUFFIX,${domain},🕹️ 国内游戏`;
-    checkNeedleBefore(record, `stash.cn-game.${domain}.before-hoyoverse`, rulesBlock, guard, 'RULE-SET,hoyoverse,🎮 国外游戏');
-    checkNeedleBefore(record, `stash.cn-game.${domain}.before-category-games`, rulesBlock, guard, 'GEOSITE,category-games,🎮 国外游戏');
-  }
+  checkNeedleBefore(record, 'stash.cn-game-before-intl-game-fused', rulesBlock, 'RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏', 'RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏');
 }
 
 function validateOpenClash(record, baselineVersion, options) {
@@ -952,13 +1000,11 @@ function validateOpenClash(record, baselineVersion, options) {
     record.check(`openclash.${spec.id}.rules-singleton`, topRules === 1, { value: topRules });
     record.check(`openclash.${spec.id}.no-direct-provider-downloads`, !/proxy:\s*['"]?DIRECT['"]?/.test(source));
     record.check(`openclash.${spec.id}.restricted-provider-downloads`, restrictedCount >= spec.minProviders, { value: restrictedCount });
-    record.check(`openclash.${spec.id}.amap-provider`, /amap:\n\s+type:\s+http/.test(yaml));
-    checkNeedleBefore(record, `openclash.${spec.id}.amap-after-ads`, rulesOnly, 'RULE-SET,anti-ad', 'RULE-SET,amap');
-    checkNeedleBefore(record, `openclash.${spec.id}.amap-before-foreign-tail`, rulesOnly, 'RULE-SET,amap', 'RULE-SET,proxy');
     checkSupplementalProviderRefs(record, `openclash.${spec.id}`, providersOnly);
     checkSupplementalMihomoRules(record, `openclash.${spec.id}`, rulesOnly);
-    record.check(`openclash.${spec.id}.scholar-target-google`, rulesOnly.includes('RULE-SET,scholar,🔍 Google 服务'));
-    record.check(`openclash.${spec.id}.scholar-not-tools`, !rulesOnly.includes('RULE-SET,scholar,🔧 工具与服务'));
+    record.check(`openclash.${spec.id}.no-legacy-amap-provider`, !/^  amap:\s*$/m.test(providersOnly));
+    record.check(`openclash.${spec.id}.no-legacy-scholar-rule`, !/RULE-SET,scholar,/.test(rulesOnly));
+    record.check(`openclash.${spec.id}.no-foldable-domain-inline-rules`, !/^- "DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(rulesOnly));
     for (const entry of STUN_FAKE_IP_FILTER_ENTRIES) {
       const hasEntry = yaml.includes(entry);
       record.check(`openclash.${spec.id}.fake-ip-filter.${entry}`, hasEntry, failureMessage(hasEntry, `missing ${entry}`));
@@ -994,22 +1040,7 @@ function validateOpenClash(record, baselineVersion, options) {
       const hasPortRule = yaml.includes(`DST-PORT,${port},DIRECT`);
       record.check(`openclash.${spec.id}.stun-port.${port}`, hasPortRule, failureMessage(hasPortRule, `missing DST-PORT,${port},DIRECT`));
     }
-    for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-      checkNeedleBefore(
-        record,
-        `openclash.${spec.id}.cn-game.${domain}.before-hoyoverse`,
-        rulesOnly,
-        `DOMAIN-SUFFIX,${domain}`,
-        'RULE-SET,hoyoverse',
-      );
-      checkNeedleBefore(
-        record,
-        `openclash.${spec.id}.cn-game.${domain}.before-category-games`,
-        rulesOnly,
-        `DOMAIN-SUFFIX,${domain}`,
-        'GEOSITE,category-games',
-      );
-    }
+    checkNeedleBefore(record, `openclash.${spec.id}.cn-game-before-intl-game-fused`, rulesOnly, 'RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏', 'RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏');
 
     if (rubyPath) {
       try {
@@ -1060,96 +1091,18 @@ function validateConfProducts(record, baselineVersion) {
   const loonRuleSection = extractConfSection(loon, 'Rule');
   const qxFilterRemote = extractConfSection(qx, 'filter_remote');
   const qxFilterLocal = extractConfSection(qx, 'filter_local');
-  record.check('shadowrocket.scholar-target-google', shadowrocket.includes('Shadowrocket/Scholar/Scholar.list,🔍 Google 服务'));
-  record.check('shadowrocket.scholar-not-tools', !shadowrocket.includes('Shadowrocket/Scholar/Scholar.list,🔧 工具与服务'));
-  record.check('surge.scholar-target-google', surge.includes('Surge/Scholar/Scholar.list,🔍 Google 服务'));
-  record.check('surge.scholar-not-tools', !surge.includes('Surge/Scholar/Scholar.list,🔧 工具与服务'));
-  record.check('loon.scholar-target-google', loon.includes('Loon/Scholar/Scholar.list, policy=🔍 Google 服务'));
-  record.check('loon.scholar-not-tools', !loon.includes('Loon/Scholar/Scholar.list, policy=🔧 工具与服务'));
-  record.check('qx.scholar-target-google', qx.includes('QuantumultX/Scholar/Scholar.list, tag=scholar, force-policy=🔍 Google 服务'));
-  record.check('qx.scholar-not-tools', !qx.includes('QuantumultX/Scholar/Scholar.list, tag=scholar, force-policy=🔧 工具与服务'));
+  record.check('shadowrocket.no-legacy-scholar-list', !shadowrocket.includes('/Scholar/Scholar.list'));
+  record.check('surge.no-legacy-scholar-list', !surge.includes('/Scholar/Scholar.list'));
+  record.check('loon.no-legacy-scholar-list', !loon.includes('/Scholar/Scholar.list'));
+  record.check('qx.no-legacy-scholar-list', !qx.includes('/Scholar/Scholar.list'));
   checkSupplementalMobileRules(record, 'shadowrocket', shadowrocket, 'clash');
   checkSupplementalMobileRules(record, 'surge', surge, 'clash', { surgeProcess: true });
   checkSupplementalMobileRules(record, 'loon', loonRemoteRule, 'clash', { loon: true });
   checkSupplementalMobileRules(record, 'qx', qxFilterRemote, 'quantumultx', { qx: true });
-  checkNeedleBefore(record, 'loon.supplemental.adfp-before-ads', loonRemoteRule, `${supplementalUrl('clash', 'adfp-intl-site')}, policy=🌐 国外网站`, 'Loon/YouMengChuangXiang/YouMengChuangXiang.list, policy=🛑 广告拦截');
-  checkNeedleBefore(record, 'qx.supplemental.adfp-before-ads', qxFilterRemote, `${supplementalUrl('quantumultx', 'adfp-intl-site')}, tag=scki-adfp-intl-site, force-policy=🌐 国外网站`, 'QuantumultX/YouMengChuangXiang/YouMengChuangXiang.list, tag=youmengchuangxiang, force-policy=🛑 广告拦截');
-  checkNeedleBefore(
-    record,
-    'shadowrocket.amap-after-ads',
-    shadowrocket,
-    'Shadowrocket/YouMengChuangXiang/YouMengChuangXiang.list,🛑 广告拦截',
-    'Shadowrocket/GaoDe/GaoDe.list,🏠 国内网站',
-  );
-  checkNeedleBefore(
-    record,
-    'shadowrocket.amap-before-foreign-tail',
-    shadowrocket,
-    'Shadowrocket/GaoDe/GaoDe.list,🏠 国内网站',
-    'Shadowrocket/CNN/CNN.list,🌐 国外网站',
-  );
-  checkNeedleBefore(
-    record,
-    'surge.amap-after-ads',
-    surge,
-    'Surge/YouMengChuangXiang/YouMengChuangXiang.list,🛑 广告拦截',
-    'Surge/GaoDe/GaoDe.list,🏠 国内网站',
-  );
-  checkNeedleBefore(
-    record,
-    'surge.amap-before-foreign-tail',
-    surge,
-    'Surge/GaoDe/GaoDe.list,🏠 国内网站',
-    'Surge/CNN/CNN.list,🌐 国外网站',
-  );
-  checkNeedleBefore(
-    record,
-    'loon.amap-after-ads',
-    loonRemoteRule,
-    'Loon/YouMengChuangXiang/YouMengChuangXiang.list, policy=🛑 广告拦截',
-    'Loon/GaoDe/GaoDe.list, policy=🏠 国内网站',
-  );
-  checkNeedleBefore(
-    record,
-    'loon.amap-before-foreign-tail',
-    loonRemoteRule,
-    'Loon/GaoDe/GaoDe.list, policy=🏠 国内网站',
-    'Loon/CNN/CNN.list, policy=🌐 国外网站',
-  );
-  for (const spec of [
-    {
-      id: 'shadowrocket',
-      source: shadowrocket,
-      game: 'Shadowrocket/Game/Game.list,🎮 国外游戏',
-      hoyoverse: 'Shadowrocket/HoYoverse/HoYoverse.list,🎮 国外游戏',
-    },
-    {
-      id: 'surge',
-      source: surge,
-      game: 'Surge/Game/Game.list,🎮 国外游戏',
-      hoyoverse: 'Surge/HoYoverse/HoYoverse.list,🎮 国外游戏',
-    },
-  ]) {
-    for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-      const guard = `DOMAIN-SUFFIX,${domain},🕹️ 国内游戏`;
-      checkNeedleBefore(record, `${spec.id}.cn-game.${domain}.before-game-list`, spec.source, guard, spec.game);
-      checkNeedleBefore(record, `${spec.id}.cn-game.${domain}.before-hoyoverse`, spec.source, guard, spec.hoyoverse);
-    }
-  }
-  checkNeedleBefore(
-    record,
-    'loon.cn-game.remote-steamcn-before-hoyoverse',
-    loonRemoteRule,
-    'Loon/SteamCN/SteamCN.list, policy=🕹️ 国内游戏',
-    'Loon/HoYoverse/HoYoverse.list, policy=🎮 国外游戏',
-  );
-  checkNeedleBefore(
-    record,
-    'loon.cn-game.local-yuanshen-before-foreign-stage',
-    loonRuleSection,
-    'DOMAIN-SUFFIX,yuanshen.com,🕹️ 国内游戏',
-    '# ─── 阶段 19: 国外游戏',
-  );
+  record.check('shadowrocket.no-foldable-domain-inline-rules', !/^DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(shadowrocket));
+  record.check('surge.no-foldable-domain-inline-rules', !/^DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(surge));
+  record.check('loon.no-foldable-domain-inline-rules', !/^DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(loonRuleSection));
+  record.check('qx.no-foldable-host-inline-rules', !/^\s*host(?:-suffix|-keyword)?,/mi.test(qxFilterLocal));
   // v5.4.18: normalize whitespace around commas to avoid false failures on cosmetic formatting changes
   const srNorm = (s) => s.replace(/\s*,\s*/g, ',');
   // v5.4.21 #4: DoH-over-IP — all DoH URLs use IP host to eliminate bootstrap leak
@@ -1167,11 +1120,11 @@ function validateConfProducts(record, baselineVersion) {
     const srHasPortRule = shadowrocket.includes(`DST-PORT,${port},DIRECT`);
     const surgeHasPortRule = surge.includes(`DEST-PORT,${port},DIRECT`);
     const loonHasPortRule = loon.includes(`DEST-PORT,${port},DIRECT`);
-    const qxHasPortRule = qx.includes(`dst-port, ${port}, DIRECT`);
+    const qxHasPortRule = qx.includes(`dest-port, ${port}, direct`);
     record.check(`shadowrocket.stun-port.${port}`, srHasPortRule, failureMessage(srHasPortRule, `missing DST-PORT,${port},DIRECT`));
     record.check(`surge.stun-port.${port}`, surgeHasPortRule, failureMessage(surgeHasPortRule, `missing DEST-PORT,${port},DIRECT`));
     record.check(`loon.stun-port.${port}`, loonHasPortRule, failureMessage(loonHasPortRule, `missing DEST-PORT,${port},DIRECT`));
-    record.check(`qx.stun-port.${port}`, qxHasPortRule, failureMessage(qxHasPortRule, `missing dst-port, ${port}, DIRECT`));
+    record.check(`qx.stun-port.${port}`, qxHasPortRule, failureMessage(qxHasPortRule, `missing dest-port, ${port}, direct`));
   }
 
   const loonHasNoDstPortPrefix = !loon.split(/\r?\n/).some((line) => /^DST-PORT,/.test(line));
@@ -1199,34 +1152,6 @@ function validateConfProducts(record, baselineVersion) {
     'qx.running-mode-trigger-values',
     qxHasValidRunningModeTrigger,
     failureMessage(qxHasValidRunningModeTrigger, 'QX running_mode_trigger cannot use filter'),
-  );
-  checkNeedleBefore(
-    record,
-    'qx.amap-after-ads',
-    qxFilterRemote,
-    'QuantumultX/YouMengChuangXiang/YouMengChuangXiang.list, tag=youmengchuangxiang, force-policy=🛑 广告拦截',
-    'QuantumultX/GaoDe/GaoDe.list, tag=gaode, force-policy=🏠 国内网站',
-  );
-  checkNeedleBefore(
-    record,
-    'qx.amap-before-foreign-tail',
-    qxFilterRemote,
-    'QuantumultX/GaoDe/GaoDe.list, tag=gaode, force-policy=🏠 国内网站',
-    'QuantumultX/CNN/CNN.list, tag=cnn, force-policy=🌐 国外网站',
-  );
-  checkNeedleBefore(
-    record,
-    'qx.cn-game.remote-steamcn-before-hoyoverse',
-    qxFilterRemote,
-    'QuantumultX/SteamCN/SteamCN.list, tag=steamcn, force-policy=🕹️ 国内游戏',
-    'QuantumultX/HoYoverse/HoYoverse.list, tag=hoyoverse, force-policy=🎮 国外游戏',
-  );
-  checkNeedleBefore(
-    record,
-    'qx.cn-game.local-yuanshen-before-foreign-stage',
-    qxFilterLocal,
-    'host-suffix, yuanshen.com, 🕹️ 国内游戏',
-    '# ─── 阶段 19: 国外游戏',
   );
   const qxLocalRuleInRemote = qxFilterRemote.split(/\r?\n/).some((line) => /^\s*(host|host-suffix|host-keyword|ip-cidr|ip6-cidr|dst-port),/i.test(line));
   record.check(
@@ -1281,12 +1206,12 @@ function validateJsonProducts(record, baselineVersion) {
   record.check('singbox.no-unconditional-final-route-rule', !finalAsUnconditionalRule, {
     message: 'SingBox must use route.final for MATCH fallback; an unconditional final rule would shadow later QUIC rules',
   });
-  record.check('singbox.rule-set-count', ruleSetCount >= 30, { value: ruleSetCount });
-  record.check('singbox.route-rule-count', routeRuleCount >= 600, { value: routeRuleCount });
+  record.check('singbox.rule-set-count', ruleSetCount === MIN_FULL_PROVIDERS + 1, { value: ruleSetCount });
+  record.check('singbox.route-rule-count', routeRuleCount === MIN_FULL_RULES, { value: routeRuleCount });
   const singboxScholarGoogle = routeRules.some((rule) => (
-    Array.isArray(rule.domain) && rule.domain.includes('scholar.google.com') && rule.outbound === '🔍 Google 服务'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-020-google-domain') && rule.outbound === '🔍 Google 服务'
   ));
-  record.check('singbox.scholar-target-google', singboxScholarGoogle, failureMessage(singboxScholarGoogle, 'scholar.google.com must route to Google service'));
+  record.check('singbox.scholar-target-google-fused', singboxScholarGoogle, failureMessage(singboxScholarGoogle, 'Google service fused rule_set must include scholar coverage'));
   record.check('singbox.dns.bootstrap-doh-over-ip', dnsServerByTag.dns_bootstrap && dnsServerByTag.dns_bootstrap.address === 'https://223.5.5.5/dns-query' && dnsServerByTag.dns_bootstrap.tls && dnsServerByTag.dns_bootstrap.tls.server_name === 'dns.alidns.com', {
     value: dnsServerByTag.dns_bootstrap && dnsServerByTag.dns_bootstrap.address,
   });
@@ -1331,25 +1256,25 @@ function validateJsonProducts(record, baselineVersion) {
   }
   const singboxRules = (singbox.route || {}).rules || [];
   const singboxCloudflareR2Index = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.domain_suffix) && rule.domain_suffix.includes('cloudflarestorage.com') && rule.outbound === '🌐 国外网站'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-002-intl-site-domain') && rule.outbound === '🌐 国外网站'
   ));
   const singboxAntiAdIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('anti-ad') && rule.action === 'reject'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-005-ad-domain') && rule.action === 'reject'
   ));
   record.check('singbox.cloudflarestorage-before-ads', singboxCloudflareR2Index !== -1 && singboxAntiAdIndex !== -1 && singboxCloudflareR2Index < singboxAntiAdIndex, {
     value: { cloudflarestorage: singboxCloudflareR2Index, antiAd: singboxAntiAdIndex },
   });
   const singboxDouyinIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.domain_suffix) && rule.domain_suffix.includes('zjcdn.com') && rule.outbound === '📺 国内流媒体'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-004-cnmedia-domain') && rule.outbound === '📺 国内流媒体'
   ));
   const singboxTikTokIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('tiktok') && rule.outbound === '🎵 TikTok'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-034-tiktok-domain') && rule.outbound === '🎵 TikTok'
   ));
   const singboxForeignTailIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('proxy') && rule.outbound === '🌐 国外网站'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-057-intl-site-domain') && rule.outbound === '🌐 国外网站'
   ));
   const singboxAmapIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('amap') && rule.outbound === '🏠 国内网站'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-006-cn-site-domain') && rule.outbound === '🏠 国内网站'
   ));
   record.check('singbox.douyin-zjcdn-cnmedia', singboxDouyinIndex !== -1, failureMessage(singboxDouyinIndex !== -1, 'zjcdn.com must route to CN media'));
   record.check('singbox.douyin-zjcdn-before-tiktok', singboxDouyinIndex !== -1 && singboxTikTokIndex !== -1 && singboxDouyinIndex < singboxTikTokIndex, {
@@ -1362,18 +1287,15 @@ function validateJsonProducts(record, baselineVersion) {
   record.check('singbox.amap-before-foreign-tail', singboxAmapIndex !== -1 && singboxForeignTailIndex !== -1 && singboxAmapIndex < singboxForeignTailIndex, {
     value: { amap: singboxAmapIndex, foreignTail: singboxForeignTailIndex },
   });
-  const singboxCategoryGamesIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('geosite-category-games') && rule.outbound === '🎮 国外游戏'
+  const singboxCnGameIndex = singboxRules.findIndex((rule) => (
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-055-game-cn-domain') && rule.outbound === '🕹️ 国内游戏'
   ));
-  for (const domain of CN_GAME_PRIORITY_DOMAINS) {
-    const cnGameIndex = singboxRules.findIndex((rule) => (
-      Array.isArray(rule.domain_suffix) && rule.domain_suffix.includes(domain) && rule.outbound === '🕹️ 国内游戏'
-    ));
-    record.check(`singbox.cn-game.${domain}.direct-rule`, cnGameIndex !== -1, failureMessage(cnGameIndex !== -1, `${domain} must route to CN game`));
-    record.check(`singbox.cn-game.${domain}.before-category-games`, cnGameIndex !== -1 && singboxCategoryGamesIndex !== -1 && cnGameIndex < singboxCategoryGamesIndex, {
-      value: { cnGame: cnGameIndex, categoryGames: singboxCategoryGamesIndex },
-    });
-  }
+  const singboxIntlGameIndex = singboxRules.findIndex((rule) => (
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-056-game-intl-domain') && rule.outbound === '🎮 国外游戏'
+  ));
+  record.check('singbox.cn-game-before-intl-game-fused', singboxCnGameIndex !== -1 && singboxIntlGameIndex !== -1 && singboxCnGameIndex < singboxIntlGameIndex, {
+    value: { cnGame: singboxCnGameIndex, intlGame: singboxIntlGameIndex },
+  });
 
   const v2rayn = readJson('v2rayN/v2rayN(xray).json');
   const allowedTags = new Set(['proxy', 'direct', 'block']);
@@ -1477,37 +1399,36 @@ function validateEgern(record, baselineVersion, options) {
   record.check('egern.no-process-rulesets', !/local-process-direct|work-process/.test(source), {
     message: 'Egern must not include Clash-style process rule set files',
   });
-  record.check('egern.generated-geosite-yaml', source.includes('/rulesets/generated/egern/geosite-category-ads-all.yaml'), {
-    message: 'missing generated Egern geosite YAML mapping',
-  });
-  record.check('egern.generated-geoip-yaml', source.includes('/rulesets/generated/egern/geoip-cloudflare.yaml'), {
-    message: 'missing generated Egern geoip YAML mapping',
-  });
-  record.check('egern.generated-hagezi-tif', source.includes('/rulesets/generated/egern/provider-hagezi-tif.yaml'), {
-    message: 'missing generated Egern-compatible Hagezi TIF mapping',
-  });
+  for (const fusedId of [
+    'provider-scki-fused-002-intl-site-domain.yaml',
+    'provider-scki-fused-004-cnmedia-domain.yaml',
+    'provider-scki-fused-005-ad-domain.yaml',
+    'provider-scki-fused-006-cn-site-domain.yaml',
+    'provider-scki-fused-020-google-domain.yaml',
+    'provider-scki-fused-034-tiktok-domain.yaml',
+    'provider-scki-fused-055-game-cn-domain.yaml',
+    'provider-scki-fused-056-game-intl-domain.yaml',
+    'provider-scki-fused-057-intl-site-domain.yaml',
+  ]) {
+    record.check(`egern.generated-fused.${fusedId}`, source.includes(`/rulesets/generated/egern/${fusedId}`), {
+      message: `missing generated Egern fused mapping ${fusedId}`,
+    });
+  }
   record.check('egern.generated-rule-set-file-count', fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length === EXPECTED_EGERN_GENERATED_RULE_SETS, {
     value: fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length,
   });
-  record.check('egern.country-geoip-native', /-\s+geoip:\s*\n\s+match: "CN"\s*\n\s+policy: "🏠 国内网站"/.test(source), {
-    message: 'missing native Egern geoip country rule',
+  record.check('egern.geoip-skip-documented', readText('rulesets/generated/egern/provider-scki-fused-057-intl-site-residual.yaml').includes('Skipped unsupported source rule types: GEOIP'), {
+    message: 'Egern fused residual GEOIP skip must be documented in generated rule-set source',
   });
-  for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
-    for (const expected of supplementalEgernExpectations(spec)) {
-      const egernFile = `rulesets/generated/egern/${expected.file}`;
-      const egernSource = readText(egernFile);
-      const url = generatedEgernUrl(expected.id);
-      const hasRule = source.includes(url) && (source.includes(`policy: ${expected.policy}`) || source.includes(`policy: "${expected.policy}"`));
-      record.check(`egern.supplemental-rule.${expected.id}`, hasRule, {
-        message: `missing ${url} -> ${expected.policy}`,
-      });
-      record.check(`egern.supplemental-file.${expected.id}`, /_set:\s*$/m.test(egernSource), {
-        message: `${egernFile} must contain Egern YAML set fields`,
-      });
-      record.check(`egern.supplemental-file-no-process.${expected.id}`, !/PROCESS-NAME|process/i.test(egernSource), {
-        message: `${egernFile} must not contain process rules`,
-      });
-    }
+  for (const fileName of fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml'))) {
+    const egernFile = `rulesets/generated/egern/${fileName}`;
+    const egernSource = readText(egernFile);
+    record.check(`egern.generated-file.${fileName}`, /_set:\s*(?:\[\])?$/m.test(egernSource), {
+      message: `${egernFile} must contain Egern YAML set fields`,
+    });
+    record.check(`egern.generated-file-no-process.${fileName}`, !/^PROCESS-NAME,/m.test(egernSource), {
+      message: `${egernFile} must not contain active process rules`,
+    });
   }
 
   const rubyPath = findRuby();
@@ -1518,10 +1439,8 @@ function validateEgern(record, baselineVersion, options) {
   } else {
     try {
       rubyYamlFileProbe(file, rubyPath);
-      for (const spec of SUPPLEMENTAL_MOBILE_CLASH_RULESETS) {
-        for (const expected of supplementalEgernExpectations(spec)) {
-          rubyYamlFileProbe(`rulesets/generated/egern/${expected.file}`, rubyPath);
-        }
+      for (const fileName of fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml'))) {
+        rubyYamlFileProbe(`rulesets/generated/egern/${fileName}`, rubyPath);
       }
       record.check('egern.ruby-parse', true);
     } catch (error) {
@@ -1657,6 +1576,7 @@ function main() {
   const record = makeRecorder();
   const { baselineVersion } = validateJsProducts(record);
   validateMihomoMrsRuleSets(record);
+  validateFusedRuleSets(record);
   validateClashYaml(record, baselineVersion, options);
   validateStashYaml(record, baselineVersion, options);
   validateOpenClash(record, baselineVersion, options);

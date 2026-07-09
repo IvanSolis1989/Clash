@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const VERSION = 'v5.4.39-sing.1';
+const VERSION = 'v5.4.40-sing.1';
 const BUILD = '2026-07-09';
-const BASELINE = 'Clash Party v5.4.39';
+const BASELINE = 'Clash Party v5.4.40';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -455,6 +455,11 @@ function toSingRule(ruleText, availableRuleSets) {
 function toSrsUrl(url, tag) {
   if (!url) return null;
   if (/\.srs$/i.test(url)) return url;
+
+  const fused = String(url).match(/^(https:\/\/(?:fastly\.|cdn\.)?jsdelivr\.net\/gh\/IvanSolis1989\/Smart-Config-Kit@main)\/rulesets\/generated\/fused\/mihomo\/(.+?)-(?:domain|ipcidr|ipcidr-no-resolve|residual)\.(?:mrs|yaml)$/i);
+  if (fused) {
+    return `${fused[1]}/rulesets/generated/fused/sing-box/${fused[2]}.srs`;
+  }
 
   const metaRulesDat = url.match(/^(https:\/\/(?:fastly\.|cdn\.)?jsdelivr\.net\/gh\/MetaCubeX\/meta-rules-dat)@meta\/geo\/(geosite|geoip)\/(.+)\.mrs$/i);
   if (metaRulesDat) {

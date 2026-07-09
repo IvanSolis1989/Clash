@@ -1,0 +1,17 @@
+host-suffix, account.xiaomi.com
+host-suffix, passport.xiaomi.com
+host-suffix, micloud.xiaomi.com
+host, i.mi.com
+host, auth.be.sec.miui.com
+host, idm.api.io.mi.com
+host, api.installer.xiaomi.com
+host, flash.sec.miui.com
+host, mazu.sec.miui.com
+host, ccc.sys.miui.com
+host, register.xmpush.xiaomi.com
+host-suffix, jpush.cn
+host-suffix, jpush.io
+host, msg.umeng.com
+host-suffix, getui.com
+host-suffix, getui.net
+host-suffix, gepush.com

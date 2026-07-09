@@ -5,6 +5,11 @@
 
 ---
 
+## v5.4.40-SR.1 (2026-07-09)
+
+- FUSED-RULESETS：迁移到 68 个融合远程 RULE-SET。
+- META：跟随 Clash Party v5.4.40 更新版本元数据；策略组保持不变。
+
 ## v5.4.39-SR.1 (2026-07-09)
 
 - META：跟随 Clash Party v5.4.39 更新版本元数据。

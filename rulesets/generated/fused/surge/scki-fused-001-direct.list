@@ -1,0 +1,17 @@
+DOMAIN-SUFFIX,account.xiaomi.com
+DOMAIN-SUFFIX,passport.xiaomi.com
+DOMAIN-SUFFIX,micloud.xiaomi.com
+DOMAIN,i.mi.com
+DOMAIN,auth.be.sec.miui.com
+DOMAIN,idm.api.io.mi.com
+DOMAIN,api.installer.xiaomi.com
+DOMAIN,flash.sec.miui.com
+DOMAIN,mazu.sec.miui.com
+DOMAIN,ccc.sys.miui.com
+DOMAIN,register.xmpush.xiaomi.com
+DOMAIN-SUFFIX,jpush.cn
+DOMAIN-SUFFIX,jpush.io
+DOMAIN,msg.umeng.com
+DOMAIN-SUFFIX,getui.com
+DOMAIN-SUFFIX,getui.net
+DOMAIN-SUFFIX,gepush.com

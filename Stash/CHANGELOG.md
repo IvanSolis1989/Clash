@@ -4,6 +4,11 @@
 
 ---
 
+## v5.4.40-stash.1 (2026-07-09)
+
+- SYNC：由 CMFA v5.4.40-cmfa.1 重新生成，保留融合后的 `120` 个 rule-provider 与 `130` 条规则。
+- COMPAT：继续按 Stash Wiki 裁剪 Mihomo 扩展字段，Stash 不直接参与基准判定。
+
 ## v5.4.39-stash.1 (2026-07-09)
 
 - SYNC：由 CMFA v5.4.39-cmfa.1 重新生成，保留 474 rule-provider 与 929 条规则。

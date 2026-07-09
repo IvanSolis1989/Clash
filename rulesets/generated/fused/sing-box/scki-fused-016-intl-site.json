@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "gmail.com",
+        "googlemail.com"
+      ],
+      "domain": [
+        "mail.google.com",
+        "inbox.google.com"
+      ]
+    }
+  ]
+}

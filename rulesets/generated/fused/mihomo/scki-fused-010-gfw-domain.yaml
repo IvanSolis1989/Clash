@@ -1,0 +1,5 @@
+payload:
+  - "DOMAIN,dns.google"
+  - "DOMAIN,dns.google.com"
+  - "DOMAIN-SUFFIX,inflection.ai"
+  - "DOMAIN-SUFFIX,pi.ai"

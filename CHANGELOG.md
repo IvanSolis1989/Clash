@@ -6,6 +6,14 @@
 
 ---
 
+## v5.4.40 (2026-07-09)
+
+- FUSED-RULESETS：新增 `tools/build-fused-rule-sets.js`，以 Clash Party Smart 运行时输出作为唯一基准，将源 `474 providers / 929 rules` 编译为 `68` 个策略顺序段、`120` 个融合 provider、`130` 条主规则，保留 `17` 条必要内联规则，`unresolved=0`。
+- MIHOMO-MRS：支持 `.mrs` 的 Mihomo 产物优先引用融合后的 `*-domain.mrs` / `*-ipcidr.mrs` / `*-ipcidr-no-resolve.mrs`；不可转部分落到 `*-residual.yaml`，不再依赖静态兼容映射表膨胀主配置。
+- NATIVE-FUSED：Shadowrocket / Surge / Loon / Quantumult X 迁移到融合文本规则集；Egern 生成 118 个原生 YAML 规则集；SingBox 生成 68 个 `.srs` 规则集。
+- GOVERNANCE：`CLAUDE.md` / `AGENTS.md` 固化 “Clash Party → MRS → 融合规则集 → 各端产物” 的单向链路，禁止后续把 CMFA 当成权威源。
+- VERIFY：同步更新 JS / PROCESS-NAME / 全产物合同校验，融合 manifest 与 `.mrs` manifest 纳入验收。
+
 ## v5.4.39 (2026-07-09)
 
 - MRS-PARTIAL：全量复查剩余 `YamlRule` / `TextRule`，可迁移部分全部迁移；`.mrs` manifest 当前为 converted=267、split=39、partial=30、existing_mrs=35、retained=20、failed=0。
