@@ -11,6 +11,7 @@ const {
   MAX_JSDELIVR_ASSET_BYTES,
   validateGeneratedRemoteAssetSizes,
 } = require('./validate-generated-remote-asset-size');
+const { validateEgernGenerationManifest } = require('./lib/egern-generation-manifest');
 const {
   SOURCE_GRAPH_ID,
   getRawRoutingGraph,
@@ -47,9 +48,6 @@ const EXPECTED_MIHOMO_MRS_RETAINED = 20;
 const EXPECTED_MIHOMO_MRS_FILES = 389;
 const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 30;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
-const EXPECTED_EGERN_RULES = 111;
-const EXPECTED_EGERN_RULE_SETS = 94;
-const EXPECTED_EGERN_GENERATED_RULE_SETS = 99;
 const EXPECTED_SINGBOX_ROUTE_RULES = 81;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
@@ -1547,8 +1545,6 @@ function validateEgern(record, baselineVersion, options) {
     const hasGroup = source.includes(`name: ${group}`);
     record.check(`egern.business-group.${group}`, hasGroup, failureMessage(hasGroup, `missing ${group}`));
   }
-  record.check('egern.rule-count', ruleCount === EXPECTED_EGERN_RULES, { value: ruleCount });
-  record.check('egern.rule-set-count', ruleSetCount === EXPECTED_EGERN_RULE_SETS, { value: ruleSetCount });
   record.check('egern.no-mrs-url', !source.includes('.mrs'), {
     message: 'Egern official rule_set docs do not document Mihomo .mrs consumption',
   });
@@ -1557,6 +1553,37 @@ function validateEgern(record, baselineVersion, options) {
   });
   const generatedEgernDirectory = relPath('rulesets/generated/egern');
   const generatedEgernFiles = fs.readdirSync(generatedEgernDirectory).filter((entry) => entry.endsWith('.yaml'));
+  const egernGenerationManifestFile = 'rulesets/generated/egern/manifest.json';
+  let egernGenerationManifest;
+  try {
+    egernGenerationManifest = readJson(egernGenerationManifestFile);
+  } catch (error) {
+    record.check('egern.generation-manifest.readable', false, { message: error.message });
+  }
+  if (egernGenerationManifest) {
+    const generationValidation = validateEgernGenerationManifest({
+      manifest: egernGenerationManifest,
+      cmfaSource: readText('Clash Meta For Android/CMFA(mihomo).yaml'),
+      routingGraphSource: readText(SOURCE_GRAPH_FILE),
+      profileSource: source,
+      generatedRuleSetDirectory: generatedEgernDirectory,
+      expectedSourceProviderCount: MIN_FULL_PROVIDERS,
+      expectedSourceRuleCount: MIN_FULL_RULES,
+    });
+    for (const failure of generationValidation.failures) {
+      record.check(`egern.generation-manifest.${failure.id}`, false, {
+        message: failure.message,
+        value: failure.value,
+      });
+    }
+    record.check('egern.generation-manifest.valid', generationValidation.failures.length === 0, {
+      value: {
+        rules: ruleCount,
+        rule_set_refs: ruleSetCount,
+        generated_assets: generatedEgernFiles.length,
+      },
+    });
+  }
   for (const fusedId of [
     'provider-scki-fused-002-intl-site-domain',
     'provider-scki-fused-004-cnmedia-domain',
@@ -1575,9 +1602,6 @@ function validateEgern(record, baselineVersion, options) {
       message: `missing generated Egern fused mapping ${fusedId}`,
     });
   }
-  record.check('egern.generated-rule-set-file-count', generatedEgernFiles.length === EXPECTED_EGERN_GENERATED_RULE_SETS, {
-    value: generatedEgernFiles.length,
-  });
   const egernGeoipResidual = readText('rulesets/generated/egern/provider-scki-fused-057-intl-site-residual.yaml');
   record.check('egern.geoip-native', egernGeoipResidual.includes('geoip_set:') && !/Skipped unsupported source rule types:.*GEOIP/.test(egernGeoipResidual), {
     message: 'Egern fused residual must preserve country GEOIP through geoip_set',

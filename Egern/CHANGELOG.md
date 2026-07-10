@@ -1,5 +1,11 @@
 # Egern — 变更日志
 
+## v6.0.2-egern.2 (2026-07-11)
+
+- FIX：移除 Egern 产物合同中 `111 / 94 / 99` 的固定计数快照。上游规则内容变化会影响目标端的全局去重和空资产裁剪，固定数字会把合法刷新误判为失败。
+- VERIFY：生成器新增 `rulesets/generated/egern/manifest.json`，以确定性内容哈希绑定当前 CMFA、`routing-graph.js`、完整 Profile、每个原生 YAML 资产及其引用顺序；validator 同时拒绝陈旧 Profile、漏引用、重复引用和资产内容漂移。
+- BUILD：修复生成说明清理模式，连续运行生成器不再累加重复注释；Profile 头升级到 `v6.0.2-egern.2`。
+
 ## v6.0.2-egern.1 (2026-07-10)
 
 - FIX：Egern 派生器不再静默跳过服务型 `GEOIP`；ISO 国家码输出为原生 `geoip_set`，服务型标签展开为 CIDR，`IP-ASN` 输出为 `asn_set`。

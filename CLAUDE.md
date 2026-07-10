@@ -682,7 +682,7 @@ node tools/validate-js-overwrites.js
 node tools/validate-process-name-direct.js
 
 # 7) 融合规则语义去重 + 客户端聚合预算（禁止靠分片绕过总量限制）
-node --test tools/tests/apply-mihomo-mrs-overrides.test.js tools/tests/fused-rule-optimizer.test.js tools/tests/fused-artifact-performance.test.js
+node --test tools/tests/apply-mihomo-mrs-overrides.test.js tools/tests/egern-generation-manifest.test.js tools/tests/fused-rule-optimizer.test.js tools/tests/fused-artifact-performance.test.js
 node tools/validate-generated-remote-asset-size.js
 ```
 
@@ -732,6 +732,7 @@ PR 提交后会自动运行两个验证工作流：
 3. **Sync All Fused Rule Sets**（`.github/workflows/sync-mihomo-mrs-rule-providers.yml`）— 定时同步全部上游规则并发布最终融合产物
    - 触发条件：每周定时 + 手动 workflow_dispatch
    - 固定顺序：sync `.mrs` → apply overrides → build fused（含原生 fallback）→ regenerate Stash/Egern/SingBox/fallback → 完整合同/去重/预算验证 → 中文提交
+   - Egern 生成清单对 CMFA、源规则图、Profile、每个原生 YAML 资产哈希和引用清单做双向校验；上游去重使规则数量发生正常变化时，不得再使用固定快照数字阻断同步。
    - 提交范围必须覆盖源规则图、`rulesets/generated/fused/`、MRS、Egern 规则集和所有 14 类客户端产物；工作流级并发组禁止两个刷新任务同时写入 `main`。
 
 任一工作流失败 → PR 不得合入。

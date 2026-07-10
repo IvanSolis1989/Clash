@@ -8,6 +8,7 @@
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
 > - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，v2rayN Xray 展平成 RuleObject，Passwall 系使用 `rule-set:remote` `.srs`
 > - 🧯 **双层体积门禁**：每个 jsDelivr 资产不超过 18 MiB；iOS Network Extension 类客户端还必须满足 32 MiB / 100 万文本规则的聚合预算，禁止靠分片绕过总量约束
+> - 🔄 **定时全量发布闭环**：GitHub Actions 每周或手动触发后按 `source graph -> MRS -> fused -> 原生派生` 重建并验证；Egern 用确定性生成清单校验内容与引用关系，不因上游正常去重导致的数量变化误阻断发布
 > - ⚡ **Smart / Normal 双内核**：同规则量，按客户端能力选择 `smart`（LightGBM ML 择路）或经典 `url-test`
 > - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
 > - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用

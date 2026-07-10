@@ -1,7 +1,7 @@
 ---
 # ======================================================================
-# Egern Smart v6.0.2-egern.1 - Egern Profile
-# Build: 2026-07-10
+# Egern Smart v6.0.2-egern.2 - Egern Profile
+# Build: 2026-07-11
 # Baseline: Clash Party v6.0.2
 # Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.
 # Rule parity: generated from CMFA 113 rule-providers and 130 rules.
@@ -310,20 +310,6 @@ policy_groups:
   - select:
       name: 🛑 广告拦截
       policies: [REJECT, DIRECT]
-
-# Generated from Clash Meta For Android/CMFA(mihomo).yaml.
-# Non-supplemental provider rule_set URLs point at generated Egern-native
-# YAML files under rulesets/generated/egern/.
-# The two PROCESS-NAME supplemental rule sets are omitted because Egern
-# does not document a process-name rule or process-name rule-set field.
-# Target-empty rule sets removed by global first-match deduplication are omitted.
-
-# Generated from Clash Meta For Android/CMFA(mihomo).yaml.
-# Non-supplemental provider rule_set URLs point at generated Egern-native
-# YAML files under rulesets/generated/egern/.
-# The two PROCESS-NAME supplemental rule sets are omitted because Egern
-# does not document a process-name rule or process-name rule-set field.
-# Target-empty rule sets removed by global first-match deduplication are omitted.
 
 # Generated from Clash Meta For Android/CMFA(mihomo).yaml.
 # Non-supplemental provider rule_set URLs point at generated Egern-native

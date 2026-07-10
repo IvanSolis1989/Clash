@@ -4,17 +4,22 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { optimizeEntries, resolveOpaqueMrsSource } = require('./lib/fused-rule-optimizer');
+const { buildEgernGenerationManifest } = require('./lib/egern-generation-manifest');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const CMFA_FILE = path.join(REPO_ROOT, 'Clash Meta For Android/CMFA(mihomo).yaml');
 const EGERN_FILE = path.join(REPO_ROOT, 'Egern/Egern.yaml');
 const GENERATED_RULESET_DIR = path.join(REPO_ROOT, 'rulesets/generated/egern');
+const EGERN_GENERATION_MANIFEST_FILE = path.join(GENERATED_RULESET_DIR, 'manifest.json');
 const MIHOMO_MRS_MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
+const ROUTING_GRAPH_FILE = path.join(REPO_ROOT, 'rulesets/source/routing-graph.js');
 
 const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
 const SCKI_GENERATED_BASE = `${SCKI_BASE}/rulesets/generated/egern`;
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
+const EGERN_VERSION = 'v6.0.2-egern.2';
+const BUILD_DATE = '2026-07-11';
 const FETCH_CONCURRENCY = 3;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
 // jsDelivr rejects files at 20 MB. Keep generated Egern-native rule sets below 18 MiB.
@@ -349,14 +354,14 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
     .replace(/  - auto_test:/g, '  - smart:')
     .replace(/\n      interval: 300\n      tolerance: 100\n      timeout: 5/g, '')
     .replace(/\n      interval: 300\n      tolerance: 100/g, '')
-    .replace(/(?:\n# Generated from Clash Meta For Android\/CMFA\(mihomo\)\.yaml\.\n# Non-supplemental provider rule_set URLs point at generated Egern-native\n# YAML files under rulesets\/generated\/egern\/.\n# The two PROCESS-NAME supplemental rule sets are omitted because Egern\n# does not document a process-name rule or process-name rule-set field\.\s*)+$/, '')
+    .replace(/(?:\n# Generated from Clash Meta For Android\/CMFA\(mihomo\)\.yaml\.\n# Non-supplemental provider rule_set URLs point at generated Egern-native\n# YAML files under rulesets\/generated\/egern\/.\n# The two PROCESS-NAME supplemental rule sets are omitted because Egern\n# does not document a process-name rule or process-name rule-set field\.\n# Target-empty rule sets removed by global first-match deduplication are omitted\.\s*)+$/, '')
     .replace(/(?:\n# Generated from Clash Meta For Android\/CMFA\(mihomo\)\.yaml\.\n# The two PROCESS-NAME supplemental rule sets are omitted because Egern\n# does not document a process-name rule or process-name rule-set field\.\s*)+$/, '');
 
   return [
     '---',
     '# ======================================================================',
-    '# Egern Smart v6.0.2-egern.1 - Egern Profile',
-    '# Build: 2026-07-10',
+    `# Egern Smart ${EGERN_VERSION} - Egern Profile`,
+    `# Build: ${BUILD_DATE}`,
     '# Baseline: Clash Party v6.0.2',
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
@@ -809,7 +814,17 @@ async function main() {
   ].join('\n');
 
   fs.writeFileSync(EGERN_FILE, output, 'utf8');
-  console.log(`Generated Egern/Egern.yaml rules=${renderedRules.filter((line) => /^  - /.test(line)).length} rule_set_refs=${stats.ruleSetRefs} native_rule_sets=${ruleSetStats.assetCount} source_entries=${ruleSetStats.totalEntries} dedup_removed=${ruleSetStats.removedEntries} global_exact_removed=${ruleSetStats.globalExactDuplicates} empty_assets=${ruleSetStats.emptyAssets} skipped_process=${stats.skippedProcessRuleSets.join(',') || 'none'} skipped_empty=${stats.skippedEmptyRuleSets.join(',') || 'none'} skipped_source_types=${ruleSetStats.skippedTypes.join(',') || 'none'}`);
+  const manifest = buildEgernGenerationManifest({
+    cmfaSource: cmfa,
+    routingGraphSource: readText(ROUTING_GRAPH_FILE),
+    profileSource: output,
+    generatedRuleSetDirectory: GENERATED_RULESET_DIR,
+    sourceProviderCount: providers.size,
+    sourceRuleCount: rules.length,
+    ruleSetStats,
+  });
+  fs.writeFileSync(EGERN_GENERATION_MANIFEST_FILE, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  console.log(`Generated Egern/Egern.yaml rules=${manifest.rendered.rule_count} rule_set_refs=${manifest.rendered.rule_set_ref_count} native_rule_sets=${manifest.rendered.native_rule_set_count} source_entries=${ruleSetStats.totalEntries} dedup_removed=${ruleSetStats.removedEntries} global_exact_removed=${ruleSetStats.globalExactDuplicates} empty_assets=${ruleSetStats.emptyAssets} skipped_process=${stats.skippedProcessRuleSets.join(',') || 'none'} skipped_empty=${stats.skippedEmptyRuleSets.join(',') || 'none'} skipped_source_types=${ruleSetStats.skippedTypes.join(',') || 'none'}`);
 }
 
 main().catch((error) => {

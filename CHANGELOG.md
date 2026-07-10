@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.2-ci.1 (2026-07-11)
+
+- CI-FUSED：修复定时 `Sync All Fused Rule Sets` 工作流，完整执行 `source graph -> MRS -> fused -> 14 类客户端派生` 链路，提交范围覆盖源图、融合产物、MRS、Egern 和全部客户端目录，并通过互斥并发组避免两个刷新任务竞争写入 `main`。
+- EGERN-CONTRACT：以确定性生成清单替换会随上游去重结果漂移的 Egern 固定计数快照。清单双向校验 CMFA、规则图、Profile、原生 YAML 内容哈希与引用顺序，既允许合法上游变化，也拒绝陈旧或不完整产物。
+- VERIFY：新增 `tools/tests/egern-generation-manifest.test.js`，覆盖实际失败样本 `109` 条规则 / `92` 个顶层 `rule_set` / `97` 个原生 YAML，并纳入定时工作流、完整合同、重复与远程资产预算验证。
+
 ## v6.0.2 (2026-07-10)
 
 - FIX#175：修复 Shadowrocket 规则总量导致 Network Extension 无法稳定启用的问题。根因不是 71 个 URL 本身，而是融合编译器将 `HageziUltimate.mrs` 错换为 191 万条完整 TIF，并把 249 条运行时 GEOIP 国家规则放大为 76 万至 111 万条 CIDR；两类错误叠加使旧产物达到约 75.44 MiB / 310 万条。
