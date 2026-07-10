@@ -1,4 +1,4 @@
-name: Sync Mihomo MRS Rule Providers
+name: Sync All Fused Rule Sets
 
 on:
   schedule:
@@ -8,10 +8,17 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  # A full rebuild downloads upstream sources and writes every client artifact.
+  # Never let two such writers race to push main; retain an active run to avoid
+  # abandoning a partially completed upstream refresh.
+  group: scki-fused-rule-sync-main
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Checkout
@@ -35,26 +42,30 @@ jobs:
       - name: Apply Mihomo MRS overrides
         run: node tools/apply-mihomo-mrs-overrides.js
 
+      - name: Build final fused rule sets and native fallbacks
+        run: node tools/build-fused-rule-sets.js
+
       - name: Regenerate derived artifacts
         run: |
           node tools/generate-stash-from-cmfa.js
           node tools/generate-egern-supplemental.js
           node tools/generate-egern-from-cmfa.js
           node "SingBox/SingBox(sing-box)-generator.js"
+          node tools/generate-fused-fallback-artifacts.js
 
-      - name: Validate artifacts
+      - name: Validate complete fused release chain
         run: |
           node tools/validate-js-overwrites.js
           node tools/validate-process-name-direct.js
           node tools/validate-artifact-contracts.js --strict-ruby
+          node --test tools/tests/apply-mihomo-mrs-overrides.test.js tools/tests/fused-rule-optimizer.test.js tools/tests/fused-artifact-performance.test.js
+          node tools/validate-generated-remote-asset-size.js
+          node tools/test-info-node-filter.js
+          node tools/test-kr-boundary.js
           git diff --check
 
-      - name: Commit synced MRS artifacts
+      - name: Commit synchronized fused artifacts
         run: |
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "No MRS changes."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
@@ -62,16 +73,26 @@ jobs:
             "Clash Meta For Android" \
             "FlClash" \
             "OpenClash" \
+            "Shadowrocket" \
             "Stash" \
             "Egern" \
             "SingBox" \
+            "v2rayN" \
+            "Surge" \
+            "Loon" \
+            "Quantumult X" \
+            "Passwall" \
+            "Passwall2" \
+            "rulesets/source/routing-graph.js" \
+            "rulesets/generated/fused" \
             "rulesets/generated/mihomo-mrs" \
             "rulesets/generated/egern" \
-            "rulesets/supplemental/egern" \
-            "tools" \
-            "README.md" \
-            "CHANGELOG.md" \
-            "CLAUDE.md" \
-            "AGENTS.md"
-          git commit -m "定时同步 Mihomo MRS 规则集"
-          git push
+            "rulesets/supplemental/egern"
+          if git diff --cached --quiet; then
+            echo "No upstream-derived fused artifact changes."
+            exit 0
+          fi
+          git diff --cached --check
+          git commit -m "定时同步全量融合规则集"
+          git pull --rebase origin main
+          git push origin HEAD:main

@@ -729,9 +729,10 @@ PR 提交后会自动运行两个验证工作流：
 2. **Validate Artifact Contracts** — 跨客户端产物一致性验证（含 Ruby YAML 解析）
    - 触发条件：PR/push 修改任何产物文件（JS/YAML/JSON/conf）
    - 验证内容：JS 覆写 + CMFA/Stash/OpenClash/SR/Surge/Loon/QX/SingBox/v2rayN/Passwall/Egern 组计数 + Mihomo `.mrs` manifest + JSON 合法性 + YAML 重复键
-3. **Sync Mihomo MRS Rule Providers** — 定时同步上游规则并自动转换 `.mrs`
+3. **Sync All Fused Rule Sets**（`.github/workflows/sync-mihomo-mrs-rule-providers.yml`）— 定时同步全部上游规则并发布最终融合产物
    - 触发条件：每周定时 + 手动 workflow_dispatch
-   - 固定顺序：sync `.mrs` → apply overrides → build fused → regenerate Stash/Egern/SingBox/fallback → validate → 中文提交
+   - 固定顺序：sync `.mrs` → apply overrides → build fused（含原生 fallback）→ regenerate Stash/Egern/SingBox/fallback → 完整合同/去重/预算验证 → 中文提交
+   - 提交范围必须覆盖源规则图、`rulesets/generated/fused/`、MRS、Egern 规则集和所有 14 类客户端产物；工作流级并发组禁止两个刷新任务同时写入 `main`。
 
 任一工作流失败 → PR 不得合入。
 
