@@ -11,6 +11,7 @@
 - CI-FUSED：修复定时 `Sync All Fused Rule Sets` 工作流，完整执行 `source graph -> MRS -> fused -> 14 类客户端派生` 链路，提交范围覆盖源图、融合产物、MRS、Egern 和全部客户端目录，并通过互斥并发组避免两个刷新任务竞争写入 `main`。
 - EGERN-CONTRACT：以确定性生成清单替换会随上游去重结果漂移的 Egern 固定计数快照。清单双向校验 CMFA、规则图、Profile、原生 YAML 内容哈希与引用顺序，既允许合法上游变化，也拒绝陈旧或不完整产物。
 - VERIFY：新增 `tools/tests/egern-generation-manifest.test.js`，覆盖实际失败样本 `109` 条规则 / `92` 个顶层 `rule_set` / `97` 个原生 YAML，并纳入定时工作流、完整合同、重复与远程资产预算验证。
+- REPO-HYGIENE：删除历史误提交但无 `.gitmodules` 映射的 `.claude/worktrees/strict-direct-rule-clean` gitlink，并忽略本地 `.claude/worktrees/`；避免 `actions/checkout` 收尾阶段误报 submodule `git exit 128`，不删除用户本地工作树。
 
 ## v6.0.2 (2026-07-10)
 
