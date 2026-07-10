@@ -4,7 +4,7 @@
 
 这个目录是 Smart-Config-Kit 的 Sub-Store 辅助资料库：放使用说明、可复用脚本模板，以及从 GitHub 常见用法里整理出来的索引。
 
-它不修改任何正式产物的规则、策略组、DNS、嗅探、GeoX 或 rule-provider。实际分流基线仍以 `Clash Party/ClashParty(mihomo-smart).js` 为准。
+它不修改任何正式产物的规则、策略组、DNS、嗅探、GeoX 或 rule-provider。实际分流基线仍以 `rulesets/source/routing-graph.js` 为准。
 
 ## 目录
 
@@ -33,7 +33,7 @@ SubStore/
 - `scripts/local/flag-airport-rename.js`：给节点加“国旗 + 机场名”前缀，并清理重复国旗。
 - `scripts/local/drop-invalid-nodes.js`：过滤缺少 server/port 或使用过时 SS/SSR 加密的节点。
 - `scripts/local/cleanup-vless-vmess-fields.js`：清理 VLESS 节点上混入的 VMess 残留字段。
-- `scripts/local/merge-subscription-userinfo.js`：在组合订阅里汇总多个机场的 `subscription-userinfo`。
+- `scripts/local/merge-subscription-userinfo.js`：在组合订阅里汇总多个机场的 `subscription-userinfo`，并防止镜像订阅把同一账户流量重复计入。
 
 示例参数：
 
@@ -42,6 +42,24 @@ name=Aurora&separator=%20-%20&fallback=🌐
 ```
 
 Sub-Store 的脚本参数通常可以放在脚本 URL 的 `#` 后面；官方链接参数说明也提醒 URL 参数需要 `encodeURIComponent` 编码。
+
+## 镜像订阅流量去重
+
+`scripts/local/merge-subscription-userinfo.js` 只处理组合订阅的流量头，不改变节点去重逻辑。它按以下优先级判断流量是否属于同一个镜像账户：
+
+1. 自动去重：两个订阅的 `upload`、`download`、`total`、`expire` 四项均完全一致，且去掉域名后 URL 的路径和查询参数仍一致时，只计算一次。这样可覆盖“仅替换订阅域名”的常见镜像。
+2. 显式去重：镜像的 CDN 缓存可能略有延迟，或两个镜像 URL 的路径不同。此时在**每条订阅 URL**的 `#` 参数中设置同一个 `flowDedup` 键：
+
+```text
+https://sub-a.example/api/v1/client/subscribe?token=...#flowDedup=airport-alpha
+https://sub-b.example/mirror/subscribe?token=...#flowDedup=airport-alpha
+```
+
+`flowDedup` 是本脚本私有参数，脚本会在请求订阅前剥离该 fragment，不会传给机场。若 URL 已有其他 `#` 参数，在末尾追加 `&flowDedup=airport-alpha`；使用 JSON fragment 时，在 JSON 对象中加入 `"flowDedup":"airport-alpha"` 后再整体 URL 编码。
+
+同一个 `flowDedup` 组内，`upload`、`download`、`total` 分别取最大值，避免旧 CDN 响应把计数回退；组内到期时间取最新值。不同机场组仍正常相加，最终组合订阅仍显示所有独立机场中最早的有效到期时间。
+
+如果两条订阅虽然流量头相同但确实应独立计费，给它们设置 `#flowDedup=off` 可关闭自动去重。运行日志会输出 `snapshots`、`counted` 和 `deduped` 数量，但不会输出订阅 URL 或 `flowDedup` 键。
 
 ## 通用脚本
 

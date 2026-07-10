@@ -1,0 +1,35 @@
+name: Validate Sub-Store Scripts
+
+on:
+  pull_request:
+    paths:
+      - 'SubStore/**/*.js'
+      - '.github/workflows/validate-substore-scripts.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'SubStore/**/*.js'
+      - '.github/workflows/validate-substore-scripts.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+
+      - name: Validate mirror traffic aggregation
+        run: |
+          node --check SubStore/scripts/local/merge-subscription-userinfo.js
+          node --test SubStore/scripts/local/merge-subscription-userinfo.test.js

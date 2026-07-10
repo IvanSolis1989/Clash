@@ -1,8 +1,11 @@
 /**
  * Merge subscription-userinfo headers for a Sub-Store collection.
  *
- * Use this only as a Script Operator on a collection. It sums upload/download
- * and total from member subscriptions, and uses the earliest future expiry.
+ * Use this only as a Script Operator on a collection. It sums independent
+ * subscriptions and collapses mirror subscriptions that expose the same flow
+ * snapshot and host-independent subscription identity. Use
+ * #flowDedup=<shared-key> on mirror subscription URLs when CDN cache lag or
+ * different URL paths make automatic identification unavailable.
  */
 async function operator(proxies = [], targetPlatform, context) {
   if (typeof $substore === 'undefined' || typeof flowUtils === 'undefined') {
@@ -23,20 +26,23 @@ async function operator(proxies = [], targetPlatform, context) {
   const subnames = expandCollectionSubscriptions(collection, allSubs);
   const { parseFlowHeaders, getFlowHeaders, normalizeFlowHeader } = flowUtils;
 
-  let uploadSum = 0;
-  let downloadSum = 0;
-  let totalSum = 0;
-  let expire;
+  const snapshots = [];
 
   for (const sub of allSubs) {
     if (!subnames.includes(sub.name)) continue;
 
     let subInfo;
     let flowInfo;
+    const subscriptionUrl = readSubscriptionUrlConfig(sub);
 
     if (sub.source !== 'local' || ['localFirst', 'remoteFirst'].includes(sub.mergeSources)) {
       try {
-        const remoteInfo = await readRemoteFlowInfo(sub, getFlowHeaders, normalizeFlowHeader);
+        const remoteInfo = await readRemoteFlowInfo(
+          sub,
+          getFlowHeaders,
+          normalizeFlowHeader,
+          subscriptionUrl
+        );
         flowInfo = remoteInfo.flowInfo;
         subInfo = remoteInfo.subInfo;
       } catch (err) {
@@ -56,25 +62,20 @@ async function operator(proxies = [], targetPlatform, context) {
 
     try {
       const parsed = parseFlowHeaders(subInfo);
-      const upload = parsed?.usage?.upload;
-      const download = parsed?.usage?.download;
-      const total = parsed?.total;
-      const expires = parsed?.expires;
-
-      if (Number.isFinite(upload) && upload > 0) uploadSum += upload;
-      if (Number.isFinite(download) && download > 0) downloadSum += download;
-      if (Number.isFinite(total) && total > 0) totalSum += total;
-      if (expires && expires * 1000 > Date.now()) expire = expire ? Math.min(expire, expires) : expires;
+      const snapshot = createFlowSnapshot(parsed, subscriptionUrl.localArgs, subscriptionUrl.url);
+      if (hasFlowSnapshotValues(snapshot)) snapshots.push(snapshot);
     } catch (err) {
       log('error', `订阅 ${sub.name} 解析 subscription-userinfo 失败: ${JSON.stringify(err)}`);
     }
   }
 
+  const aggregate = aggregateFlowSnapshots(snapshots);
+
   const subUserInfo = [
-    `upload=${Math.floor(uploadSum)}`,
-    `download=${Math.floor(downloadSum)}`,
-    `total=${Math.floor(totalSum)}`,
-    expire ? `expire=${expire}` : '',
+    `upload=${Math.floor(aggregate.upload)}`,
+    `download=${Math.floor(aggregate.download)}`,
+    `total=${Math.floor(aggregate.total)}`,
+    aggregate.expire ? `expire=${aggregate.expire}` : '',
   ].filter(Boolean).join('; ');
 
   persistCollectionUserinfo(store, COLLECTIONS_KEY, collection.name, subUserInfo);
@@ -87,7 +88,10 @@ async function operator(proxies = [], targetPlatform, context) {
     };
   }
 
-  log('info', `[MergeUserinfo] collection=${collection.name} subs=${subnames.length}`);
+  log(
+    'info',
+    `[MergeUserinfo] collection=${collection.name} subs=${subnames.length} snapshots=${snapshots.length} counted=${aggregate.counted} deduped=${aggregate.deduplicated}`
+  );
   return proxies;
 }
 
@@ -106,15 +110,24 @@ function expandCollectionSubscriptions(collection, allSubs) {
   return subnames;
 }
 
-async function readRemoteFlowInfo(sub, getFlowHeaders, normalizeFlowHeader) {
-  let url = String(sub.url || '')
+function readSubscriptionUrlConfig(sub) {
+  const rawUrl = String(sub.url || '')
     .split(/[\r\n]+/)
     .map((item) => item.trim())
     .filter(Boolean)[0] || '';
 
-  const rawArgs = url.split('#');
-  url = rawArgs[0];
-  const localArgs = parseHashArguments(rawArgs[1]);
+  const hashIndex = rawUrl.indexOf('#');
+  const url = hashIndex >= 0 ? rawUrl.slice(0, hashIndex) : rawUrl;
+  const rawArgs = hashIndex >= 0 ? rawUrl.slice(hashIndex + 1) : '';
+
+  return {
+    url,
+    localArgs: parseHashArguments(rawArgs),
+  };
+}
+
+async function readRemoteFlowInfo(sub, getFlowHeaders, normalizeFlowHeader, subscriptionUrl) {
+  const { url, localArgs } = subscriptionUrl || readSubscriptionUrlConfig(sub);
 
   if (localArgs.noFlow || !/^https?:\/\//.test(url)) {
     return { flowInfo: undefined, subInfo: undefined };
@@ -135,6 +148,139 @@ async function readRemoteFlowInfo(sub, getFlowHeaders, normalizeFlowHeader) {
     flowInfo,
     subInfo: headers?.['subscription-userinfo'],
   };
+}
+
+function createFlowSnapshot(parsed, localArgs, sourceUrl) {
+  const snapshot = {
+    upload: finiteValue(parsed?.usage?.upload),
+    download: finiteValue(parsed?.usage?.download),
+    total: finiteValue(parsed?.total),
+    expires: finiteValue(parsed?.expires),
+    sourceIdentity: createHostIndependentSubscriptionIdentity(sourceUrl),
+  };
+  snapshot.dedupIdentity = resolveFlowDedupIdentity(snapshot, localArgs);
+  return snapshot;
+}
+
+function aggregateFlowSnapshots(snapshots, now = Date.now()) {
+  const groups = new Map();
+  let deduplicated = 0;
+
+  for (const snapshot of snapshots) {
+    const key = snapshot.dedupIdentity || Symbol('independent-flow-snapshot');
+    const existing = groups.get(key);
+    if (!existing) {
+      groups.set(key, snapshot);
+      continue;
+    }
+
+    groups.set(key, mergeDuplicateSnapshots(existing, snapshot));
+    deduplicated += 1;
+  }
+
+  let upload = 0;
+  let download = 0;
+  let total = 0;
+  let expire;
+
+  for (const snapshot of groups.values()) {
+    if (isPositiveFinite(snapshot.upload)) upload += snapshot.upload;
+    if (isPositiveFinite(snapshot.download)) download += snapshot.download;
+    if (isPositiveFinite(snapshot.total)) total += snapshot.total;
+    if (snapshot.expires && snapshot.expires * 1000 > now) {
+      expire = expire ? Math.min(expire, snapshot.expires) : snapshot.expires;
+    }
+  }
+
+  return {
+    upload,
+    download,
+    total,
+    expire,
+    counted: groups.size,
+    deduplicated,
+  };
+}
+
+function mergeDuplicateSnapshots(first, second) {
+  return {
+    ...first,
+    upload: maximumFinite(first.upload, second.upload),
+    download: maximumFinite(first.download, second.download),
+    total: maximumFinite(first.total, second.total),
+    // A shorter expiry from a stale mirror must not expire the shared account early.
+    expires: maximumFinite(first.expires, second.expires),
+  };
+}
+
+function resolveFlowDedupIdentity(snapshot, localArgs = {}) {
+  const configuredKey = normalizeFlowDedupKey(localArgs.flowDedup ?? localArgs.flowDedupKey);
+  if (configuredKey === false) return undefined;
+  if (configuredKey) return `key:${configuredKey}`;
+
+  // Automatic deduplication is deliberately conservative: a full, exact
+  // subscription-userinfo snapshot must also share a host-independent URL
+  // identity, so two unrelated plans with matching quotas are not collapsed.
+  if (!hasCompleteFlowSnapshot(snapshot) || !snapshot.sourceIdentity) return undefined;
+  return `snapshot:${snapshot.sourceIdentity}:${snapshot.upload}:${snapshot.download}:${snapshot.total}:${snapshot.expires}`;
+}
+
+function normalizeFlowDedupKey(value) {
+  if (value == null || value === true) return undefined;
+
+  const key = String(value).trim();
+  if (!key || key.toLowerCase() === 'auto') return undefined;
+  if (['off', 'false', '0', 'none', 'disabled'].includes(key.toLowerCase())) return false;
+  return key;
+}
+
+function hasCompleteFlowSnapshot(snapshot) {
+  return Number.isFinite(snapshot.upload)
+    && Number.isFinite(snapshot.download)
+    && Number.isFinite(snapshot.total)
+    && snapshot.total > 0
+    && Number.isFinite(snapshot.expires)
+    && snapshot.expires > 0;
+}
+
+function hasFlowSnapshotValues(snapshot) {
+  return Number.isFinite(snapshot.upload)
+    || Number.isFinite(snapshot.download)
+    || Number.isFinite(snapshot.total)
+    || Number.isFinite(snapshot.expires);
+}
+
+function createHostIndependentSubscriptionIdentity(sourceUrl) {
+  if (!sourceUrl) return undefined;
+
+  try {
+    const parsed = new URL(sourceUrl);
+    const parameters = [...parsed.searchParams.entries()]
+      .sort(([firstKey, firstValue], [secondKey, secondValue]) => {
+        const keyOrder = firstKey.localeCompare(secondKey);
+        return keyOrder || firstValue.localeCompare(secondValue);
+      })
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .join('&');
+
+    return `${parsed.pathname}?${parameters}`;
+  } catch (err) {
+    return undefined;
+  }
+}
+
+function finiteValue(value) {
+  return Number.isFinite(value) ? value : undefined;
+}
+
+function isPositiveFinite(value) {
+  return Number.isFinite(value) && value > 0;
+}
+
+function maximumFinite(first, second) {
+  if (!Number.isFinite(first)) return second;
+  if (!Number.isFinite(second)) return first;
+  return Math.max(first, second);
 }
 
 async function readCustomSubUserinfo(sub, flowInfo, getFlowHeaders, normalizeFlowHeader) {
@@ -185,8 +331,13 @@ function log(level, message) {
 if (typeof module !== 'undefined') {
   module.exports = {
     operator,
+    aggregateFlowSnapshots,
+    createFlowSnapshot,
+    createHostIndependentSubscriptionIdentity,
     expandCollectionSubscriptions,
     parseHashArguments,
+    readSubscriptionUrlConfig,
+    resolveFlowDedupIdentity,
   };
 }
 

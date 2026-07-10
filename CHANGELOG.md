@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.2-substore.1 (2026-07-11)
+
+- SUBSTORE-MIRROR-FLOW：修复组合订阅含多个同账户镜像地址时，`subscription-userinfo` 被按成员逐条累加而翻倍的问题。完整流量快照且 host 无关 URL 身份一致时自动合并；路径不同或 CDN 缓存略有延迟时，可用订阅 URL 的 `flowDedup` 显式归组并取每项最大计数。
+- SUBSTORE-VERIFY：新增 6 项 Node 回归测试与专属 GitHub Actions 校验，覆盖独立订阅不误合并、`flowDedup=off` 逃生开关、CDN 快照差异以及最终 `$options._res` / collection 持久化结果。本次仅修改 SubStore 辅助脚本与文档，不影响 `rulesets/source/routing-graph.js` 或 14 类客户端正式产物。
+
 ## v6.0.2-ci.1 (2026-07-11)
 
 - CI-FUSED：修复定时 `Sync All Fused Rule Sets` 工作流，完整执行 `source graph -> MRS -> fused -> 14 类客户端派生` 链路，提交范围覆盖源图、融合产物、MRS、Egern 和全部客户端目录，并通过互斥并发组避免两个刷新任务竞争写入 `main`。
