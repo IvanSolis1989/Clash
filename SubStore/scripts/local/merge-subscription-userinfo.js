@@ -2,10 +2,10 @@
  * Merge subscription-userinfo headers for a Sub-Store collection.
  *
  * Use this only as a Script Operator on a collection. It sums independent
- * subscriptions and collapses mirror subscriptions that expose the same flow
- * snapshot and host-independent subscription identity. Use
- * #flowDedup=<shared-key> on mirror subscription URLs when CDN cache lag or
- * different URL paths make automatic identification unavailable.
+ * subscriptions and collapses mirror subscriptions that share a
+ * host-independent subscription identity plus the same quota and expiry.
+ * Usage counters may drift between CDN mirrors. Use #flowDedup=<shared-key>
+ * when mirror URL paths or quota metadata differ.
  */
 async function operator(proxies = [], targetPlatform, context) {
   if (typeof $substore === 'undefined' || typeof flowUtils === 'undefined') {
@@ -218,11 +218,11 @@ function resolveFlowDedupIdentity(snapshot, localArgs = {}) {
   if (configuredKey === false) return undefined;
   if (configuredKey) return `key:${configuredKey}`;
 
-  // Automatic deduplication is deliberately conservative: a full, exact
-  // subscription-userinfo snapshot must also share a host-independent URL
-  // identity, so two unrelated plans with matching quotas are not collapsed.
-  if (!hasCompleteFlowSnapshot(snapshot) || !snapshot.sourceIdentity) return undefined;
-  return `snapshot:${snapshot.sourceIdentity}:${snapshot.upload}:${snapshot.download}:${snapshot.total}:${snapshot.expires}`;
+  // Mirror CDNs can lag by a few seconds, so usage counters are intentionally
+  // excluded. The account-specific path/query plus stable plan metadata keeps
+  // unrelated subscriptions from being collapsed.
+  if (!hasStableMirrorMetadata(snapshot) || !snapshot.sourceIdentity) return undefined;
+  return `snapshot:${snapshot.sourceIdentity}:${snapshot.total}:${snapshot.expires}`;
 }
 
 function normalizeFlowDedupKey(value) {
@@ -234,10 +234,8 @@ function normalizeFlowDedupKey(value) {
   return key;
 }
 
-function hasCompleteFlowSnapshot(snapshot) {
-  return Number.isFinite(snapshot.upload)
-    && Number.isFinite(snapshot.download)
-    && Number.isFinite(snapshot.total)
+function hasStableMirrorMetadata(snapshot) {
+  return Number.isFinite(snapshot.total)
     && snapshot.total > 0
     && Number.isFinite(snapshot.expires)
     && snapshot.expires > 0;
@@ -324,8 +322,15 @@ function persistCollectionUserinfo(store, key, collectionName, subUserInfo) {
 
 function log(level, message) {
   if (typeof $substore === 'undefined') return;
-  const fn = $substore[level];
-  if (typeof fn === 'function') fn(message);
+
+  try {
+    const fn = $substore[level];
+    // Sub-Store logger methods rely on their receiver; extracting and calling
+    // them as plain functions aborts the operator after it has aggregated flow.
+    if (typeof fn === 'function') fn.call($substore, message);
+  } catch (err) {
+    // Telemetry must never prevent a successful flow aggregation from persisting.
+  }
 }
 
 if (typeof module !== 'undefined') {

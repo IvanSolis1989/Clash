@@ -22,10 +22,10 @@ function snapshot(
   }, localArgs, sourceUrl);
 }
 
-test('identical complete flow snapshots are counted once, while independent subscriptions still sum', () => {
+test('mirrors with CDN-drifted usage counters are counted once, while independent subscriptions still sum', () => {
   const mirrorA = snapshot({ upload: 100, download: 200, total: 1000, expires: 2000000000 });
   const mirrorB = snapshot(
-    { upload: 100, download: 200, total: 1000, expires: 2000000000 },
+    { upload: 120, download: 260, total: 1000, expires: 2000000000 },
     undefined,
     'https://mirror-b.example/sub?token=shared-account'
   );
@@ -38,8 +38,8 @@ test('identical complete flow snapshots are counted once, while independent subs
   const result = aggregateFlowSnapshots([mirrorA, mirrorB, independent], 1);
 
   assert.deepEqual(result, {
-    upload: 130,
-    download: 240,
+    upload: 150,
+    download: 300,
     total: 1500,
     expire: 2000000000,
     counted: 2,
@@ -65,6 +65,30 @@ test('matching quotas from distinct subscription identities are not automaticall
     upload: 200,
     download: 400,
     total: 2000,
+    expire: 2000000000,
+    counted: 2,
+    deduplicated: 0,
+  });
+});
+
+test('matching URL identities with changed plan metadata are not automatically collapsed', () => {
+  const first = snapshot(
+    { upload: 100, download: 200, total: 1000, expires: 2000000000 },
+    undefined,
+    'https://mirror-a.example/sub?token=shared-account'
+  );
+  const second = snapshot(
+    { upload: 120, download: 220, total: 2000, expires: 2000000100 },
+    undefined,
+    'https://mirror-b.example/sub?token=shared-account'
+  );
+
+  const result = aggregateFlowSnapshots([first, second], 1);
+
+  assert.deepEqual(result, {
+    upload: 220,
+    download: 420,
+    total: 3000,
     expire: 2000000000,
     counted: 2,
     deduplicated: 0,
@@ -142,22 +166,24 @@ test('operator persists an automatically deduplicated collection userinfo header
     ['https://mirror-b.example/sub?token=shared-account', 'upload=100; download=200; total=1000; expire=2000000000'],
   ]);
   const logs = [];
+  const subStore = {
+    read(key) {
+      if (key === 'subs') return subscriptions;
+      if (key === 'collections') return collections;
+      return [];
+    },
+    write(value, key) {
+      if (key === 'collections') {
+        collections.splice(0, collections.length, ...value);
+      }
+    },
+    info(message) {
+      if (this !== subStore) throw new TypeError('Sub-Store logger lost its receiver');
+      logs.push(message);
+    },
+  };
   const restore = [
-    replaceGlobal('$substore', {
-      read(key) {
-        if (key === 'subs') return subscriptions;
-        if (key === 'collections') return collections;
-        return [];
-      },
-      write(value, key) {
-        if (key === 'collections') {
-          collections.splice(0, collections.length, ...value);
-        }
-      },
-      info(message) {
-        logs.push(message);
-      },
-    }),
+    replaceGlobal('$substore', subStore),
     replaceGlobal('flowUtils', {
       async getFlowHeaders(url) {
         return headers.get(url.replace(/#insecure$/, ''));

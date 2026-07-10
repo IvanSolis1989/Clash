@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.2-substore.2 (2026-07-11)
+
+- SUBSTORE-REAL-MIRROR-FIX：根据 Clash Party 内置 Sub-Store 的实际快照复现，确认同账户双域名镜像的总配额/到期日相同，而 `upload` / `download` 会因 CDN 缓存相差数十 KB。自动去重改为 host 无关订阅资源身份 + 相同 `total` / `expire`，组内仍取最大计数，避免整份镜像配额再次相加。
+- SUBSTORE-LOGGER-FIX：修复从 `$substore` 解构后以裸函数调用 `info` 的 receiver 丢失。运行时会在最终状态日志处抛错并回退持久化，造成页面仍显示旧的 13.16 TiB 流量头；现改为保留 receiver，并将日志失败隔离在汇总路径之外。
+- VERIFY：回归测试改用真实故障模型（相同镜像资源和计划元数据、不同已用流量），并模拟 receiver 敏感的 `$substore.info`，确保未来不会重新要求四个字段字节级相等或因日志失败放大为汇总失败。本次仍只改 SubStore 辅助脚本，不改变融合规则或 14 类客户端正式产物。
+
 ## v6.0.2-substore.1 (2026-07-11)
 
 - SUBSTORE-MIRROR-FLOW：修复组合订阅含多个同账户镜像地址时，`subscription-userinfo` 被按成员逐条累加而翻倍的问题。完整流量快照且 host 无关 URL 身份一致时自动合并；路径不同或 CDN 缓存略有延迟时，可用订阅 URL 的 `flowDedup` 显式归组并取每项最大计数。

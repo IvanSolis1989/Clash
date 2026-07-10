@@ -47,8 +47,8 @@ Sub-Store 的脚本参数通常可以放在脚本 URL 的 `#` 后面；官方链
 
 `scripts/local/merge-subscription-userinfo.js` 只处理组合订阅的流量头，不改变节点去重逻辑。它按以下优先级判断流量是否属于同一个镜像账户：
 
-1. 自动去重：两个订阅的 `upload`、`download`、`total`、`expire` 四项均完全一致，且去掉域名后 URL 的路径和查询参数仍一致时，只计算一次。这样可覆盖“仅替换订阅域名”的常见镜像。
-2. 显式去重：镜像的 CDN 缓存可能略有延迟，或两个镜像 URL 的路径不同。此时在**每条订阅 URL**的 `#` 参数中设置同一个 `flowDedup` 键：
+1. 自动去重：两个订阅去掉域名后 URL 的路径和查询参数一致，且 `total`、`expire` 相同，就只计算一次。`upload`、`download` 允许有少量差异，因为不同 CDN 镜像的已用流量缓存并不保证同步。这样可覆盖“仅替换订阅域名”的常见镜像。
+2. 显式去重：两个镜像 URL 的路径不同，或 `total` / `expire` 元数据也不同。此时在**每条订阅 URL**的 `#` 参数中设置同一个 `flowDedup` 键：
 
 ```text
 https://sub-a.example/api/v1/client/subscribe?token=...#flowDedup=airport-alpha
