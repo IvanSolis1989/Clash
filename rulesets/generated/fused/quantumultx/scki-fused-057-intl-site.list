@@ -12728,6 +12728,7 @@ ip-cidr, 45.205.0.0/24, no-resolve
 ip-cidr, 45.250.154.0/23, no-resolve
 ip-cidr, 46.202.30.0/24, no-resolve
 ip-cidr, 49.238.236.0/22, no-resolve
+ip-cidr, 51.194.144.0/22, no-resolve
 ip-cidr, 51.241.128.0/23, no-resolve
 ip-cidr, 57.250.49.0/24, no-resolve
 ip-cidr, 61.32.240.0/24, no-resolve
