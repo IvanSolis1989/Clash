@@ -9,6 +9,15 @@
         "openaicom.imgix.net",
         "openaicomproductionae4b.blob.core.windows.net",
         "production-openaicom-storage.azureedge.net",
+        "browser-intake-datadoghq.com",
+        "o33249.ingest.sentry.io",
+        "openai.qualtrics.com",
+        "cdn.usefathom.com",
+        "ai.google.dev",
+        "alkalimakersuite-pa.clients6.google.com",
+        "makersuite.google.com"
+      ],
+      "domain_suffix": [
         "chat.com",
         "chatgpt.com",
         "crixet.com",
@@ -21,15 +30,6 @@
         "host.livekit.cloud",
         "turn.livekit.cloud",
         "openai.com.cdn.cloudflare.net",
-        "browser-intake-datadoghq.com",
-        "o33249.ingest.sentry.io",
-        "openai.qualtrics.com",
-        "cdn.usefathom.com",
-        "ai.google.dev",
-        "alkalimakersuite-pa.clients6.google.com",
-        "makersuite.google.com"
-      ],
-      "domain_suffix": [
         "anthropic.com",
         "claude.ai",
         "bard.google.com",

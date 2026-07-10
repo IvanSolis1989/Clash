@@ -1,11 +1,11 @@
-# Surge 使用教程（对齐 Clash Party v6.0.1）
+# Surge 使用教程（对齐 Clash Party v6.0.2）
 
 > 目录简介：这里维护 Surge iOS/macOS 配置和导入教程，按 Surge 语法对齐 Clash Party 分流策略。
 >
 > 配置文件：`Surge/Surge.conf`
-> 版本：**v6.0.1-Surge.1**（Build 2026-07-10，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v6.0.1 基线；68 个语义融合段按需展开为远程 RULE-SET 分片）
+> 版本：**v6.0.2-Surge.1**（Build 2026-07-10，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v6.0.2 基线；67 个源语义段对应 63 个非空远程 RULE-SET）
 > 目标：**Surge 5 / Surge Mac**（付费正版；iOS + macOS 通用）
-> 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 33 业务策略组 + 283 RULE-SET
+> 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 33 业务策略组 + 63 个非空融合 RULE-SET（约 16.07 MiB / 575,673 条）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -118,7 +118,7 @@ https://cdn.jsdelivr.net/gh/<user>/<repo>@main/Surge/Surge.conf
 3. 粘贴托管 URL → **下载**。
 4. 下载完成后点击配置 → **启用**。
 
-首次启用时 Surge 会拉取 **283 个 RULE-SET**（blackmatrix7 Surge 专用 `.list` 格式），根据网络情况约 **1–3 分钟**。**这期间务必保持代理开启**，否则 GitHub 访问不稳定会导致部分 RULE-SET 下载失败。
+首次启用时 Surge 会拉取 **63 个本仓库融合 RULE-SET**，根据网络情况约 **1–3 分钟**。**这期间务必保持代理开启**，否则 GitHub 访问不稳定会导致部分 RULE-SET 下载失败。
 
 ---
 
@@ -245,7 +245,7 @@ Surge 的节点来源有两种方式，任选其一：
 
 ## 九、验证
 
-1. Surge → **首页** → **已启用的配置**：应显示 `Surge Smart v6.0.1-Surge.1`。
+1. Surge → **首页** → **已启用的配置**：应显示 `Surge Smart v6.0.2-Surge.1`。
 2. **策略组** 面板应出现 22 区域 + 33 业务共 55 组（不得少于 50 组）。
 3. 访问以下网站做功能验证：
    - `https://chat.openai.com` → 命中「🤖 AI 服务」

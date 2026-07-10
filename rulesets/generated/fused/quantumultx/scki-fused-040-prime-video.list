@@ -1,12 +1,3 @@
-host, atv-ps.amazon.com
-host, avodmp4s3ww-a.akamaihd.net
-host, d1v5ir2lpwr8os.cloudfront.net
-host, d22qjgkvxw22r6.cloudfront.net
-host, d25xi40x97liuc.cloudfront.net
-host, d27xxe7juh1us6.cloudfront.net
-host, dmqdd6hw24ucf.cloudfront.net
-host, fls-na.amazon.com
-host, www.amazon.com
 host-suffix, aiv-cdn.net
 host-suffix, aiv-delivery.net
 host-suffix, amazonvideo.com
@@ -111,7 +102,6 @@ host-suffix, amzn.asia
 host-suffix, amzn.com
 host-suffix, amzn.to
 host-suffix, amznl.com
-host-suffix, assoc-amazon.cn
 host-suffix, associates-amazon.com
 host-suffix, audible.com
 host-suffix, avodmp4s3ww-a.akamaihd.net
@@ -129,7 +119,6 @@ host-suffix, awseducate.org
 host-suffix, awsloft-johannesburg.com
 host-suffix, awsloft-stockholm.com
 host-suffix, awssecworkshops.com
-host-suffix, awsstatic.com
 host-suffix, awsthinkbox.com
 host-suffix, awstrack.me
 host-suffix, awstrust.com
@@ -197,7 +186,6 @@ host-suffix, zappos
 ip-cidr, 13.32.0.0/15
 ip-cidr, 13.35.0.0/17
 ip-cidr, 18.184.0.0/15
-ip-cidr, 18.194.0.0/15
 ip-cidr, 18.208.0.0/13
 ip-cidr, 18.232.0.0/14
 ip-cidr, 52.200.0.0/13

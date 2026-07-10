@@ -2,15 +2,15 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v6.0.1-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Clash Smart v6.0.2-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
 # Build: 2026-07-10
 # ============================================================================
-# v6.0.1: FUSED-REMOTE-SHARDS 远程文本规则集按 CDN 限制分片 · v6.0.0: FUSED-RULESETS 大融合规则集编译
+# v6.0.2: FUSED-DEDUP/GEOIP-NATIVE 同策略语义去重与原生 GEOIP · v6.0.0: FUSED-RULESETS 大融合规则集编译
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：22 个区域组（11 全部 + 11 家宽）从 type: smart（uselightgbm）换成 type: url-test。
-#       对齐 Clash Party v6.0.1 JS 基线。
+#       对齐 Clash Party v6.0.2 JS 基线。
 #       适用场景：
 #         - OpenClash 内核选的是 Meta(mihomo 稳定版) 而非 Meta Alpha，不支持 smart + LightGBM
 #         - 或者明确想关闭 LightGBM ML 评估、只靠经典 url-test 延迟选路
@@ -22,14 +22,14 @@
 #   • 130 条 rules（源 931 rules；仅保留 17 条必要内联规则）
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / url-test 组生成 / TLS 指纹注入
-# 基线：Clash Party v6.0.1（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v6.0.2（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Normal 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v6.0.1-oc-normal.1"
+VERSION_TAG="v6.0.2-oc-normal.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -57,7 +57,7 @@ trap cleanup_temp_files EXIT INT TERM
 
 LOG_OUT "Info" "[Clash-Normal] $VERSION_TAG overwrite starting..."
 LOG_OUT "Info" "[Clash-Normal] Processing: $CONFIG_FILE"
-LOG_OUT "Info" "[Clash-Normal] Fused-rule build (v6.0.1, 33 business groups, non-Smart kernel)"
+LOG_OUT "Info" "[Clash-Normal] Fused-rule build (v6.0.2, 33 business groups, non-Smart kernel)"
 
 # ============================================================================
 # OVERRIDE YAML
@@ -511,7 +511,7 @@ proxy-groups:
 OVERRIDE_EOF
 
 # ============================================================================
-# OVERRIDE YAML (续) — Fused Rule-Providers：113 项，对齐 Clash Party v6.0.1 主线
+# OVERRIDE YAML (续) — Fused Rule-Providers：113 项，对齐 Clash Party v6.0.2 主线
 # 策略：
 #   ✓ 与 Clash Party 主线（BIZ.GFW = '🚫 受限网站'）一致：所有 provider 都走 GFW 组
 #     下载，在中国走代理、在印尼走 DIRECT，规避 jsdelivr/GitHub 冷启动死锁。
@@ -583,14 +583,6 @@ rule-providers:
     format: mrs
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-007-direct-domain.mrs"
     path: "./ruleset/scki-fused-007-direct-domain.mrs"
-    interval: 86400
-    proxy: "🚫 受限网站"
-  scki-fused-007-direct-ipcidr:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-007-direct-ipcidr.mrs"
-    path: "./ruleset/scki-fused-007-direct-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-007-direct-ipcidr-no-resolve:
@@ -681,6 +673,14 @@ rule-providers:
     path: "./ruleset/scki-fused-015-ai-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
+  scki-fused-015-ai-residual:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-015-ai-residual.yaml"
+    path: "./ruleset/scki-fused-015-ai-residual.yaml"
+    interval: 86400
+    proxy: "🚫 受限网站"
   scki-fused-016-intl-site-domain:
     type: http
     behavior: domain
@@ -745,12 +745,12 @@ rule-providers:
     path: "./ruleset/scki-fused-021-ai-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-021-ai-ipcidr:
+  scki-fused-021-ai-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-ai-ipcidr.mrs"
-    path: "./ruleset/scki-fused-021-ai-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-ai-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-021-ai-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-021-ai-residual:
@@ -863,6 +863,14 @@ rule-providers:
     format: mrs
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-028-social-ipcidr-no-resolve.mrs"
     path: "./ruleset/scki-fused-028-social-ipcidr-no-resolve.mrs"
+    interval: 86400
+    proxy: "🚫 受限网站"
+  scki-fused-028-social-residual:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-028-social-residual.yaml"
+    path: "./ruleset/scki-fused-028-social-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-029-cn-site-domain:
@@ -1049,12 +1057,12 @@ rule-providers:
     path: "./ruleset/scki-fused-042-stream-hk-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-042-stream-hk-ipcidr:
+  scki-fused-042-stream-hk-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-stream-hk-ipcidr.mrs"
-    path: "./ruleset/scki-fused-042-stream-hk-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-stream-hk-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-042-stream-hk-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-043-stream-tw-domain:
@@ -1241,12 +1249,12 @@ rule-providers:
     path: "./ruleset/scki-fused-054-gfw-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-054-gfw-ipcidr:
+  scki-fused-054-gfw-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-gfw-ipcidr.mrs"
-    path: "./ruleset/scki-fused-054-gfw-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-gfw-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-054-gfw-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-055-game-cn-domain:
@@ -1369,60 +1377,52 @@ rule-providers:
     path: "./ruleset/scki-fused-062-cn-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-062-cn-site-ipcidr-no-resolve:
+  scki-fused-062-cn-site-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-062-cn-site-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-residual.yaml"
+    path: "./ruleset/scki-fused-062-cn-site-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-063-intl-site-ipcidr-no-resolve:
+  scki-fused-063-intl-site-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-intl-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-063-intl-site-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-intl-site-residual.yaml"
+    path: "./ruleset/scki-fused-063-intl-site-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-064-im-ipcidr-no-resolve:
+  scki-fused-064-im-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-im-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-064-im-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-im-residual.yaml"
+    path: "./ruleset/scki-fused-064-im-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-065-netflix-ipcidr-no-resolve:
+  scki-fused-065-netflix-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-netflix-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-065-netflix-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-netflix-residual.yaml"
+    path: "./ruleset/scki-fused-065-netflix-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-066-social-ipcidr-no-resolve:
+  scki-fused-066-social-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-066-social-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-066-social-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-066-social-residual.yaml"
+    path: "./ruleset/scki-fused-066-social-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-067-google-ipcidr-no-resolve:
+  scki-fused-067-google-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-067-google-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-067-google-ipcidr-no-resolve.mrs"
-    interval: 86400
-    proxy: "🚫 受限网站"
-  scki-fused-068-cn-site-ipcidr-no-resolve:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-068-cn-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-068-cn-site-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-067-google-residual.yaml"
+    path: "./ruleset/scki-fused-067-google-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
 rules:
@@ -1440,7 +1440,6 @@ rules:
 - "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT"
 - "DST-PORT,7680,REJECT"
 - "RULE-SET,scki-fused-007-direct-domain,DIRECT"
-- "RULE-SET,scki-fused-007-direct-ipcidr,DIRECT"
 - "RULE-SET,scki-fused-007-direct-ipcidr-no-resolve,DIRECT,no-resolve"
 - "RULE-SET,scki-fused-007-direct-residual,DIRECT"
 - "RULE-SET,scki-fused-008-work-residual,🧑‍💼 会议协作"
@@ -1462,6 +1461,7 @@ rules:
 - "RULE-SET,scki-fused-014-work-domain,🧑‍💼 会议协作"
 - "RULE-SET,scki-fused-015-ai-domain,🤖 AI 服务"
 - "RULE-SET,scki-fused-015-ai-ipcidr,🤖 AI 服务"
+- "RULE-SET,scki-fused-015-ai-residual,🤖 AI 服务"
 - "RULE-SET,scki-fused-016-intl-site-domain,🌐 国外网站"
 - "RULE-SET,scki-fused-017-im-domain,💬 即时通讯"
 - "RULE-SET,scki-fused-018-work-domain,🧑‍💼 会议协作"
@@ -1470,7 +1470,7 @@ rules:
 - "RULE-SET,scki-fused-020-google-domain,🔍 Google 服务"
 - "RULE-SET,scki-fused-020-google-ipcidr-no-resolve,🔍 Google 服务,no-resolve"
 - "RULE-SET,scki-fused-021-ai-domain,🤖 AI 服务"
-- "RULE-SET,scki-fused-021-ai-ipcidr,🤖 AI 服务"
+- "RULE-SET,scki-fused-021-ai-ipcidr-no-resolve,🤖 AI 服务,no-resolve"
 - "RULE-SET,scki-fused-021-ai-residual,🤖 AI 服务"
 - "RULE-SET,scki-fused-022-crypto-domain,💰 加密货币"
 - "RULE-SET,scki-fused-022-crypto-residual,💰 加密货币"
@@ -1485,6 +1485,7 @@ rules:
 - "RULE-SET,scki-fused-028-social-domain,📱 社交媒体"
 - "RULE-SET,scki-fused-028-social-ipcidr,📱 社交媒体"
 - "RULE-SET,scki-fused-028-social-ipcidr-no-resolve,📱 社交媒体,no-resolve"
+- "RULE-SET,scki-fused-028-social-residual,📱 社交媒体"
 - "RULE-SET,scki-fused-029-cn-site-domain,🏠 国内网站"
 - "RULE-SET,scki-fused-030-social-domain,📱 社交媒体"
 - "RULE-SET,scki-fused-031-work-domain,🧑‍💼 会议协作"
@@ -1508,7 +1509,7 @@ rules:
 - "RULE-SET,scki-fused-041-music-domain,🎵 音乐流媒体"
 - "RULE-SET,scki-fused-041-music-ipcidr,🎵 音乐流媒体"
 - "RULE-SET,scki-fused-042-stream-hk-domain,🇭🇰 香港流媒体"
-- "RULE-SET,scki-fused-042-stream-hk-ipcidr,🇭🇰 香港流媒体"
+- "RULE-SET,scki-fused-042-stream-hk-ipcidr-no-resolve,🇭🇰 香港流媒体,no-resolve"
 - "RULE-SET,scki-fused-043-stream-tw-domain,🇹🇼 台湾流媒体"
 - "RULE-SET,scki-fused-043-stream-tw-residual,🇹🇼 台湾流媒体"
 - "RULE-SET,scki-fused-044-stream-jpkr-domain,🇯🇵 日韩流媒体"
@@ -1532,7 +1533,7 @@ rules:
 - "RULE-SET,scki-fused-053-tracker-domain,🛰️ BT/PT Tracker"
 - "RULE-SET,scki-fused-053-tracker-ipcidr,🛰️ BT/PT Tracker"
 - "RULE-SET,scki-fused-054-gfw-domain,🚫 受限网站"
-- "RULE-SET,scki-fused-054-gfw-ipcidr,🚫 受限网站"
+- "RULE-SET,scki-fused-054-gfw-ipcidr-no-resolve,🚫 受限网站,no-resolve"
 - "RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏"
 - "RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏"
 - "RULE-SET,scki-fused-056-game-intl-ipcidr,🎮 国外游戏"
@@ -1548,13 +1549,12 @@ rules:
 - "RULE-SET,scki-fused-060-cn-site-ipcidr-no-resolve,🏠 国内网站,no-resolve"
 - "RULE-SET,scki-fused-061-direct-domain,DIRECT"
 - "RULE-SET,scki-fused-062-cn-site-domain,🏠 国内网站"
-- "RULE-SET,scki-fused-062-cn-site-ipcidr-no-resolve,🏠 国内网站,no-resolve"
-- "RULE-SET,scki-fused-063-intl-site-ipcidr-no-resolve,🌐 国外网站,no-resolve"
-- "RULE-SET,scki-fused-064-im-ipcidr-no-resolve,💬 即时通讯,no-resolve"
-- "RULE-SET,scki-fused-065-netflix-ipcidr-no-resolve,🎥 Netflix,no-resolve"
-- "RULE-SET,scki-fused-066-social-ipcidr-no-resolve,📱 社交媒体,no-resolve"
-- "RULE-SET,scki-fused-067-google-ipcidr-no-resolve,🔍 Google 服务,no-resolve"
-- "RULE-SET,scki-fused-068-cn-site-ipcidr-no-resolve,🏠 国内网站,no-resolve"
+- "RULE-SET,scki-fused-062-cn-site-residual,🏠 国内网站"
+- "RULE-SET,scki-fused-063-intl-site-residual,🌐 国外网站"
+- "RULE-SET,scki-fused-064-im-residual,💬 即时通讯"
+- "RULE-SET,scki-fused-065-netflix-residual,🎥 Netflix"
+- "RULE-SET,scki-fused-066-social-residual,📱 社交媒体"
+- "RULE-SET,scki-fused-067-google-residual,🔍 Google 服务"
 - "MATCH,🐟 漏网之鱼"
 
 OVERRIDE_EOF
@@ -1570,7 +1570,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v6.0.1-oc-normal.1"
+VERSION = "v6.0.2-oc-normal.1"
 
 STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

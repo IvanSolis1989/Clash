@@ -1,6 +1,4 @@
 host-suffix, zoom.us
-host-suffix, zpns.zoom.us
-host-suffix, cloud.zoom.us
 host-suffix, zoomgov.com
 host-suffix, slack-core.com
 host-suffix, slack-edge.com
@@ -9,7 +7,6 @@ host-suffix, slack-imgs.com
 host-suffix, slack-msgs.com
 host-suffix, slack-redir.net
 host-suffix, slack.com
-host-suffix, slackb.com
 host-suffix, slackcertified.com
 host-suffix, slackdemo.com
 host-suffix, slackhq.com
@@ -82,9 +79,7 @@ host-suffix, zendesk.com
 host-suffix, zndsk.com
 host-suffix, zopim.com
 host-suffix, intercom.com
-host-suffix, intercom.io
 host-suffix, intercomassets.com
-host-suffix, intercomcdn.com
 host, rs-ny.rustdesk.com
 host, rs-sg.rustdesk.com
 host, rs-cn.rustdesk.com

@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-09T07:55:43.228Z",
-  "source": "Clash Party/ClashParty(mihomo-smart).js runtime output with SCKI_DISABLE_FUSED_RULESETS=true and SCKI_DISABLE_MIHOMO_MRS_OVERRIDES=true",
+  "generated_at": "2026-07-10T15:13:16.120Z",
+  "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
   "mihomo_bin": "mihomo-v1.19.28.exe",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
@@ -3578,13 +3578,13 @@
       "source_format": "text",
       "source_url": "https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt",
       "type_counts": {
-        "domain": 126325
+        "domain": 125825
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "sukka-phishing.mrs",
-          "entries": 126325
+          "entries": 125825
         }
       ]
     },

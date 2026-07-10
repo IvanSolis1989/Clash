@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.2-cmfa.1 (2026-07-10)
+
+- SYNC：跟随 source graph / Clash Party v6.0.2，更新为 113 个融合 rule-provider、130 条主规则和 55 个策略组。
+- PERF：域名/IP `.mrs` 已在同策略段内完成规范化与语义去重；国家/服务 GEOIP 保留为少量 residual YAML，避免将运行时数据库查询放大为 CIDR 列表。
+- FAIL-CLOSED：融合 manifest 出现 unresolved source、非法残余规则或聚合预算超限时不再生成本产物。
+
 ## v6.0.1-cmfa.1 (2026-07-10)
 
 - SYNC：跟随 Clash Party v6.0.1 和 source graph v6.0.1 重新同步；CMFA 保持融合 `.mrs` / residual YAML 消费方式、113 个 rule-provider 与 130 条主规则。

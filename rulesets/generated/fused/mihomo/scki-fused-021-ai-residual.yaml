@@ -22,3 +22,6 @@ payload:
   - "PROCESS-NAME,TikTok"
   - "PROCESS-NAME,CapCut"
   - "PROCESS-NAME,Lemon8"
+  - "IP-ASN,399358,no-resolve"
+  - "IP-ASN,14061,no-resolve"
+  - "IP-ASN,401518,no-resolve"

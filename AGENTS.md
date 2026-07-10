@@ -35,7 +35,7 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
 - **v2rayN（mihomo/sing-box 模式）**：直接消费 CMFA YAML 或 SingBox Full JSON
 
 有 **降级产物** 的客户端（功能受限但可用）：
-- **v2rayN Xray / Passwall / Passwall2**：底层走 Xray 或 xray/sing-box，不能表达 mihomo 的 proxy-groups 嵌套选择器。本仓库用 `tools/generate-fused-fallback-artifacts.js` 从最终融合产物生成各自原生 fallback：v2rayN Xray 展平成 86 条 RuleObject；Passwall / Passwall2 生成 68 条 `rule-set:remote` fused shunt rule。想要完整体验的用户应改用 v2rayN mihomo/sing-box 路径或 OpenClash。
+- **v2rayN Xray / Passwall / Passwall2**：底层走 Xray 或 xray/sing-box，不能表达 mihomo 的 proxy-groups 嵌套选择器。本仓库用 `tools/generate-fused-fallback-artifacts.js` 从最终融合产物生成各自原生 fallback：v2rayN Xray 展平成 82 条 RuleObject；Passwall / Passwall2 生成 64 条非空 `rule-set:remote` fused shunt rule。想要完整体验的用户应改用 v2rayN mihomo/sing-box 路径或 OpenClash。
 
 显式不支持的客户端：
 - **SSR Plus+**：架构老旧 + 已停止维护，没有 geosite/rule_set 层能力；建议用户迁移到 OpenClash
@@ -68,7 +68,7 @@ Smart-Config-Kit 同时发布 **14 种客户端形态的等价产物**（分属 
    - `Loon/Loon.conf`（跟随 Surge；[General] 字段对齐 Loon 原生）
    - `Quantumult X/QuantumultX.conf`（独立手工维护的 QX 产物；当前仓库无 `srk_to_qx.py`，恢复自动转换前必须先提交并验证脚本）
    - `Egern/Egern.yaml`（通过 `node tools/generate-egern-from-cmfa.js` 从 CMFA **重新生成**，禁止手工改）
-   - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（通过 `node tools/generate-fused-fallback-artifacts.js` 生成 68 条 fused `rule-set:remote` shunt rule；与 Passwall2 联动）
+   - `Passwall/Passwall(xray+sing-box)-apply.sh` + `Passwall/shunt-rules/*.list`（通过 `node tools/generate-fused-fallback-artifacts.js` 生成 64 条非空 fused `rule-set:remote` shunt rule；与 Passwall2 联动）
    - `Passwall2/Passwall2(xray+sing-box)-apply.sh` + `Passwall2/shunt-rules/*.list`（同上；与 Passwall 联动）
    - `FlClash/FlClash(mihomo).js`（Clash Party Normal JS 移植版）
 3. **bump 产物文件头部版本号**（仅版本号 + Build 日期 + 一行摘要，保持轻量）。

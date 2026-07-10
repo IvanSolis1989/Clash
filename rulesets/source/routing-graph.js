@@ -5,7 +5,7 @@
 // upstream provider/rule relationship used by MRS and fused-rule compilers.
 
 const SOURCE_GRAPH_ID = 'rulesets/source/routing-graph.js';
-const SOURCE_GRAPH_VERSION = 'v6.0.1';
+const SOURCE_GRAPH_VERSION = 'v6.0.2';
 const VERSION = SOURCE_GRAPH_VERSION;
 
 let SCKI_DISABLE_MIHOMO_MRS_OVERRIDES = false;
@@ -153,6 +153,13 @@ function expandMihomoMrsSplitRules(rules) {
   return rules
 }
 // END AUTO-GENERATED MIHOMO MRS OVERRIDES
+
+
+
+
+
+
+
 
 // v5.1.2: GeoRouting 区域列表（module-level，供 providers + rules 共用）
 // ★ FIX#1: Asia_China 从 INTL 循环剥离，单独映射 CN_SITE（v5.1.1 误将中国域名/IP 路由到国外网站）
@@ -561,16 +568,9 @@ function injectRuleProviders(config) {
       interval: nextInterval(),
       proxy: RP_PROXY
     }
-    // v5.1.6-P0: Hagezi Threat Intelligence Feeds（威胁情报：malware/cryptojacking/C2/scam/spam）
-    // 优先方案：MiHomoer .mrs 二进制格式（domain behavior，冷启动开销极小）
-    // 备选方案（若 mrs 源不可用，取消下方注释并注释掉 mrs 版本）：
-    //   config['rule-providers']['hagezi-tif'] = {
-    //     type: 'http', behavior: 'domain', format: 'text',
-    //     url: 'https://fastly.jsdelivr.net/gh/hagezi/dns-blocklists@main/domains/tif.medium.txt',
-    //     path: './ruleset/hagezi-tif-medium.txt',
-    //     interval: nextInterval(),
-    //     proxy: RP_PROXY
-    //   }
+    // HaGeZi Ultimate：保留历史 provider id `hagezi-tif`，但实际资产是
+    // MiHomoer HageziUltimate.mrs。融合编译器必须映射到同源
+    // wildcard/ultimate-onlydomains.txt，禁止替换成体量和语义不同的完整 TIF。
     config['rule-providers']['hagezi-tif'] = {
       type: 'http', behavior: 'domain', format: 'mrs',
       url: 'https://fastly.jsdelivr.net/gh/MiHomoer/MiHomo-Hagezi@release/HageziUltimate.mrs',

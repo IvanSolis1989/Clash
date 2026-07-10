@@ -15,6 +15,9 @@
         "miwifi.com",
         "www.miwifi.com",
         "local.adguard.org",
+        "ip.cip.cc"
+      ],
+      "domain_suffix": [
         "internal",
         "localdomain",
         "example",
@@ -133,9 +136,6 @@
         "255.255.255.255.in-addr.arpa",
         "8.b.d.0.1.0.0.2.ip6.arpa",
         "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa",
-        "ip.cip.cc"
-      ],
-      "domain_suffix": [
         "chiphell.com",
         "iwipwedabay.com",
         "cdn.weixin.qq.com"
@@ -156,7 +156,6 @@
         "203.0.113.0/24",
         "224.0.0.0/4",
         "240.0.0.0/4",
-        "255.255.255.255/32",
         "::1/128",
         "fc00::/7",
         "fe80::/10"

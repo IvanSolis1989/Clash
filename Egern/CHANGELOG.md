@@ -1,5 +1,12 @@
 # Egern — 变更日志
 
+## v6.0.2-egern.1 (2026-07-10)
+
+- FIX：Egern 派生器不再静默跳过服务型 `GEOIP`；ISO 国家码输出为原生 `geoip_set`，服务型标签展开为 CIDR，`IP-ASN` 输出为 `asn_set`。
+- NO-RESOLVE：由 CMFA `RULE-SET,...,no-resolve` 或残余规则携带的解析语义写入 Egern rule-set 顶层 `no_resolve: true`。
+- PERF：主配置从 CMFA 的 113 个融合 provider / 130 条规则生成；跨资产首匹配去重后省略 19 个目标为空引用，实际为 111 条主规则、94 个 `rule_set` 引用和 99 个非空 Egern 原生 YAML，聚合约 12.94 MiB / 575,957 条。
+- PLATFORM：仅 `PROCESS-NAME` / `PROCESS-PATH` 因 Egern 官方规则集未提供对应字段而明确跳过，其他未知类型不再伪装成同步成功。
+
 ## v6.0.1-egern.1 (2026-07-10)
 
 - FIX#174 同类修复：Egern 原生 `provider-scki-fused-005-ad-domain.yaml` 原为超过 CDN 单文件预算的远程 YAML，现由生成器按 18 MiB 上限拆为 3 个有序 YAML rule_set。

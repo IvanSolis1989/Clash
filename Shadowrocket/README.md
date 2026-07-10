@@ -3,9 +3,9 @@
 > 目录简介：这里维护 Shadowrocket 小火箭配置和使用教程，覆盖 iOS/macOS 私有 conf 语法下的分流实现。
 >
 > 配置文件：`Shadowrocket.conf`
-> 版本：**v6.0.1-SR.1**（Build 2026-07-10，跟随 Clash Party v6.0.1 基线；68 个语义融合段按需展开为远程 RULE-SET 分片；区域 url-test 默认 300s）
+> 版本：**v6.0.2-SR.1**（Build 2026-07-10，跟随 Clash Party v6.0.2 基线；67 个源语义段对应 63 个移动端非空远程 RULE-SET；区域 url-test 默认 300s）
 > 目标：**Shadowrocket iOS（App Store 正版）** / macOS 通用
-> 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 33 业务策略组 + 283 rule-set
+> 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 33 业务策略组 + 63 个非空融合 rule-set（约 16.06 MiB / 575,499 条，受聚合预算门禁）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -55,7 +55,7 @@
 
 ### 最常见踩坑
 - ❌ **App Store 搜不到 SR**：你的 Apple ID 是中国区。换非中国区 Apple ID（注册需要一个非中国的地址 + 外国信用卡/礼品卡）。
-- ❌ **导入配置时规则下载失败一半**：首次导入时 SR 要从 GitHub 拉约 283 个规则包。**必须先开代理再下载配置**。可以先用一个简单的代理配置连上，再切到本配置。
+- ❌ **导入配置时规则下载失败**：首次导入时 SR 要从本仓库拉取 63 个融合规则包。**必须先开代理再下载配置**。可以先用一个简单的代理配置连上，再切到本配置。
 - ❌ **国内支付/银行 App 变卡 / 登不上**：配置里已把主流支付（支付宝/微信支付）+ 5 大国行（工行/建行/农行/交行/邮储）加到 skip-proxy。你遇到的那个 App 没被排除就加进去：SR 首页往下拉到「Skip Proxy」→ 追加 `*.你遇到的域名.com`。
 - ❌ **TikTok 海外版看不了**：在「📱 社交媒体」组里切到 🇯🇵 日韩节点或 🌏 亚太节点，对 TikTok 友好。
 - ❌ **后台刷新后规则没更新**：iOS 设置 → 通用 → 后台 App 刷新 → 确认 Shadowrocket 是开的。
@@ -132,7 +132,7 @@ Shadowrocket 不像桌面端那样支持本地脚本覆写；必须把配置文�
 3. 粘贴配置 URL，点击**下载**。
 4. 下载完成后，点击该配置行 → 选择「**使用配置（Use Config）**」。
 
-此时 Shadowrocket 会开始下载约 **283 个 rule-set**（blackmatrix7 Shadowrocket 专用 `.list` 格式），首次需要 **3–5 分钟**，期间请保持代理开启（否则 GitHub 访问不稳定会导致部分 rule-set 下载失败）。
+此时 Shadowrocket 会开始下载 **63 个本仓库融合 rule-set**，首次通常需要 **1–3 分钟**，期间请保持代理开启。v6.0.2 对总量设置 32 MiB / 100 万条硬门禁，当前约 16.06 MiB / 575,499 条。
 
 ---
 

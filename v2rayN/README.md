@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v6.0.1）
+# v2rayN 使用教程（对齐 Clash Party v6.0.2）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON fallback 产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.1-v2n.1（Build 2026-07-10；基线：Clash Party v6.0.1；变更历史见 `v2rayN/CHANGELOG.md`）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.2-v2n.1（Build 2026-07-10；基线：Clash Party v6.0.2；变更历史见 `v2rayN/CHANGELOG.md`）。
 
 ---
 
@@ -46,7 +46,7 @@ SingBox Full 使用 `rulesets/generated/fused/sing-box/*.srs`，是本仓库 fus
 `v2rayN/v2rayN(xray).json` 是给 Xray 核心准备的降级路由规则数组。当前文件由 `tools/generate-fused-fallback-artifacts.js` 从 `rulesets/generated/fused/sing-box/*.json` 展平成原生 Xray RuleObject：
 
 - 1 条禁用 meta 规则。
-- 68 条 fused 顺序段，保持源规则图的首匹配顺序。
+- 64 条非空 fused 顺序段 + 17 条必要内联规则 + 1 条元数据，共 82 条 Xray RuleObject，保持源规则图的首匹配顺序。
 - 17 条端口、逻辑组合和 `MATCH` 等必要内联规则。
 - 出站只使用 `proxy`、`direct`、`block` 三个标签。
 

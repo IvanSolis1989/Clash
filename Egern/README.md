@@ -1,6 +1,6 @@
 # Egern 使用教程
 
-> 版本：**v6.0.1-egern.1**（Build 2026-07-10；正式跟随 Clash Party v6.0.1 / CMFA 融合规则顺序）
+> 版本：**v6.0.2-egern.1**（Build 2026-07-10；正式跟随 Clash Party v6.0.2 / CMFA 融合规则顺序）
 
 ## 定位
 
@@ -8,7 +8,7 @@ Egern 已纳入正式同步产物，但不能直接复制 Mihomo/Clash 的 `rule
 
 原因很明确：Mihomo 的 `.mrs` 是 Clash Party / CMFA 最小、加载更快的规则集格式，应继续保留；Egern 官方文档没有声明可直接消费 `.mrs`，它的 `rule_set` 使用 Egern 自己的远端规则集结构。所以本目录提供 Egern 正式 Profile，由融合后的 CMFA 规则顺序生成 Egern 可导入语法：
 
-- `Egern.yaml`：Egern Profile，可导入，可接订阅，包含 22 个 `smart` 区域组、33 个业务组、132 条 Egern 主规则和 115 个顶层 `rule_set` 引用。超过 CDN 单文件预算的同策略集合会按原顺序拆为多个 `rule_set`。
+- `Egern.yaml`：Egern Profile，可导入，可接订阅，包含 22 个 `smart` 区域组、33 个业务组、111 条 Egern 主规则和 94 个顶层 `rule_set` 引用；19 个在 Egern 目标转换后已被前序规则完全覆盖的空引用不会发布。
 - `rulesets/generated/egern/*.yaml`：由融合 rule-provider 生成的 Egern 原生规则集。
 - `tools/generate-egern-supplemental.js`：保留补充规则集的独立格式转换工具；正式 Profile 以 `tools/generate-egern-from-cmfa.js` 的 generated 输出为准。
 - `tools/generate-egern-from-cmfa.js`：从 `Clash Meta For Android/CMFA(mihomo).yaml` 生成正式 Egern Profile。
@@ -22,8 +22,8 @@ Egern 已纳入正式同步产物，但不能直接复制 Mihomo/Clash 的 `rule
 
 ## 平台边界
 
-- Egern Profile 正式跟随 CMFA 的 113 个融合 rule-provider 和 130 条规则顺序生成。
-- Egern 实际渲染 130 条主规则；桌面 `PROCESS-NAME` 补充规则如遇官方能力限制会作为平台例外处理。
+- Egern Profile 正式跟随 CMFA 的 113 个融合 rule-provider 和 130 条规则顺序生成，并产出 99 个非空原生 YAML。
+- Egern 实际渲染 111 条主规则；国家 GEOIP 使用原生 `geoip_set`，服务型 GEOIP 转换为 CIDR；桌面 `PROCESS-NAME` 及目标为空规则集是明确的平台/优化例外。
 - Mihomo `.mrs` 不在 Egern 中直接引用；生成器会映射到 `rulesets/generated/egern/*.yaml` 的 Egern 原生规则集。
 
 ## 官方依据

@@ -2,4 +2,8 @@
 # Source id: provider-scki-fused-021-ai-residual
 # Source URL: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-ai-residual.yaml
 # Skipped unsupported source rule types: PROCESS-NAME
-domain_set: []
+no_resolve: true
+asn_set:
+  - "14061"
+  - "399358"
+  - "401518"

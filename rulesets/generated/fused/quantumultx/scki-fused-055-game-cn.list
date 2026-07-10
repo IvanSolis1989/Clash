@@ -7,8 +7,6 @@ host, game.163.com
 host-suffix, gm.163.com
 host-suffix, ds.163.com
 host-suffix, nie.163.com
-host-suffix, nie.netease.com
-host-suffix, update.netease.com
 host-suffix, netease.com
 host-suffix, wegame.com
 host-suffix, wegame.com.cn
@@ -17,7 +15,6 @@ host-suffix, wanmei.com
 host-suffix, battlenet.com.cn
 host-suffix, xd.com
 host-suffix, taptap.com
-host-suffix, taptap.io
 host-suffix, papegames.com
 host-suffix, hypergryph.com
 host-suffix, gryphline.com
@@ -37,7 +34,6 @@ host, xz.pphimalayanrt.com
 host-suffix, cm.steampowered.com
 host-suffix, steamchina.com
 host-suffix, steamcontent.com
-host-suffix, steamserver.net
 host-suffix, steamusercontent.com
 host-suffix, counter-strike.cn
 host-suffix, counter-strike.com.cn

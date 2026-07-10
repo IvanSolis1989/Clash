@@ -23,7 +23,7 @@ const EXPECTED_BUSINESS_GROUPS = 33;
 const EXPECTED_REGION_GROUPS = EXPECTED_GROUPS - EXPECTED_BUSINESS_GROUPS;
 const EXPECTED_SINGBOX_GROUPS = 54;
 const EXPECTED_SINGBOX_URLTEST_GROUPS = 2;
-const EXPECTED_PASSWALL_RULES = 68;
+const EXPECTED_PASSWALL_RULES = 64;
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
 const SOURCE_FULL_PROVIDERS = 474;
@@ -31,11 +31,14 @@ const SOURCE_FULL_RULES = 931;
 const MIN_FULL_PROVIDERS = 113;
 const EXPECTED_SINGBOX_RUNTIME_GEO_RULE_SETS = 7;
 const MIN_FULL_RULES = 130;
-const EXPECTED_FUSED_SEGMENTS = 68;
+const EXPECTED_FUSED_SEGMENTS = 67;
+const EXPECTED_FUSED_MOBILE_SEGMENTS = 63;
 const EXPECTED_FUSED_INLINE_RULES = 17;
-const EXPECTED_FUSED_MRS_FILES = 96;
-const EXPECTED_FUSED_SRS_FILES = 68;
-const EXPECTED_FUSED_PASSWALL_FILES = 68;
+const EXPECTED_FUSED_MRS_FILES = 88;
+const EXPECTED_FUSED_SRS_FILES = 64;
+const EXPECTED_FUSED_PASSWALL_FILES = 64;
+const EXPECTED_FUSED_XRAY_SEGMENTS = 64;
+const EXPECTED_XRAY_RULES = 82;
 const EXPECTED_MIHOMO_MRS_CONVERTED = 267;
 const EXPECTED_MIHOMO_MRS_SPLIT = 39;
 const EXPECTED_MIHOMO_MRS_PARTIAL = 30;
@@ -44,9 +47,10 @@ const EXPECTED_MIHOMO_MRS_RETAINED = 20;
 const EXPECTED_MIHOMO_MRS_FILES = 389;
 const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 30;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
-const EXPECTED_EGERN_RULES = 132;
-const EXPECTED_EGERN_RULE_SETS = 115;
-const EXPECTED_EGERN_GENERATED_RULE_SETS = 120;
+const EXPECTED_EGERN_RULES = 111;
+const EXPECTED_EGERN_RULE_SETS = 94;
+const EXPECTED_EGERN_GENERATED_RULE_SETS = 99;
+const EXPECTED_SINGBOX_ROUTE_RULES = 81;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -425,11 +429,24 @@ function validateMihomoMrsRuleSets(record) {
 function xrayDomainIncludes(rule, value) {
   const domains = Array.isArray(rule && rule.domain) ? rule.domain : [];
   const normalized = String(value).replace(/^(domain|full|keyword|regexp):/, '');
-  return domains.includes(value)
-    || domains.includes(`domain:${normalized}`)
-    || domains.includes(`full:${normalized}`)
-    || domains.includes(`keyword:${normalized}`)
-    || domains.includes(normalized);
+  return domains.some((candidate) => {
+    if (candidate === value || candidate === normalized || candidate === `full:${normalized}`) return true;
+    if (candidate.startsWith('domain:')) {
+      const suffix = candidate.slice('domain:'.length);
+      return normalized === suffix || normalized.endsWith(`.${suffix}`);
+    }
+    if (candidate.startsWith('keyword:')) return normalized.includes(candidate.slice('keyword:'.length));
+    return false;
+  });
+}
+
+function singBoxSourceCoversDomain(id, domain) {
+  const source = JSON.parse(fusedSingBoxText(id));
+  return (source.rules || []).some((rule) => (
+    (rule.domain || []).includes(domain)
+    || (rule.domain_suffix || []).some((suffix) => domain === suffix || domain.endsWith(`.${suffix}`))
+    || (rule.domain_keyword || []).some((keyword) => domain.includes(keyword))
+  ));
 }
 
 function validateFusedRuleSets(record) {
@@ -450,6 +467,18 @@ function validateFusedRuleSets(record) {
       message: 'generated text files must exactly match fused manifest parts',
     });
   };
+  const checkTargetFileNames = (platform, suffix, manifestKey = platform) => {
+    const expected = (manifest.segments || [])
+      .map((segment) => segment.files && segment.files[manifestKey] && segment.files[manifestKey].file)
+      .filter((file) => file && file.endsWith(suffix))
+      .sort();
+    const actual = fs.readdirSync(path.join(fusedDir, platform))
+      .filter((file) => file.endsWith(suffix))
+      .sort();
+    record.check(`fused.${platform}-file-names`, JSON.stringify(actual) === JSON.stringify(expected), {
+      value: { actual, expected },
+    });
+  };
 
   record.check('fused.authority-source-graph', String(manifest.authority || '').includes(SOURCE_GRAPH_ID), { value: manifest.authority });
   record.check('fused.source-provider-count', manifest.source_provider_count === SOURCE_FULL_PROVIDERS, { value: manifest.source_provider_count });
@@ -461,19 +490,25 @@ function validateFusedRuleSets(record) {
   record.check('fused.generated-mrs-files', manifest.generated_mrs_files === EXPECTED_FUSED_MRS_FILES, { value: manifest.generated_mrs_files });
   record.check('fused.generated-srs-files', manifest.generated_srs_files === EXPECTED_FUSED_SRS_FILES, { value: manifest.generated_srs_files });
   record.check('fused.generated-passwall-files', manifest.generated_passwall_files === EXPECTED_FUSED_PASSWALL_FILES, { value: manifest.generated_passwall_files });
-  record.check('fused.generated-xray-segments', manifest.generated_xray_fused_segments === EXPECTED_FUSED_SEGMENTS, { value: manifest.generated_xray_fused_segments });
+  record.check('fused.generated-xray-segments', manifest.generated_xray_fused_segments === EXPECTED_FUSED_XRAY_SEGMENTS, { value: manifest.generated_xray_fused_segments });
   record.check('fused.remote-asset-max-bytes', manifest.remote_asset_max_bytes === MAX_JSDELIVR_ASSET_BYTES, {
     value: manifest.remote_asset_max_bytes,
   });
   record.check('fused.unresolved-providers', (manifest.unresolved_providers || []).length === 0, { value: manifest.unresolved_providers });
   record.check('fused.unresolved-sources', (manifest.unresolved_sources || []).length === 0, { value: manifest.unresolved_sources });
   record.check('fused.passthrough-providers', (manifest.passthrough_providers || []).length === 0, { value: manifest.passthrough_providers });
+  record.check('fused.pruned-empty-segments', JSON.stringify(manifest.pruned_empty_segments || []) === JSON.stringify(['scki-fused-068-cn-site']), {
+    value: manifest.pruned_empty_segments,
+  });
   checkTextPlatformFiles('clash');
   checkTextPlatformFiles('surge');
   checkTextPlatformFiles('quantumultx');
-  record.check('fused.egern-file-count', countFiles('egern', '.yaml') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('egern', '.yaml') });
+  record.check('fused.egern-file-count', countFiles('egern', '.yaml') === EXPECTED_FUSED_MOBILE_SEGMENTS, { value: countFiles('egern', '.yaml') });
   record.check('fused.sing-box-srs-count', countFiles('sing-box', '.srs') === EXPECTED_FUSED_SRS_FILES, { value: countFiles('sing-box', '.srs') });
   record.check('fused.passwall-file-count', countFiles('passwall', '.list') === EXPECTED_FUSED_PASSWALL_FILES, { value: countFiles('passwall', '.list') });
+  checkTargetFileNames('egern', '.yaml');
+  checkTargetFileNames('sing-box', '.srs', 'sing_box');
+  checkTargetFileNames('passwall', '.list');
   for (const id of [
     'scki-fused-005-ad',
     'scki-fused-007-direct',
@@ -1316,10 +1351,10 @@ function validateJsonProducts(record, baselineVersion) {
   record.check('singbox.no-unconditional-final-route-rule', !finalAsUnconditionalRule, {
     message: 'SingBox must use route.final for MATCH fallback; an unconditional final rule would shadow later QUIC rules',
   });
-  record.check('singbox.rule-set-count', ruleSetCount === MIN_FULL_PROVIDERS + EXPECTED_SINGBOX_RUNTIME_GEO_RULE_SETS, { value: ruleSetCount });
-  record.check('singbox.route-rule-count', routeRuleCount === MIN_FULL_RULES, { value: routeRuleCount });
+  record.check('singbox.rule-set-count', ruleSetCount === EXPECTED_FUSED_SRS_FILES + EXPECTED_SINGBOX_RUNTIME_GEO_RULE_SETS, { value: ruleSetCount });
+  record.check('singbox.route-rule-count', routeRuleCount === EXPECTED_SINGBOX_ROUTE_RULES, { value: routeRuleCount });
   const singboxScholarGoogle = routeRules.some((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-020-google-domain') && rule.outbound === '🔍 Google 服务'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-020-google') && rule.outbound === '🔍 Google 服务'
   ));
   record.check('singbox.scholar-target-google-fused', singboxScholarGoogle, failureMessage(singboxScholarGoogle, 'Google service fused rule_set must include scholar coverage'));
   record.check('singbox.dns.bootstrap-doh-over-ip', dnsServerByTag.dns_bootstrap && dnsServerByTag.dns_bootstrap.address === 'https://223.5.5.5/dns-query' && dnsServerByTag.dns_bootstrap.tls && dnsServerByTag.dns_bootstrap.tls.server_name === 'dns.alidns.com', {
@@ -1366,25 +1401,25 @@ function validateJsonProducts(record, baselineVersion) {
   }
   const singboxRules = (singbox.route || {}).rules || [];
   const singboxCloudflareR2Index = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-002-intl-site-domain') && rule.outbound === '🌐 国外网站'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-002-intl-site') && rule.outbound === '🌐 国外网站'
   ));
   const singboxAntiAdIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-005-ad-domain') && rule.action === 'reject'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-005-ad') && rule.action === 'reject'
   ));
   record.check('singbox.cloudflarestorage-before-ads', singboxCloudflareR2Index !== -1 && singboxAntiAdIndex !== -1 && singboxCloudflareR2Index < singboxAntiAdIndex, {
     value: { cloudflarestorage: singboxCloudflareR2Index, antiAd: singboxAntiAdIndex },
   });
   const singboxDouyinIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-004-cnmedia-domain') && rule.outbound === '📺 国内流媒体'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-004-cnmedia') && rule.outbound === '📺 国内流媒体'
   ));
   const singboxTikTokIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-034-tiktok-domain') && rule.outbound === '🎵 TikTok'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-034-tiktok') && rule.outbound === '🎵 TikTok'
   ));
   const singboxForeignTailIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-057-intl-site-domain') && rule.outbound === '🌐 国外网站'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-057-intl-site') && rule.outbound === '🌐 国外网站'
   ));
   const singboxAmapIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-006-cn-site-domain') && rule.outbound === '🏠 国内网站'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-006-cn-site') && rule.outbound === '🏠 国内网站'
   ));
   record.check('singbox.douyin-zjcdn-cnmedia', singboxDouyinIndex !== -1, failureMessage(singboxDouyinIndex !== -1, 'zjcdn.com must route to CN media'));
   record.check('singbox.douyin-zjcdn-before-tiktok', singboxDouyinIndex !== -1 && singboxTikTokIndex !== -1 && singboxDouyinIndex < singboxTikTokIndex, {
@@ -1398,10 +1433,10 @@ function validateJsonProducts(record, baselineVersion) {
     value: { amap: singboxAmapIndex, foreignTail: singboxForeignTailIndex },
   });
   const singboxCnGameIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-055-game-cn-domain') && rule.outbound === '🕹️ 国内游戏'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-055-game-cn') && rule.outbound === '🕹️ 国内游戏'
   ));
   const singboxIntlGameIndex = singboxRules.findIndex((rule) => (
-    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-056-game-intl-domain') && rule.outbound === '🎮 国外游戏'
+    Array.isArray(rule.rule_set) && rule.rule_set.includes('scki-fused-056-game-intl') && rule.outbound === '🎮 国外游戏'
   ));
   record.check('singbox.cn-game-before-intl-game-fused', singboxCnGameIndex !== -1 && singboxIntlGameIndex !== -1 && singboxCnGameIndex < singboxIntlGameIndex, {
     value: { cnGame: singboxCnGameIndex, intlGame: singboxIntlGameIndex },
@@ -1410,7 +1445,7 @@ function validateJsonProducts(record, baselineVersion) {
   const v2rayn = readJson('v2rayN/v2rayN(xray).json');
   const allowedTags = new Set(['proxy', 'direct', 'block']);
   record.check('v2rayn.top-level-array', Array.isArray(v2rayn));
-  record.check('v2rayn.rule-count', Array.isArray(v2rayn) && v2rayn.length >= EXPECTED_FUSED_SEGMENTS, { value: Array.isArray(v2rayn) ? v2rayn.length : null });
+  record.check('v2rayn.rule-count', Array.isArray(v2rayn) && v2rayn.length === EXPECTED_XRAY_RULES, { value: Array.isArray(v2rayn) ? v2rayn.length : null });
   record.check('v2rayn.baseline-remarks', Array.isArray(v2rayn) && String(v2rayn[0] && v2rayn[0].remarks).includes(`Clash Party ${baselineVersion}`));
   record.check('v2rayn.generated-from-fused', Array.isArray(v2rayn) && String(v2rayn[0] && v2rayn[0].remarks).includes('rulesets/generated/fused/sing-box'), {
     message: 'v2rayN Xray output must be generated from fused sing-box source JSON',
@@ -1527,7 +1562,7 @@ function validateEgern(record, baselineVersion, options) {
     'provider-scki-fused-004-cnmedia-domain',
     'provider-scki-fused-005-ad-domain',
     'provider-scki-fused-006-cn-site-domain',
-    'provider-scki-fused-020-google-domain',
+    'provider-scki-fused-048-google-domain',
     'provider-scki-fused-034-tiktok-domain',
     'provider-scki-fused-055-game-cn-domain',
     'provider-scki-fused-056-game-intl-domain',
@@ -1543,8 +1578,9 @@ function validateEgern(record, baselineVersion, options) {
   record.check('egern.generated-rule-set-file-count', generatedEgernFiles.length === EXPECTED_EGERN_GENERATED_RULE_SETS, {
     value: generatedEgernFiles.length,
   });
-  record.check('egern.geoip-skip-documented', readText('rulesets/generated/egern/provider-scki-fused-057-intl-site-residual.yaml').includes('Skipped unsupported source rule types: GEOIP'), {
-    message: 'Egern fused residual GEOIP skip must be documented in generated rule-set source',
+  const egernGeoipResidual = readText('rulesets/generated/egern/provider-scki-fused-057-intl-site-residual.yaml');
+  record.check('egern.geoip-native', egernGeoipResidual.includes('geoip_set:') && !/Skipped unsupported source rule types:.*GEOIP/.test(egernGeoipResidual), {
+    message: 'Egern fused residual must preserve country GEOIP through geoip_set',
   });
   for (const fileName of fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml'))) {
     const egernFile = `rulesets/generated/egern/${fileName}`;
@@ -1577,7 +1613,8 @@ function validateEgern(record, baselineVersion, options) {
 
 function validatePasswall(record, baselineVersion) {
   const manifest = readJson('rulesets/generated/fused/manifest.json');
-  const expectedListNames = (manifest.segments || []).map((segment) => `${segment.id}.list`).sort();
+  const passwallSegments = (manifest.segments || []).filter((segment) => segment.files && segment.files.sing_box);
+  const expectedListNames = passwallSegments.map((segment) => `${segment.id}.list`).sort();
   const passwallGeneratedLists = listFiles('rulesets/generated/fused/passwall').filter((file) => file.endsWith('.list')).map((file) => path.basename(file)).sort();
   record.check('passwall.generated-fused-list-count', passwallGeneratedLists.length === EXPECTED_FUSED_PASSWALL_FILES, { value: passwallGeneratedLists.length });
   record.check('passwall.generated-fused-list-names', JSON.stringify(passwallGeneratedLists) === JSON.stringify(expectedListNames), {
@@ -1612,7 +1649,7 @@ function validatePasswall(record, baselineVersion) {
       record.warn(`${spec.id}.reference-conf.baseline`, `${spec.reference} does not advertise ${baselineVersion}; apply script plus shunt-rules are authoritative`);
     }
 
-    for (const segment of manifest.segments || []) {
+    for (const segment of passwallSegments) {
       const url = fusedSrsUrl(segment.id);
       record.check(`${spec.id}.script-fused-url.${segment.id}`, source.includes(`add_fused_shunt_rule '${segment.id} | ${segment.policy}' '${url}'`), {
         message: `missing ${segment.id} in apply script`,
@@ -1636,8 +1673,8 @@ function validatePasswall(record, baselineVersion) {
     const imJson = `${fusedSingBoxText('scki-fused-017-im')}\n${fusedSingBoxText('scki-fused-027-im')}`;
 
     record.check(`${spec.id}.cloudflarestorage-fused-source`, fusedSingBoxText('scki-fused-002-intl-site').includes('cloudflarestorage.com'));
-    record.check(`${spec.id}.scholar-target-google`, googleJson.includes('scholar.google.com'), {
-      message: 'Google fused source must include scholar.google.com',
+    record.check(`${spec.id}.scholar-target-google`, singBoxSourceCoversDomain('scki-fused-020-google', 'scholar.google.com'), {
+      message: 'Google fused source must semantically cover scholar.google.com',
     });
     record.check(
       `${spec.id}.douyin-web-domain-fallbacks`,

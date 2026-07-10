@@ -16,6 +16,8 @@ const WORK_POLICY = '🧑‍💼 会议协作';
 const SCKI_REPO_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused';
 const MIHOMO_DIRECT_RULE_SET = 'scki-fused-007-direct-residual';
 const MIHOMO_WORK_RULE_SET = 'scki-fused-008-work-residual';
+const SINGBOX_DIRECT_RULE_SET = 'scki-fused-007-direct';
+const SINGBOX_WORK_RULE_SET = 'scki-fused-008-work';
 const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-007-direct.list`;
 const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-008-work.list`;
 
@@ -35,7 +37,6 @@ const unsupportedTargets = [
   'Shadowrocket/Shadowrocket.conf',
   'Loon/Loon.conf',
   'Quantumult X/QuantumultX.conf',
-  'v2rayN/v2rayN(xray).json',
   'Passwall/Passwall(xray+sing-box)-apply.sh',
   'Passwall/Passwall(xray+sing-box).conf',
   'Passwall2/Passwall2(xray+sing-box)-apply.sh',
@@ -77,11 +78,18 @@ for (const target of mihomoRuleTextTargets) {
   const target = 'SingBox/SingBox(sing-box)-full.json';
   const data = JSON.parse(read(target));
   const routeRuleSets = new Set((data.route?.rule_set || []).map((ruleSet) => ruleSet.tag));
-  if (!routeRuleSets.has('scki-fused-007-direct-residual')) {
-    failures.push(`${target}: missing scki-fused-007-direct-residual remote rule_set`);
+  if (!routeRuleSets.has(SINGBOX_DIRECT_RULE_SET)) {
+    failures.push(`${target}: missing ${SINGBOX_DIRECT_RULE_SET} remote rule_set`);
   }
-  if (!routeRuleSets.has('scki-fused-008-work-residual')) {
-    failures.push(`${target}: missing scki-fused-008-work-residual remote rule_set`);
+  if (!routeRuleSets.has(SINGBOX_WORK_RULE_SET)) {
+    failures.push(`${target}: missing ${SINGBOX_WORK_RULE_SET} remote rule_set`);
+  }
+  const routeRules = data.route?.rules || [];
+  if (!routeRules.some((rule) => rule.rule_set?.includes(SINGBOX_DIRECT_RULE_SET) && rule.outbound === 'DIRECT')) {
+    failures.push(`${target}: ${SINGBOX_DIRECT_RULE_SET} is not routed to DIRECT`);
+  }
+  if (!routeRules.some((rule) => rule.rule_set?.includes(SINGBOX_WORK_RULE_SET) && rule.outbound === WORK_POLICY)) {
+    failures.push(`${target}: ${SINGBOX_WORK_RULE_SET} is not routed to ${WORK_POLICY}`);
   }
   const directProcessNames = readSingBoxFusedProcessNames('scki-fused-007-direct');
   const workProcessNames = readSingBoxFusedProcessNames('scki-fused-008-work');
@@ -92,6 +100,21 @@ for (const target of mihomoRuleTextTargets) {
   const missingWork = mihomoWorkNames.filter((name) => !workProcessNames.has(name));
   if (missingWork.length > 0) {
     failures.push(`rulesets/generated/fused/sing-box/scki-fused-008-work.json: missing ${missingWork.length} RustDesk process_name entries: ${missingWork.join(', ')}`);
+  }
+}
+
+{
+  const target = 'v2rayN/v2rayN(xray).json';
+  const data = JSON.parse(read(target));
+  const direct = data.find((rule) => rule.id === SINGBOX_DIRECT_RULE_SET);
+  const work = data.find((rule) => rule.id === SINGBOX_WORK_RULE_SET);
+  const missingDirect = mihomoNames.filter((name) => !direct?.process?.includes(name));
+  const missingWork = mihomoWorkNames.filter((name) => !work?.process?.includes(name));
+  if (!direct || direct.outboundTag !== 'direct' || missingDirect.length > 0) {
+    failures.push(`${target}: ${SINGBOX_DIRECT_RULE_SET} direct process parity failed (${missingDirect.join(', ') || 'missing rule/target'})`);
+  }
+  if (!work || work.outboundTag !== 'proxy' || missingWork.length > 0) {
+    failures.push(`${target}: ${SINGBOX_WORK_RULE_SET} work process parity failed (${missingWork.join(', ') || 'missing rule/target'})`);
   }
 }
 

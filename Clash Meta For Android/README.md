@@ -6,7 +6,7 @@
 > 适用客户端：**Clash Meta For Android（CMFA）** / **FlClash** / **mihomo-party-android**（Android 原生）· **[ClashMi](https://github.com/KaringX/clashmi)**（跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，复用同一 YAML；详见 §九）
 > 内核要求：**Mihomo**（原生 YAML 导入；区域组用 `url-test`，**不含 Smart + LightGBM**——CMFA 的静态 YAML 不支持 JS 覆写）
 > **FlClash 用户**：推荐使用 [FlClash 覆写脚本](../FlClash/FlClash(mihomo).js)（动态节点分类 + 家宽识别 + 订阅清理）。详见 [`FlClash/README.md`](../FlClash/README.md)。
-> 当前版本：**v6.0.1-cmfa.1**（Build 2026-07-10，跟随 Clash Party v6.0.1 主线；区域 url-test 与 provider health-check 默认 300s）
+> 当前版本：**v6.0.2-cmfa.1**（Build 2026-07-10，跟随 Clash Party v6.0.2 主线；区域 url-test 与 provider health-check 默认 300s）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -406,7 +406,7 @@ ClashMi App 首页菜单 → **我的配置** → 右上角 **＋** → 选择�
 
 | 项 | ClashMi 行为 | 本 YAML 的影响 |
 |---|---|---|
-| **GEOIP / GEOSITE 规则** | 启动时强制转换为对应 geo rule-set（内核定制） | **零触发**。本 YAML 使用融合 `RULE-SET`，**0 条 `GEOIP,`**，**0 条 `GEOSITE,`**（已在仓库自检）|
+| **GEOIP / GEOSITE 规则** | 启动时强制转换为对应 geo rule-set（内核定制） | GEOSITE 在编译期融合；GEOIP 保留在少量 residual provider 中由 GeoIP 数据库原生查询，避免展开成几十万 CIDR |
 | **`GEOIP,<ASN>` ASN 规则** | iOS 版本不支持 IP-ASN 数据库 | **未使用** ASN 规则 |
 | **iOS VPN Extension 50 MB 内存硬顶** | 超出即被系统杀进程 | 本 YAML 全部走 `.mrs` 二进制 ruleset + 懒加载，**不会触发** OOM |
 | **`tun:` YAML 字段块** | 由 App UI 托管 TUN 开关，不建议 YAML 手写 | 本 YAML **未写** `tun:` 段（交 App 设置），对 ClashMi 天然友好 |

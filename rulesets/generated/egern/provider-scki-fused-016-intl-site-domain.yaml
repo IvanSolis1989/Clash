@@ -4,6 +4,3 @@
 domain_set:
   - "inbox.google.com"
   - "mail.google.com"
-domain_suffix_set:
-  - "gmail.com"
-  - "googlemail.com"

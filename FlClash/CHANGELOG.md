@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.2-flclash.1 (2026-07-10)
+
+- SYNC：跟随 source graph v6.0.2，消费 113 个融合 `.mrs` / residual provider 与 130 条主规则。
+- PERF：继承编译器同策略语义去重和原生 GEOIP residual，不再加载错误放大的 HaGeZi / 国家 CIDR 内容。
+
 ## v6.0.1-flclash.1 (2026-07-10)
 
 - SYNC：FlClash 继续只消费 source graph 编译出的融合 Mihomo `.mrs` / residual 规则集，113 个 provider 与 130 条主规则不变。

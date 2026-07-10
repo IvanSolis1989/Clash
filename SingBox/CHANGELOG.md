@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.2-sing.1 (2026-07-10)
+
+- SYNC：Full JSON 升级到 Clash Party v6.0.2；113 个 Mihomo bucket provider 按 manifest 合并为 64 个非空、唯一 `.srs`，不再为同一 SRS 建立多个 tag 和重复路由。
+- TARGET-MATERIALIZATION：sing-box headless rule-set 不支持 GEOIP / IP-ASN 字段，因此仅在 sing-box 目标中将这些规则解析为 CIDR；下载失败或空结果直接中止构建。
+- PERF：64 个 `.srs` 聚合约 4.06 MiB；Full JSON 为 71 个 remote rule_set（64 fused + 7 runtime GEO）和 81 条 route rule。
+
 ## v6.0.1-sing.1 (2026-07-10)
 
 - SYNC：Full JSON 由生成器重新生成并升级至 Clash Party v6.0.1 基线。

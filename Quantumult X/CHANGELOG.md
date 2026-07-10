@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.2-QX.1 (2026-07-10)
+
+- FIX#175：`filter_remote` 收敛为 63 个非空融合段，聚合文本约 15.56 MiB / 575,498 条。
+- NATIVE：国家 GEOIP 输出为 QX 原生 `geoip`，IP-ASN 输出为 `ip-asn`，并保留 `no-resolve`；仅服务型 GEOIP 展开 CIDR。
+- DEDUP/BUDGET：继承同策略安全去重并加入 32 MiB / 100 万条聚合门禁。
+
 ## v6.0.1-QX.1 (2026-07-10)
 
 - FIX#174：广告融合段和国外网站尾段的超限 remote filter 按 18 MiB 上限拆分为同策略、有序分片。

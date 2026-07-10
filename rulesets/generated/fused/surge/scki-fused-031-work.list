@@ -1,6 +1,4 @@
 DOMAIN-SUFFIX,zoom.us
-DOMAIN-SUFFIX,zpns.zoom.us
-DOMAIN-SUFFIX,cloud.zoom.us
 DOMAIN-SUFFIX,zoomgov.com
 DOMAIN-SUFFIX,slack-core.com
 DOMAIN-SUFFIX,slack-edge.com
@@ -9,7 +7,6 @@ DOMAIN-SUFFIX,slack-imgs.com
 DOMAIN-SUFFIX,slack-msgs.com
 DOMAIN-SUFFIX,slack-redir.net
 DOMAIN-SUFFIX,slack.com
-DOMAIN-SUFFIX,slackb.com
 DOMAIN-SUFFIX,slackcertified.com
 DOMAIN-SUFFIX,slackdemo.com
 DOMAIN-SUFFIX,slackhq.com
@@ -82,9 +79,7 @@ DOMAIN-SUFFIX,zendesk.com
 DOMAIN-SUFFIX,zndsk.com
 DOMAIN-SUFFIX,zopim.com
 DOMAIN-SUFFIX,intercom.com
-DOMAIN-SUFFIX,intercom.io
 DOMAIN-SUFFIX,intercomassets.com
-DOMAIN-SUFFIX,intercomcdn.com
 DOMAIN,rs-ny.rustdesk.com
 DOMAIN,rs-sg.rustdesk.com
 DOMAIN,rs-cn.rustdesk.com
@@ -98,9 +93,6 @@ IP-CIDR6,2a0b:b582::/48
 IP-CIDR6,2a0b:b583::/48
 PROCESS-NAME,CrashReport.exe
 PROCESS-NAME,DriverInstaller.exe
-PROCESS-NAME,SunloginClient.exe
-PROCESS-NAME,ToDesk.exe
-PROCESS-NAME,ToDesk_Service.exe
 PROCESS-NAME,ToDesk_Session.exe
 PROCESS-NAME,ToDesk_Setup.exe
 PROCESS-NAME,devcon.exe

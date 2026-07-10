@@ -8,6 +8,9 @@ domain_set:
   - "spotify.com.edgesuite.net"
   - "spotify.map.fastly.net"
   - "spotify.map.fastlylb.net"
+  - "last.us11.list-manage.com"
+  - "lastfm-img2.akamaized.net"
+domain_suffix_set:
   - "byspotify.com"
   - "lifeatspotify.com"
   - "pscdn.co"
@@ -25,12 +28,6 @@ domain_set:
   - "spotifyforvendors.com"
   - "spotifyjobs.com"
   - "tospotify.com"
-  - "adeventtracker.spotify.com"
-  - "adstudio-assets.scdn.co"
-  - "bloodhound.spotify.com"
-  - "last.us11.list-manage.com"
-  - "lastfm-img2.akamaized.net"
-domain_suffix_set:
   - "p-cdn.us"
   - "sndcdn.com"
   - "soundcloud.com"

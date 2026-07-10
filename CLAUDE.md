@@ -105,7 +105,7 @@ node tools/generate-egern-from-cmfa.js
 >
 > **关于 Egern：** Egern 是正式同步产物，`Egern/Egern.yaml` 必须通过 `node tools/generate-egern-from-cmfa.js` 从 CMFA 生成，禁止手工改生成结果。Mihomo `.mrs` 继续保留给 Clash Party / CMFA 使用；Egern 官方文档没有声明可消费 `.mrs`，生成器会映射为 Egern 可消费的 YAML / 文本 `rule_set` URL。Egern 官方规则类型不含 Clash 风格 `PROCESS-NAME`，因此两条桌面进程补充规则是明确的平台例外。
 >
-> **关于 Passwall / Passwall2：** 这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已于 2025 年前后迁入该组织，访问旧 URL 会 301 跳转）**并行维护**的两款独立 OpenWrt 插件（**不是**新旧关系；2026-04 两者发版仅差 4 天）。**Passwall** = 全功能（直连/屏蔽/GFW/代理 4 列表 + 分流 + ACL + `trojan-plus` 节点 + TCP/UDP 节点分选）；**Passwall2** = 精简分流（砍掉四列表 + ACL，只保留 keyword/domain/geosite/geoip 匹配 + 统一节点选择）。两者底层都是 **xray-core + sing-box 双栈**（都**不打包** mihomo），都**没有** mihomo 的 proxy-groups 嵌套选择器（两级 `select`/`url-test` + Smart + LightGBM）——Lua CBI 表单式 UI 没有 YAML 嵌套组语义。**规则语法两者完全相同**（共用 [`shunt_rules.lua`](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua)：纯字符串 / `domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote|local:` / `geoip:` + CIDR；**不支持** Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` / `IP-CIDR,` 前缀）。本仓库不再维护手写域名/IP 展平列表，而是用 `tools/generate-fused-fallback-artifacts.js` 生成 68 条 fused `.srs` shunt rule。**本仓库提供两个独立目录**：
+> **关于 Passwall / Passwall2：** 这两款是 [`Openwrt-Passwall`](https://github.com/Openwrt-Passwall) 组织（原 `xiaorouji` 个人仓库已于 2025 年前后迁入该组织，访问旧 URL 会 301 跳转）**并行维护**的两款独立 OpenWrt 插件（**不是**新旧关系；2026-04 两者发版仅差 4 天）。**Passwall** = 全功能（直连/屏蔽/GFW/代理 4 列表 + 分流 + ACL + `trojan-plus` 节点 + TCP/UDP 节点分选）；**Passwall2** = 精简分流（砍掉四列表 + ACL，只保留 keyword/domain/geosite/geoip 匹配 + 统一节点选择）。两者底层都是 **xray-core + sing-box 双栈**（都**不打包** mihomo），都**没有** mihomo 的 proxy-groups 嵌套选择器（两级 `select`/`url-test` + Smart + LightGBM）——Lua CBI 表单式 UI 没有 YAML 嵌套组语义。**规则语法两者完全相同**（共用 [`shunt_rules.lua`](https://github.com/Openwrt-Passwall/openwrt-passwall2/blob/main/luci-app-passwall2/luasrc/model/cbi/passwall2/client/shunt_rules.lua)：纯字符串 / `domain:` / `full:` / `regexp:` / `geosite:` / `rule-set:remote|local:` / `geoip:` + CIDR；**不支持** Clash 的 `DOMAIN-SUFFIX,` / `DOMAIN-KEYWORD,` / `IP-CIDR,` 前缀）。本仓库不再维护手写域名/IP 展平列表，而是用 `tools/generate-fused-fallback-artifacts.js` 生成 64 条非空 fused `.srs` shunt rule。**本仓库提供两个独立目录**：
 >
 > - **`Passwall/`** — Passwall 全功能版参考（`CONFIG_NAME="passwall"`；含四列表/ACL/TCP-UDP 分选说明）
 > - **`Passwall2/`** — Passwall2 精简版参考（`CONFIG_NAME="passwall2"`）
@@ -145,7 +145,7 @@ node tools/generate-egern-from-cmfa.js
 2. **融合规则集编译链路**：面向所有支持远程规则集或原生规则集的产物。
    - 权威输入：`rulesets/source/routing-graph.js` 的 Mihomo-normalized graph，因此读取的是已经过 `.mrs` 归一化但尚未融合的规则顺序。
    - 编译脚本：`node tools/build-fused-rule-sets.js`。
-   - 输出目录：`rulesets/generated/fused/`；当前验收统计为源 `474 providers / 931 rules` → `68` 个策略顺序段 → `113` 个 Mihomo 融合 provider / `130` 条主规则 / `17` 条必要内联规则，`unresolved=0`。
+   - 输出目录：`rulesets/generated/fused/`；当前验收统计为源 `474 providers / 931 rules` → `67` 个非空策略顺序段 → `113` 个 Mihomo 融合 provider / `130` 条主规则 / `17` 条必要内联规则，移动端 `63` 个文本规则集，sing-box / Passwall `64` 个 SRS，`unresolved=0`。
    - 支持 `.mrs` 的 Mihomo 产物优先引用 `*-domain.mrs`、`*-ipcidr.mrs`、`*-ipcidr-no-resolve.mrs`；确实不能转 `.mrs` 的端口、进程、逻辑组合、GEOIP 等写入 `*-residual.yaml`。
    - 不支持 `.mrs` 的产物使用各自性能最好的原生格式：Shadowrocket / Surge / Loon / Quantumult X 使用平台文本规则集，Egern 使用原生 YAML rule_set，SingBox 使用 `.srs`，v2rayN Xray 展平成 RuleObject，Passwall / Passwall2 使用 `rule-set:remote` 引用 fused `.srs`。
 3. **派生产物生成链路**：
@@ -644,10 +644,10 @@ node -e "const d=JSON.parse(require('fs').readFileSync('SingBox/SingBox(sing-box
 # 2) RP 代理字段
 grep -c "proxy: DIRECT" "OpenClash/OpenClash(mihomo).sh"                    # 期望 0
 grep -c "proxy: '☁️ 云与CDN'" "Clash Meta For Android/CMFA(mihomo).yaml"         # 期望 0
-grep -c "proxy: '🚫 受限网站'" "Clash Meta For Android/CMFA(mihomo).yaml"        # 期望 ≥ 300
+grep -c "proxy: '🚫 受限网站'" "Clash Meta For Android/CMFA(mihomo).yaml"        # 期望 113（最终融合 provider）
 grep -c "proxy: '🚫 受限网站'" "Stash/Stash.yaml"                              # 期望 0（Stash Wiki 未记录 provider proxy 字段）
-grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo).sh"               # 期望 ≥ 130
-grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo-smart).sh"  # 期望 ≥ 376
+grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo).sh"               # 期望 ≥ 113
+grep -c "proxy: \"\\\\U0001F6AB 受限网站\"" "OpenClash/OpenClash(mihomo-smart).sh"  # 期望 ≥ 113
 
 # 3) 禁止死引用（旗帜 emoji 与组名 emoji 必须匹配；忽略注释行）
 grep -nE "^[^#].*🇸🇬 亚太节点" "Shadowrocket/Shadowrocket.conf"                  # 必须无输出
@@ -669,8 +669,8 @@ grep -cE "^rule-providers:$" /tmp/oc_full_override_probe.yaml   # 期望 1
 grep -cE "^rules:$" /tmp/oc_full_override_probe.yaml             # 期望 1
 ruby -ryaml -e '
   d = YAML.load_file("/tmp/oc_full_override_probe.yaml", permitted_classes: [Symbol], aliases: true)
-  raise "providers < 474" if (d["rule-providers"] || {}).size < 474   # full 期望 474
-  raise "rules    < 931" if (d["rules"]         || []).size < 931     # full 期望 931
+  raise "providers != 113" unless (d["rule-providers"] || {}).size == 113
+  raise "rules    != 130" unless (d["rules"]         || []).size == 130
   puts "OC full override yaml: providers=#{d["rule-providers"].size} rules=#{d["rules"].size}"
 '
 
@@ -680,6 +680,10 @@ node tools/validate-artifact-contracts.js --strict-ruby
 # 6) JS 覆写与 PROCESS-NAME 合同
 node tools/validate-js-overwrites.js
 node tools/validate-process-name-direct.js
+
+# 7) 融合规则语义去重 + 客户端聚合预算（禁止靠分片绕过总量限制）
+node --test tools/tests/apply-mihomo-mrs-overrides.test.js tools/tests/fused-rule-optimizer.test.js tools/tests/fused-artifact-performance.test.js
+node tools/validate-generated-remote-asset-size.js
 ```
 
 若任一检查失败，PR 不得合入。

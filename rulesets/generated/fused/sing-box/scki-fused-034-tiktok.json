@@ -2,15 +2,10 @@
   "version": 3,
   "rules": [
     {
-      "domain": [
-        "bytedapm.com",
+      "domain_suffix": [
         "byteoversea.com",
-        "muscdn.com",
-        "musical.ly",
-        "tik-tokapi.com",
         "tiktok-minis.com",
         "tiktok-row.net",
-        "tiktok.com",
         "tiktokcdn-eu.com",
         "tiktokcdn-us.com",
         "tiktokcdn.com",
@@ -20,7 +15,6 @@
         "tiktokglobalshopv.com",
         "tiktokminis.us",
         "tiktokrow-cdn.com",
-        "tiktokv.com",
         "tiktokv.eu",
         "tiktokv.us",
         "tiktokw.eu",
@@ -28,18 +22,18 @@
         "ttcdn-us.com",
         "ttlivecdn.com",
         "ttoverseaus.net",
-        "ttwstatic.com",
         "tiktokcdn-us.com.edgesuite.net",
         "tiktokcdn.com.akamaized.net",
         "tiktokcdn.com.edgesuite.net",
         "tiktokv.com.edgekey.net",
-        "tiktokv.com.edgesuite.net",
+        "tiktokv.com.edgesuite.net"
+      ],
+      "domain": [
         "p16-tiktokcdn-com.akamaized.net",
         "roovza-launches.appsflyersdk.com",
         "roovza.inapps.appsflyersdk.com",
         "roovza.launches.appsflyersdk.com",
-        "roovza.skadsdk.appsflyersdk.com",
-        "analytics.tiktok.com"
+        "roovza.skadsdk.appsflyersdk.com"
       ]
     }
   ]

@@ -2,10 +2,15 @@
 
 > `Passwall/` 目录的变更日志（Passwall 全功能版专属参考；四列表 + shunt_rules + ACL 三层架构）。
 > 与 `Passwall2/` 目录（精简分流版参考）内容互通——两者共用 `shunt_rules.lua` 解析器，同一份 `.list` 互通。
-> 本目录提供从 `rulesets/generated/fused/sing-box/*.srs` 生成的 68 条原生 fused shunt rule 降级参考。
+> 本目录提供从 `rulesets/generated/fused/sing-box/*.srs` 生成的 64 条非空原生 fused shunt rule 降级参考。
 > 主版本号跟随 Clash Party 主线；尾段 `-pw.N` 独立递增。
 
 ---
+
+## v6.0.2-pw.1 (2026-07-10)
+
+- SYNC：从 v6.0.2 fused sing-box 目标重新生成 64 条非空 `rule-set:remote` shunt rule、apply 脚本和参考配置。
+- PERF：64 个 `.srs` 聚合约 4.06 MiB，继承 GEOIP/ASN 目标物化和全局精确去重；按最终 SRS 的 IP 内容设置 Domain/IP 双列表标志，不直接调用任何上游规则集。
 
 ## v6.0.1-pw.1 (2026-07-10)
 

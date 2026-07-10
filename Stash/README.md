@@ -1,7 +1,7 @@
 # Stash
 
 > 目录简介：这里提供 Stash 专用 YAML 产物。`Stash.yaml` 由 `tools/generate-stash-from-cmfa.js` 从 CMFA 自动裁剪生成，不手工维护。
-> 当前版本：**v6.0.1-stash.1**（Build 2026-07-10，跟随 Clash Party v6.0.1 / CMFA v6.0.1-cmfa.1）。
+> 当前版本：**v6.0.2-stash.1**（Build 2026-07-10，跟随 Clash Party v6.0.2 / CMFA v6.0.2-cmfa.1）。
 
 ## 文件
 
@@ -28,7 +28,7 @@ node tools/generate-stash-from-cmfa.js
 
 ## 兼容范围
 
-- 保留：22 个区域 `url-test` 组、33 个业务组、391 个 rule-provider、`RULE-SET` / `GEOSITE` / `GEOIP` / `DST-PORT` / `PROCESS-NAME` 等规则语义。
+- 保留：22 个区域 `url-test` 组、33 个业务组、113 个融合 rule-provider、`RULE-SET` / `GEOIP` / `DST-PORT` / `PROCESS-NAME` 等规则语义。
 - 保留：`proxy-providers` 远程订阅、`proxy-groups.use`、`nameserver-policy`、`fake-ip-filter`。
 - 不保留：Mihomo Smart + LightGBM、GeoX 自动更新、sniffer、provider `health-check` / `exclude-filter`、rule-provider 下载代理 `proxy`、Mihomo 专用 DNS fallback 字段。
 

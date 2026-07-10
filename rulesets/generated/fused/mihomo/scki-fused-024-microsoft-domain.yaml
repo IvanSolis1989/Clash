@@ -1,4 +1,4 @@
 payload:
-  - "DOMAIN,login.live.com,Ⓜ️ 微软服务"
-  - "DOMAIN,g.live.com,Ⓜ️ 微软服务"
-  - "DOMAIN-SUFFIX,officeapps.live.com,Ⓜ️ 微软服务"
+  - "DOMAIN,login.live.com"
+  - "DOMAIN,g.live.com"
+  - "DOMAIN-SUFFIX,officeapps.live.com"

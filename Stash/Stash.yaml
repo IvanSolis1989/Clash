@@ -1,8 +1,8 @@
 # ================================================================
-# Stash Smart v6.0.1-stash.1 - Stash (Clash Premium) 配置
-# Build: 2026-07-09
+# Stash Smart v6.0.2-stash.1 - Stash (Clash Premium) 配置
+# Build: 2026-07-10
 # 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules（源 474/931）
-# 规则源：rulesets/source/routing-graph.js v6.0.1 / 派生：CMFA v6.0.1-cmfa.1
+# 规则源：rulesets/source/routing-graph.js v6.0.2 / 派生：CMFA v6.0.2-cmfa.1
 # 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）
 # 变更历史：见 `Stash/CHANGELOG.md`
 # 注意：Stash 不支持 Mihomo Smart + LightGBM；本产物使用 url-test 区域组
@@ -747,13 +747,6 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-007-direct-domain.mrs"
     path: "./ruleset/scki-fused-007-direct-domain.mrs"
     interval: 86400
-  scki-fused-007-direct-ipcidr:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-007-direct-ipcidr.mrs"
-    path: "./ruleset/scki-fused-007-direct-ipcidr.mrs"
-    interval: 86400
   scki-fused-007-direct-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
@@ -831,6 +824,13 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-015-ai-ipcidr.mrs"
     path: "./ruleset/scki-fused-015-ai-ipcidr.mrs"
     interval: 86400
+  scki-fused-015-ai-residual:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-015-ai-residual.yaml"
+    path: "./ruleset/scki-fused-015-ai-residual.yaml"
+    interval: 86400
   scki-fused-016-intl-site-domain:
     type: http
     behavior: domain
@@ -887,12 +887,12 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-ai-domain.mrs"
     path: "./ruleset/scki-fused-021-ai-domain.mrs"
     interval: 86400
-  scki-fused-021-ai-ipcidr:
+  scki-fused-021-ai-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-ai-ipcidr.mrs"
-    path: "./ruleset/scki-fused-021-ai-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-ai-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-021-ai-ipcidr-no-resolve.mrs"
     interval: 86400
   scki-fused-021-ai-residual:
     type: http
@@ -991,6 +991,13 @@ rule-providers:
     format: mrs
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-028-social-ipcidr-no-resolve.mrs"
     path: "./ruleset/scki-fused-028-social-ipcidr-no-resolve.mrs"
+    interval: 86400
+  scki-fused-028-social-residual:
+    type: http
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-028-social-residual.yaml"
+    path: "./ruleset/scki-fused-028-social-residual.yaml"
     interval: 86400
   scki-fused-029-cn-site-domain:
     type: http
@@ -1153,12 +1160,12 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-stream-hk-domain.mrs"
     path: "./ruleset/scki-fused-042-stream-hk-domain.mrs"
     interval: 86400
-  scki-fused-042-stream-hk-ipcidr:
+  scki-fused-042-stream-hk-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-stream-hk-ipcidr.mrs"
-    path: "./ruleset/scki-fused-042-stream-hk-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-stream-hk-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-042-stream-hk-ipcidr-no-resolve.mrs"
     interval: 86400
   scki-fused-043-stream-tw-domain:
     type: http
@@ -1321,12 +1328,12 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-gfw-domain.mrs"
     path: "./ruleset/scki-fused-054-gfw-domain.mrs"
     interval: 86400
-  scki-fused-054-gfw-ipcidr:
+  scki-fused-054-gfw-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-gfw-ipcidr.mrs"
-    path: "./ruleset/scki-fused-054-gfw-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-gfw-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-054-gfw-ipcidr-no-resolve.mrs"
     interval: 86400
   scki-fused-055-game-cn-domain:
     type: http
@@ -1433,54 +1440,47 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-domain.mrs"
     path: "./ruleset/scki-fused-062-cn-site-domain.mrs"
     interval: 86400
-  scki-fused-062-cn-site-ipcidr-no-resolve:
+  scki-fused-062-cn-site-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-062-cn-site-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-residual.yaml"
+    path: "./ruleset/scki-fused-062-cn-site-residual.yaml"
     interval: 86400
-  scki-fused-063-intl-site-ipcidr-no-resolve:
+  scki-fused-063-intl-site-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-intl-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-063-intl-site-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-intl-site-residual.yaml"
+    path: "./ruleset/scki-fused-063-intl-site-residual.yaml"
     interval: 86400
-  scki-fused-064-im-ipcidr-no-resolve:
+  scki-fused-064-im-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-im-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-064-im-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-im-residual.yaml"
+    path: "./ruleset/scki-fused-064-im-residual.yaml"
     interval: 86400
-  scki-fused-065-netflix-ipcidr-no-resolve:
+  scki-fused-065-netflix-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-netflix-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-065-netflix-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-netflix-residual.yaml"
+    path: "./ruleset/scki-fused-065-netflix-residual.yaml"
     interval: 86400
-  scki-fused-066-social-ipcidr-no-resolve:
+  scki-fused-066-social-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-066-social-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-066-social-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-066-social-residual.yaml"
+    path: "./ruleset/scki-fused-066-social-residual.yaml"
     interval: 86400
-  scki-fused-067-google-ipcidr-no-resolve:
+  scki-fused-067-google-residual:
     type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-067-google-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-067-google-ipcidr-no-resolve.mrs"
-    interval: 86400
-  scki-fused-068-cn-site-ipcidr-no-resolve:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-068-cn-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-068-cn-site-ipcidr-no-resolve.mrs"
+    behavior: classical
+    format: yaml
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-067-google-residual.yaml"
+    path: "./ruleset/scki-fused-067-google-residual.yaml"
     interval: 86400
 rules:
 - "RULE-SET,scki-fused-001-direct-domain,DIRECT"
@@ -1497,7 +1497,6 @@ rules:
 - "AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT"
 - "DST-PORT,7680,REJECT"
 - "RULE-SET,scki-fused-007-direct-domain,DIRECT"
-- "RULE-SET,scki-fused-007-direct-ipcidr,DIRECT"
 - "RULE-SET,scki-fused-007-direct-ipcidr-no-resolve,DIRECT,no-resolve"
 - "RULE-SET,scki-fused-007-direct-residual,DIRECT"
 - "RULE-SET,scki-fused-008-work-residual,🧑‍💼 会议协作"
@@ -1519,6 +1518,7 @@ rules:
 - "RULE-SET,scki-fused-014-work-domain,🧑‍💼 会议协作"
 - "RULE-SET,scki-fused-015-ai-domain,🤖 AI 服务"
 - "RULE-SET,scki-fused-015-ai-ipcidr,🤖 AI 服务"
+- "RULE-SET,scki-fused-015-ai-residual,🤖 AI 服务"
 - "RULE-SET,scki-fused-016-intl-site-domain,🌐 国外网站"
 - "RULE-SET,scki-fused-017-im-domain,💬 即时通讯"
 - "RULE-SET,scki-fused-018-work-domain,🧑‍💼 会议协作"
@@ -1527,7 +1527,7 @@ rules:
 - "RULE-SET,scki-fused-020-google-domain,🔍 Google 服务"
 - "RULE-SET,scki-fused-020-google-ipcidr-no-resolve,🔍 Google 服务,no-resolve"
 - "RULE-SET,scki-fused-021-ai-domain,🤖 AI 服务"
-- "RULE-SET,scki-fused-021-ai-ipcidr,🤖 AI 服务"
+- "RULE-SET,scki-fused-021-ai-ipcidr-no-resolve,🤖 AI 服务,no-resolve"
 - "RULE-SET,scki-fused-021-ai-residual,🤖 AI 服务"
 - "RULE-SET,scki-fused-022-crypto-domain,💰 加密货币"
 - "RULE-SET,scki-fused-022-crypto-residual,💰 加密货币"
@@ -1542,6 +1542,7 @@ rules:
 - "RULE-SET,scki-fused-028-social-domain,📱 社交媒体"
 - "RULE-SET,scki-fused-028-social-ipcidr,📱 社交媒体"
 - "RULE-SET,scki-fused-028-social-ipcidr-no-resolve,📱 社交媒体,no-resolve"
+- "RULE-SET,scki-fused-028-social-residual,📱 社交媒体"
 - "RULE-SET,scki-fused-029-cn-site-domain,🏠 国内网站"
 - "RULE-SET,scki-fused-030-social-domain,📱 社交媒体"
 - "RULE-SET,scki-fused-031-work-domain,🧑‍💼 会议协作"
@@ -1565,7 +1566,7 @@ rules:
 - "RULE-SET,scki-fused-041-music-domain,🎵 音乐流媒体"
 - "RULE-SET,scki-fused-041-music-ipcidr,🎵 音乐流媒体"
 - "RULE-SET,scki-fused-042-stream-hk-domain,🇭🇰 香港流媒体"
-- "RULE-SET,scki-fused-042-stream-hk-ipcidr,🇭🇰 香港流媒体"
+- "RULE-SET,scki-fused-042-stream-hk-ipcidr-no-resolve,🇭🇰 香港流媒体,no-resolve"
 - "RULE-SET,scki-fused-043-stream-tw-domain,🇹🇼 台湾流媒体"
 - "RULE-SET,scki-fused-043-stream-tw-residual,🇹🇼 台湾流媒体"
 - "RULE-SET,scki-fused-044-stream-jpkr-domain,🇯🇵 日韩流媒体"
@@ -1589,7 +1590,7 @@ rules:
 - "RULE-SET,scki-fused-053-tracker-domain,🛰️ BT/PT Tracker"
 - "RULE-SET,scki-fused-053-tracker-ipcidr,🛰️ BT/PT Tracker"
 - "RULE-SET,scki-fused-054-gfw-domain,🚫 受限网站"
-- "RULE-SET,scki-fused-054-gfw-ipcidr,🚫 受限网站"
+- "RULE-SET,scki-fused-054-gfw-ipcidr-no-resolve,🚫 受限网站,no-resolve"
 - "RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏"
 - "RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏"
 - "RULE-SET,scki-fused-056-game-intl-ipcidr,🎮 国外游戏"
@@ -1605,11 +1606,10 @@ rules:
 - "RULE-SET,scki-fused-060-cn-site-ipcidr-no-resolve,🏠 国内网站,no-resolve"
 - "RULE-SET,scki-fused-061-direct-domain,DIRECT"
 - "RULE-SET,scki-fused-062-cn-site-domain,🏠 国内网站"
-- "RULE-SET,scki-fused-062-cn-site-ipcidr-no-resolve,🏠 国内网站,no-resolve"
-- "RULE-SET,scki-fused-063-intl-site-ipcidr-no-resolve,🌐 国外网站,no-resolve"
-- "RULE-SET,scki-fused-064-im-ipcidr-no-resolve,💬 即时通讯,no-resolve"
-- "RULE-SET,scki-fused-065-netflix-ipcidr-no-resolve,🎥 Netflix,no-resolve"
-- "RULE-SET,scki-fused-066-social-ipcidr-no-resolve,📱 社交媒体,no-resolve"
-- "RULE-SET,scki-fused-067-google-ipcidr-no-resolve,🔍 Google 服务,no-resolve"
-- "RULE-SET,scki-fused-068-cn-site-ipcidr-no-resolve,🏠 国内网站,no-resolve"
+- "RULE-SET,scki-fused-062-cn-site-residual,🏠 国内网站"
+- "RULE-SET,scki-fused-063-intl-site-residual,🌐 国外网站"
+- "RULE-SET,scki-fused-064-im-residual,💬 即时通讯"
+- "RULE-SET,scki-fused-065-netflix-residual,🎥 Netflix"
+- "RULE-SET,scki-fused-066-social-residual,📱 社交媒体"
+- "RULE-SET,scki-fused-067-google-residual,🔍 Google 服务"
 - "MATCH,🐟 漏网之鱼"

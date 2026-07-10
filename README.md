@@ -1,12 +1,13 @@
-# 🚀 Smart-Config-Kit v6.0.1
+# 🚀 Smart-Config-Kit v6.0.2
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
-> 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。面向 CDN 的文本/YAML 规则集由编译器按 manifest 分片，单个远程资产不超过 18 MiB，分片保持原始规则顺序和同一策略目标。
+> 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。融合编译器先规范化，再在同策略、同顺序段内删除精确重复和可证明被覆盖的域名/CIDR；GEOIP 国家码保留给支持原生数据库查询的平台，只有不支持该能力的目标才展开。
 >
-> - 🧠 **v6.0.1：融合规则集远程分片**：保持 68 个语义分流段、113 个融合 rule-provider、130 条主规则不变；仅把超过 CDN 限制的文本/YAML 远程资产拆为同策略、同顺序的多个文件
+> - 🧠 **v6.0.2：融合规则集去重与 iOS 总量治理**：784,480 条规范化输入压缩为 575,652 条有序规则，安全删除 208,828 条；保留 67 个源语义段，产出 113 个 Mihomo provider / 130 条主规则；Shadowrocket 只引用 63 个非空远程资产，约 16.06 MiB / 575,499 条
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
 > - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，v2rayN Xray 展平成 RuleObject，Passwall 系使用 `rule-set:remote` `.srs`
+> - 🧯 **双层体积门禁**：每个 jsDelivr 资产不超过 18 MiB；iOS Network Extension 类客户端还必须满足 32 MiB / 100 万文本规则的聚合预算，禁止靠分片绕过总量约束
 > - ⚡ **Smart / Normal 双内核**：同规则量，按客户端能力选择 `smart`（LightGBM ML 择路）或经典 `url-test`
 > - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
 > - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
@@ -24,9 +25,9 @@
 | Android Mihomo | `Clash Meta For Android/CMFA(mihomo).yaml` | CMFA 是同步产物，不是规则基准 |
 | Stash | `Stash/Stash.yaml` | 从 CMFA 自动裁剪生成，保持 Clash Premium 兼容 |
 | sing-box / Hiddify / HomeProxy | `SingBox/SingBox(sing-box)-full.json` | 使用 `.srs` 融合规则集 |
-| v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 fused sing-box JSON 展平成 86 条 Xray RuleObject |
+| v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 64 个非空 fused sing-box JSON 展平成 82 条 Xray RuleObject |
 | iOS / macOS 其他客户端 | `Egern/`、`Shadowrocket/`、`Surge/`、`Loon/`、`Quantumult X/` | 按各 APP 原生语法同步 |
-| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 68 条 fused `.srs` shunt rule |
+| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 64 条非空 fused `.srs` shunt rule |
 
 ---
 
@@ -84,6 +85,8 @@ flowchart LR
 > 这张表不是最终配置中的 `rule-providers` 清单。最终产物不再直接调用这些上游规则集；它们只作为 `rulesets/source/routing-graph.js` 的源图输入，经 `tools/build-fused-rule-sets.js` 按最终分流目标、规则顺序和平台能力编译为 `rulesets/generated/fused/**/scki-fused-*`。
 > 只列“主要/高频命中”输入项，并标明来源仓库；节点组（HK/US/全球节点等）不混入本表。
 
+编译器必须同时满足四个不变量：不透明 `.mrs` 只能映射到同源文本（例如 HaGeZi Ultimate 不能替换成完整 TIF）；去重不得跨策略段；国家 GEOIP 优先原生查询；任何远程源解析失败、非法残余规则或客户端聚合预算超限都直接让构建失败，禁止静默回退生成部分产物。
+
 | 代理组（最终目标） | source graph 主要输入（示例，非最终调用） | 主要来源仓库 / 来源类型 |
 |---|---|---|
 | 🤖 AI 服务 | `openai` `claude` `gemini` `copilot` `szkane-ai` `acc-copilot` `vpsdance-ai-coding` | MetaCubeX / blackmatrix7 / szkane / Accademia / VPSDance |
@@ -126,7 +129,7 @@ flowchart LR
 - Shadowrocket / Surge / Loon / Quantumult X / Egern：`rulesets/generated/fused/<platform>/scki-fused-*`
 - sing-box / Hiddify / HomeProxy：`rulesets/generated/fused/sing-box/scki-fused-*.srs`
 - v2rayN Xray：由 fused sing-box JSON 展平成 Xray `RuleObject`
-- Passwall / Passwall2：68 条 `rule-set:remote` fused `.srs` shunt rule
+- Passwall / Passwall2：64 条 `rule-set:remote` fused `.srs` shunt rule
 
 
 ---

@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const VERSION = 'v6.0.1-sing.1';
+const VERSION = 'v6.0.2-sing.1';
 const BUILD = '2026-07-10';
-const BASELINE = 'Clash Party v6.0.1';
+const BASELINE = 'Clash Party v6.0.2';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -183,6 +183,33 @@ const out = sandbox.__main(clashConfig);
 const providers = out['rule-providers'] || {};
 const rules = out.rules || [];
 const ADS_OUTBOUND = '🛑 广告拦截';
+const FUSED_MANIFEST_FILE = path.join(__dirname, '..', 'rulesets', 'generated', 'fused', 'manifest.json');
+const FUSED_SRS_BASE_URL = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box';
+
+function loadFusedManifest() {
+  if (!fs.existsSync(FUSED_MANIFEST_FILE)) throw new Error(`missing fused manifest: ${FUSED_MANIFEST_FILE}`);
+  const manifest = JSON.parse(fs.readFileSync(FUSED_MANIFEST_FILE, 'utf8'));
+  if (!Array.isArray(manifest.segments) || manifest.segments.length === 0) throw new Error('fused manifest has no segments');
+  return manifest;
+}
+
+const fusedManifest = loadFusedManifest();
+const fusedProviderToSegment = new Map();
+for (const segment of fusedManifest.segments) {
+  const targetTag = segment.files && segment.files.sing_box ? segment.id : null;
+  for (const [fileKey, suffix] of [
+    ['domain', 'domain'],
+    ['ipcidr', 'ipcidr'],
+    ['ipcidr_no_resolve', 'ipcidr-no-resolve'],
+    ['residual', 'residual'],
+  ]) {
+    if (segment.files && segment.files[fileKey]) fusedProviderToSegment.set(`${segment.id}-${suffix}`, targetTag);
+  }
+}
+const unmappedFusedProviders = Object.keys(providers).filter((tag) => !fusedProviderToSegment.has(tag));
+if (unmappedFusedProviders.length > 0) {
+  throw new Error(`Mihomo fused providers absent from fused manifest: ${unmappedFusedProviders.join(',')}`);
+}
 
 function withResidential(keys) {
   const result = [];
@@ -347,58 +374,12 @@ function isRejectTarget(target) {
   return target === 'REJECT' || target === ADS_OUTBOUND;
 }
 
-// szkane/ClashRuleSet BilibiliHMT.list 为 Clash 私有 .list 文本，
-// MetaCubeX/meta-rules-dat 没有对应的 .srs，无法作为 sing-box remote rule_set 使用。
-// 将 21 条原始条目内联到一条默认规则里；sing-box 对同一分类下的
-// domain / domain_suffix / ip_cidr 默认按 OR 组合（见官方 route/rule 文档）。
-const SZKANE_BILIHMT_RULE = {
-  domain: [
-    'p-bstarstatic.akamaized.net',
-    'p.bstarstatic.com',
-    'upos-bstar-mirrorakam.akamaized.net',
-    'upos-bstar1-mirrorakam.akamaized.net',
-    'upos-hz-mirrorakam.akamaized.net'
-  ],
-  domain_suffix: [
-    'acgvideo.com',
-    'bilibili.com',
-    'bilibili.tv'
-  ],
-  ip_cidr: [
-    '45.43.32.234/32',
-    '103.151.150.0/23',
-    '119.29.29.29/32',
-    '128.1.62.200/32',
-    '128.1.62.201/32',
-    '150.116.92.250/32',
-    '164.52.33.178/32',
-    '164.52.33.182/32',
-    '164.52.76.18/32',
-    '203.107.1.33/32',
-    '203.107.1.34/32',
-    '203.107.1.65/32',
-    '203.107.1.66/32'
-  ]
-};
-
 function toSingRule(ruleText, availableRuleSets) {
   if (typeof ruleText !== 'string') return null;
   const parts = ruleText.split(',');
   const type = parts[0];
 
   if (type === 'RULE-SET') {
-    if (parts[1] === 'szkane-bilihmt') {
-      if (isRejectTarget(parts[2])) {
-        return { ...SZKANE_BILIHMT_RULE, action: 'reject' };
-      }
-      return { ...SZKANE_BILIHMT_RULE, action: 'route', outbound: parts[2] };
-    }
-    // blackmatrix7 Scholar is not published as sing-box .srs here; keep parity
-    // with Passwall/v2rayN by carrying the Google Scholar domain directly.
-    if (parts[1] === 'scholar') {
-      if (isRejectTarget(parts[2])) return { domain: ['scholar.google.com'], action: 'reject' };
-      return { domain: ['scholar.google.com'], action: 'route', outbound: parts[2] };
-    }
     if (!availableRuleSets.has(parts[1])) return null;
     if (isRejectTarget(parts[2])) return { rule_set: [parts[1]], action: 'reject' };
     return { rule_set: [parts[1]], action: 'route', outbound: parts[2] };
@@ -452,35 +433,6 @@ function toSingRule(ruleText, availableRuleSets) {
   return null;
 }
 
-function toSrsUrl(url, tag) {
-  if (!url) return null;
-  if (/\.srs$/i.test(url)) return url;
-
-  const fused = String(url).match(/^(https:\/\/(?:fastly\.|cdn\.)?jsdelivr\.net\/gh\/IvanSolis1989\/Smart-Config-Kit@main)\/rulesets\/generated\/fused\/mihomo\/(.+?)-(?:domain|ipcidr|ipcidr-no-resolve|residual)\.(?:mrs|yaml)$/i);
-  if (fused) {
-    return `${fused[1]}/rulesets/generated/fused/sing-box/${fused[2]}.srs`;
-  }
-
-  const metaRulesDat = url.match(/^(https:\/\/(?:fastly\.|cdn\.)?jsdelivr\.net\/gh\/MetaCubeX\/meta-rules-dat)@meta\/geo\/(geosite|geoip)\/(.+)\.mrs$/i);
-  if (metaRulesDat) {
-    return `${metaRulesDat[1]}@sing/geo/${metaRulesDat[2]}/${metaRulesDat[3]}.srs`;
-  }
-
-  if (tag === 'anti-ad' && /DustinWin\/ruleset_geodata@mihomo-ruleset\/ads\.mrs$/i.test(url)) {
-    return 'https://fastly.jsdelivr.net/gh/DustinWin/ruleset_geodata@sing-box-ruleset/ads.srs';
-  }
-
-  const vpsdanceAiCoding = url.match(/^(https:\/\/(?:fastly\.|cdn\.)?jsdelivr\.net\/gh\/VPSDance\/ai-proxy-rules)@main\/rules\/clash\/coding\.yaml$/i);
-  if (tag === 'vpsdance-ai-coding' && vpsdanceAiCoding) {
-    return {
-      format: 'source',
-      url: `${vpsdanceAiCoding[1]}@main/rules/sing-box/coding.json`
-    };
-  }
-
-  return null;
-}
-
 const extraGeoSiteTags = Array.from(new Set(
   rules
     .map((r) => String(r).split(','))
@@ -495,90 +447,18 @@ const extraGeoSiteTags = Array.from(new Set(
   update_interval: '1d'
 }));
 
-const ruleSet = Object.entries(providers).map(([tag, info]) => {
-  const mapped = toSrsUrl(info.url, tag);
-  if (!mapped) return null;
-  const ruleSetUrl = typeof mapped === 'string' ? { format: 'binary', url: mapped } : mapped;
+const ruleSet = fusedManifest.segments.filter((segment) => (
+  segment.files && segment.files.sing_box
+)).map((segment) => {
   return {
     type: 'remote',
-    tag,
-    format: ruleSetUrl.format,
-    url: ruleSetUrl.url,
+    tag: segment.id,
+    format: 'binary',
+    url: `${FUSED_SRS_BASE_URL}/${segment.files.sing_box.file}`,
     http_client: { detour: SMART.GLOBAL },
     update_interval: '1d'
   };
-}).filter(Boolean);
-
-function supplementalFileFromUrl(url) {
-  if (!url) return null;
-  const match = String(url).match(/Smart-Config-Kit@main\/rulesets\/supplemental\/clash\/([^/?#]+\.list)$/);
-  if (!match) return null;
-  return path.join(__dirname, '..', 'rulesets', 'supplemental', 'clash', match[1]);
-}
-
-function loadMihomoMrsSupplementalSources() {
-  const manifestPath = path.join(__dirname, '..', 'rulesets', 'generated', 'mihomo-mrs', 'manifest.json');
-  if (!fs.existsSync(manifestPath)) return new Map();
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  const rows = []
-    .concat(manifest.converted || [])
-    .concat(manifest.split || [])
-    .concat(manifest.partial || []);
-  const result = new Map();
-  for (const row of rows) {
-    if (!row || !String(row.id || '').startsWith('scki-')) continue;
-    const filePath = supplementalFileFromUrl(row.source_url);
-    if (!filePath) continue;
-    for (const generated of row.generated || []) {
-      if (!generated || !generated.file) continue;
-      const providerTag = path.basename(generated.file, path.extname(generated.file));
-      result.set(providerTag, { filePath, behavior: generated.behavior });
-    }
-    if (row.residual && row.residual.file) {
-      const providerTag = path.basename(row.residual.file, path.extname(row.residual.file));
-      result.set(providerTag, { filePath, behavior: 'classical' });
-    }
-  }
-  return result;
-}
-
-function supplementalEntryMatchesBehavior(entry, behavior) {
-  if (!behavior || behavior === 'classical') return true;
-  const type = String(entry).split(',')[0];
-  if (behavior === 'domain') return ['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD'].includes(type);
-  if (behavior === 'ipcidr') return ['IP-CIDR', 'IP-CIDR6', 'SRC-IP-CIDR'].includes(type);
-  return false;
-}
-
-function loadSupplementalProviderRules(providerMap) {
-  const result = new Map();
-  const mrsSupplementalSources = loadMihomoMrsSupplementalSources();
-  for (const [tag, info] of Object.entries(providerMap)) {
-    let filePath = supplementalFileFromUrl(info && info.url);
-    let behavior = info && info.behavior;
-    if (!filePath && mrsSupplementalSources.has(tag)) {
-      const source = mrsSupplementalSources.get(tag);
-      filePath = source.filePath;
-      behavior = source.behavior;
-    }
-    if (!filePath) continue;
-    const entries = fs.readFileSync(filePath, 'utf8')
-      .split(/\r?\n/)
-      .map((line) => line.trim())
-      .filter((line) => line && !line.startsWith('#'))
-      .filter((line) => supplementalEntryMatchesBehavior(line, behavior));
-    result.set(tag, entries);
-  }
-  return result;
-}
-
-function bindSupplementalEntry(entry, target) {
-  const parts = String(entry).split(',');
-  if ((parts[0] === 'IP-CIDR' || parts[0] === 'IP-CIDR6' || parts[0] === 'SRC-IP-CIDR') && parts[2] === 'no-resolve') {
-    return `${parts[0]},${parts[1]},${target},no-resolve`;
-  }
-  return `${entry},${target}`;
-}
+});
 
 function metaGeositeRuleSet(tag, name) {
   return {
@@ -625,7 +505,6 @@ function uniqueRuleSets(items) {
 
 const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...requiredGeoRuleSets, ...extraGeoSiteTags]);
 const availableRuleSets = new Set(allRouteRuleSets.map((item) => item.tag));
-const supplementalProviderRules = loadSupplementalProviderRules(providers);
 // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配。
 // 插入到 Clash 主线 5 条 AND/QUIC 规则所在位置，避免被后续普通规则或 route.final 改变语义。
 // YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT。
@@ -640,6 +519,7 @@ const quicRules = [
 let convertedRules = [];
 let insertedQuicRules = false;
 let convertedSourceRules = 0;
+const emittedFusedSegments = new Set();
 for (const rule of rules) {
   if (String(rule).startsWith('AND,((DST-PORT,443),(NETWORK,UDP),')) {
     if (!insertedQuicRules) {
@@ -649,16 +529,14 @@ for (const rule of rules) {
     continue;
   }
   const parts = String(rule).split(',');
-  if (parts[0] === 'RULE-SET' && supplementalProviderRules.has(parts[1])) {
-    let expandedCount = 0;
-    for (const entry of supplementalProviderRules.get(parts[1])) {
-      const converted = toSingRule(bindSupplementalEntry(entry, parts[2]), availableRuleSets);
-      if (converted) {
-        convertedRules.push(converted);
-        expandedCount++;
-      }
-    }
-    if (expandedCount > 0) convertedSourceRules++;
+  if (parts[0] === 'RULE-SET' && fusedProviderToSegment.has(parts[1])) {
+    convertedSourceRules++;
+    const segmentTag = fusedProviderToSegment.get(parts[1]);
+    if (!segmentTag || emittedFusedSegments.has(segmentTag)) continue;
+    emittedFusedSegments.add(segmentTag);
+    const converted = toSingRule(`RULE-SET,${segmentTag},${parts[2]}`, availableRuleSets);
+    if (!converted) throw new Error(`cannot map fused segment to sing-box route rule: ${segmentTag}`);
+    convertedRules.push(converted);
     continue;
   }
   const converted = toSingRule(rule, availableRuleSets);
@@ -668,7 +546,8 @@ for (const rule of rules) {
   }
 }
 if (!insertedQuicRules) convertedRules.unshift(...quicRules);
-const skippedProviders = Object.keys(providers).length - ruleSet.length - supplementalProviderRules.size;
+const skippedProviders = unmappedFusedProviders.length;
+const coalescedProviders = Object.keys(providers).length - ruleSet.length;
 // v5.4.22: AND/QUIC rules handled out-of-band；MATCH fallback is represented by route.final.
 const QUIC_AND_RULES = 5;
 const MATCH_FALLBACK_RULES = 1;
@@ -774,7 +653,7 @@ baseConfig.dns = {
       server: 'dns_direct'
     },
     {
-      rule_set: ['scki-fused-005-ad-domain'],
+      rule_set: ['scki-fused-005-ad'],
       action: 'reject'
     }
   ],
@@ -828,4 +707,4 @@ baseConfig.route.rules = convertedRules;
 
 fs.writeFileSync('SingBox/SingBox(sing-box)-full.json', JSON.stringify(baseConfig, null, 2) + '\n');
 
-console.log(`providers=${ruleSet.length} extra_geosite=${extraGeoSiteTags.length} skipped_providers=${skippedProviders} rules=${convertedRules.length} skipped_rules=${skippedRules}`);
+console.log(`providers=${ruleSet.length} coalesced_providers=${coalescedProviders} extra_geosite=${extraGeoSiteTags.length} skipped_providers=${skippedProviders} rules=${convertedRules.length} skipped_rules=${skippedRules}`);

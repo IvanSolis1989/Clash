@@ -4,6 +4,12 @@
 
 ---
 
+## v6.0.2-stash.1 (2026-07-10)
+
+- SYNC：由 CMFA v6.0.2-cmfa.1 重新生成，保留 113 个融合 rule-provider 与 130 条规则。
+- PERF：`.mrs` / residual 资产总量约 6.65 MiB；GEOIP 作为 residual 原生查询，不再转换为海量 CIDR。
+- CONTRACT：继续按 Stash 官方兼容字段裁剪，并纳入 32 MiB 客户端聚合预算。
+
 ## v6.0.1-stash.1 (2026-07-10)
 
 - SYNC：由 CMFA v6.0.1-cmfa.1 重新生成，继续保留融合后的 113 个 rule-provider 与 130 条规则。

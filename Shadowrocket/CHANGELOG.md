@@ -5,6 +5,13 @@
 
 ---
 
+## v6.0.2-SR.1 (2026-07-10)
+
+- FIX#175：远程规则从 71 个放大分片收敛为 63 个移动端非空融合段；聚合体积由约 75.44 MiB 降至 16.06 MiB，文本规则由约 310 万条降至 575,499 条。
+- ROOT-CAUSE：修复 HaGeZi Ultimate 被错误替换为完整 TIF，以及 249 条国家 GEOIP 被展开成 76 万以上 CIDR 的双重放大；国家 GEOIP 现在保留为 SR 原生规则，服务型 GEOIP 才转换为 CIDR。
+- DEDUP：每个同策略段删除精确重复、被 DOMAIN-SUFFIX / DOMAIN-KEYWORD 覆盖的域名和被父网段覆盖的 CIDR；最终 Clash 文本二次优化删除数为 0。
+- BUDGET：新增 32 MiB / 100 万条客户端聚合门禁，并继续保留 18 MiB 单资产门禁，防止以后通过增加分片数掩盖总量回归。
+
 ## v6.0.1-SR.1 (2026-07-10)
 
 - FIX#174：`scki-fused-005-ad` 从单个 51.10 MiB RULE-SET 拆为 3 个同策略、有序分片；`scki-fused-057-intl-site` 从 20.15 MiB 拆为 2 个同策略、有序分片，避免 CDN / Shadowrocket 对超限单文件返回 `403/forbidden`。

@@ -6,6 +6,19 @@
 
 ---
 
+## v6.0.2 (2026-07-10)
+
+- FIX#175：修复 Shadowrocket 规则总量导致 Network Extension 无法稳定启用的问题。根因不是 71 个 URL 本身，而是融合编译器将 `HageziUltimate.mrs` 错换为 191 万条完整 TIF，并把 249 条运行时 GEOIP 国家规则放大为 76 万至 111 万条 CIDR；两类错误叠加使旧产物达到约 75.44 MiB / 310 万条。
+- FUSED-DEDUP：新增独立规则优化器，统一大小写、尾点、CIDR 网络地址和 GEOIP/ASN 语法；段内执行精确去重、DOMAIN-SUFFIX / DOMAIN-KEYWORD 覆盖消除和父 CIDR 包含消除，并按首匹配顺序删除后续分段的精确重复。784,480 条规范化输入最终保留 575,652 条，安全删除 208,828 条。
+- SOURCE-IDENTITY：不透明 `.mrs` 改为按精确 URL 映射同源文本。HaGeZi Ultimate 对应 `wildcard/ultimate-onlydomains.txt`，禁止再按 provider 名替换成语义不同的完整 TIF；嵌套 GEOSITE/GEOIP 或上游下载失败时构建直接失败，不再静默回退。
+- GEOIP-NATIVE：Mihomo 与 iOS 文本目标保留 ISO 国家码 GEOIP；服务型 GEOIP 按目标能力展开；sing-box 无 headless GEOIP/ASN 字段，因此仅在 `.srs` 编译目标中物化 CIDR。Egern 使用原生 `geoip_set` / `asn_set` 并保留 `no_resolve`。
+- IOS-BUDGET：Shadowrocket / Loon 只引用 63 个非空远程资产，当前约 16.06 MiB / 575,499 条；Surge 为 16.07 MiB / 575,673 条，Quantumult X 为 15.56 MiB / 575,498 条。正式 validator 同时检查 18 MiB 单资产上限和 iOS 类客户端 32 MiB / 100 万文本规则聚合预算，禁止用分片绕过总量限制。
+- TARGET-NORMALIZE：provider payload 中夹带的 `DIRECT` / `REJECT-DROP` 不再被误当成规则修饰符；最终策略只由外层融合目标决定。Mihomo 用独立 bucket 承载 `no-resolve`，Sing-box 在去重前按最终 headless 字段消除该平台不表达的修饰差异，并对无法转换的目标类型直接失败，禁止静默丢规则。
+- TARGET-EMPTY：源端全局精确去重后删除 1 个空分段；目标格式物化后不再发布空文本、空 YAML 或空 SRS。最终为 67 个源语义段、63 个移动端文本规则集、64 个 sing-box SRS / Passwall shunt rule。
+- SINGBOX-COALESCE：Sing-box 不再把 113 个 Mihomo bucket tag 重复映射到同一 SRS；改为 64 个唯一 SRS、64 条融合路由引用，Full JSON 共 71 个 remote rule_set（含 7 个运行时 GEO 辅助）和 81 条 route rule。
+- MRS-IDEMPOTENCE：修复 `apply-mihomo-mrs-overrides.js` 把“覆盖块已是最新”误判为“缺少锚点”的问题，并消除 CRLF 文件每次执行累加空行的 2 字节漂移；端到端测试要求连续执行后的源图字节完全一致。
+- SYNC：14 类客户端全部升级到 v6.0.2 基线；Mihomo 为 113 个融合 provider / 130 条主规则，v2rayN Xray 为 82 条 RuleObject，Egern 为 99 个非空原生 YAML / 111 条主规则 / 94 个 rule_set 引用。
+
 ## v6.0.1 (2026-07-10)
 
 - FIX#174：修复 Shadowrocket 加载 `scki-fused-005-ad`（原 51.10 MiB）和 `scki-fused-057-intl-site`（原 20.15 MiB）时，CDN 返回 `403/forbidden`、客户端报“文件过大”的问题。根因是融合编译器把一个策略段始终写成单个文本文件，未约束远程分发文件体积。
@@ -19,7 +32,7 @@
 
 - SOURCE-GRAPH：新增 `rulesets/source/routing-graph.js` 作为规则权威输入，集中记录上游 provider、原始规则顺序、MRS 归一化映射和最终分流目标。
 - APP-SIMPLIFY：Clash Party Smart/Normal 与 FlClash JS 覆写脚本移除 raw provider/rule 注入和 MRS 映射表，只保留节点/策略组逻辑与最终融合规则集调用。
-- FALLBACK-FUSED：v2rayN Xray 由 fused sing-box JSON 展平成 86 条原生 Xray RuleObject；Passwall / Passwall2 改为 68 条原生 `rule-set:remote` fused shunt rule，不再维护 33 条手写域名/IP 展平列表。
+- FALLBACK-FUSED：v2rayN Xray 由非空 fused sing-box JSON 展平成 82 条原生 Xray RuleObject；Passwall / Passwall2 使用 64 条原生 `rule-set:remote` fused shunt rule，不再维护 33 条手写域名/IP 展平列表。
 - TOOLING：`sync-mihomo-mrs-rule-providers.js` 改读 source graph raw 输入；`apply-mihomo-mrs-overrides.js` 只更新 source graph；`build-fused-rule-sets.js` 改读 source graph normalized 输入，并联动 `generate-fused-fallback-artifacts.js` 生成 v2rayN / Passwall / Passwall2 fallback 产物。
 - VERIFY：全产物合同新增 source graph authority、fallback fused 映射和 Passwall 原生 `.srs` 引用检查，并禁止客户端 JS 重新携带原始上游规则框架。本次不改变最终融合规则语义，最终 Mihomo-family 输出为 `113 providers / 130 rules`。
 

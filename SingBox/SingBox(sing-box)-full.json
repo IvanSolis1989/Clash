@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v6.0.1-sing.1",
+    "version": "v6.0.2-sing.1",
     "build": "2026-07-10",
-    "baseline": "Clash Party v6.0.1",
+    "baseline": "Clash Party v6.0.2",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {
@@ -92,7 +92,7 @@
       },
       {
         "rule_set": [
-          "scki-fused-005-ad-domain"
+          "scki-fused-005-ad"
         ],
         "action": "reject"
       }
@@ -1474,7 +1474,7 @@
     "rule_set": [
       {
         "type": "remote",
-        "tag": "scki-fused-001-direct-domain",
+        "tag": "scki-fused-001-direct",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-001-direct.srs",
         "http_client": {
@@ -1484,7 +1484,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-002-intl-site-domain",
+        "tag": "scki-fused-002-intl-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-002-intl-site.srs",
         "http_client": {
@@ -1494,7 +1494,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-003-payments-domain",
+        "tag": "scki-fused-003-payments",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-003-payments.srs",
         "http_client": {
@@ -1504,7 +1504,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-004-cnmedia-domain",
+        "tag": "scki-fused-004-cnmedia",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-004-cnmedia.srs",
         "http_client": {
@@ -1514,7 +1514,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-005-ad-domain",
+        "tag": "scki-fused-005-ad",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-005-ad.srs",
         "http_client": {
@@ -1524,17 +1524,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-005-ad-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-005-ad.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-006-cn-site-domain",
+        "tag": "scki-fused-006-cn-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-006-cn-site.srs",
         "http_client": {
@@ -1544,7 +1534,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-007-direct-domain",
+        "tag": "scki-fused-007-direct",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-007-direct.srs",
         "http_client": {
@@ -1554,37 +1544,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-007-direct-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-007-direct.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-007-direct-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-007-direct.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-007-direct-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-007-direct.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-008-work-residual",
+        "tag": "scki-fused-008-work",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-008-work.srs",
         "http_client": {
@@ -1594,7 +1554,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-009-crypto-domain",
+        "tag": "scki-fused-009-crypto",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-009-crypto.srs",
         "http_client": {
@@ -1604,7 +1564,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-010-gfw-domain",
+        "tag": "scki-fused-010-gfw",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-010-gfw.srs",
         "http_client": {
@@ -1614,7 +1574,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-011-youtube-domain",
+        "tag": "scki-fused-011-youtube",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-011-youtube.srs",
         "http_client": {
@@ -1624,7 +1584,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-012-cn-site-domain",
+        "tag": "scki-fused-012-cn-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-012-cn-site.srs",
         "http_client": {
@@ -1634,7 +1594,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-013-ai-domain",
+        "tag": "scki-fused-013-ai",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-013-ai.srs",
         "http_client": {
@@ -1644,7 +1604,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-014-work-domain",
+        "tag": "scki-fused-014-work",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-014-work.srs",
         "http_client": {
@@ -1654,7 +1614,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-015-ai-domain",
+        "tag": "scki-fused-015-ai",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-015-ai.srs",
         "http_client": {
@@ -1664,17 +1624,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-015-ai-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-015-ai.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-016-intl-site-domain",
+        "tag": "scki-fused-016-intl-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-016-intl-site.srs",
         "http_client": {
@@ -1684,7 +1634,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-017-im-domain",
+        "tag": "scki-fused-017-im",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-017-im.srs",
         "http_client": {
@@ -1694,7 +1644,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-018-work-domain",
+        "tag": "scki-fused-018-work",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-018-work.srs",
         "http_client": {
@@ -1704,7 +1654,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-019-download-domain",
+        "tag": "scki-fused-019-download",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-019-download.srs",
         "http_client": {
@@ -1714,17 +1664,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-019-download-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-019-download.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-020-google-domain",
+        "tag": "scki-fused-020-google",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-020-google.srs",
         "http_client": {
@@ -1734,17 +1674,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-020-google-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-020-google.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-021-ai-domain",
+        "tag": "scki-fused-021-ai",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-021-ai.srs",
         "http_client": {
@@ -1754,27 +1684,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-021-ai-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-021-ai.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-021-ai-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-021-ai.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-022-crypto-domain",
+        "tag": "scki-fused-022-crypto",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-022-crypto.srs",
         "http_client": {
@@ -1784,17 +1694,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-022-crypto-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-022-crypto.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-023-payments-domain",
+        "tag": "scki-fused-023-payments",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-023-payments.srs",
         "http_client": {
@@ -1804,7 +1704,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-024-microsoft-domain",
+        "tag": "scki-fused-024-microsoft",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-024-microsoft.srs",
         "http_client": {
@@ -1814,7 +1714,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-025-intl-site-domain",
+        "tag": "scki-fused-025-intl-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-025-intl-site.srs",
         "http_client": {
@@ -1824,7 +1724,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-026-direct-domain",
+        "tag": "scki-fused-026-direct",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-026-direct.srs",
         "http_client": {
@@ -1834,7 +1734,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-027-im-domain",
+        "tag": "scki-fused-027-im",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-027-im.srs",
         "http_client": {
@@ -1844,37 +1744,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-027-im-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-027-im.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-027-im-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-027-im.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-027-im-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-027-im.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-028-social-domain",
+        "tag": "scki-fused-028-social",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-028-social.srs",
         "http_client": {
@@ -1884,27 +1754,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-028-social-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-028-social.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-028-social-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-028-social.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-029-cn-site-domain",
+        "tag": "scki-fused-029-cn-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-029-cn-site.srs",
         "http_client": {
@@ -1914,7 +1764,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-030-social-domain",
+        "tag": "scki-fused-030-social",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-030-social.srs",
         "http_client": {
@@ -1924,7 +1774,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-031-work-domain",
+        "tag": "scki-fused-031-work",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-031-work.srs",
         "http_client": {
@@ -1934,27 +1784,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-031-work-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-031-work.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-031-work-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-031-work.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-032-direct-domain",
+        "tag": "scki-fused-032-direct",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-032-direct.srs",
         "http_client": {
@@ -1964,7 +1794,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-033-cnmedia-domain",
+        "tag": "scki-fused-033-cnmedia",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-033-cnmedia.srs",
         "http_client": {
@@ -1974,7 +1804,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-034-tiktok-domain",
+        "tag": "scki-fused-034-tiktok",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-034-tiktok.srs",
         "http_client": {
@@ -1984,7 +1814,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-035-youtube-domain",
+        "tag": "scki-fused-035-youtube",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-035-youtube.srs",
         "http_client": {
@@ -1994,7 +1824,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-036-netflix-domain",
+        "tag": "scki-fused-036-netflix",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-036-netflix.srs",
         "http_client": {
@@ -2004,17 +1834,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-036-netflix-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-036-netflix.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-037-disney-domain",
+        "tag": "scki-fused-037-disney",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-037-disney.srs",
         "http_client": {
@@ -2024,17 +1844,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-037-disney-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-037-disney.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-038-hbo-max-domain",
+        "tag": "scki-fused-038-hbo-max",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-038-hbo-max.srs",
         "http_client": {
@@ -2044,17 +1854,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-038-hbo-max-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-038-hbo-max.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-039-hulu-domain",
+        "tag": "scki-fused-039-hulu",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-039-hulu.srs",
         "http_client": {
@@ -2064,17 +1864,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-039-hulu-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-039-hulu.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-040-prime-video-domain",
+        "tag": "scki-fused-040-prime-video",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-040-prime-video.srs",
         "http_client": {
@@ -2084,27 +1874,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-040-prime-video-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-040-prime-video.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-040-prime-video-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-040-prime-video.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-041-music-domain",
+        "tag": "scki-fused-041-music",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-041-music.srs",
         "http_client": {
@@ -2114,17 +1884,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-041-music-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-041-music.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-042-stream-hk-domain",
+        "tag": "scki-fused-042-stream-hk",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-042-stream-hk.srs",
         "http_client": {
@@ -2134,17 +1894,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-042-stream-hk-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-042-stream-hk.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-043-stream-tw-domain",
+        "tag": "scki-fused-043-stream-tw",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-043-stream-tw.srs",
         "http_client": {
@@ -2154,17 +1904,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-043-stream-tw-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-043-stream-tw.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-044-stream-jpkr-domain",
+        "tag": "scki-fused-044-stream-jpkr",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-044-stream-jpkr.srs",
         "http_client": {
@@ -2174,17 +1914,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-044-stream-jpkr-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-044-stream-jpkr.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-045-stream-eu-domain",
+        "tag": "scki-fused-045-stream-eu",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-045-stream-eu.srs",
         "http_client": {
@@ -2194,7 +1924,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-046-stream-other-domain",
+        "tag": "scki-fused-046-stream-other",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-046-stream-other.srs",
         "http_client": {
@@ -2204,27 +1934,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-046-stream-other-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-046-stream-other.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-046-stream-other-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-046-stream-other.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-047-tools-domain",
+        "tag": "scki-fused-047-tools",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-047-tools.srs",
         "http_client": {
@@ -2234,7 +1944,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-048-google-domain",
+        "tag": "scki-fused-048-google",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-048-google.srs",
         "http_client": {
@@ -2244,7 +1954,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-049-tools-domain",
+        "tag": "scki-fused-049-tools",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-049-tools.srs",
         "http_client": {
@@ -2254,27 +1964,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-049-tools-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-049-tools.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-049-tools-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-049-tools.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-050-microsoft-domain",
+        "tag": "scki-fused-050-microsoft",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-050-microsoft.srs",
         "http_client": {
@@ -2284,7 +1974,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-051-apple-domain",
+        "tag": "scki-fused-051-apple",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-051-apple.srs",
         "http_client": {
@@ -2294,27 +1984,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-051-apple-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-051-apple.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-051-apple-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-051-apple.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-052-download-domain",
+        "tag": "scki-fused-052-download",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-052-download.srs",
         "http_client": {
@@ -2324,27 +1994,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-052-download-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-052-download.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-052-download-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-052-download.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-053-tracker-domain",
+        "tag": "scki-fused-053-tracker",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-053-tracker.srs",
         "http_client": {
@@ -2354,17 +2004,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-053-tracker-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-053-tracker.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-054-gfw-domain",
+        "tag": "scki-fused-054-gfw",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-054-gfw.srs",
         "http_client": {
@@ -2374,17 +2014,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-054-gfw-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-054-gfw.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-055-game-cn-domain",
+        "tag": "scki-fused-055-game-cn",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-055-game-cn.srs",
         "http_client": {
@@ -2394,7 +2024,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-056-game-intl-domain",
+        "tag": "scki-fused-056-game-intl",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-056-game-intl.srs",
         "http_client": {
@@ -2404,17 +2034,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-056-game-intl-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-056-game-intl.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-057-intl-site-domain",
+        "tag": "scki-fused-057-intl-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-057-intl-site.srs",
         "http_client": {
@@ -2424,37 +2044,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-057-intl-site-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-057-intl-site.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-057-intl-site-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-057-intl-site.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-057-intl-site-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-057-intl-site.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-058-payments-domain",
+        "tag": "scki-fused-058-payments",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-058-payments.srs",
         "http_client": {
@@ -2464,7 +2054,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-059-cnmedia-domain",
+        "tag": "scki-fused-059-cnmedia",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-059-cnmedia.srs",
         "http_client": {
@@ -2474,27 +2064,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-059-cnmedia-ipcidr",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-059-cnmedia.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-059-cnmedia-residual",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-059-cnmedia.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-060-cn-site-domain",
+        "tag": "scki-fused-060-cn-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-060-cn-site.srs",
         "http_client": {
@@ -2504,17 +2074,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-060-cn-site-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-060-cn-site.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-061-direct-domain",
+        "tag": "scki-fused-061-direct",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-061-direct.srs",
         "http_client": {
@@ -2524,7 +2084,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-062-cn-site-domain",
+        "tag": "scki-fused-062-cn-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-062-cn-site.srs",
         "http_client": {
@@ -2534,17 +2094,7 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-062-cn-site-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-062-cn-site.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-063-intl-site-ipcidr-no-resolve",
+        "tag": "scki-fused-063-intl-site",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-063-intl-site.srs",
         "http_client": {
@@ -2554,49 +2104,9 @@
       },
       {
         "type": "remote",
-        "tag": "scki-fused-064-im-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-064-im.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-065-netflix-ipcidr-no-resolve",
+        "tag": "scki-fused-065-netflix",
         "format": "binary",
         "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-065-netflix.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-066-social-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-066-social.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-067-google-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-067-google.srs",
-        "http_client": {
-          "detour": "🌍 全球节点"
-        },
-        "update_interval": "1d"
-      },
-      {
-        "type": "remote",
-        "tag": "scki-fused-068-cn-site-ipcidr-no-resolve",
-        "format": "binary",
-        "url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-068-cn-site.srs",
         "http_client": {
           "detour": "🌍 全球节点"
         },
@@ -2676,47 +2186,41 @@
     "rules": [
       {
         "rule_set": [
-          "scki-fused-001-direct-domain"
+          "scki-fused-001-direct"
         ],
         "action": "route",
         "outbound": "DIRECT"
       },
       {
         "rule_set": [
-          "scki-fused-002-intl-site-domain"
+          "scki-fused-002-intl-site"
         ],
         "action": "route",
         "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
-          "scki-fused-003-payments-domain"
+          "scki-fused-003-payments"
         ],
         "action": "route",
         "outbound": "🏦 金融支付"
       },
       {
         "rule_set": [
-          "scki-fused-004-cnmedia-domain"
+          "scki-fused-004-cnmedia"
         ],
         "action": "route",
         "outbound": "📺 国内流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-005-ad-domain"
+          "scki-fused-005-ad"
         ],
         "action": "reject"
       },
       {
         "rule_set": [
-          "scki-fused-005-ad-ipcidr"
-        ],
-        "action": "reject"
-      },
-      {
-        "rule_set": [
-          "scki-fused-006-cn-site-domain"
+          "scki-fused-006-cn-site"
         ],
         "action": "route",
         "outbound": "🏠 国内网站"
@@ -2791,35 +2295,14 @@
       },
       {
         "rule_set": [
-          "scki-fused-007-direct-domain"
+          "scki-fused-007-direct"
         ],
         "action": "route",
         "outbound": "DIRECT"
       },
       {
         "rule_set": [
-          "scki-fused-007-direct-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "rule_set": [
-          "scki-fused-007-direct-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "rule_set": [
-          "scki-fused-007-direct-residual"
-        ],
-        "action": "route",
-        "outbound": "DIRECT"
-      },
-      {
-        "rule_set": [
-          "scki-fused-008-work-residual"
+          "scki-fused-008-work"
         ],
         "action": "route",
         "outbound": "🧑‍💼 会议协作"
@@ -2896,710 +2379,395 @@
       },
       {
         "rule_set": [
-          "scki-fused-009-crypto-domain"
+          "scki-fused-009-crypto"
         ],
         "action": "route",
         "outbound": "💰 加密货币"
       },
       {
         "rule_set": [
-          "scki-fused-010-gfw-domain"
+          "scki-fused-010-gfw"
         ],
         "action": "route",
         "outbound": "🚫 受限网站"
       },
       {
         "rule_set": [
-          "scki-fused-011-youtube-domain"
+          "scki-fused-011-youtube"
         ],
         "action": "route",
         "outbound": "📹 YouTube"
       },
       {
         "rule_set": [
-          "scki-fused-012-cn-site-domain"
+          "scki-fused-012-cn-site"
         ],
         "action": "route",
         "outbound": "🏠 国内网站"
       },
       {
         "rule_set": [
-          "scki-fused-013-ai-domain"
+          "scki-fused-013-ai"
         ],
         "action": "route",
         "outbound": "🤖 AI 服务"
       },
       {
         "rule_set": [
-          "scki-fused-014-work-domain"
+          "scki-fused-014-work"
         ],
         "action": "route",
         "outbound": "🧑‍💼 会议协作"
       },
       {
         "rule_set": [
-          "scki-fused-015-ai-domain"
+          "scki-fused-015-ai"
         ],
         "action": "route",
         "outbound": "🤖 AI 服务"
       },
       {
         "rule_set": [
-          "scki-fused-015-ai-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🤖 AI 服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-016-intl-site-domain"
+          "scki-fused-016-intl-site"
         ],
         "action": "route",
         "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
-          "scki-fused-017-im-domain"
+          "scki-fused-017-im"
         ],
         "action": "route",
         "outbound": "💬 即时通讯"
       },
       {
         "rule_set": [
-          "scki-fused-018-work-domain"
+          "scki-fused-018-work"
         ],
         "action": "route",
         "outbound": "🧑‍💼 会议协作"
       },
       {
         "rule_set": [
-          "scki-fused-019-download-domain"
+          "scki-fused-019-download"
         ],
         "action": "route",
         "outbound": "📥 下载更新"
       },
       {
         "rule_set": [
-          "scki-fused-019-download-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "rule_set": [
-          "scki-fused-020-google-domain"
+          "scki-fused-020-google"
         ],
         "action": "route",
         "outbound": "🔍 Google 服务"
       },
       {
         "rule_set": [
-          "scki-fused-020-google-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🔍 Google 服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-021-ai-domain"
+          "scki-fused-021-ai"
         ],
         "action": "route",
         "outbound": "🤖 AI 服务"
       },
       {
         "rule_set": [
-          "scki-fused-021-ai-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🤖 AI 服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-021-ai-residual"
-        ],
-        "action": "route",
-        "outbound": "🤖 AI 服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-022-crypto-domain"
+          "scki-fused-022-crypto"
         ],
         "action": "route",
         "outbound": "💰 加密货币"
       },
       {
         "rule_set": [
-          "scki-fused-022-crypto-residual"
-        ],
-        "action": "route",
-        "outbound": "💰 加密货币"
-      },
-      {
-        "rule_set": [
-          "scki-fused-023-payments-domain"
+          "scki-fused-023-payments"
         ],
         "action": "route",
         "outbound": "🏦 金融支付"
       },
       {
         "rule_set": [
-          "scki-fused-024-microsoft-domain"
+          "scki-fused-024-microsoft"
         ],
         "action": "route",
         "outbound": "Ⓜ️ 微软服务"
       },
       {
         "rule_set": [
-          "scki-fused-025-intl-site-domain"
+          "scki-fused-025-intl-site"
         ],
         "action": "route",
         "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
-          "scki-fused-026-direct-domain"
+          "scki-fused-026-direct"
         ],
         "action": "route",
         "outbound": "DIRECT"
       },
       {
         "rule_set": [
-          "scki-fused-027-im-domain"
+          "scki-fused-027-im"
         ],
         "action": "route",
         "outbound": "💬 即时通讯"
       },
       {
         "rule_set": [
-          "scki-fused-027-im-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "💬 即时通讯"
-      },
-      {
-        "rule_set": [
-          "scki-fused-027-im-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "💬 即时通讯"
-      },
-      {
-        "rule_set": [
-          "scki-fused-027-im-residual"
-        ],
-        "action": "route",
-        "outbound": "💬 即时通讯"
-      },
-      {
-        "rule_set": [
-          "scki-fused-028-social-domain"
+          "scki-fused-028-social"
         ],
         "action": "route",
         "outbound": "📱 社交媒体"
       },
       {
         "rule_set": [
-          "scki-fused-028-social-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "📱 社交媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-028-social-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "📱 社交媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-029-cn-site-domain"
+          "scki-fused-029-cn-site"
         ],
         "action": "route",
         "outbound": "🏠 国内网站"
       },
       {
         "rule_set": [
-          "scki-fused-030-social-domain"
+          "scki-fused-030-social"
         ],
         "action": "route",
         "outbound": "📱 社交媒体"
       },
       {
         "rule_set": [
-          "scki-fused-031-work-domain"
+          "scki-fused-031-work"
         ],
         "action": "route",
         "outbound": "🧑‍💼 会议协作"
       },
       {
         "rule_set": [
-          "scki-fused-031-work-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "rule_set": [
-          "scki-fused-031-work-residual"
-        ],
-        "action": "route",
-        "outbound": "🧑‍💼 会议协作"
-      },
-      {
-        "rule_set": [
-          "scki-fused-032-direct-domain"
+          "scki-fused-032-direct"
         ],
         "action": "route",
         "outbound": "DIRECT"
       },
       {
         "rule_set": [
-          "scki-fused-033-cnmedia-domain"
+          "scki-fused-033-cnmedia"
         ],
         "action": "route",
         "outbound": "📺 国内流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-034-tiktok-domain"
+          "scki-fused-034-tiktok"
         ],
         "action": "route",
         "outbound": "🎵 TikTok"
       },
       {
         "rule_set": [
-          "scki-fused-035-youtube-domain"
+          "scki-fused-035-youtube"
         ],
         "action": "route",
         "outbound": "📹 YouTube"
       },
       {
         "rule_set": [
-          "scki-fused-036-netflix-domain"
+          "scki-fused-036-netflix"
         ],
         "action": "route",
         "outbound": "🎥 Netflix"
       },
       {
         "rule_set": [
-          "scki-fused-036-netflix-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🎥 Netflix"
-      },
-      {
-        "rule_set": [
-          "scki-fused-037-disney-domain"
+          "scki-fused-037-disney"
         ],
         "action": "route",
         "outbound": "🎬 Disney+"
       },
       {
         "rule_set": [
-          "scki-fused-037-disney-residual"
-        ],
-        "action": "route",
-        "outbound": "🎬 Disney+"
-      },
-      {
-        "rule_set": [
-          "scki-fused-038-hbo-max-domain"
+          "scki-fused-038-hbo-max"
         ],
         "action": "route",
         "outbound": "📡 HBO/Max"
       },
       {
         "rule_set": [
-          "scki-fused-038-hbo-max-residual"
-        ],
-        "action": "route",
-        "outbound": "📡 HBO/Max"
-      },
-      {
-        "rule_set": [
-          "scki-fused-039-hulu-domain"
+          "scki-fused-039-hulu"
         ],
         "action": "route",
         "outbound": "📺 Hulu"
       },
       {
         "rule_set": [
-          "scki-fused-039-hulu-residual"
-        ],
-        "action": "route",
-        "outbound": "📺 Hulu"
-      },
-      {
-        "rule_set": [
-          "scki-fused-040-prime-video-domain"
+          "scki-fused-040-prime-video"
         ],
         "action": "route",
         "outbound": "🎬 Prime Video"
       },
       {
         "rule_set": [
-          "scki-fused-040-prime-video-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🎬 Prime Video"
-      },
-      {
-        "rule_set": [
-          "scki-fused-040-prime-video-residual"
-        ],
-        "action": "route",
-        "outbound": "🎬 Prime Video"
-      },
-      {
-        "rule_set": [
-          "scki-fused-041-music-domain"
+          "scki-fused-041-music"
         ],
         "action": "route",
         "outbound": "🎵 音乐流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-041-music-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🎵 音乐流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-042-stream-hk-domain"
+          "scki-fused-042-stream-hk"
         ],
         "action": "route",
         "outbound": "🇭🇰 香港流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-042-stream-hk-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🇭🇰 香港流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-043-stream-tw-domain"
+          "scki-fused-043-stream-tw"
         ],
         "action": "route",
         "outbound": "🇹🇼 台湾流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-043-stream-tw-residual"
-        ],
-        "action": "route",
-        "outbound": "🇹🇼 台湾流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-044-stream-jpkr-domain"
+          "scki-fused-044-stream-jpkr"
         ],
         "action": "route",
         "outbound": "🇯🇵 日韩流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-044-stream-jpkr-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🇯🇵 日韩流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-045-stream-eu-domain"
+          "scki-fused-045-stream-eu"
         ],
         "action": "route",
         "outbound": "🇪🇺 欧洲流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-046-stream-other-domain"
+          "scki-fused-046-stream-other"
         ],
         "action": "route",
         "outbound": "🌐 其他国外流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-046-stream-other-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-046-stream-other-residual"
-        ],
-        "action": "route",
-        "outbound": "🌐 其他国外流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-047-tools-domain"
+          "scki-fused-047-tools"
         ],
         "action": "route",
         "outbound": "🔧 工具与服务"
       },
       {
         "rule_set": [
-          "scki-fused-048-google-domain"
+          "scki-fused-048-google"
         ],
         "action": "route",
         "outbound": "🔍 Google 服务"
       },
       {
         "rule_set": [
-          "scki-fused-049-tools-domain"
+          "scki-fused-049-tools"
         ],
         "action": "route",
         "outbound": "🔧 工具与服务"
       },
       {
         "rule_set": [
-          "scki-fused-049-tools-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-049-tools-residual"
-        ],
-        "action": "route",
-        "outbound": "🔧 工具与服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-050-microsoft-domain"
+          "scki-fused-050-microsoft"
         ],
         "action": "route",
         "outbound": "Ⓜ️ 微软服务"
       },
       {
         "rule_set": [
-          "scki-fused-051-apple-domain"
+          "scki-fused-051-apple"
         ],
         "action": "route",
         "outbound": "🍎 苹果服务"
       },
       {
         "rule_set": [
-          "scki-fused-051-apple-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🍎 苹果服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-051-apple-residual"
-        ],
-        "action": "route",
-        "outbound": "🍎 苹果服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-052-download-domain"
+          "scki-fused-052-download"
         ],
         "action": "route",
         "outbound": "📥 下载更新"
       },
       {
         "rule_set": [
-          "scki-fused-052-download-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "rule_set": [
-          "scki-fused-052-download-residual"
-        ],
-        "action": "route",
-        "outbound": "📥 下载更新"
-      },
-      {
-        "rule_set": [
-          "scki-fused-053-tracker-domain"
+          "scki-fused-053-tracker"
         ],
         "action": "route",
         "outbound": "🛰️ BT/PT Tracker"
       },
       {
         "rule_set": [
-          "scki-fused-053-tracker-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🛰️ BT/PT Tracker"
-      },
-      {
-        "rule_set": [
-          "scki-fused-054-gfw-domain"
+          "scki-fused-054-gfw"
         ],
         "action": "route",
         "outbound": "🚫 受限网站"
       },
       {
         "rule_set": [
-          "scki-fused-054-gfw-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🚫 受限网站"
-      },
-      {
-        "rule_set": [
-          "scki-fused-055-game-cn-domain"
+          "scki-fused-055-game-cn"
         ],
         "action": "route",
         "outbound": "🕹️ 国内游戏"
       },
       {
         "rule_set": [
-          "scki-fused-056-game-intl-domain"
+          "scki-fused-056-game-intl"
         ],
         "action": "route",
         "outbound": "🎮 国外游戏"
       },
       {
         "rule_set": [
-          "scki-fused-056-game-intl-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🎮 国外游戏"
-      },
-      {
-        "rule_set": [
-          "scki-fused-057-intl-site-domain"
+          "scki-fused-057-intl-site"
         ],
         "action": "route",
         "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
-          "scki-fused-057-intl-site-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "rule_set": [
-          "scki-fused-057-intl-site-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "rule_set": [
-          "scki-fused-057-intl-site-residual"
-        ],
-        "action": "route",
-        "outbound": "🌐 国外网站"
-      },
-      {
-        "rule_set": [
-          "scki-fused-058-payments-domain"
+          "scki-fused-058-payments"
         ],
         "action": "route",
         "outbound": "🏦 金融支付"
       },
       {
         "rule_set": [
-          "scki-fused-059-cnmedia-domain"
+          "scki-fused-059-cnmedia"
         ],
         "action": "route",
         "outbound": "📺 国内流媒体"
       },
       {
         "rule_set": [
-          "scki-fused-059-cnmedia-ipcidr"
-        ],
-        "action": "route",
-        "outbound": "📺 国内流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-059-cnmedia-residual"
-        ],
-        "action": "route",
-        "outbound": "📺 国内流媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-060-cn-site-domain"
+          "scki-fused-060-cn-site"
         ],
         "action": "route",
         "outbound": "🏠 国内网站"
       },
       {
         "rule_set": [
-          "scki-fused-060-cn-site-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🏠 国内网站"
-      },
-      {
-        "rule_set": [
-          "scki-fused-061-direct-domain"
+          "scki-fused-061-direct"
         ],
         "action": "route",
         "outbound": "DIRECT"
       },
       {
         "rule_set": [
-          "scki-fused-062-cn-site-domain"
+          "scki-fused-062-cn-site"
         ],
         "action": "route",
         "outbound": "🏠 国内网站"
       },
       {
         "rule_set": [
-          "scki-fused-062-cn-site-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🏠 国内网站"
-      },
-      {
-        "rule_set": [
-          "scki-fused-063-intl-site-ipcidr-no-resolve"
+          "scki-fused-063-intl-site"
         ],
         "action": "route",
         "outbound": "🌐 国外网站"
       },
       {
         "rule_set": [
-          "scki-fused-064-im-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "💬 即时通讯"
-      },
-      {
-        "rule_set": [
-          "scki-fused-065-netflix-ipcidr-no-resolve"
+          "scki-fused-065-netflix"
         ],
         "action": "route",
         "outbound": "🎥 Netflix"
-      },
-      {
-        "rule_set": [
-          "scki-fused-066-social-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "📱 社交媒体"
-      },
-      {
-        "rule_set": [
-          "scki-fused-067-google-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🔍 Google 服务"
-      },
-      {
-        "rule_set": [
-          "scki-fused-068-cn-site-ipcidr-no-resolve"
-        ],
-        "action": "route",
-        "outbound": "🏠 国内网站"
       }
     ]
   }

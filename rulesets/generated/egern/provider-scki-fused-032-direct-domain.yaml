@@ -2,6 +2,5 @@
 # Source id: provider-scki-fused-032-direct-domain
 # Source URL: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-032-direct-domain.yaml
 domain_suffix_set:
-  - "dingtalk.com"
   - "feishu.cn"
   - "welink.huaweicloud.com"

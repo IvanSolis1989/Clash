@@ -4,8 +4,6 @@
 domain_set:
   - "yt3.googleusercontent.com"
 domain_suffix_set:
-  - "ads.youtube.com"
-  - "ggpht.cn"
   - "ggpht.com"
   - "googlevideo.com"
   - "wide-youtube.l.google.com"

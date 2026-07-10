@@ -8,7 +8,6 @@
         "cinemax.com",
         "dai3fd1oh325y.cloudfront.net",
         "execute-api.ap-southeast-1.amazonaws.com",
-        "execute-api.us-east-1.amazonaws.com",
         "forthethrone.com",
         "hbo.com",
         "hbo.com.c.footprint.net",
@@ -48,8 +47,7 @@
         "nowe.com",
         "nowe.hk",
         "players.brightcove.net",
-        "warnermediacdn.com",
-        "youboranqs01.com"
+        "warnermediacdn.com"
       ],
       "process_name": [
         "com.hbo.hbonow"

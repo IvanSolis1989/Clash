@@ -1,0 +1,3 @@
+payload:
+  - "GEOIP,FACEBOOK,no-resolve"
+  - "GEOIP,TWITTER,no-resolve"

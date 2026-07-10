@@ -3,7 +3,6 @@ host-suffix, cf-images.ap-southeast-1.prod.boltdns.net
 host-suffix, cinemax.com
 host-suffix, dai3fd1oh325y.cloudfront.net
 host-suffix, execute-api.ap-southeast-1.amazonaws.com
-host-suffix, execute-api.us-east-1.amazonaws.com
 host-suffix, forthethrone.com
 host-suffix, hbo.com
 host-suffix, hbo.com.c.footprint.net
@@ -44,4 +43,3 @@ host-suffix, nowe.com
 host-suffix, nowe.hk
 host-suffix, players.brightcove.net
 host-suffix, warnermediacdn.com
-host-suffix, youboranqs01.com

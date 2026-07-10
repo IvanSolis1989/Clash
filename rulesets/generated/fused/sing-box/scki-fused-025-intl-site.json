@@ -12,7 +12,6 @@
         "fastmail.com",
         "fastmail.fm",
         "imap.yandex.com",
-        "m.hotmail.com",
         "smtp.yandex.com",
         "imgsmail.ru",
         "mail.ru",
@@ -22,8 +21,6 @@
         "protonmail.ch",
         "protonmail.com",
         "protonstatus.com",
-        "amplitude.com",
-        "firebaseio.com",
         "hockeyapp.net",
         "readdle.com",
         "smartmailcloud.com"
@@ -40,11 +37,9 @@
         "mail.me.com",
         "apple.imap.mail.yahoo.com",
         "apple.smtp.mail.yahoo.com",
-        "imap-mail.outlook.com",
         "imap.gmail.com",
         "outlook.office365.com",
         "pop.gmail.com",
-        "smtp-mail.outlook.com",
         "smtp.gmail.com",
         "smtp.office365.com"
       ]

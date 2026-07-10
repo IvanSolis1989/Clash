@@ -109,17 +109,21 @@ function jsGeneratedBlock(pure, split, partial) {
 }
 
 function applySourceGraph(maps) {
-  let source = readText(SOURCE_GRAPH_FILE);
+  const source = readText(SOURCE_GRAPH_FILE);
   const block = jsGeneratedBlock(maps.pure, maps.split, maps.partial);
-  const next = source.replace(/\n\/\/ BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO MRS OVERRIDES\n/g, `\n${block}\n`);
-  if (next === source) throw new Error(`${SOURCE_GRAPH_FILE}: missing MRS override block`);
-  writeText(SOURCE_GRAPH_FILE, next);
+  const eol = source.includes('\r\n') ? '\r\n' : '\n';
+  const renderedBlock = block.replace(/\n/g, eol).replace(/(?:\r?\n)+$/, '');
+  const marker = /\r?\n\/\/ BEGIN AUTO-GENERATED MIHOMO MRS OVERRIDES[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO MRS OVERRIDES\r?\n/;
+  if (!marker.test(source)) throw new Error(`${SOURCE_GRAPH_FILE}: missing MRS override block`);
+  const next = source.replace(marker, `${eol}${renderedBlock}${eol}`);
+  if (next !== source) writeText(SOURCE_GRAPH_FILE, next);
+  return next !== source;
 }
 
 function main() {
   const maps = buildMaps();
-  applySourceGraph(maps);
-  console.log(`Applied Mihomo .mrs source graph overrides: pure=${Object.keys(maps.pure).length} split=${Object.keys(maps.split).length} partial=${Object.keys(maps.partial).length}`);
+  const changed = applySourceGraph(maps);
+  console.log(`${changed ? 'Applied' : 'Verified'} Mihomo .mrs source graph overrides: pure=${Object.keys(maps.pure).length} split=${Object.keys(maps.split).length} partial=${Object.keys(maps.partial).length}`);
 }
 
 main();

@@ -1,9 +1,9 @@
 #!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for Passwall2 — fused UCI batch helper
-# Version: v6.0.1-pw2.1 | Build 2026-07-10 | Baseline: Clash Party v6.0.1
+# Version: v6.0.2-pw2.1 | Build 2026-07-10 | Baseline: Clash Party v6.0.2
 #
-# 用途：一次性在 Passwall2 中创建 68 条 fused shunt rule。
+# 用途：一次性在 Passwall2 中创建 64 条 fused shunt rule。
 #       每条规则只引用 rulesets/generated/fused/sing-box/*.srs，不再维护手写域名/IP 展平列表。
 #       目标节点留空，用户之后到 LuCI 里给每条 rule 选择节点/负载均衡组。
 #
@@ -14,7 +14,7 @@
 set -e
 
 CONFIG_NAME="passwall2"
-VERSION_TAG="v6.0.1-pw2.1"
+VERSION_TAG="v6.0.2-pw2.1"
 MODE="${1:---replace}"
 
 case "${MODE}" in
@@ -119,7 +119,7 @@ if [ "${MODE}" = "--replace" ]; then
   cleanup_existing_scki_rules
 fi
 
-echo "开始创建 68 条 fused shunt rule..."
+echo "开始创建 64 条 fused shunt rule..."
 
 # [001] scki-fused-001-direct | DIRECT
 add_fused_shunt_rule 'scki-fused-001-direct | DIRECT' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-001-direct.srs' '0'
@@ -305,25 +305,13 @@ add_fused_shunt_rule 'scki-fused-060-cn-site | 🏠 国内网站' 'https://fastl
 add_fused_shunt_rule 'scki-fused-061-direct | DIRECT' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-061-direct.srs' '0'
 
 # [062] scki-fused-062-cn-site | 🏠 国内网站
-add_fused_shunt_rule 'scki-fused-062-cn-site | 🏠 国内网站' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-062-cn-site.srs' '1'
+add_fused_shunt_rule 'scki-fused-062-cn-site | 🏠 国内网站' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-062-cn-site.srs' '0'
 
 # [063] scki-fused-063-intl-site | 🌐 国外网站
 add_fused_shunt_rule 'scki-fused-063-intl-site | 🌐 国外网站' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-063-intl-site.srs' '1'
 
-# [064] scki-fused-064-im | 💬 即时通讯
-add_fused_shunt_rule 'scki-fused-064-im | 💬 即时通讯' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-064-im.srs' '1'
-
-# [065] scki-fused-065-netflix | 🎥 Netflix
+# [064] scki-fused-065-netflix | 🎥 Netflix
 add_fused_shunt_rule 'scki-fused-065-netflix | 🎥 Netflix' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-065-netflix.srs' '1'
 
-# [066] scki-fused-066-social | 📱 社交媒体
-add_fused_shunt_rule 'scki-fused-066-social | 📱 社交媒体' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-066-social.srs' '1'
-
-# [067] scki-fused-067-google | 🔍 Google 服务
-add_fused_shunt_rule 'scki-fused-067-google | 🔍 Google 服务' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-067-google.srs' '1'
-
-# [068] scki-fused-068-cn-site | 🏠 国内网站
-add_fused_shunt_rule 'scki-fused-068-cn-site | 🏠 国内网站' 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/scki-fused-068-cn-site.srs' '1'
-
 uci commit "${CONFIG_NAME}"
-echo "完成：已写入 68 条 Smart-Config-Kit fused shunt rule。请到 LuCI 分流控制中为各规则选择目标节点。"
+echo "完成：已写入 64 条 Smart-Config-Kit fused shunt rule。请到 LuCI 分流控制中为各规则选择目标节点。"

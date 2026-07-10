@@ -7,8 +7,6 @@ DOMAIN,game.163.com
 DOMAIN-SUFFIX,gm.163.com
 DOMAIN-SUFFIX,ds.163.com
 DOMAIN-SUFFIX,nie.163.com
-DOMAIN-SUFFIX,nie.netease.com
-DOMAIN-SUFFIX,update.netease.com
 DOMAIN-SUFFIX,netease.com
 DOMAIN-SUFFIX,wegame.com
 DOMAIN-SUFFIX,wegame.com.cn
@@ -17,7 +15,6 @@ DOMAIN-SUFFIX,wanmei.com
 DOMAIN-SUFFIX,battlenet.com.cn
 DOMAIN-SUFFIX,xd.com
 DOMAIN-SUFFIX,taptap.com
-DOMAIN-SUFFIX,taptap.io
 DOMAIN-SUFFIX,papegames.com
 DOMAIN-SUFFIX,hypergryph.com
 DOMAIN-SUFFIX,gryphline.com
@@ -37,7 +34,6 @@ DOMAIN,xz.pphimalayanrt.com
 DOMAIN-SUFFIX,cm.steampowered.com
 DOMAIN-SUFFIX,steamchina.com
 DOMAIN-SUFFIX,steamcontent.com
-DOMAIN-SUFFIX,steamserver.net
 DOMAIN-SUFFIX,steamusercontent.com
 DOMAIN-SUFFIX,counter-strike.cn
 DOMAIN-SUFFIX,counter-strike.com.cn

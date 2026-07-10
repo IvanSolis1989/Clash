@@ -6,6 +6,16 @@ const path = require('path');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const MAX_JSDELIVR_ASSET_BYTES = 18 * 1024 * 1024;
+const DEFAULT_CLIENT_BUDGET = Object.freeze({ maxBytes: 128 * 1024 * 1024, maxTextRules: 2_000_000 });
+const CLIENT_BUDGETS = new Map([
+  ['Shadowrocket', { maxBytes: 32 * 1024 * 1024, maxTextRules: 1_000_000 }],
+  ['Surge', { maxBytes: 32 * 1024 * 1024, maxTextRules: 1_000_000 }],
+  ['Loon', { maxBytes: 32 * 1024 * 1024, maxTextRules: 1_000_000 }],
+  ['Quantumult X', { maxBytes: 32 * 1024 * 1024, maxTextRules: 1_000_000 }],
+  ['Egern', { maxBytes: 32 * 1024 * 1024, maxTextRules: 1_000_000 }],
+  ['Stash', { maxBytes: 32 * 1024 * 1024, maxTextRules: 1_000_000 }],
+  ['SingBox', { maxBytes: 64 * 1024 * 1024, maxTextRules: 2_000_000 }],
+]);
 const SELF_HOSTED_URL_RE = /https:\/\/(?:fastly\.)?jsdelivr\.net\/gh\/IvanSolis1989\/Smart-Config-Kit@main\/([^\s,"'\\]+)/g;
 const CLIENT_FILES = [
   'Clash Party/ClashParty(mihomo-smart).js',
@@ -60,6 +70,8 @@ function collectGeneratedReferences() {
 function validateGeneratedRemoteAssetSizes() {
   const failures = [];
   const references = collectGeneratedReferences();
+  const assetStats = new Map();
+  const clientAssets = new Map();
   for (const [relativeAsset, consumers] of references) {
     const asset = path.join(REPO_ROOT, relativeAsset);
     if (!fs.existsSync(asset)) {
@@ -67,24 +79,61 @@ function validateGeneratedRemoteAssetSizes() {
       continue;
     }
     const size = fs.statSync(asset).size;
+    const extension = path.extname(asset).toLowerCase();
+    const isText = new Set(['.conf', '.json', '.list', '.txt', '.yaml', '.yml']).has(extension);
+    const textRules = isText
+      ? fs.readFileSync(asset, 'utf8').split(/\r?\n/).filter((line) => {
+        const trimmed = line.trim();
+        return trimmed && !trimmed.startsWith('#') && trimmed !== 'payload:';
+      }).length
+      : 0;
+    assetStats.set(relativeAsset, { size, textRules });
     if (size > MAX_JSDELIVR_ASSET_BYTES) {
       failures.push(`oversized jsDelivr asset: ${relativeAsset} = ${size} bytes, limit = ${MAX_JSDELIVR_ASSET_BYTES} bytes (referenced by ${[...new Set(consumers)].join(', ')})`);
     }
+    for (const consumer of consumers) {
+      const client = consumer.split('/')[0];
+      const assets = clientAssets.get(client) || new Set();
+      assets.add(relativeAsset);
+      clientAssets.set(client, assets);
+    }
   }
-  return { failures, references };
+  const clientAggregates = new Map();
+  for (const [client, assets] of clientAssets) {
+    const budget = CLIENT_BUDGETS.get(client) || DEFAULT_CLIENT_BUDGET;
+    let bytes = 0;
+    let textRules = 0;
+    for (const asset of assets) {
+      const stats = assetStats.get(asset);
+      if (!stats) continue;
+      bytes += stats.size;
+      textRules += stats.textRules;
+    }
+    const aggregate = { assets: assets.size, bytes, textRules, budget };
+    clientAggregates.set(client, aggregate);
+    if (bytes > budget.maxBytes) {
+      failures.push(`aggregate generated assets exceed ${client} byte budget: ${bytes} > ${budget.maxBytes} (${assets.size} unique assets)`);
+    }
+    if (textRules > budget.maxTextRules) {
+      failures.push(`aggregate generated assets exceed ${client} text-rule budget: ${textRules} > ${budget.maxTextRules} (${assets.size} unique assets)`);
+    }
+  }
+  return { failures, references, clientAggregates };
 }
 
 if (require.main === module) {
-  const { failures, references } = validateGeneratedRemoteAssetSizes();
+  const { failures, references, clientAggregates } = validateGeneratedRemoteAssetSizes();
   if (failures.length) {
     console.error(`FAIL generated remote asset size validation: ${failures.length} issue(s) across ${references.size} referenced assets`);
     for (const failure of failures) console.error(`- ${failure}`);
     process.exit(1);
   }
-  console.log(`PASS generated remote asset size validation: ${references.size} referenced assets <= ${MAX_JSDELIVR_ASSET_BYTES} bytes`);
+  console.log(`PASS generated remote asset size validation: ${references.size} referenced assets <= ${MAX_JSDELIVR_ASSET_BYTES} bytes; ${clientAggregates.size} client aggregate budgets satisfied`);
 }
 
 module.exports = {
+  CLIENT_BUDGETS,
+  DEFAULT_CLIENT_BUDGET,
   MAX_JSDELIVR_ASSET_BYTES,
   collectGeneratedReferences,
   validateGeneratedRemoteAssetSizes,

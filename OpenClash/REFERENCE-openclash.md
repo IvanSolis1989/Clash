@@ -170,7 +170,7 @@ OpenClash/
 - **覆写 YAML 写入方式**：`cat > "$OVERRIDE_YAML" << 'OVERRIDE_EOF'` + `cat >> "$OVERRIDE_YAML" << 'OVERRIDE_EOF'` 追加
 - **Ruby 嵌入方式**：`ruby -ryaml -e '...'` 行内执行
 - **代理组动态构建**：Smart 版用 Ruby 的 `make_smart_group()` 函数按国家分类节点
-- **rule-providers 数量**：Normal ≈130，Smart ≈384
+- **rule-providers 数量**：Normal / Smart 均为 114 个最终融合 provider
 
 ---
 

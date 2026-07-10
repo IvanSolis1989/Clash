@@ -4,7 +4,6 @@ payload:
   - "DOMAIN-SUFFIX,cinemax.com"
   - "DOMAIN-SUFFIX,dai3fd1oh325y.cloudfront.net"
   - "DOMAIN-SUFFIX,execute-api.ap-southeast-1.amazonaws.com"
-  - "DOMAIN-SUFFIX,execute-api.us-east-1.amazonaws.com"
   - "DOMAIN-SUFFIX,forthethrone.com"
   - "DOMAIN-SUFFIX,hbo.com"
   - "DOMAIN-SUFFIX,hbo.com.c.footprint.net"
@@ -45,4 +44,3 @@ payload:
   - "DOMAIN-SUFFIX,nowe.hk"
   - "DOMAIN-SUFFIX,players.brightcove.net"
   - "DOMAIN-SUFFIX,warnermediacdn.com"
-  - "DOMAIN-SUFFIX,youboranqs01.com"

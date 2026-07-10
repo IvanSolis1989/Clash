@@ -7,6 +7,12 @@
 
 ---
 
+## v6.0.2 (2026-07-10)
+
+- FIX#175：Smart / Normal 同步消费重新编译的 113 个融合 provider / 130 条主规则；不再继承 HaGeZi 错源和 GEOIP CIDR 放大产物。
+- FUSED-DEDUP：同策略段内的精确重复、后缀/关键词覆盖和父 CIDR 覆盖在编译期消除，最终 JS 仍不携带任何原始上游 provider。
+- GEOIP-NATIVE：运行时 GEOIP 留在 residual provider，由 Mihomo GeoIP 数据库查询；不强制塞进 `.mrs` 或展开为海量 CIDR。
+
 ## v6.0.1 (2026-07-10)
 
 - SYNC：规则权威源升级为 `rulesets/source/routing-graph.js v6.0.1`；Smart / Normal 继续只消费最终融合 `.mrs` / residual 规则集，113 个 provider、130 条主规则和 55 个策略组不变。

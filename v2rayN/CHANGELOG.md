@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.2-v2n.1 (2026-07-10)
+
+- SYNC：从 64 个 v6.0.2 非空 fused sing-box JSON 重新展平为 82 条 Xray RuleObject（1 meta + 64 fused + 17 inline），保持 `proxy/direct/block` 三出站。
+- PERF：Xray fallback 继承编译目标内的 GEOIP/ASN CIDR 物化和同策略去重，不加载任何原始上游 rule-provider。
+
 ## v6.0.1-v2n.1 (2026-07-10)
 
 - SYNC：Xray fallback 由最新 fused sing-box JSON 重新展平，保留 86 条原生 Xray RuleObject、`proxy/direct/block` 三出站和既有优先级。

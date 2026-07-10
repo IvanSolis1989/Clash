@@ -2,8 +2,8 @@
 
 > 目录简介：这里存放仓库维护脚本和一致性校验工具，用于验证覆写脚本与跨客户端产物契约。
 
-This directory contains repository-maintainer checks. These tools do not change
-published client artifacts.
+This directory contains repository-maintainer generators and checks. Generator
+commands rewrite published client artifacts; validator commands are read-only.
 
 ## Generated client artifacts
 
@@ -45,6 +45,12 @@ Scope:
 - reads `rulesets/source/routing-graph.js` as the fused compiler input and
   writes `rulesets/generated/fused/**`; this is the authority for client
   fused rule-set consumption.
+- uses `tools/lib/fused-rule-optimizer.js` to canonicalize rules, preserve exact
+  opaque-MRS source identity, and remove only same-policy exact/subsumed domain
+  and CIDR rules; optimization counts are persisted in the fused manifest.
+- keeps ISO country GEOIP rules native for capable clients. Service GEOIP and
+  ASN rules are materialized only for targets such as sing-box headless rule
+  sets that cannot represent them directly; resolution failures are fatal.
 - writes fallback-native fused artifacts for clients that cannot consume
   Mihomo `.mrs`: v2rayN Xray is flattened into native RuleObject JSON, while
   Passwall / Passwall2 receive generated `rule-set:remote` `.srs` shunt rules.
@@ -98,7 +104,8 @@ Scope:
   unverified Mihomo-only keys;
 - validates Mihomo `.mrs` conversion counts and generated file presence;
 - validates formal Egern metadata, 22 region smart groups, 33 business groups,
-  882 generated rules, 439 top-level rule-set references, and the absence of
+  111 generated rules, 94 top-level rule-set references, 99 non-empty native
+  YAML assets, and the absence of
   `.mrs` / process rule-set files in Egern;
 - validates SingBox and v2rayN JSON structure, baseline metadata, and fused
   source mapping;
@@ -118,6 +125,24 @@ node tools/validate-artifact-contracts.js --json
 node tools/validate-artifact-contracts.js --strict-ruby
 node tools/validate-artifact-contracts.js --write-manifest docs/runtime/artifact-manifest.json
 ```
+
+## Fused optimization and remote budgets
+
+Run:
+
+```bash
+node --test tools/tests/fused-rule-optimizer.test.js tools/tests/fused-artifact-performance.test.js
+node tools/validate-generated-remote-asset-size.js
+```
+
+Scope:
+
+- verifies HaGeZi Ultimate is never substituted with the full TIF source;
+- checks canonical GEOIP/CIDR syntax and same-policy semantic deduplication;
+- re-optimizes generated Clash / Surge lists and requires zero removable rules;
+- enforces the 18 MiB per-asset CDN limit plus per-client aggregate byte and
+  text-rule budgets (32 MiB / 1,000,000 rules for iOS Network Extension clients);
+- rejects missing generated assets and Egern GEOIP conversion loss.
 
 ## PROCESS-NAME direct whitelist
 

@@ -11,6 +11,10 @@
         "spotify.com.edgesuite.net",
         "spotify.map.fastly.net",
         "spotify.map.fastlylb.net",
+        "last.us11.list-manage.com",
+        "lastfm-img2.akamaized.net"
+      ],
+      "domain_suffix": [
         "byspotify.com",
         "lifeatspotify.com",
         "pscdn.co",
@@ -28,13 +32,6 @@
         "spotifyforvendors.com",
         "spotifyjobs.com",
         "tospotify.com",
-        "adeventtracker.spotify.com",
-        "adstudio-assets.scdn.co",
-        "bloodhound.spotify.com",
-        "last.us11.list-manage.com",
-        "lastfm-img2.akamaized.net"
-      ],
-      "domain_suffix": [
         "p-cdn.us",
         "sndcdn.com",
         "soundcloud.com",

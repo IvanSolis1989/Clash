@@ -1,4 +1,4 @@
 payload:
-  - "DOMAIN-SUFFIX,feishu.cn,DIRECT"
-  - "DOMAIN-SUFFIX,dingtalk.com,DIRECT"
-  - "DOMAIN-SUFFIX,welink.huaweicloud.com,DIRECT"
+  - "DOMAIN-SUFFIX,feishu.cn"
+  - "DOMAIN-SUFFIX,dingtalk.com"
+  - "DOMAIN-SUFFIX,welink.huaweicloud.com"

@@ -7,6 +7,12 @@
 
 ---
 
+## v6.0.2-oc-normal.1 / v6.0.2-oc-smart.1 (2026-07-10)
+
+- SYNC：Normal / Smart 同步到 Clash Party v6.0.2，使用 113 个融合 provider、130 条规则和 55 个策略组。
+- PERF：`.mrs` 只承载规范化后的域名/IP，GEOIP 留在 residual YAML 原生查询；删除同策略重复和可证明被覆盖的规则。
+- FAIL-CLOSED：生成链对错误上游替换、未解析嵌套源和非法残余语法直接失败，OpenClash 不再接收部分构建产物。
+
 ## v6.0.1-oc-normal.1 / v6.0.1-oc-smart.1 (2026-07-10)
 
 - SYNC：Normal / Smart heredoc 同步到 Clash Party v6.0.1，继续引用融合 `.mrs` / residual YAML，113 个 provider、130 条规则和 55 个策略组不变。

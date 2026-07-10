@@ -17,9 +17,9 @@ const PASSWALL2_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall2/shunt-rules');
 const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
 const FUSED_SRS_BASE_URL = `${SCKI_BASE}/rulesets/generated/fused/sing-box`;
 const BUILD_DATE = '2026-07-10';
-const V2RAYN_VERSION = 'v6.0.1-v2n.1';
-const PASSWALL_VERSION = 'v6.0.1-pw.1';
-const PASSWALL2_VERSION = 'v6.0.1-pw2.1';
+const V2RAYN_VERSION = 'v6.0.2-v2n.1';
+const PASSWALL_VERSION = 'v6.0.2-pw.1';
+const PASSWALL2_VERSION = 'v6.0.2-pw2.1';
 
 const DIRECT_POLICIES = new Set([
   'DIRECT',
@@ -120,8 +120,12 @@ function* xrayIpsFromSingBoxRule(rule) {
   for (const value of rule.ip_cidr || []) yield value;
 }
 
+function* xraySourceIpsFromSingBoxRule(rule) {
+  for (const value of rule.source_ip_cidr || []) yield value;
+}
+
 function xrayProcessesFromSingBoxRule(rule) {
-  return rule.process_name || [];
+  return [...(rule.process_name || []), ...(rule.process_path || [])];
 }
 
 function parseMihomoFusedRules() {
@@ -185,6 +189,10 @@ function writeXrayRuleSuffix(fd, rule) {
     writeFd(fd, ',\n    "process": ');
     writeJsonStringArray(fd, rule.process);
   }
+  if (rule.sourceIP) {
+    writeFd(fd, ',\n    "sourceIP": ');
+    writeJsonStringArray(fd, rule.sourceIP);
+  }
   writeFd(fd, '\n  }');
 }
 
@@ -198,7 +206,9 @@ function writeStaticXrayRule(fd, rule, isFirst) {
 }
 
 function writeSegmentXrayRule(fd, segment, ordinal, isFirst) {
-  const singBoxFile = path.join(FUSED_SING_BOX_DIR, `${segment.id}.json`);
+  const sourceFile = segment.files && segment.files.sing_box && segment.files.sing_box.source;
+  if (!sourceFile) throw new Error(`${segment.id}: missing sing-box source metadata`);
+  const singBoxFile = path.join(FUSED_SING_BOX_DIR, sourceFile);
   const singBox = readJson(singBoxFile);
   const rules = singBox.rules || [];
   writeXrayRulePrefix(fd, {
@@ -210,11 +220,17 @@ function writeSegmentXrayRule(fd, segment, ordinal, isFirst) {
   writeJsonArrayFromRuleFields(fd, rules, xrayDomainsFromSingBoxRule);
   writeFd(fd, ',\n    "ip": ');
   writeJsonArrayFromRuleFields(fd, rules, xrayIpsFromSingBoxRule);
+  const sourceIPs = rules.flatMap((rule) => [...xraySourceIpsFromSingBoxRule(rule)]);
   const processes = rules.flatMap(xrayProcessesFromSingBoxRule);
+  const unsupportedProcessRegex = rules.flatMap((rule) => rule.process_path_regex || []);
+  if (unsupportedProcessRegex.length) {
+    throw new Error(`${segment.id}: Xray RuleObject cannot preserve PROCESS-PATH-REGEX`);
+  }
   writeXrayRuleSuffix(fd, {
     port: '',
     network: 'tcp,udp',
     process: processes.length ? processes : null,
+    sourceIP: sourceIPs.length ? sourceIPs : null,
   });
 }
 
@@ -287,7 +303,11 @@ function renderInlineXrayRule(rule, index) {
 }
 
 function writeV2rayNArtifact(manifest, fusedRules) {
-  const segmentsById = new Map(manifest.segments.map((segment) => [segment.id, segment]));
+  const segmentsById = new Map(
+    manifest.segments
+      .filter((segment) => segment.files && segment.files.sing_box && segment.files.sing_box.source)
+      .map((segment) => [segment.id, segment]),
+  );
   const emittedSegments = new Set();
   const fd = fs.openSync(ensureRepoPath(V2RAYN_FILE), 'w');
   let count = 0;
@@ -338,8 +358,21 @@ function passwallRuleUrl(segment) {
 }
 
 function hasIpPayload(segment) {
+  if (segment.target_ip_counts && Number.isFinite(Number(segment.target_ip_counts.sing_box))) {
+    return Number(segment.target_ip_counts.sing_box) > 0;
+  }
   const counts = segment.counts || {};
   return Number(counts.ipcidr || 0) + Number(counts.ipcidr_no_resolve || 0) > 0;
+}
+
+function singBoxBinarySegments(manifest) {
+  return manifest.segments.filter((segment) => (
+    segment.files
+    && segment.files.sing_box
+    && segment.files.sing_box.format === 'binary'
+    && String(segment.files.sing_box.file || '').endsWith('.srs')
+    && segment.files.sing_box.source
+  ));
 }
 
 function renderLegacyRemarkMatcher() {
@@ -356,7 +389,7 @@ function renderPasswallScript({ appName, version, title, configName, nodeComment
   return `#!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for ${title} — fused UCI batch helper
-# Version: ${version} | Build ${BUILD_DATE} | Baseline: Clash Party v6.0.1
+# Version: ${version} | Build ${BUILD_DATE} | Baseline: Clash Party v6.0.2
 #
 # 用途：一次性在 ${title} 中创建 ${segments.length} 条 fused shunt rule。
 #       每条规则只引用 rulesets/generated/fused/sing-box/*.srs，不再维护手写域名/IP 展平列表。
@@ -456,7 +489,7 @@ function renderPasswallConf({ title, version, readmePath, segments }) {
     '# ════════════════════════════════════════════════════════════════════════════',
     `#  Smart-Config-Kit for ${title} — Fused Shunt Rules Reference`,
     `#  Version: ${version} | Build: ${BUILD_DATE}`,
-    '#  Baseline: Clash Party v6.0.1',
+    '#  Baseline: Clash Party v6.0.2',
     '#  Source: rulesets/source/routing-graph.js -> rulesets/generated/fused/sing-box/*.srs',
     '#',
     `#  本文件为手工配置参考；推荐使用同目录 apply.sh 自动创建 ${segments.length} 条规则。`,
@@ -494,8 +527,9 @@ function writePasswallArtifacts(manifest) {
   resetDir(FUSED_PASSWALL_DIR);
   resetDir(PASSWALL_SHUNT_DIR);
   resetDir(PASSWALL2_SHUNT_DIR);
+  const segments = singBoxBinarySegments(manifest);
 
-  for (const segment of manifest.segments) {
+  for (const segment of segments) {
     const content = renderPasswallList(segment);
     writeText(path.join(FUSED_PASSWALL_DIR, `${segment.id}.list`), content);
     writeText(path.join(PASSWALL_SHUNT_DIR, `${segment.id}.list`), content);
@@ -510,7 +544,7 @@ function writePasswallArtifacts(manifest) {
       version: PASSWALL_VERSION,
       configName: 'passwall',
       nodeComment: "# Passwall 全功能版可在 LuCI 中分别设置 tcp_node / udp_node。",
-      segments: manifest.segments,
+      segments,
     }),
   );
   writeText(
@@ -521,7 +555,7 @@ function writePasswallArtifacts(manifest) {
       version: PASSWALL2_VERSION,
       configName: 'passwall2',
       nodeComment: "# Passwall2 在 LuCI 中设置统一 node。",
-      segments: manifest.segments,
+      segments,
     }),
   );
   writeText(
@@ -530,7 +564,7 @@ function writePasswallArtifacts(manifest) {
       title: 'Passwall',
       version: PASSWALL_VERSION,
       readmePath: 'Passwall/README.md',
-      segments: manifest.segments,
+      segments,
     }),
   );
   writeText(
@@ -539,10 +573,10 @@ function writePasswallArtifacts(manifest) {
       title: 'Passwall2',
       version: PASSWALL2_VERSION,
       readmePath: 'Passwall2/README.md',
-      segments: manifest.segments,
+      segments,
     }),
   );
-  return { passwallFiles: manifest.segments.length };
+  return { passwallFiles: segments.length };
 }
 
 function updateManifest(manifest, stats) {
@@ -552,22 +586,26 @@ function updateManifest(manifest, stats) {
     generated_xray_rules: stats.xray.ruleCount,
     generated_xray_fused_segments: stats.xray.emittedSegments,
   };
-  updated.segments = manifest.segments.map((segment) => ({
-    ...segment,
-    files: {
-      ...segment.files,
-      passwall: {
-        format: 'text',
-        file: `${segment.id}.list`,
-        source: `sing-box/${segment.id}.srs`,
+  updated.segments = manifest.segments.map((segment) => {
+    const { passwall: _passwall, xray: _xray, ...baseFiles } = segment.files || {};
+    if (!segment.files || !segment.files.sing_box) return { ...segment, files: baseFiles };
+    return {
+      ...segment,
+      files: {
+        ...baseFiles,
+        passwall: {
+          format: 'text',
+          file: `${segment.id}.list`,
+          source: `sing-box/${segment.files.sing_box.file}`,
+        },
+        xray: {
+          format: 'inline-json',
+          file: 'v2rayN/v2rayN(xray).json',
+          source: `sing-box/${segment.files.sing_box.source}`,
+        },
       },
-      xray: {
-        format: 'inline-json',
-        file: 'v2rayN/v2rayN(xray).json',
-        source: `sing-box/${segment.id}.json`,
-      },
-    },
-  }));
+    };
+  });
   writeText(MANIFEST_FILE, `${JSON.stringify(updated, null, 2)}\n`);
   return updated;
 }

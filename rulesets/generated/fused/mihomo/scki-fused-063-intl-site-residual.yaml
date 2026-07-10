@@ -1,0 +1,2 @@
+payload:
+  - "GEOIP,CLOUDFLARE,no-resolve"

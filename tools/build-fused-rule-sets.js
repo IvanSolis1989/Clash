@@ -13,6 +13,13 @@ const {
 const {
   generateFusedFallbackArtifacts,
 } = require('./generate-fused-fallback-artifacts');
+const {
+  canonicalizeEntry,
+  materializeGeoIpEntries,
+  materializeIpAsnEntries,
+  optimizeEntries,
+  resolveOpaqueMrsSource,
+} = require('./lib/fused-rule-optimizer');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const MIHOMO_MRS_MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
@@ -32,19 +39,18 @@ const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
 const FUSED_MIHOMO_BASE_PATH = '/rulesets/generated/fused/mihomo/';
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
-const HAGEZI_TIF_DOMAINS = 'https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/tif.txt';
-const ANTI_AD_CLASH = 'https://anti-ad.net/clash.yaml';
 const MIHOMO_REPO = 'MetaCubeX/mihomo';
 const SING_BOX_REPO = 'SagerNet/sing-box';
 const MIHOMO_REPO_API = `https://api.github.com/repos/${MIHOMO_REPO}/releases/latest`;
 const SING_BOX_REPO_API = `https://api.github.com/repos/${SING_BOX_REPO}/releases/latest`;
 const RELEASE_FETCH_TIMEOUT_MS = Number(process.env.SCKI_RELEASE_FETCH_TIMEOUT_MS || 15000);
+const SOURCE_FETCH_TIMEOUT_MS = Number(process.env.SCKI_SOURCE_FETCH_TIMEOUT_MS || 30000);
 // jsDelivr rejects files at 20 MB. Keep a 2 MiB buffer for all client-facing text assets.
 const MAX_REMOTE_RULE_SET_BYTES = 18 * 1024 * 1024;
 
 const DOMAIN_TYPES = new Set(['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD', 'DOMAIN-REGEX', 'DOMAIN-WILDCARD']);
 const IPCIDR_TYPES = new Set(['IP-CIDR', 'IP-CIDR6']);
-const RESIDUAL_TYPES = new Set(['PROCESS-NAME', 'PROCESS-PATH', 'PROCESS-PATH-REGEX', 'SRC-IP-CIDR', 'SRC-PORT', 'GEOSITE', 'GEOIP']);
+const RESIDUAL_TYPES = new Set(['PROCESS-NAME', 'PROCESS-PATH', 'PROCESS-PATH-REGEX', 'SRC-IP-CIDR', 'SRC-PORT', 'GEOSITE', 'GEOIP', 'IP-ASN']);
 
 const INLINE_ONLY_TYPES = new Set(['AND', 'OR', 'NOT', 'DST-PORT', 'SRC-PORT', 'MATCH', 'FINAL', 'NETWORK']);
 // Final Mihomo-family products should only expose generated scki-fused-* providers.
@@ -313,14 +319,13 @@ function sourceInfoForGeneratedMihomoMrs(url, byFile) {
 function sourceInfoForProvider(provider, byFile) {
   if (!provider || !provider.url) return null;
   const providerFilter = provider.behavior === 'domain' || provider.behavior === 'ipcidr' ? provider.behavior : null;
+  const opaqueMrs = resolveOpaqueMrsSource(provider.url);
+  if (opaqueMrs) return opaqueMrs;
   const local = localPathForUrl(provider.url);
   if (local && !/\.mrs$/i.test(local)) return { localPath: local, sourceFilter: providerFilter };
 
   const generated = sourceInfoForGeneratedMihomoMrs(provider.url, byFile);
   if (generated) return generated;
-
-  if (provider.name === 'hagezi-tif') return { sourceUrl: HAGEZI_TIF_DOMAINS, sourceFilter: 'domain' };
-  if (provider.name === 'anti-ad') return { sourceUrl: ANTI_AD_CLASH, sourceFilter: 'domain' };
 
   const meta = metaSourceForMrsUrl(provider.url);
   if (meta) return meta;
@@ -367,7 +372,7 @@ async function fetchText(url) {
   });
   for (const candidate of orderedCandidates) {
     const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
+    const timer = setTimeout(() => controller.abort(), SOURCE_FETCH_TIMEOUT_MS);
     try {
       const response = await fetch(candidate, {
         signal: controller.signal,
@@ -398,28 +403,17 @@ async function loadSourceEntries(sourceInfo) {
 
 async function expandResolvableEntries(entries) {
   const output = [];
-  for (const entry of entries) {
+  for (const rawEntry of entries) {
+    const entry = canonicalizeEntry(rawEntry);
     const parts = splitTopLevel(entry);
     const type = String(parts[0] || '').toUpperCase();
     if (type === 'GEOSITE' && parts[1]) {
-      try {
-        const nested = await loadSourceEntries({ sourceUrl: `${META_GEOSITE_BASE}/${encodeRuleAssetName(parts[1])}.yaml`, sourceFilter: 'domain' });
-        output.push(...(nested || []));
-      } catch {
-        output.push(entry);
-      }
+      const nested = await loadSourceEntries({ sourceUrl: `${META_GEOSITE_BASE}/${encodeRuleAssetName(parts[1])}.yaml`, sourceFilter: 'domain' });
+      output.push(...(nested || []).map(canonicalizeEntry));
       continue;
     }
     if (type === 'GEOIP' && parts[1]) {
-      if (String(parts[1]).toLowerCase() === 'private') output.push(...PRIVATE_CIDRS);
-      else {
-        try {
-          const nested = await loadSourceEntries({ sourceUrl: `${META_GEOIP_BASE}/${encodeRuleAssetName(parts[1].toLowerCase())}.yaml`, sourceFilter: 'ipcidr' });
-          output.push(...(nested || []));
-        } catch {
-          output.push(entry);
-        }
-      }
+      output.push(entry);
       continue;
     }
     output.push(entry);
@@ -453,13 +447,9 @@ function normalizeDomainSetToClassical(value) {
 }
 
 function entryToClassical(entry) {
-  const info = classifyEntry(entry);
-  if (info.bucket === 'domain') {
-    if (info.type === 'DOMAIN-SET') return normalizeDomainSetToClassical(info.value);
-    return `${info.type},${info.value}`;
-  }
-  if (info.bucket === 'ipcidr') return `${info.type},${info.value}`;
-  if (info.bucket === 'residual') return entry;
+  const classical = canonicalizeEntry(entry);
+  const info = classifyEntry(classical);
+  if (info.bucket === 'domain' || info.bucket === 'ipcidr' || info.bucket === 'residual') return classical;
   return null;
 }
 
@@ -471,14 +461,16 @@ function entryToQx(entry) {
   if (type === 'DOMAIN') return `host, ${parts[1]}`;
   if (type === 'DOMAIN-SUFFIX') return `host-suffix, ${parts[1]}`;
   if (type === 'DOMAIN-KEYWORD') return `host-keyword, ${parts[1]}`;
-  if (type === 'IP-CIDR') return `ip-cidr, ${parts[1]}`;
-  if (type === 'IP-CIDR6') return `ip6-cidr, ${parts[1]}`;
+  if (type === 'IP-CIDR') return `ip-cidr, ${parts[1]}${parts.includes('no-resolve') ? ', no-resolve' : ''}`;
+  if (type === 'IP-CIDR6') return `ip6-cidr, ${parts[1]}${parts.includes('no-resolve') ? ', no-resolve' : ''}`;
+  if (type === 'GEOIP') return `geoip, ${parts[1].toLowerCase()}${parts.includes('no-resolve') ? ', no-resolve' : ''}`;
+  if (type === 'IP-ASN') return `ip-asn, ${parts[1]}${parts.includes('no-resolve') ? ', no-resolve' : ''}`;
   return null;
 }
 
 function addToSingBoxRule(rule, entry) {
   const classical = entryToClassical(entry);
-  if (!classical) return;
+  if (!classical) return false;
   const parts = splitTopLevel(classical);
   const type = parts[0];
   const value = parts[1];
@@ -487,7 +479,12 @@ function addToSingBoxRule(rule, entry) {
   else if (type === 'DOMAIN-KEYWORD') (rule.domain_keyword ||= []).push(value);
   else if (type === 'DOMAIN-REGEX') (rule.domain_regex ||= []).push(value);
   else if (type === 'IP-CIDR' || type === 'IP-CIDR6') (rule.ip_cidr ||= []).push(value);
+  else if (type === 'SRC-IP-CIDR') (rule.source_ip_cidr ||= []).push(value);
   else if (type === 'PROCESS-NAME') (rule.process_name ||= []).push(value);
+  else if (type === 'PROCESS-PATH') (rule.process_path ||= []).push(value);
+  else if (type === 'PROCESS-PATH-REGEX') (rule.process_path_regex ||= []).push(value);
+  else return false;
+  return true;
 }
 
 function addToEgernSets(sets, entry) {
@@ -504,6 +501,8 @@ function addToEgernSets(sets, entry) {
     'DOMAIN-WILDCARD': 'domain_wildcard_set',
     'IP-CIDR': 'ip_cidr_set',
     'IP-CIDR6': 'ip_cidr6_set',
+    GEOIP: 'geoip_set',
+    'IP-ASN': 'asn_set',
   };
   const key = map[type];
   if (key) (sets[key] ||= []).push(value);
@@ -523,6 +522,7 @@ function createSegment(index, policy) {
     ipcidr: [],
     ipcidrNoResolve: [],
     residual: [],
+    optimization: null,
   };
 }
 
@@ -532,14 +532,103 @@ function segmentHasPayload(segment) {
 
 function addEntriesToSegment(segment, rule, entries, noResolve) {
   segment.sourceRules.push(rule);
-  for (const entry of entries) {
+  for (const rawEntry of entries) {
+    let entry = canonicalizeEntry(rawEntry);
     const info = classifyEntry(entry);
     if (info.bucket === 'domain') segment.domain.push(entry);
     else if (info.bucket === 'ipcidr') {
-      if (noResolve) segment.ipcidrNoResolve.push(entry);
-      else segment.ipcidr.push(entry);
-    } else if (info.bucket === 'residual') segment.residual.push(entry);
+      const parts = splitTopLevel(entry);
+      const entryNoResolve = parts.includes('no-resolve');
+      const bucketEntry = parts.filter((part) => part !== 'no-resolve').join(',');
+      if (noResolve || entryNoResolve) segment.ipcidrNoResolve.push(bucketEntry);
+      else segment.ipcidr.push(bucketEntry);
+    } else if (info.bucket === 'residual') {
+      if (noResolve && (info.type === 'GEOIP' || info.type === 'IP-ASN') && !splitTopLevel(entry).includes('no-resolve')) {
+        entry = `${entry},no-resolve`;
+      }
+      segment.residual.push(entry);
+    } else {
+      throw new Error(`unsupported fused entry from ${rule}: ${entry}`);
+    }
   }
+}
+
+function sumOptimizationStats(rows) {
+  return rows.reduce((total, row) => {
+    for (const key of ['input', 'output', 'exactDuplicates', 'domainSubsumed', 'cidrSubsumed', 'normalized']) {
+      total[key] += row[key] || 0;
+    }
+    return total;
+  }, { input: 0, output: 0, exactDuplicates: 0, domainSubsumed: 0, cidrSubsumed: 0, normalized: 0 });
+}
+
+function optimizeSegment(segment) {
+  const buckets = {};
+  for (const key of ['domain', 'ipcidr', 'ipcidrNoResolve', 'residual']) {
+    const result = optimizeEntries(segment[key]);
+    segment[key] = result.entries;
+    buckets[key] = result.stats;
+  }
+  const total = sumOptimizationStats(Object.values(buckets));
+  return {
+    ...total,
+    removed: total.input - total.output,
+    buckets,
+  };
+}
+
+function removeGloballyRepeatedEntries(segments) {
+  const seenByBucket = new Map([
+    ['domain', new Set()],
+    ['ipcidr', new Set()],
+    ['ipcidrNoResolve', new Set()],
+    ['residual', new Set()],
+  ]);
+  let removed = 0;
+  for (const segment of segments) {
+    let segmentRemoved = 0;
+    for (const [key, seen] of seenByBucket) {
+      let bucketRemoved = 0;
+      segment[key] = segment[key].filter((entry) => {
+        if (seen.has(entry)) {
+          bucketRemoved += 1;
+          return false;
+        }
+        seen.add(entry);
+        return true;
+      });
+      if (bucketRemoved) {
+        segment.optimization.buckets[key].output -= bucketRemoved;
+        segment.optimization.buckets[key].globalExactDuplicates = bucketRemoved;
+      }
+      segmentRemoved += bucketRemoved;
+    }
+    segment.optimization.globalExactDuplicates = segmentRemoved;
+    segment.optimization.output -= segmentRemoved;
+    segment.optimization.removed += segmentRemoved;
+    removed += segmentRemoved;
+  }
+  return removed;
+}
+
+function removeTargetRepeatedEntries(result, seen) {
+  let removed = 0;
+  const entries = result.entries.filter((entry) => {
+    if (seen.has(entry)) {
+      removed += 1;
+      return false;
+    }
+    seen.add(entry);
+    return true;
+  });
+  return {
+    entries,
+    stats: {
+      ...result.stats,
+      output: entries.length,
+      globalExactDuplicates: removed,
+    },
+  };
 }
 
 async function resolveMainRule(rule, providers, sourceMap, stats) {
@@ -555,18 +644,13 @@ async function resolveMainRule(rule, providers, sourceMap, stats) {
     let rawEntries = null;
     try {
       rawEntries = await loadSourceEntries(sourceInfo);
+      if (!rawEntries) throw new Error('missing-source-info');
+      rawEntries = await expandResolvableEntries(rawEntries);
     } catch (error) {
       stats.unresolvedProviders.push({ id: providerName, error: error.message });
-      stats.passthroughProviderIds.add(providerName);
-      return { fusable: false, rule, reason: `unresolved-provider:${providerName}` };
+      throw new Error(`cannot fuse provider ${providerName}: ${error.message}`);
     }
-    if (!rawEntries) {
-      stats.unresolvedProviders.push({ id: providerName, error: 'missing-source-info' });
-      stats.passthroughProviderIds.add(providerName);
-      return { fusable: false, rule, reason: `unresolved-provider:${providerName}` };
-    }
-    const entries = await expandResolvableEntries(rawEntries);
-    return { fusable: true, policy, entries, noResolve: parts.includes('no-resolve'), source: providerName };
+    return { fusable: true, policy, entries: rawEntries, noResolve: parts.includes('no-resolve'), source: providerName };
   }
   if (type === 'GEOSITE') {
     const name = parts[1];
@@ -575,33 +659,40 @@ async function resolveMainRule(rule, providers, sourceMap, stats) {
       entries = await loadSourceEntries({ sourceUrl: `${META_GEOSITE_BASE}/${encodeRuleAssetName(name)}.yaml`, sourceFilter: 'domain' });
     } catch (error) {
       stats.unresolvedSources.push({ id: `GEOSITE:${name}`, error: error.message });
-      return { fusable: false, rule, reason: `unresolved-geosite:${name}` };
+      throw new Error(`cannot fuse GEOSITE:${name}: ${error.message}`);
     }
-    return { fusable: true, policy: parts[2], entries, noResolve: false, source: `GEOSITE:${name}` };
+    return { fusable: true, policy: parts[2], entries: entries.map(canonicalizeEntry), noResolve: false, source: `GEOSITE:${name}` };
   }
   if (type === 'GEOIP') {
     const name = parts[1];
-    if (String(name).toLowerCase() === 'private') {
-      return { fusable: true, policy: parts[2], entries: PRIVATE_CIDRS, noResolve: parts.includes('no-resolve'), source: 'GEOIP:private' };
-    }
-    let entries = null;
-    try {
-      entries = await loadSourceEntries({ sourceUrl: `${META_GEOIP_BASE}/${encodeRuleAssetName(name.toLowerCase())}.yaml`, sourceFilter: 'ipcidr' });
-    } catch (error) {
-      stats.unresolvedSources.push({ id: `GEOIP:${name}`, error: error.message });
-      return { fusable: false, rule, reason: `unresolved-geoip:${name}` };
-    }
-    return { fusable: true, policy: parts[2], entries, noResolve: parts.includes('no-resolve'), source: `GEOIP:${name}` };
+    return {
+      fusable: true,
+      policy: parts[2],
+      entries: [`GEOIP,${name}`],
+      noResolve: parts.includes('no-resolve'),
+      source: `GEOIP:${name}`,
+    };
   }
   if (DOMAIN_TYPES.has(type) || IPCIDR_TYPES.has(type) || RESIDUAL_TYPES.has(type)) {
-    return { fusable: true, policy: parts[2], entries: [rule], noResolve: parts.includes('no-resolve'), source: 'inline' };
+    return {
+      fusable: true,
+      policy: parts[2],
+      entries: [[type, parts[1], ...parts.slice(3).filter((part) => part !== 'no-resolve')].join(',')],
+      noResolve: parts.includes('no-resolve'),
+      source: 'inline',
+    };
   }
   return { fusable: false, rule, reason: type || 'unknown' };
 }
 
 async function buildSegments(clashOutput) {
   const sourceMap = readMihomoMrsSourceMap();
-  const stats = { unresolvedProviders: [], unresolvedSources: [], passthroughProviderIds: new Set() };
+  const stats = {
+    unresolvedProviders: [],
+    unresolvedSources: [],
+    passthroughProviderIds: new Set(),
+    optimization: null,
+  };
   const segments = [];
   const inlineRules = [];
   const timeline = [];
@@ -610,10 +701,7 @@ async function buildSegments(clashOutput) {
 
   function flush() {
     if (current && segmentHasPayload(current)) {
-      current.domain = dedupe(current.domain);
-      current.ipcidr = dedupe(current.ipcidr);
-      current.ipcidrNoResolve = dedupe(current.ipcidrNoResolve);
-      current.residual = dedupe(current.residual);
+      current.optimization = optimizeSegment(current);
       segments.push(current);
       timeline.push({ type: 'segment', segment: current });
     }
@@ -636,6 +724,24 @@ async function buildSegments(clashOutput) {
     addEntriesToSegment(current, rule, resolved.entries, resolved.noResolve);
   }
   flush();
+  const globalExactDuplicates = removeGloballyRepeatedEntries(segments);
+  const optimization = sumOptimizationStats(segments.map((segment) => segment.optimization));
+  const prunedEmptySegments = segments
+    .filter((segment) => !segmentHasPayload(segment))
+    .map((segment) => segment.id);
+  stats.optimization = {
+    ...optimization,
+    globalExactDuplicates,
+    removed: optimization.input - optimization.output,
+  };
+  stats.prunedEmptySegments = prunedEmptySegments;
+  if (prunedEmptySegments.length) {
+    const pruned = new Set(prunedEmptySegments);
+    segments.splice(0, segments.length, ...segments.filter((segment) => !pruned.has(segment.id)));
+    timeline.splice(0, timeline.length, ...timeline.filter(
+      (event) => event.type !== 'segment' || !pruned.has(event.segment.id),
+    ));
+  }
   return { segments, inlineRules, timeline, stats };
 }
 
@@ -671,14 +777,18 @@ function renderEgernYaml(entries) {
   const lines = [
     '# Generated by tools/build-fused-rule-sets.js',
   ];
+  const ipEntries = entries.map(entryToClassical).filter((entry) => /^(?:GEOIP|IP-ASN|IP-CIDR|IP-CIDR6),/.test(entry || ''));
+  if (ipEntries.length && ipEntries.every((entry) => splitTopLevel(entry).includes('no-resolve'))) lines.push('no_resolve: true');
   for (const key of [
     'domain_set',
     'domain_suffix_set',
     'domain_keyword_set',
     'domain_regex_set',
     'domain_wildcard_set',
+    'geoip_set',
     'ip_cidr_set',
     'ip_cidr6_set',
+    'asn_set',
   ]) {
     const values = dedupe(sets[key] || []);
     if (!values.length) continue;
@@ -691,9 +801,56 @@ function renderEgernYaml(entries) {
 
 function renderSingBoxSource(entries) {
   const rule = {};
-  for (const entry of entries) addToSingBoxRule(rule, entry);
+  const unsupported = entries.filter((entry) => !addToSingBoxRule(rule, entry));
+  if (unsupported.length) throw new Error(`unsupported sing-box target entries: ${unsupported.slice(0, 10).join(' | ')}`);
   for (const key of Object.keys(rule)) rule[key] = dedupe(rule[key]);
   return `${JSON.stringify({ version: 3, rules: Object.keys(rule).length ? [rule] : [] }, null, 2)}\n`;
+}
+
+function entriesWithNoResolve(segment) {
+  const addModifier = (entry) => splitTopLevel(entry).includes('no-resolve') ? entry : `${entry},no-resolve`;
+  return [
+    ...segment.domain,
+    ...segment.ipcidr,
+    ...segment.ipcidrNoResolve.map(addModifier),
+    ...segment.residual,
+  ];
+}
+
+function countTargetIpEntries(entries) {
+  return entries.reduce((total, entry) => {
+    const type = splitTopLevel(entry)[0];
+    return total + (['IP-CIDR', 'IP-CIDR6', 'SRC-IP-CIDR', 'GEOIP', 'IP-ASN', 'ASN'].includes(type) ? 1 : 0);
+  }, 0);
+}
+
+async function resolveGeoIpCidrs(name) {
+  if (name === 'private') return PRIVATE_CIDRS;
+  const entries = await loadSourceEntries({
+    sourceUrl: `${META_GEOIP_BASE}/${encodeRuleAssetName(name)}.yaml`,
+    sourceFilter: 'ipcidr',
+  });
+  if (!entries || !entries.length) throw new Error(`GEOIP:${name} resolved to an empty CIDR set`);
+  return entries;
+}
+
+async function resolveAsnCidrs(asn) {
+  const text = await fetchText(`https://stat.ripe.net/data/announced-prefixes/data.json?resource=AS${asn}`);
+  const payload = JSON.parse(text);
+  const prefixes = payload && payload.data && payload.data.prefixes;
+  if (!Array.isArray(prefixes) || !prefixes.length) throw new Error(`IP-ASN:${asn} resolved to an empty prefix set`);
+  return prefixes.map((row) => row.prefix).filter(Boolean);
+}
+
+async function materializeTargetEntries(entries, options) {
+  const geoip = await materializeGeoIpEntries(entries, resolveGeoIpCidrs, {
+    preserve: options.nativeCountryGeoIp ? (name) => /^[a-z]{2}$/.test(name) : null,
+  });
+  const asn = await materializeIpAsnEntries(geoip, resolveAsnCidrs, { preserve: options.nativeAsn });
+  const normalized = options.ignoreNoResolve
+    ? asn.map((entry) => splitTopLevel(entry).filter((part) => part !== 'no-resolve').join(','))
+    : asn;
+  return optimizeEntries(normalized);
 }
 
 async function downloadJson(url) {
@@ -934,9 +1091,19 @@ async function writeFusedRuleSets(segments) {
   const manifestSegments = [];
   let generatedMrs = 0;
   let generatedSrs = 0;
+  const seenMobileEntries = new Set();
+  const seenSingBoxEntries = new Set();
 
   for (const segment of segments) {
-    const allEntries = [...segment.domain, ...segment.ipcidr, ...segment.ipcidrNoResolve, ...segment.residual];
+    const allEntries = entriesWithNoResolve(segment);
+    const mobileEntries = removeTargetRepeatedEntries(
+      await materializeTargetEntries(allEntries, { nativeCountryGeoIp: true, nativeAsn: true }),
+      seenMobileEntries,
+    );
+    const singBoxEntries = removeTargetRepeatedEntries(
+      await materializeTargetEntries(allEntries, { nativeCountryGeoIp: false, nativeAsn: false, ignoreNoResolve: true }),
+      seenSingBoxEntries,
+    );
     const row = {
       id: segment.id,
       policy: segment.policy,
@@ -947,6 +1114,19 @@ async function writeFusedRuleSets(segments) {
         ipcidr: segment.ipcidr.length,
         ipcidr_no_resolve: segment.ipcidrNoResolve.length,
         residual: segment.residual.length,
+      },
+      optimization: segment.optimization,
+      target_counts: {
+        mobile: mobileEntries.entries.length,
+        sing_box: singBoxEntries.entries.length,
+      },
+      target_ip_counts: {
+        mobile: countTargetIpEntries(mobileEntries.entries),
+        sing_box: countTargetIpEntries(singBoxEntries.entries),
+      },
+      target_optimization: {
+        mobile: mobileEntries.stats,
+        sing_box: singBoxEntries.stats,
       },
     };
 
@@ -980,29 +1160,34 @@ async function writeFusedRuleSets(segments) {
       row.files.residual = { behavior: 'classical', format: 'yaml', file: residualFile };
     }
 
-    const clashFiles = writeRemoteTextParts(FUSED_CLASH_DIR, `${segment.id}.list`, renderClassicalList(allEntries, { includeProcess: false }));
-    const surgeFiles = writeRemoteTextParts(FUSED_SURGE_DIR, `${segment.id}.list`, renderClassicalList(allEntries, { includeProcess: true }));
-    const quantumultxFiles = writeRemoteTextParts(FUSED_QX_DIR, `${segment.id}.list`, renderQxList(allEntries));
+    let clashFiles = [];
+    let surgeFiles = [];
+    let quantumultxFiles = [];
+    if (mobileEntries.entries.length > 0) {
+      clashFiles = writeRemoteTextParts(FUSED_CLASH_DIR, `${segment.id}.list`, renderClassicalList(mobileEntries.entries, { includeProcess: false }));
+      surgeFiles = writeRemoteTextParts(FUSED_SURGE_DIR, `${segment.id}.list`, renderClassicalList(mobileEntries.entries, { includeProcess: true }));
+      quantumultxFiles = writeRemoteTextParts(FUSED_QX_DIR, `${segment.id}.list`, renderQxList(mobileEntries.entries));
+      writeText(path.join(FUSED_EGERN_DIR, `${segment.id}.yaml`), renderEgernYaml(mobileEntries.entries));
+      row.files.clash = remoteTextFileRecord(clashFiles);
+      row.files.surge = remoteTextFileRecord(surgeFiles);
+      row.files.quantumultx = remoteTextFileRecord(quantumultxFiles);
+      row.files.egern = { format: 'yaml', file: `${segment.id}.yaml` };
+    }
     segment.remoteRuleSetFiles = {
       clash: clashFiles,
       surge: surgeFiles,
       quantumultx: quantumultxFiles,
     };
-    writeText(path.join(FUSED_EGERN_DIR, `${segment.id}.yaml`), renderEgernYaml(allEntries));
-    const singSource = path.join(FUSED_SING_BOX_DIR, `${segment.id}.json`);
-    const singBinary = path.join(FUSED_SING_BOX_DIR, `${segment.id}.srs`);
-    writeText(singSource, renderSingBoxSource(allEntries));
-    if (compileSingBoxRuleSet(singBoxBin, singSource, singBinary)) {
+    if (singBoxEntries.entries.length > 0) {
+      const singSource = path.join(FUSED_SING_BOX_DIR, `${segment.id}.json`);
+      const singBinary = path.join(FUSED_SING_BOX_DIR, `${segment.id}.srs`);
+      writeText(singSource, renderSingBoxSource(singBoxEntries.entries));
+      if (!compileSingBoxRuleSet(singBoxBin, singSource, singBinary)) {
+        throw new Error(`cannot compile required sing-box rule set: ${segment.id}`);
+      }
       row.files.sing_box = { format: 'binary', file: `${segment.id}.srs`, source: `${segment.id}.json` };
       generatedSrs += 1;
-    } else {
-      row.files.sing_box = { format: 'source', file: `${segment.id}.json` };
     }
-
-    row.files.clash = remoteTextFileRecord(clashFiles);
-    row.files.surge = remoteTextFileRecord(surgeFiles);
-    row.files.quantumultx = remoteTextFileRecord(quantumultxFiles);
-    row.files.egern = { format: 'yaml', file: `${segment.id}.yaml` };
     manifestSegments.push(row);
   }
   return { manifestSegments, generatedMrs, generatedSrs, singBoxBinary: singBoxBin ? path.basename(singBoxBin) : null };
@@ -1316,6 +1501,8 @@ async function main() {
     generated_srs_files: writeStats.generatedSrs,
     sing_box_binary: writeStats.singBoxBinary,
     remote_asset_max_bytes: MAX_REMOTE_RULE_SET_BYTES,
+    optimization: stats.optimization,
+    pruned_empty_segments: stats.prunedEmptySegments,
     unresolved_providers: stats.unresolvedProviders,
     unresolved_sources: stats.unresolvedSources,
     passthrough_providers: [...stats.passthroughProviderIds].sort(),
