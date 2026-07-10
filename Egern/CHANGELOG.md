@@ -1,5 +1,11 @@
 # Egern — 变更日志
 
+## v6.0.1-egern.1 (2026-07-10)
+
+- FIX#174 同类修复：Egern 原生 `provider-scki-fused-005-ad-domain.yaml` 原为超过 CDN 单文件预算的远程 YAML，现由生成器按 18 MiB 上限拆为 3 个有序 YAML rule_set。
+- SEMANTICS：三个 rule_set 均指向 `🛑 广告拦截`，保持在原时间线位置连续求值；主配置计数变为 132 条规则 / 115 个 rule_set 引用，增加的两条仅为同策略分片引用。
+- VERIFY：Egern 生成器与融合 manifest / 客户端远程资产大小合同共同校验，避免出现配置可导入但远程文件无法下载的隐性故障。
+
 ## v6.0.0-egern.1 (2026-07-09)
 
 - FUSED-RULESETS：由融合后的 CMFA 规则顺序重新生成，Egern 不直接引用 Mihomo `.mrs`。

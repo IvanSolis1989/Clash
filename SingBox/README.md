@@ -1,8 +1,8 @@
-# SingBox 使用教程（对齐 Clash Party v6.0.0 Full 语义）
+# SingBox 使用教程（对齐 Clash Party v6.0.1 Full 语义）
 
 > 目录简介：这里维护 sing-box Full JSON 生成脚本、生成产物和 Hiddify/HomeProxy 等 sing-box 客户端导入教程。
 >
-> 配置文件：`SingBox/SingBox(sing-box)-full.json`（v6.0.0-sing.1；urltest interval 默认 5m；113 个融合规则集映射为 68 个 `.srs`，另含少量 GEO runtime rule_set）
+> 配置文件：`SingBox/SingBox(sing-box)-full.json`（v6.0.1-sing.1；urltest interval 默认 5m；113 个融合规则集映射为 68 个 `.srs`，另含少量 GEO runtime rule_set）
 > 生成脚本：`SingBox/SingBox(sing-box)-generator.js`
 > 目标：在 **sing-box** 上复刻 Clash Party 的「20 区域组（10 全部 + 10 家宽）+ 33 业务组」静态策略结构，并只使用 sing-box 官方可消费的 SRS 规则集，保持 sing-box 1.12/1.13/1.14 官方配置兼容。
 > 本目录只提供 Full 配置。

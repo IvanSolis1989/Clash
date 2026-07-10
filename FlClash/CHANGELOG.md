@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.1-flclash.1 (2026-07-10)
+
+- SYNC：FlClash 继续只消费 source graph 编译出的融合 Mihomo `.mrs` / residual 规则集，113 个 provider 与 130 条主规则不变。
+- DELIVERY：Issue #174 的文本规则集分片由统一融合编译器处理；FlClash 不引入上游 provider 直连或第二套规则框架。
+
 ## Unreleased (2026-07-09)
 
 - SOURCE-GRAPH：移除 raw provider / raw rules / MRS 映射表，改为只消费 `tools/build-fused-rule-sets.js` 生成的最终融合规则集。

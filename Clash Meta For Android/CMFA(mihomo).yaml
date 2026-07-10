@@ -1,9 +1,9 @@
 # ================================================================
-# Clash Smart v6.0.0-cmfa.1 - CMFA (Clash Meta for Android) 配置
-# Build: 2026-07-09
+# Clash Smart v6.0.1-cmfa.1 - CMFA (Clash Meta for Android) 配置
+# Build: 2026-07-10
 # 架构：proxy-providers 订阅 + 22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules
-# 基线：Clash Party v6.0.0（唯一主线）
-# v6.0.0: FUSED-RULESETS 大融合规则集编译 · v5.4.39: MRS-PARTIAL 全量规则源复查迁移
+# 基线：Clash Party v6.0.1（唯一主线）
+# v6.0.1: FUSED-REMOTE-SHARDS 远程文本规则集按 CDN 限制分片 · v6.0.0: FUSED-RULESETS 大融合规则集编译
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
 # 变更历史：见 `Clash Meta For Android/CHANGELOG.md`

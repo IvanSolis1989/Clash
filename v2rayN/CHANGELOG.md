@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.1-v2n.1 (2026-07-10)
+
+- SYNC：Xray fallback 由最新 fused sing-box JSON 重新展平，保留 86 条原生 Xray RuleObject、`proxy/direct/block` 三出站和既有优先级。
+- DELIVERY：Xray JSON 不远程加载 Issue #174 所涉的文本规则集；其版本同步用于保证 fallback 与 source graph v6.0.1 一致。
+
 ## v6.0.0-v2n.2 (2026-07-09)
 
 - FUSED-XRAY：`v2rayN(xray).json` 改由 `tools/generate-fused-fallback-artifacts.js` 从 `rulesets/generated/fused/sing-box/*.json` 展平成原生 Xray RuleObject。

@@ -39,6 +39,8 @@ const SING_BOX_REPO = 'SagerNet/sing-box';
 const MIHOMO_REPO_API = `https://api.github.com/repos/${MIHOMO_REPO}/releases/latest`;
 const SING_BOX_REPO_API = `https://api.github.com/repos/${SING_BOX_REPO}/releases/latest`;
 const RELEASE_FETCH_TIMEOUT_MS = Number(process.env.SCKI_RELEASE_FETCH_TIMEOUT_MS || 15000);
+// jsDelivr rejects files at 20 MB. Keep a 2 MiB buffer for all client-facing text assets.
+const MAX_REMOTE_RULE_SET_BYTES = 18 * 1024 * 1024;
 
 const DOMAIN_TYPES = new Set(['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD', 'DOMAIN-REGEX', 'DOMAIN-WILDCARD']);
 const IPCIDR_TYPES = new Set(['IP-CIDR', 'IP-CIDR6']);
@@ -116,6 +118,56 @@ function readText(file) {
 function writeText(file, text) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, text, 'utf8');
+}
+
+function utf8ByteLength(text) {
+  const value = String(text);
+  return /[^\u0000-\u007f]/.test(value) ? Buffer.byteLength(value) : value.length;
+}
+
+function splitRemoteText(text, maxBytes = MAX_REMOTE_RULE_SET_BYTES) {
+  const source = String(text);
+  const parts = [];
+  let start = 0;
+  let cursor = 0;
+  let currentBytes = 0;
+
+  while (cursor < source.length) {
+    const newline = source.indexOf('\n', cursor);
+    const end = newline === -1 ? source.length : newline + 1;
+    const line = source.slice(cursor, end);
+    const lineBytes = utf8ByteLength(line);
+    if (lineBytes > maxBytes) throw new Error(`single remote rule line exceeds ${maxBytes} bytes`);
+    if (currentBytes > 0 && currentBytes + lineBytes > maxBytes) {
+      parts.push(source.slice(start, cursor));
+      start = cursor;
+      currentBytes = 0;
+    }
+    currentBytes += lineBytes;
+    cursor = end;
+  }
+
+  if (start < source.length || parts.length === 0) parts.push(source.slice(start));
+  return parts;
+}
+
+function shardFileName(file, index, total) {
+  if (total === 1) return file;
+  const extension = path.extname(file);
+  const stem = extension ? file.slice(0, -extension.length) : file;
+  return `${stem}-part-${String(index + 1).padStart(3, '0')}${extension}`;
+}
+
+function writeRemoteTextParts(directory, file, text) {
+  const parts = splitRemoteText(text);
+  const files = parts.map((part, index) => shardFileName(file, index, parts.length));
+  for (let index = 0; index < parts.length; index += 1) writeText(path.join(directory, files[index]), parts[index]);
+  return files;
+}
+
+function remoteTextFileRecord(files) {
+  if (files.length === 1) return { format: 'text', file: files[0] };
+  return { format: 'text', parts: files, max_bytes: MAX_REMOTE_RULE_SET_BYTES };
 }
 
 function yamlQuote(value) {
@@ -928,9 +980,14 @@ async function writeFusedRuleSets(segments) {
       row.files.residual = { behavior: 'classical', format: 'yaml', file: residualFile };
     }
 
-    writeText(path.join(FUSED_CLASH_DIR, `${segment.id}.list`), renderClassicalList(allEntries, { includeProcess: false }));
-    writeText(path.join(FUSED_SURGE_DIR, `${segment.id}.list`), renderClassicalList(allEntries, { includeProcess: true }));
-    writeText(path.join(FUSED_QX_DIR, `${segment.id}.list`), renderQxList(allEntries));
+    const clashFiles = writeRemoteTextParts(FUSED_CLASH_DIR, `${segment.id}.list`, renderClassicalList(allEntries, { includeProcess: false }));
+    const surgeFiles = writeRemoteTextParts(FUSED_SURGE_DIR, `${segment.id}.list`, renderClassicalList(allEntries, { includeProcess: true }));
+    const quantumultxFiles = writeRemoteTextParts(FUSED_QX_DIR, `${segment.id}.list`, renderQxList(allEntries));
+    segment.remoteRuleSetFiles = {
+      clash: clashFiles,
+      surge: surgeFiles,
+      quantumultx: quantumultxFiles,
+    };
     writeText(path.join(FUSED_EGERN_DIR, `${segment.id}.yaml`), renderEgernYaml(allEntries));
     const singSource = path.join(FUSED_SING_BOX_DIR, `${segment.id}.json`);
     const singBinary = path.join(FUSED_SING_BOX_DIR, `${segment.id}.srs`);
@@ -942,9 +999,9 @@ async function writeFusedRuleSets(segments) {
       row.files.sing_box = { format: 'source', file: `${segment.id}.json` };
     }
 
-    row.files.clash = { format: 'text', file: `${segment.id}.list` };
-    row.files.surge = { format: 'text', file: `${segment.id}.list` };
-    row.files.quantumultx = { format: 'text', file: `${segment.id}.list` };
+    row.files.clash = remoteTextFileRecord(clashFiles);
+    row.files.surge = remoteTextFileRecord(surgeFiles);
+    row.files.quantumultx = remoteTextFileRecord(quantumultxFiles);
     row.files.egern = { format: 'yaml', file: `${segment.id}.yaml` };
     manifestSegments.push(row);
   }
@@ -1096,11 +1153,12 @@ function applyJsFusedBlock(relativeFile, providers, rules) {
   const file = path.join(REPO_ROOT, relativeFile);
   let source = readText(file);
   source = source.replace(/(?:\r?\n)?\/\/ BEGIN AUTO-GENERATED MIHOMO FUSED RULE-SETS[\s\S]*?\/\/ END AUTO-GENERATED MIHOMO FUSED RULE-SETS(?:\r?\n)*/g, '\n');
-  source = source.replace(/\n\s*applyMihomoFusedRuleSets\(config\)\n/g, '\n');
+  source = source.replace(/(?:\r?\n)[ \t]*applyMihomoFusedRuleSets\(config\)[ \t]*(?=\r?\n)/g, '');
+  source = source.replace(/(\r?\n[ \t]*injectBusinessGroups\(config, activeSmartNames\))(?:\r?\n[ \t]*){2,}(\r?\n[ \t]*sortProxyGroups\(config\))/, '$1$2');
   const block = renderJsFusedBlock(providers, rules);
   if (!source.includes('\nconst REGION_ORDER =')) throw new Error(`${relativeFile}: missing fused block anchor`);
   source = source.replace(/\nconst REGION_ORDER =/, `\n${block}\nconst REGION_ORDER =`);
-  const withCall = source.replace(/(\n\s*)injectBusinessGroups\(config, activeSmartNames\)/, '$1injectBusinessGroups(config, activeSmartNames)$1applyMihomoFusedRuleSets(config)');
+  const withCall = source.replace(/(\r?\n[ \t]*)injectBusinessGroups\(config, activeSmartNames\)/, '$1injectBusinessGroups(config, activeSmartNames)$1applyMihomoFusedRuleSets(config)');
   if (withCall === source) throw new Error(`${relativeFile}: cannot locate rule injection call`);
   source = withCall;
   writeText(file, source);
@@ -1153,21 +1211,25 @@ function qxPolicy(policy) {
   return policy;
 }
 
-function platformRuleSetLine(platform, segment) {
+function platformRuleSetLines(platform, segment) {
   const policy = segment.policy;
-  if (platform === 'shadowrocket') return `RULE-SET,${FUSED_BASE_URL}/clash/${segment.id}.list,${policy}`;
-  if (platform === 'surge') return `RULE-SET,${FUSED_BASE_URL}/surge/${segment.id}.list,${policy}`;
-  if (platform === 'loon-remote') return `${FUSED_BASE_URL}/clash/${segment.id}.list, policy=${policy}, tag=${segment.id}, enabled=true`;
-  if (platform === 'quantumultx') return `${FUSED_BASE_URL}/quantumultx/${segment.id}.list, tag=${segment.id}, force-policy=${qxPolicy(policy)}, update-interval=86400, opt-parser=false, enabled=true`;
-  return null;
+  const target = platform === 'surge' ? 'surge' : platform === 'quantumultx' ? 'quantumultx' : 'clash';
+  const files = (segment.remoteRuleSetFiles && segment.remoteRuleSetFiles[target]) || [`${segment.id}.list`];
+  return files.map((file) => {
+    const tag = path.basename(file, '.list');
+    if (platform === 'shadowrocket') return `RULE-SET,${FUSED_BASE_URL}/clash/${file},${policy}`;
+    if (platform === 'surge') return `RULE-SET,${FUSED_BASE_URL}/surge/${file},${policy}`;
+    if (platform === 'loon-remote') return `${FUSED_BASE_URL}/clash/${file}, policy=${policy}, tag=${tag}, enabled=true`;
+    if (platform === 'quantumultx') return `${FUSED_BASE_URL}/quantumultx/${file}, tag=${tag}, force-policy=${qxPolicy(policy)}, update-interval=86400, opt-parser=false, enabled=true`;
+    return null;
+  }).filter(Boolean);
 }
 
 function renderMobileRules(platform, timeline) {
   const lines = [];
   for (const event of timeline) {
     if (event.type === 'segment') {
-      const line = platformRuleSetLine(platform, event.segment);
-      if (line) lines.push(line);
+      lines.push(...platformRuleSetLines(platform, event.segment));
       continue;
     }
     if (platform === 'loon-remote' || platform === 'quantumultx') continue;
@@ -1253,6 +1315,7 @@ async function main() {
     generated_mrs_files: writeStats.generatedMrs,
     generated_srs_files: writeStats.generatedSrs,
     sing_box_binary: writeStats.singBoxBinary,
+    remote_asset_max_bytes: MAX_REMOTE_RULE_SET_BYTES,
     unresolved_providers: stats.unresolvedProviders,
     unresolved_sources: stats.unresolvedSources,
     passthrough_providers: [...stats.passthroughProviderIds].sort(),

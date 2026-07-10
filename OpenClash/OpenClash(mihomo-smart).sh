@@ -2,13 +2,13 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v6.0.0-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
-# Build: 2026-07-09
+# Clash Smart v6.0.1-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Build: 2026-07-10
 # ============================================================================
-# v6.0.0: FUSED-RULESETS 大融合规则集编译 · v5.4.39: MRS-PARTIAL 全量规则源复查迁移
+# v6.0.1: FUSED-REMOTE-SHARDS 远程文本规则集按 CDN 限制分片 · v6.0.0: FUSED-RULESETS 大融合规则集编译
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
-# 定位：对齐 Clash Party v6.0.0 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
+# 定位：对齐 Clash Party v6.0.1 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
 #         - Normal 面向稳定版 mihomo / 经典 url-test
 #         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
@@ -19,14 +19,14 @@
 #   • 130 条 rules（源 931 rules；仅保留 17 条必要内联规则）
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
-# 基线：Clash Party v6.0.0（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v6.0.1（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v6.0.0-oc-smart.1"
+VERSION_TAG="v6.0.1-oc-smart.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -508,7 +508,7 @@ proxy-groups:
 OVERRIDE_EOF
 
 # ============================================================================
-# OVERRIDE YAML (续) — Fused Rule-Providers：113 项，对齐 Clash Party v6.0.0 主线
+# OVERRIDE YAML (续) — Fused Rule-Providers：113 项，对齐 Clash Party v6.0.1 主线
 # 策略：
 #   ✓ 与 Clash Party 主线（BIZ.GFW = '🚫 受限网站'）一致：所有 provider 都走 GFW 组
 #     下载，在中国走代理、在印尼走 DIRECT，规避 jsdelivr/GitHub 冷启动死锁。
@@ -1567,7 +1567,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v6.0.0-oc-smart.1"
+VERSION = "v6.0.1-oc-smart.1"
 
 STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

@@ -6,7 +6,7 @@
 > 适用客户端：**Clash Meta For Android（CMFA）** / **FlClash** / **mihomo-party-android**（Android 原生）· **[ClashMi](https://github.com/KaringX/clashmi)**（跨平台 Flutter GUI，iOS/macOS/Android/Windows/Linux，复用同一 YAML；详见 §九）
 > 内核要求：**Mihomo**（原生 YAML 导入；区域组用 `url-test`，**不含 Smart + LightGBM**——CMFA 的静态 YAML 不支持 JS 覆写）
 > **FlClash 用户**：推荐使用 [FlClash 覆写脚本](../FlClash/FlClash(mihomo).js)（动态节点分类 + 家宽识别 + 订阅清理）。详见 [`FlClash/README.md`](../FlClash/README.md)。
-> 当前版本：**v6.0.0-cmfa.1**（Build 2026-07-09，跟随 Clash Party v6.0.0 主线；区域 url-test 与 provider health-check 默认 300s）
+> 当前版本：**v6.0.1-cmfa.1**（Build 2026-07-10，跟随 Clash Party v6.0.1 主线；区域 url-test 与 provider health-check 默认 300s）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 

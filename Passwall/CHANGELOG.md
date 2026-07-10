@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.1-pw.1 (2026-07-10)
+
+- SYNC：从 fused sing-box JSON 重新生成 apply 脚本、参考配置和 68 条 shunt rule，基线升级到 Clash Party v6.0.1。
+- DELIVERY：Passwall 保持 `rule-set:remote` `.srs` 原生 fallback；Issue #174 的移动端文本分片不改变其 68 条 shunt 映射或策略语义。
+
 ## v6.0.0-pw.2 (2026-07-09)
 
 - FUSED-PASSWALL：`Passwall(xray+sing-box)-apply.sh`、参考 `.conf` 与 `shunt-rules/*.list` 改由 `tools/generate-fused-fallback-artifacts.js` 生成。

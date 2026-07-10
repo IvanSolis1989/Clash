@@ -5,9 +5,9 @@
   },
   "_meta": {
     "name": "SingBox Smart Full",
-    "version": "v6.0.0-sing.1",
-    "build": "2026-07-09",
-    "baseline": "Clash Party v6.0.0",
+    "version": "v6.0.1-sing.1",
+    "build": "2026-07-10",
+    "baseline": "Clash Party v6.0.1",
     "changelog": "见 SingBox/CHANGELOG.md"
   },
   "experimental": {

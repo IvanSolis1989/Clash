@@ -8,6 +8,10 @@ const os = require('node:os');
 const path = require('node:path');
 const vm = require('node:vm');
 const {
+  MAX_JSDELIVR_ASSET_BYTES,
+  validateGeneratedRemoteAssetSizes,
+} = require('./validate-generated-remote-asset-size');
+const {
   SOURCE_GRAPH_ID,
   getRawRoutingGraph,
   getMihomoNormalizedRoutingGraph,
@@ -40,9 +44,9 @@ const EXPECTED_MIHOMO_MRS_RETAINED = 20;
 const EXPECTED_MIHOMO_MRS_FILES = 389;
 const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 30;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
-const EXPECTED_EGERN_RULES = 130;
-const EXPECTED_EGERN_RULE_SETS = 113;
-const EXPECTED_EGERN_GENERATED_RULE_SETS = 118;
+const EXPECTED_EGERN_RULES = 132;
+const EXPECTED_EGERN_RULE_SETS = 115;
+const EXPECTED_EGERN_GENERATED_RULE_SETS = 120;
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -270,6 +274,35 @@ function checkNeedleBefore(record, id, source, beforeNeedle, afterNeedle) {
   });
 }
 
+function checkNeedleSequence(record, id, source, needles) {
+  let previousIndex = -1;
+  let valid = true;
+  for (const needle of needles) {
+    const index = source.indexOf(needle);
+    if (index === -1 || index <= previousIndex) {
+      valid = false;
+      break;
+    }
+    previousIndex = index;
+  }
+  record.check(id, valid, {
+    message: valid ? undefined : `missing or reordered fused rules: ${needles.join(' -> ')}`,
+  });
+}
+
+function fusedTextRuleSetFiles(manifest, platform, segmentId) {
+  const segment = (manifest.segments || []).find((row) => row.id === segmentId);
+  const entry = segment && segment.files && segment.files[platform];
+  if (!entry) return [];
+  if (Array.isArray(entry.parts)) return entry.parts;
+  return entry.file ? [entry.file] : [];
+}
+
+function fusedTextRuleSetUrls(manifest, platform, segmentId) {
+  const base = SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/fused');
+  return fusedTextRuleSetFiles(manifest, platform, segmentId).map((file) => `${base}/${platform}/${file}`);
+}
+
 function supplementalUrl(flavor, file) {
   return `${SUPPLEMENTAL_RULESET_BASE}/${flavor}/${file}.list`;
 }
@@ -403,6 +436,20 @@ function validateFusedRuleSets(record) {
   const manifest = readJson('rulesets/generated/fused/manifest.json');
   const fusedDir = relPath('rulesets/generated/fused');
   const countFiles = (subdir, suffix) => fs.readdirSync(path.join(fusedDir, subdir)).filter((file) => file.endsWith(suffix)).length;
+  const checkTextPlatformFiles = (platform) => {
+    const expected = (manifest.segments || [])
+      .flatMap((segment) => fusedTextRuleSetFiles(manifest, platform, segment.id))
+      .sort();
+    const actual = fs.readdirSync(path.join(fusedDir, platform))
+      .filter((file) => file.endsWith('.list'))
+      .sort();
+    record.check(`fused.${platform}-file-count`, actual.length === expected.length, {
+      value: { actual: actual.length, expected: expected.length },
+    });
+    record.check(`fused.${platform}-file-names`, JSON.stringify(actual) === JSON.stringify(expected), {
+      message: 'generated text files must exactly match fused manifest parts',
+    });
+  };
 
   record.check('fused.authority-source-graph', String(manifest.authority || '').includes(SOURCE_GRAPH_ID), { value: manifest.authority });
   record.check('fused.source-provider-count', manifest.source_provider_count === SOURCE_FULL_PROVIDERS, { value: manifest.source_provider_count });
@@ -415,12 +462,15 @@ function validateFusedRuleSets(record) {
   record.check('fused.generated-srs-files', manifest.generated_srs_files === EXPECTED_FUSED_SRS_FILES, { value: manifest.generated_srs_files });
   record.check('fused.generated-passwall-files', manifest.generated_passwall_files === EXPECTED_FUSED_PASSWALL_FILES, { value: manifest.generated_passwall_files });
   record.check('fused.generated-xray-segments', manifest.generated_xray_fused_segments === EXPECTED_FUSED_SEGMENTS, { value: manifest.generated_xray_fused_segments });
+  record.check('fused.remote-asset-max-bytes', manifest.remote_asset_max_bytes === MAX_JSDELIVR_ASSET_BYTES, {
+    value: manifest.remote_asset_max_bytes,
+  });
   record.check('fused.unresolved-providers', (manifest.unresolved_providers || []).length === 0, { value: manifest.unresolved_providers });
   record.check('fused.unresolved-sources', (manifest.unresolved_sources || []).length === 0, { value: manifest.unresolved_sources });
   record.check('fused.passthrough-providers', (manifest.passthrough_providers || []).length === 0, { value: manifest.passthrough_providers });
-  record.check('fused.clash-file-count', countFiles('clash', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('clash', '.list') });
-  record.check('fused.surge-file-count', countFiles('surge', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('surge', '.list') });
-  record.check('fused.qx-file-count', countFiles('quantumultx', '.list') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('quantumultx', '.list') });
+  checkTextPlatformFiles('clash');
+  checkTextPlatformFiles('surge');
+  checkTextPlatformFiles('quantumultx');
   record.check('fused.egern-file-count', countFiles('egern', '.yaml') === EXPECTED_FUSED_SEGMENTS, { value: countFiles('egern', '.yaml') });
   record.check('fused.sing-box-srs-count', countFiles('sing-box', '.srs') === EXPECTED_FUSED_SRS_FILES, { value: countFiles('sing-box', '.srs') });
   record.check('fused.passwall-file-count', countFiles('passwall', '.list') === EXPECTED_FUSED_PASSWALL_FILES, { value: countFiles('passwall', '.list') });
@@ -496,11 +546,9 @@ function checkSupplementalMihomoRules(record, id, rulesSource) {
   checkNeedleBefore(record, `${id}.fused.cn-game-before-intl-game`, rulesSource, 'RULE-SET,scki-fused-055-game-cn-domain,🕹️ 国内游戏', 'RULE-SET,scki-fused-056-game-intl-domain,🎮 国外游戏');
 }
 
-function checkSupplementalMobileRules(record, id, source, flavor, options = {}) {
-  const base = SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/fused');
+function checkSupplementalMobileRules(record, id, source, flavor, options = {}, fusedManifest) {
   const platform = options.qx ? 'quantumultx' : id === 'surge' ? 'surge' : 'clash';
-  const fusedUrl = (segment) => `${base}/${platform}/${segment}.list`;
-  for (const segment of [
+  const segments = [
     'scki-fused-002-intl-site',
     'scki-fused-004-cnmedia',
     'scki-fused-005-ad',
@@ -513,16 +561,19 @@ function checkSupplementalMobileRules(record, id, source, flavor, options = {}) 
     'scki-fused-055-game-cn',
     'scki-fused-056-game-intl',
     'scki-fused-057-intl-site',
-  ]) {
-    const url = fusedUrl(segment);
-    record.check(`${id}.fused-rule.${segment}`, source.includes(url), {
-      message: `missing fused ${segment} in ${id}`,
+  ];
+  const urlsFor = (segment) => fusedTextRuleSetUrls(fusedManifest, platform, segment);
+  for (const segment of segments) {
+    const urls = urlsFor(segment);
+    record.check(`${id}.fused-manifest.${segment}`, urls.length > 0, {
+      message: `missing ${platform} fused manifest mapping for ${segment}`,
     });
+    record.check(`${id}.fused-rule.${segment}`, urls.length > 0 && urls.every((url) => source.includes(url)), {
+      message: `missing fused ${segment} part in ${id}`,
+    });
+    checkNeedleSequence(record, `${id}.fused-rule.${segment}.part-order`, source, urls);
   }
-  checkNeedleBefore(record, `${id}.fused.cloudflarestorage-before-ads`, source, fusedUrl('scki-fused-002-intl-site'), fusedUrl('scki-fused-005-ad'));
-  checkNeedleBefore(record, `${id}.fused.cnmedia-before-tiktok`, source, fusedUrl('scki-fused-004-cnmedia'), fusedUrl('scki-fused-034-tiktok'));
-  checkNeedleBefore(record, `${id}.fused.cnmedia-before-foreign-tail`, source, fusedUrl('scki-fused-004-cnmedia'), fusedUrl('scki-fused-057-intl-site'));
-  checkNeedleBefore(record, `${id}.fused.cn-game-before-intl-game`, source, fusedUrl('scki-fused-055-game-cn'), fusedUrl('scki-fused-056-game-intl'));
+  checkNeedleSequence(record, `${id}.fused.timeline-order`, source, segments.flatMap((segment) => urlsFor(segment)));
 }
 
 function countLiteral(source, literal) {
@@ -1116,6 +1167,7 @@ function validateOpenClash(record, baselineVersion, options) {
 }
 
 function validateConfProducts(record, baselineVersion) {
+  const fusedManifest = readJson('rulesets/generated/fused/manifest.json');
   const specs = [
     { id: 'shadowrocket', file: 'Shadowrocket/Shadowrocket.conf', regex: / = select,|= url-test,/g },
     { id: 'surge', file: 'Surge/Surge.conf', regex: / = select,|= url-test,/g },
@@ -1153,10 +1205,10 @@ function validateConfProducts(record, baselineVersion) {
   record.check('surge.no-legacy-scholar-list', !surge.includes('/Scholar/Scholar.list'));
   record.check('loon.no-legacy-scholar-list', !loon.includes('/Scholar/Scholar.list'));
   record.check('qx.no-legacy-scholar-list', !qx.includes('/Scholar/Scholar.list'));
-  checkSupplementalMobileRules(record, 'shadowrocket', shadowrocket, 'clash');
-  checkSupplementalMobileRules(record, 'surge', surge, 'clash', { surgeProcess: true });
-  checkSupplementalMobileRules(record, 'loon', loonRemoteRule, 'clash', { loon: true });
-  checkSupplementalMobileRules(record, 'qx', qxFilterRemote, 'quantumultx', { qx: true });
+  checkSupplementalMobileRules(record, 'shadowrocket', shadowrocket, 'clash', {}, fusedManifest);
+  checkSupplementalMobileRules(record, 'surge', surge, 'clash', { surgeProcess: true }, fusedManifest);
+  checkSupplementalMobileRules(record, 'loon', loonRemoteRule, 'clash', { loon: true }, fusedManifest);
+  checkSupplementalMobileRules(record, 'qx', qxFilterRemote, 'quantumultx', { qx: true }, fusedManifest);
   record.check('shadowrocket.no-foldable-domain-inline-rules', !/^DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(shadowrocket));
   record.check('surge.no-foldable-domain-inline-rules', !/^DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(surge));
   record.check('loon.no-foldable-domain-inline-rules', !/^DOMAIN(?:-SUFFIX|-KEYWORD)?,/m.test(loonRuleSection));
@@ -1468,23 +1520,28 @@ function validateEgern(record, baselineVersion, options) {
   record.check('egern.no-process-rulesets', !/local-process-direct|work-process/.test(source), {
     message: 'Egern must not include Clash-style process rule set files',
   });
+  const generatedEgernDirectory = relPath('rulesets/generated/egern');
+  const generatedEgernFiles = fs.readdirSync(generatedEgernDirectory).filter((entry) => entry.endsWith('.yaml'));
   for (const fusedId of [
-    'provider-scki-fused-002-intl-site-domain.yaml',
-    'provider-scki-fused-004-cnmedia-domain.yaml',
-    'provider-scki-fused-005-ad-domain.yaml',
-    'provider-scki-fused-006-cn-site-domain.yaml',
-    'provider-scki-fused-020-google-domain.yaml',
-    'provider-scki-fused-034-tiktok-domain.yaml',
-    'provider-scki-fused-055-game-cn-domain.yaml',
-    'provider-scki-fused-056-game-intl-domain.yaml',
-    'provider-scki-fused-057-intl-site-domain.yaml',
+    'provider-scki-fused-002-intl-site-domain',
+    'provider-scki-fused-004-cnmedia-domain',
+    'provider-scki-fused-005-ad-domain',
+    'provider-scki-fused-006-cn-site-domain',
+    'provider-scki-fused-020-google-domain',
+    'provider-scki-fused-034-tiktok-domain',
+    'provider-scki-fused-055-game-cn-domain',
+    'provider-scki-fused-056-game-intl-domain',
+    'provider-scki-fused-057-intl-site-domain',
   ]) {
-    record.check(`egern.generated-fused.${fusedId}`, source.includes(`/rulesets/generated/egern/${fusedId}`), {
+    const fusedFiles = generatedEgernFiles
+      .filter((file) => file === `${fusedId}.yaml` || new RegExp(`^${fusedId}-part-\\d+\\.yaml$`).test(file))
+      .sort();
+    record.check(`egern.generated-fused.${fusedId}`, fusedFiles.length > 0 && fusedFiles.every((file) => source.includes(`/rulesets/generated/egern/${file}`)), {
       message: `missing generated Egern fused mapping ${fusedId}`,
     });
   }
-  record.check('egern.generated-rule-set-file-count', fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length === EXPECTED_EGERN_GENERATED_RULE_SETS, {
-    value: fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml')).length,
+  record.check('egern.generated-rule-set-file-count', generatedEgernFiles.length === EXPECTED_EGERN_GENERATED_RULE_SETS, {
+    value: generatedEgernFiles.length,
   });
   record.check('egern.geoip-skip-documented', readText('rulesets/generated/egern/provider-scki-fused-057-intl-site-residual.yaml').includes('Skipped unsupported source rule types: GEOIP'), {
     message: 'Egern fused residual GEOIP skip must be documented in generated rule-set source',
@@ -1696,6 +1753,11 @@ function main() {
   validateJsonProducts(record, baselineVersion);
   validateEgern(record, baselineVersion, options);
   validatePasswall(record, baselineVersion);
+  const remoteAssetValidation = validateGeneratedRemoteAssetSizes();
+  record.check('generated-remote-assets.size-limit', remoteAssetValidation.failures.length === 0, {
+    value: { referenced_assets: remoteAssetValidation.references.size, max_bytes: MAX_JSDELIVR_ASSET_BYTES },
+    message: remoteAssetValidation.failures.join('; '),
+  });
   const manifest = buildManifest(baselineVersion);
   const result = {
     ok: record.failures.length === 0,

@@ -5,7 +5,7 @@
 // upstream provider/rule relationship used by MRS and fused-rule compilers.
 
 const SOURCE_GRAPH_ID = 'rulesets/source/routing-graph.js';
-const SOURCE_GRAPH_VERSION = 'v6.0.0';
+const SOURCE_GRAPH_VERSION = 'v6.0.1';
 const VERSION = SOURCE_GRAPH_VERSION;
 
 let SCKI_DISABLE_MIHOMO_MRS_OVERRIDES = false;

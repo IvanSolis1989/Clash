@@ -16,10 +16,10 @@ const PASSWALL2_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall2/shunt-rules');
 
 const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
 const FUSED_SRS_BASE_URL = `${SCKI_BASE}/rulesets/generated/fused/sing-box`;
-const BUILD_DATE = '2026-07-09';
-const V2RAYN_VERSION = 'v6.0.0-v2n.2';
-const PASSWALL_VERSION = 'v6.0.0-pw.2';
-const PASSWALL2_VERSION = 'v6.0.0-pw2.2';
+const BUILD_DATE = '2026-07-10';
+const V2RAYN_VERSION = 'v6.0.1-v2n.1';
+const PASSWALL_VERSION = 'v6.0.1-pw.1';
+const PASSWALL2_VERSION = 'v6.0.1-pw2.1';
 
 const DIRECT_POLICIES = new Set([
   'DIRECT',
@@ -356,7 +356,7 @@ function renderPasswallScript({ appName, version, title, configName, nodeComment
   return `#!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for ${title} — fused UCI batch helper
-# Version: ${version} | Build ${BUILD_DATE} | Baseline: Clash Party v6.0.0
+# Version: ${version} | Build ${BUILD_DATE} | Baseline: Clash Party v6.0.1
 #
 # 用途：一次性在 ${title} 中创建 ${segments.length} 条 fused shunt rule。
 #       每条规则只引用 rulesets/generated/fused/sing-box/*.srs，不再维护手写域名/IP 展平列表。
@@ -456,7 +456,7 @@ function renderPasswallConf({ title, version, readmePath, segments }) {
     '# ════════════════════════════════════════════════════════════════════════════',
     `#  Smart-Config-Kit for ${title} — Fused Shunt Rules Reference`,
     `#  Version: ${version} | Build: ${BUILD_DATE}`,
-    '#  Baseline: Clash Party v6.0.0',
+    '#  Baseline: Clash Party v6.0.1',
     '#  Source: rulesets/source/routing-graph.js -> rulesets/generated/fused/sing-box/*.srs',
     '#',
     `#  本文件为手工配置参考；推荐使用同目录 apply.sh 自动创建 ${segments.length} 条规则。`,

@@ -1,10 +1,10 @@
-# 🚀 Smart-Config-Kit v6.0.0
+# 🚀 Smart-Config-Kit v6.0.1
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
-> 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。
+> 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。面向 CDN 的文本/YAML 规则集由编译器按 manifest 分片，单个远程资产不超过 18 MiB，分片保持原始规则顺序和同一策略目标。
 >
-> - 🧠 **v6.0.0 大版本：规则集融合编译器**：按最终分流目标把源 474 providers / 931 rules 编译为 113 个融合 rule-provider、130 条主规则引用
+> - 🧠 **v6.0.1：融合规则集远程分片**：保持 68 个语义分流段、113 个融合 rule-provider、130 条主规则不变；仅把超过 CDN 限制的文本/YAML 远程资产拆为同策略、同顺序的多个文件
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
 > - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，v2rayN Xray 展平成 RuleObject，Passwall 系使用 `rule-set:remote` `.srs`
 > - ⚡ **Smart / Normal 双内核**：同规则量，按客户端能力选择 `smart`（LightGBM ML 择路）或经典 `url-test`

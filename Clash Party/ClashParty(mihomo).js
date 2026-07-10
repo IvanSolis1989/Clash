@@ -1,8 +1,8 @@
 ﻿// Clash 覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v6.0.0-normal.1 (2026-07-09)
+// 版本：v6.0.1-normal.1 (2026-07-10)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.0（与 Smart 版规则 100% 等价，仅区域组从 smart 改为 url-test）
-// v6.0.0: FUSED-RULESETS 大融合规则集编译 · v5.4.39: MRS-PARTIAL 全量规则源复查迁移
+// 规则源：rulesets/source/routing-graph.js v6.0.1（与 Smart 版规则 100% 等价，仅区域组从 smart 改为 url-test）
+// v6.0.1: FUSED-REMOTE-SHARDS 远程文本规则集按 CDN 限制分片 · v6.0.0: FUSED-RULESETS 大融合规则集编译
 // 适用：Mihomo / Clash.Meta 稳定版内核、不支持 smart + LightGBM 的分支；也适用于想完全关闭 ML 评估的用户
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
@@ -10,7 +10,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.0-normal.1'
+const VERSION = 'v6.0.1-normal.1'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别
@@ -562,10 +562,6 @@ function main(config) {
     console.log(`[${VERSION}] Active url-test region groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
 
     injectBusinessGroups(config, activeSmartNames)
-
-    applyMihomoFusedRuleSets(config)
-
-    applyMihomoFusedRuleSets(config)
     applyMihomoFusedRuleSets(config)
     sortProxyGroups(config)
     console.log(`[${VERSION}] Done! Groups: ${config['proxy-groups'].length}, Rules: ${config.rules.length}, Providers: ${Object.keys(config['rule-providers']).length}`)

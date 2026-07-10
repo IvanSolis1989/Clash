@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.1-oc-normal.1 / v6.0.1-oc-smart.1 (2026-07-10)
+
+- SYNC：Normal / Smart heredoc 同步到 Clash Party v6.0.1，继续引用融合 `.mrs` / residual YAML，113 个 provider、130 条规则和 55 个策略组不变。
+- DELIVERY：OpenClash 不消费 Issue #174 所涉的移动端文本规则格式；仍由融合编译器和 manifest 保证全端规则顺序一致。
+
 ## v6.0.0-oc-normal.1 / v6.0.0-oc-smart.1 (2026-07-09)
 
 - FUSED-RULESETS：Normal / Smart heredoc 同步到 Clash Party v6.0.0 融合规则集，直接使用融合 `.mrs` / residual YAML。

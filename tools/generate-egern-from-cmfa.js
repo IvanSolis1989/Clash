@@ -17,6 +17,8 @@ const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-
 const HAGEZI_TIF_DOMAINS = 'https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/tif.txt';
 const FETCH_CONCURRENCY = 3;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
+// jsDelivr rejects files at 20 MB. Keep generated Egern-native rule sets below 18 MiB.
+const MAX_REMOTE_RULE_SET_BYTES = 18 * 1024 * 1024;
 
 const PROCESS_RULE_SETS = new Set([
   'scki-local-process-direct',
@@ -191,23 +193,25 @@ function sourceInfoForGeneratedMihomoMrs(url) {
 
 function addGeneratedAsset(assets, id, sourceInfo, behavior) {
   const file = safeAssetFileName(id);
-  const existing = assets.get(file);
-  if (existing) return `${SCKI_GENERATED_BASE}/${file}`;
-  assets.set(file, {
-    file,
-    id,
-    sourceUrl: sourceInfo && sourceInfo.sourceUrl,
-    sourceFilter: sourceInfo && sourceInfo.sourceFilter,
-    behavior: behavior || 'classical',
-  });
-  return `${SCKI_GENERATED_BASE}/${file}`;
+  let asset = assets.get(file);
+  if (!asset) {
+    asset = {
+      file,
+      id,
+      sourceUrl: sourceInfo && sourceInfo.sourceUrl,
+      sourceFilter: sourceInfo && sourceInfo.sourceFilter,
+      behavior: behavior || 'classical',
+    };
+    assets.set(file, asset);
+  }
+  return asset.urls || [`${SCKI_GENERATED_BASE}/${file}`];
 }
 
 function providerUrlToEgern(provider, assets) {
   if (!provider || !provider.url) return null;
   if (PROCESS_RULE_SETS.has(provider.name)) return null;
   if (provider.url.includes('/rulesets/supplemental/clash/')) {
-    return provider.url.replace('/rulesets/supplemental/clash/', '/rulesets/supplemental/egern/').replace(/\.list$/, '.yaml');
+    return [provider.url.replace('/rulesets/supplemental/clash/', '/rulesets/supplemental/egern/').replace(/\.list$/, '.yaml')];
   }
   return addGeneratedAsset(assets, `provider-${provider.name}`, sourceInfoForProvider(provider), provider.behavior || 'classical');
 }
@@ -237,11 +241,16 @@ function renderNestedCondition(condition, providers, assets) {
   if (type === 'DST-PORT') return ['        - dest_port:', `            match: ${yamlQuote(value)}`];
   if (type === 'NETWORK') return ['        - protocol:', `            match: ${yamlQuote(String(value).toLowerCase())}`];
   if (type === 'RULE-SET') {
-    const url = providerUrlToEgern(providers.get(value), assets);
-    if (!url) return [];
-    return ['        - rule_set:', `            match: ${yamlQuote(url)}`];
+    const urls = providerUrlToEgern(providers.get(value), assets);
+    if (!urls || urls.length === 0) return [];
+    if (urls.length > 1) throw new Error(`Cannot expand split Egern rule_set inside nested condition: ${value}`);
+    return ['        - rule_set:', `            match: ${yamlQuote(urls[0])}`];
   }
-  if (type === 'GEOSITE') return ['        - rule_set:', `            match: ${yamlQuote(geositeEgernUrl(value, assets))}`];
+  if (type === 'GEOSITE') {
+    const urls = geositeEgernUrl(value, assets);
+    if (urls.length > 1) throw new Error(`Cannot expand split Egern geosite inside nested condition: ${value}`);
+    return ['        - rule_set:', `            match: ${yamlQuote(urls[0])}`];
+  }
   if (type === 'NOT') {
     const nested = splitTupleList(value)[0];
     const nestedLines = renderNestedCondition(nested, providers, assets);
@@ -279,10 +288,10 @@ function renderEgernRule(rule, providers, assets, stats) {
       stats.skippedProcessRuleSets.push(providerName);
       return [];
     }
-    const url = providerUrlToEgern(providers.get(providerName), assets);
-    if (!url) throw new Error(`Missing provider URL for ${providerName}`);
-    stats.ruleSetRefs += 1;
-    return renderRuleBlock('rule_set', { match: url, policy, update_interval: 86400 });
+    const urls = providerUrlToEgern(providers.get(providerName), assets);
+    if (!urls || urls.length === 0) throw new Error(`Missing provider URL for ${providerName}`);
+    stats.ruleSetRefs += urls.length;
+    return urls.flatMap((url) => renderRuleBlock('rule_set', { match: url, policy, update_interval: 86400 }));
   }
   if (type === 'DOMAIN') return renderRuleBlock('domain', { match: parts[1], policy: parts[2] });
   if (type === 'DOMAIN-SUFFIX') return renderRuleBlock('domain_suffix', { match: parts[1], policy: parts[2] });
@@ -295,12 +304,14 @@ function renderEgernRule(rule, providers, assets, stats) {
     const policy = parts[2];
     if (name === 'private') return renderPrivateGeoip(policy);
     if (/^[A-Z]{2}$/.test(name)) return renderRuleBlock('geoip', { match: name, policy, no_resolve: parts.includes('no-resolve') });
-    stats.ruleSetRefs += 1;
-    return renderRuleBlock('rule_set', { match: geoipEgernUrl(name, assets), policy, update_interval: 86400 });
+    const urls = geoipEgernUrl(name, assets);
+    stats.ruleSetRefs += urls.length;
+    return urls.flatMap((url) => renderRuleBlock('rule_set', { match: url, policy, update_interval: 86400 }));
   }
   if (type === 'GEOSITE') {
-    stats.ruleSetRefs += 1;
-    return renderRuleBlock('rule_set', { match: geositeEgernUrl(parts[1], assets), policy: parts[2], update_interval: 86400 });
+    const urls = geositeEgernUrl(parts[1], assets);
+    stats.ruleSetRefs += urls.length;
+    return urls.flatMap((url) => renderRuleBlock('rule_set', { match: url, policy: parts[2], update_interval: 86400 }));
   }
   if (type === 'AND') {
     const policy = parts[2];
@@ -331,9 +342,9 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
   return [
     '---',
     '# ======================================================================',
-    '# Egern Smart v6.0.0-egern.1 - Egern Profile',
-    '# Build: 2026-07-09',
-    '# Baseline: Clash Party v6.0.0',
+    '# Egern Smart v6.0.1-egern.1 - Egern Profile',
+    '# Build: 2026-07-10',
+    '# Baseline: Clash Party v6.0.1',
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
     `# Egern rule sets: ${assetCount} generated native YAML files.`,
@@ -491,6 +502,58 @@ function renderEgernRuleSet(asset, converted) {
   return lines.join('\n');
 }
 
+function convertedRuleSetHasEntries(converted) {
+  return EGERN_SET_ORDER.some((key) => converted.sets[key].size > 0);
+}
+
+function renderedRuleSetHeaderBytes(asset, skipped) {
+  const lines = [
+    '# Generated by tools/generate-egern-from-cmfa.js',
+    `# Source id: ${asset.id}`,
+    `# Source URL: ${asset.sourceUrl}`,
+  ];
+  if (skipped.length > 0) lines.push(`# Skipped unsupported source rule types: ${skipped.join(', ')}`);
+  return Buffer.byteLength(`${lines.join('\n')}\n`);
+}
+
+function splitConvertedRuleSet(asset, converted) {
+  if (!convertedRuleSetHasEntries(converted)) return [converted];
+
+  const parts = [];
+  let current = { sets: createEmptySets(), skipped: [...converted.skipped] };
+  let currentBytes = renderedRuleSetHeaderBytes(asset, current.skipped);
+
+  function flush() {
+    if (!convertedRuleSetHasEntries(current)) return;
+    parts.push(current);
+    current = { sets: createEmptySets(), skipped: [...converted.skipped] };
+    currentBytes = renderedRuleSetHeaderBytes(asset, current.skipped);
+  }
+
+  for (const key of EGERN_SET_ORDER) {
+    for (const value of [...converted.sets[key]].sort()) {
+      const keyBytes = current.sets[key].size === 0 ? Buffer.byteLength(`${key}:\n`) : 0;
+      const valueBytes = Buffer.byteLength(`  - ${yamlQuote(value)}\n`);
+      if (currentBytes + keyBytes + valueBytes > MAX_REMOTE_RULE_SET_BYTES && convertedRuleSetHasEntries(current)) flush();
+      const nextKeyBytes = current.sets[key].size === 0 ? Buffer.byteLength(`${key}:\n`) : 0;
+      if (currentBytes + nextKeyBytes + valueBytes > MAX_REMOTE_RULE_SET_BYTES) {
+        throw new Error(`${asset.id}: a single Egern rule-set entry exceeds ${MAX_REMOTE_RULE_SET_BYTES} bytes`);
+      }
+      current.sets[key].add(value);
+      currentBytes += nextKeyBytes + valueBytes;
+    }
+  }
+  flush();
+  return parts;
+}
+
+function shardRuleSetFileName(file, index, total) {
+  if (total === 1) return file;
+  const extension = path.extname(file);
+  const stem = extension ? file.slice(0, -extension.length) : file;
+  return `${stem}-part-${String(index + 1).padStart(3, '0')}${extension}`;
+}
+
 function fetchCandidates(url) {
   const candidates = [url];
   const rawMatch = url.match(/^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/(.+)$/);
@@ -567,6 +630,7 @@ async function generateNativeRuleSets(assets) {
   fs.rmSync(GENERATED_RULESET_DIR, { recursive: true, force: true });
   fs.mkdirSync(GENERATED_RULESET_DIR, { recursive: true });
   const assetList = [...assets.values()].sort((a, b) => a.file.localeCompare(b.file));
+  let assetCount = 0;
   let totalEntries = 0;
   const skippedTypes = new Set();
   await runLimited(assetList, FETCH_CONCURRENCY, async (asset) => {
@@ -578,9 +642,18 @@ async function generateNativeRuleSets(assets) {
     const converted = convertEntriesToSets(entries, asset.behavior);
     for (const type of converted.skipped) skippedTypes.add(type);
     totalEntries += entries.length;
-    fs.writeFileSync(path.join(GENERATED_RULESET_DIR, asset.file), renderEgernRuleSet(asset, converted), 'utf8');
+    const convertedParts = splitConvertedRuleSet(asset, converted);
+    const files = convertedParts.map((part, index) => shardRuleSetFileName(asset.file, index, convertedParts.length));
+    asset.urls = files.map((file) => `${SCKI_GENERATED_BASE}/${file}`);
+    for (let index = 0; index < convertedParts.length; index += 1) {
+      const partAsset = convertedParts.length === 1 ? asset : { ...asset, file: files[index] };
+      const rendered = renderEgernRuleSet(partAsset, convertedParts[index]);
+      if (Buffer.byteLength(rendered) > MAX_REMOTE_RULE_SET_BYTES) throw new Error(`${files[index]} exceeds ${MAX_REMOTE_RULE_SET_BYTES} bytes after rendering`);
+      fs.writeFileSync(path.join(GENERATED_RULESET_DIR, files[index]), rendered, 'utf8');
+    }
+    assetCount += files.length;
   });
-  return { assetCount: assetList.length, totalEntries, skippedTypes: [...skippedTypes].sort() };
+  return { assetCount, totalEntries, skippedTypes: [...skippedTypes].sort() };
 }
 
 async function main() {
@@ -588,6 +661,10 @@ async function main() {
   const providers = parseProviders(cmfa);
   const rules = parseRules(cmfa);
   const assets = new Map();
+  const discoveryStats = { ruleSetRefs: 0, skippedProcessRuleSets: [] };
+  for (const rule of rules) renderEgernRule(rule, providers, assets, discoveryStats);
+
+  const ruleSetStats = await generateNativeRuleSets(assets);
   const stats = { ruleSetRefs: 0, skippedProcessRuleSets: [] };
   const renderedRules = [];
 
@@ -596,7 +673,6 @@ async function main() {
     if (block.length > 0) renderedRules.push(...block);
   }
 
-  const ruleSetStats = await generateNativeRuleSets(assets);
   const output = [
     renderPrefix(ruleSetStats.assetCount, providers.size, rules.length),
     '# Generated from Clash Meta For Android/CMFA(mihomo).yaml.',

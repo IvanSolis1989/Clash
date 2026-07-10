@@ -1,8 +1,8 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v6.0.0-flclash.1 (2026-07-09)
+// 版本：v6.0.1-flclash.1 (2026-07-10)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.0（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
-// v6.0.0: FUSED-RULESETS 大融合规则集编译 · v5.4.39: MRS-PARTIAL 全量规则源复查迁移
+// 规则源：rulesets/source/routing-graph.js v6.0.1（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
+// v6.0.1: FUSED-REMOTE-SHARDS 远程文本规则集按 CDN 限制分片 · v6.0.0: FUSED-RULESETS 大融合规则集编译
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -36,7 +36,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.0-flclash.1'
+const VERSION = 'v6.0.1-flclash.1'
 
 function log() {
   if (typeof console !== 'undefined' && console.log) console.log.apply(console, arguments)
@@ -650,10 +650,6 @@ function main(config) {
     log(`[${VERSION}] Active url-test region groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
 
     injectBusinessGroups(config, activeSmartNames)
-
-    applyMihomoFusedRuleSets(config)
-
-    applyMihomoFusedRuleSets(config)
     applyMihomoFusedRuleSets(config)
     sortProxyGroups(config)
     log(`[${VERSION}] Done! Groups: ${config['proxy-groups'].length}, Rules: ${config.rules.length}, Providers: ${Object.keys(config['rule-providers']).length}`)

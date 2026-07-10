@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.1-sing.1 (2026-07-10)
+
+- SYNC：Full JSON 由生成器重新生成并升级至 Clash Party v6.0.1 基线。
+- DELIVERY：sing-box 继续使用 68 个 `.srs` 融合规则集；Issue #174 的文本规则分片不改变 `.srs` 路径、route 语义或 GEO runtime rule_set。
+
 ## v6.0.0-sing.1 (2026-07-09)
 
 - FUSED-RULESETS：生成器基线更新到 Clash Party v6.0.0，将融合 provider 映射到 `rulesets/generated/fused/sing-box/*.srs`。

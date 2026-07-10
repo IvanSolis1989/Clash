@@ -1,14 +1,14 @@
 ﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v6.0.0 (2026-07-09)
+// 版本：v6.0.1 (2026-07-10)
 // 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.0（474 providers / 931 rules -> fused 113 / 130）
+// 规则源：rulesets/source/routing-graph.js v6.0.1（474 providers / 931 rules -> fused 113 / 130；远程文本规则集按 CDN 限制分片）
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.0'
+const VERSION = 'v6.0.1'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别
@@ -637,10 +637,6 @@ function main(config) {
     console.log(`[${VERSION}] Active Smart groups: ${[...activeSmartNames].filter(function(n) { return n !== 'DIRECT' && n !== 'REJECT' }).join(', ')}`)
 
     injectBusinessGroups(config, activeSmartNames)
-
-    applyMihomoFusedRuleSets(config)
-
-    applyMihomoFusedRuleSets(config)
     applyMihomoFusedRuleSets(config)
     sortProxyGroups(config)
     console.log(`[${VERSION}] Done! Groups: ${config['proxy-groups'].length}, Rules: ${config.rules.length}, Providers: ${Object.keys(config['rule-providers']).length}`)

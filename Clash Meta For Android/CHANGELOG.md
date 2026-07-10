@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.1-cmfa.1 (2026-07-10)
+
+- SYNC：跟随 Clash Party v6.0.1 和 source graph v6.0.1 重新同步；CMFA 保持融合 `.mrs` / residual YAML 消费方式、113 个 rule-provider 与 130 条主规则。
+- DELIVERY：本端不消费大文本规则集，因此不改变规则语义；远程文本分片修复由同一融合链路供 Shadowrocket / Surge / Loon / Quantumult X 使用。
+
 ## v6.0.0-cmfa.1 (2026-07-09)
 
 - FUSED-RULESETS：跟随 Clash Party v6.0.0 融合规则集架构，CMFA 直接引用融合后的 `.mrs` / residual YAML。

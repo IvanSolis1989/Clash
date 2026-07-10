@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-09T11:02:03.822Z",
+  "generated_at": "2026-07-10T10:20:09.532Z",
   "authority": "rulesets/source/routing-graph.js after Mihomo MRS normalization",
-  "baseline_version": "v6.0.0",
+  "baseline_version": "v6.0.1",
   "source_provider_count": 474,
   "source_rule_count": 931,
   "fused_provider_count": 113,
@@ -11,6 +11,7 @@
   "generated_mrs_files": 96,
   "generated_srs_files": 68,
   "sing_box_binary": "sing-box.exe",
+  "remote_asset_max_bytes": 18874368,
   "unresolved_providers": [],
   "unresolved_sources": [],
   "passthrough_providers": [],
@@ -241,15 +242,30 @@
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-005-ad.list"
+          "parts": [
+            "scki-fused-005-ad-part-001.list",
+            "scki-fused-005-ad-part-002.list",
+            "scki-fused-005-ad-part-003.list"
+          ],
+          "max_bytes": 18874368
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-005-ad.list"
+          "parts": [
+            "scki-fused-005-ad-part-001.list",
+            "scki-fused-005-ad-part-002.list",
+            "scki-fused-005-ad-part-003.list"
+          ],
+          "max_bytes": 18874368
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-005-ad.list"
+          "parts": [
+            "scki-fused-005-ad-part-001.list",
+            "scki-fused-005-ad-part-002.list",
+            "scki-fused-005-ad-part-003.list"
+          ],
+          "max_bytes": 18874368
         },
         "egern": {
           "format": "yaml",
@@ -3090,15 +3106,27 @@
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-057-intl-site.list"
+          "parts": [
+            "scki-fused-057-intl-site-part-001.list",
+            "scki-fused-057-intl-site-part-002.list"
+          ],
+          "max_bytes": 18874368
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-057-intl-site.list"
+          "parts": [
+            "scki-fused-057-intl-site-part-001.list",
+            "scki-fused-057-intl-site-part-002.list"
+          ],
+          "max_bytes": 18874368
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-057-intl-site.list"
+          "parts": [
+            "scki-fused-057-intl-site-part-001.list",
+            "scki-fused-057-intl-site-part-002.list"
+          ],
+          "max_bytes": 18874368
         },
         "egern": {
           "format": "yaml",

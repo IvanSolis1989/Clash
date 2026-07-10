@@ -295,7 +295,7 @@ function loadOverwrite(target) {
   vm.createContext(sandbox);
   const trailer = '\n;globalThis.__smokeExports = { main, classifyNode, classifyAllNodes, VERSION };';
   vm.runInContext(source + trailer, sandbox, { filename: target.file, timeout: 15000 });
-  return { exports: sandbox.__smokeExports, logs };
+  return { exports: sandbox.__smokeExports, logs, source };
 }
 
 function makeRecorder(target) {
@@ -594,10 +594,12 @@ function validateFlClashRefs(target, config, refs, record) {
 
 function runTarget(target, options) {
   const record = makeRecorder(target);
-  const { exports: api, logs } = loadOverwrite(target);
+  const { exports: api, logs, source } = loadOverwrite(target);
   const fixture = makeFixtureConfig();
 
   record.expect(api && typeof api.main === 'function', 'main(config) is exported by the VM harness');
+  const fusedApplyCalls = (source.match(/^\s*applyMihomoFusedRuleSets\(config\)\s*$/gm) || []).length;
+  record.expectEqual(fusedApplyCalls, 1, 'contains exactly one fused rule injection call');
   validateClassification(target, api, fixture, record);
 
   const config = deepClone(fixture);

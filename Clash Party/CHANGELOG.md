@@ -7,6 +7,13 @@
 
 ---
 
+## v6.0.1 (2026-07-10)
+
+- SYNC：规则权威源升级为 `rulesets/source/routing-graph.js v6.0.1`；Smart / Normal 继续只消费最终融合 `.mrs` / residual 规则集，113 个 provider、130 条主规则和 55 个策略组不变。
+- DELIVERY：移动端文本规则集改由融合编译器按 18 MiB 上限生成有序分片；本 JS 产物不重新携带上游 provider，也不回退为直接调用上游规则集。
+- BUILD-IDEMPOTENCE：生成器对 CRLF / LF 的旧 fused 注入调用统一清理，再插入唯一调用；重复构建不会累加 `applyMihomoFusedRuleSets(config)`。
+- VERIFY：全产物合同改为从 fused manifest 验证分片数量和顺序，并在 CI 路径检查所有客户端实际引用的自托管生成文件大小。
+
 ## Unreleased (2026-07-09)
 
 - SOURCE-GRAPH：raw provider / raw rules / MRS 映射迁移到 `rulesets/source/routing-graph.js`。

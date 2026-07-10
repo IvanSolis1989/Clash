@@ -1,6 +1,7 @@
 # Stash
 
 > 目录简介：这里提供 Stash 专用 YAML 产物。`Stash.yaml` 由 `tools/generate-stash-from-cmfa.js` 从 CMFA 自动裁剪生成，不手工维护。
+> 当前版本：**v6.0.1-stash.1**（Build 2026-07-10，跟随 Clash Party v6.0.1 / CMFA v6.0.1-cmfa.1）。
 
 ## 文件
 

@@ -4,6 +4,11 @@
 
 ---
 
+## v6.0.1-stash.1 (2026-07-10)
+
+- SYNC：由 CMFA v6.0.1-cmfa.1 重新生成，继续保留融合后的 113 个 rule-provider 与 130 条规则。
+- DELIVERY：Stash 仍消费 Mihomo `.mrs` / residual YAML；Issue #174 的 CDN 大文本分片不会改变 Stash 的规则语义或平台字段裁剪。
+
 ## v6.0.0-stash.1 (2026-07-09)
 
 - SYNC：由 CMFA v6.0.0-cmfa.1 重新生成，保留融合后的 `113` 个 rule-provider 与 `130` 条规则。

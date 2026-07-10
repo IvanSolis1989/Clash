@@ -6,6 +6,15 @@
 
 ---
 
+## v6.0.1 (2026-07-10)
+
+- FIX#174：修复 Shadowrocket 加载 `scki-fused-005-ad`（原 51.10 MiB）和 `scki-fused-057-intl-site`（原 20.15 MiB）时，CDN 返回 `403/forbidden`、客户端报“文件过大”的问题。根因是融合编译器把一个策略段始终写成单个文本文件，未约束远程分发文件体积。
+- FUSED-REMOTE-SHARDS：`tools/build-fused-rule-sets.js` 为 Clash / Surge / Quantumult X 文本产物增加 18 MiB UTF-8 上限，严格按规则行分片并保留源规则图的先后顺序、策略目标和段内语义。广告段生成 3 个分片，国外网站尾段生成 2 个分片；Shadowrocket、Surge、Loon、Quantumult X 自动引用所有同策略分片。
+- EGERN-NATIVE：`tools/generate-egern-from-cmfa.js` 对超限 Egern 原生 YAML 规则集执行同样的有序分片；广告域名规则集从 1 个拆为 3 个，主配置从 130 条规则 / 113 个 `rule_set` 引用调整为 132 / 115，仅是同策略分片引用增加，分流语义不变。
+- VERIFY：新增 `tools/validate-generated-remote-asset-size.js`，扫描所有客户端实际引用的本仓库 `rulesets/generated/` URL，缺文件或任一文件超过 18 MiB 即失败；`validate-artifact-contracts.js` 改读 fused manifest 的实际 parts，验证分片引用、顺序、Egern 映射和远程资产上限，防止再次生成无法分发的配置。
+- BUILD-IDEMPOTENCE：修复融合编译器在 CRLF JS 文件上清理旧 `applyMihomoFusedRuleSets(config)` 调用时漏匹配的问题；重复构建后每个 JS 覆写只保留一个注入调用，`validate-js-overwrites.js` 对此建立静态回归断言。
+- SYNC：14 个客户端产物同步至 Clash Party / source graph `v6.0.1`。Mihomo `.mrs`、sing-box `.srs`、v2rayN Xray 与 Passwall / Passwall2 原生 fallback 保持各自格式，不将二进制或原生规则格式强制转换为文本分片。
+
 ## Unreleased (2026-07-09)
 
 - SOURCE-GRAPH：新增 `rulesets/source/routing-graph.js` 作为规则权威输入，集中记录上游 provider、原始规则顺序、MRS 归一化映射和最终分流目标。

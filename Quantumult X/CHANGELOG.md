@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.1-QX.1 (2026-07-10)
+
+- FIX#174：广告融合段和国外网站尾段的超限 remote filter 按 18 MiB 上限拆分为同策略、有序分片。
+- SEMANTICS：每个新增 `filter_remote` 保持原 `force-policy`，分流内容与匹配优先级不变。
+
 ## v6.0.0-QX.1 (2026-07-09)
 
 - FUSED-RULESETS：迁移到 68 个融合 remote URL filter，保留 QX 必要本地端口/兜底规则。
