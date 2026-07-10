@@ -12,7 +12,7 @@
     "rule_count": 109,
     "rule_set_ref_count": 92,
     "native_rule_set_count": 97,
-    "source_entry_count": 575697,
+    "source_entry_count": 575841,
     "dedup_removed": 123980,
     "global_exact_duplicates_removed": 123436,
     "empty_asset_count": 21
@@ -66,8 +66,8 @@
       },
       {
         "file": "provider-scki-fused-005-ad-domain.yaml",
-        "bytes": 10335764,
-        "sha256": "ea883467fd07242178ca65247634a57a071dd15db2cf7259a6a390a151940190"
+        "bytes": 10339374,
+        "sha256": "8d44307cc657934c4691caf46162c42ff1f3ce44b9175942ff57c33ab1063387"
       },
       {
         "file": "provider-scki-fused-005-ad-ipcidr.yaml",
