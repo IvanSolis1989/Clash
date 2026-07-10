@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T19:45:43.113Z",
+  "generated_at": "2026-07-10T19:53:03.290Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
   "mihomo_bin": "mihomo-v1.19.28",
   "output_dir": "rulesets/generated/mihomo-mrs",
