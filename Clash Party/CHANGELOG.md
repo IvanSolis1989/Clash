@@ -7,6 +7,13 @@
 
 ---
 
+## v6.0.2-region.1（Smart 保持 v6.0.2 基线）/ v6.0.2-normal.2 (2026-07-12)
+
+- FIX#REGION-CARRIER-PRIORITY：修复节点名中的运营商/线路营销词抢占真实落地地区的问题。此前 `🇯🇵AWS日本01 | 电信移动联通推荐` 会先命中 `CN` 的 `电信/联通/移动` 关键词，只进入 `🌏 亚太节点`，不会进入 `🇯🇵 日韩节点`。
+- FIX：分类前暂时剥离 `中国电信/联通/移动/铁通`、`电信/联通/移动/铁通`、`China Telecom/Unicom/Mobile` 等非地区标签；随后按完整地区词、国旗和 ISO 代码分类。若节点只含运营商标签且没有任何地区信号，才兜底归为 `CN`。
+- REGRESSION：覆盖日本 AWS + 中文运营商标签、美国 AWS + `China Telecom` 标签和纯运营商标签；三种覆写均断言该日本样例同时进入 `🇯🇵 日韩节点` 与 `🌏 亚太节点`。
+- SCOPE：`rulesets/source/routing-graph.js`、融合 rule-provider、GEO 数据库及其生成产物未改；这是 Clash Party 运行时节点分类层修复。
+
 ## v6.0.2 (2026-07-10)
 
 - FIX#175：Smart / Normal 同步消费重新编译的 113 个融合 provider / 130 条主规则；不再继承 HaGeZi 错源和 GEOIP CIDR 放大产物。

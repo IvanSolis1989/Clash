@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.2-flclash.2 (2026-07-12)
+
+- FIX#REGION-CARRIER-PRIORITY：与 Clash Party Smart / Normal 同步修复运营商营销词抢占真实落地地区的分类缺陷。`🇯🇵AWS日本01 | 电信移动联通推荐` 现归类为 `JP`，同时进入 `🇯🇵 日韩节点` 和 `🌏 亚太节点`。
+- REGRESSION：共享 JS 覆写回归验证覆盖日本 AWS + 中文运营商标签（含 `中国电信`）、美国 AWS + `China Telecom` 标签，以及无地区信息的纯运营商标签兜底为 `CN`。
+- SCOPE：融合规则集、source graph 和 FlClash 业务分流规则均未改变；本次只修复运行时节点区域归类。
+
 ## v6.0.2-flclash.1 (2026-07-10)
 
 - SYNC：跟随 source graph v6.0.2，消费 113 个融合 `.mrs` / residual provider 与 130 条主规则。

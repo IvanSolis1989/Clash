@@ -6,6 +6,13 @@
 
 ---
 
+## v6.0.2-region.1 (2026-07-12)
+
+- FIX#REGION-CARRIER-PRIORITY：修复 Clash Party Smart、Clash Party Normal 与 FlClash 的节点名区域分类。运营商/线路营销词（如 `中国电信`、`电信移动联通推荐`、`China Telecom`）不再先于国旗、国家名或 ISO 代码把海外节点错误归为 `CN`。
+- EFFECT：用户报告的 `🇯🇵AWS日本01 | 电信移动联通推荐` 现归为 `JP`，会同时出现在 `🇯🇵 日韩节点` 和包含日本的 `🌏 亚太节点`；此前只出现在后者是因其被误分类到 `CN`。
+- CROSS-CLIENT-AUDIT：CMFA、Stash、OpenClash、Shadowrocket、Surge、Loon、Quantumult X 已核对为独立地区过滤，样例本已命中日韩组；SingBox、v2rayN、Passwall、Passwall2 为静态路由产物，无运行时订阅节点分类。本次不改 `routing-graph.js`、融合规则集、MRS/SRS、GeoIP/GeoSite/MMDB/ASN 数据库或其派生产物。
+- VERIFY：新增三组分类回归和两组目标代理组成员断言，覆盖所有三份动态 JS 覆写。
+
 ## v6.0.2-substore.2 (2026-07-11)
 
 - SUBSTORE-REAL-MIRROR-FIX：根据 Clash Party 内置 Sub-Store 的实际快照复现，确认同账户双域名镜像的总配额/到期日相同，而 `upload` / `download` 会因 CDN 缓存相差数十 KB。自动去重改为 host 无关订阅资源身份 + 相同 `total` / `expire`，组内仍取最大计数，避免整份镜像配额再次相加。

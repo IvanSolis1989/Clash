@@ -1,8 +1,8 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v6.0.2-flclash.1 (2026-07-10)
+// 版本：v6.0.2-flclash.2 (2026-07-12)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules
 // 规则源：rulesets/source/routing-graph.js v6.0.2（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
-// v6.0.2: FUSED-DEDUP/GEOIP-NATIVE 同策略语义去重与原生 GEOIP · v6.0.0: FUSED-RULESETS 大融合规则集编译
+// v6.0.2-flclash.2: 运营商营销标签不再覆盖真实节点地区 · v6.0.2: FUSED-DEDUP/GEOIP-NATIVE 同策略语义去重与原生 GEOIP · v6.0.0: FUSED-RULESETS 大融合规则集编译
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -36,7 +36,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.2-flclash.1'
+const VERSION = 'v6.0.2-flclash.2'
 
 function log() {
   if (typeof console !== 'undefined' && console.log) console.log.apply(console, arguments)
@@ -121,9 +121,17 @@ const _compiledRegions = REGION_DB.map(function(region) {
   return { id: region.id, matchers: matchers }
 })
 
+// 运营商/线路营销词不表示节点落地地区。先从分类输入中剥离；仅当没有任何
+// 地区信号命中时，才把只含此类标签的节点兜底归为 CN。
+const _CN_CARRIER_LABEL_RE = /中国(?:电信|联通|移动|铁通)|电信|联通|移动|铁通|\bchina[\s_-]*(?:telecom|unicom|mobile)\b|\b(?:chinatelecom|chinaunicom|chinamobile)\b/i
+function _stripCnCarrierLabels(name) {
+  return name.replace(/中国(?:电信|联通|移动|铁通)|电信|联通|移动|铁通|\bchina[\s_-]*(?:telecom|unicom|mobile)\b|\b(?:chinatelecom|chinaunicom|chinamobile)\b/ig, ' ')
+}
+
 function classifyNode(name) {
-  var nameStr = String(name || '')
-  if (!nameStr) return null
+  var originalName = String(name || '')
+  if (!originalName) return null
+  var nameStr = _stripCnCarrierLabels(originalName)
   for (var i = 0; i < _compiledRegions.length; i++) {
     var region = _compiledRegions[i]
     for (var j = 0; j < region.matchers.length; j++) {
@@ -132,6 +140,7 @@ function classifyNode(name) {
       else { if (m.regex.test(nameStr)) return region.id }
     }
   }
+  if (_CN_CARRIER_LABEL_RE.test(originalName)) return 'CN'
   return 'OTHER'
 }
 
