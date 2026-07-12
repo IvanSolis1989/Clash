@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.3-QX.1 (2026-07-12)
+
+- SYNC：升级到 Clash Party v6.0.3，`filter_remote` 为 64 个非空融合资产，继续保留 QX 原生 GEOIP / IP-ASN 表达。
+- AI-PRECEDENCE：ChatGPT/OpenAI 与经验证的 Sentry/DataDog/Cloudflare 关联 host 在广告和国外网站前进入 `🤖 AI 服务`。
+
 ## v6.0.2-QX.1 (2026-07-10)
 
 - FIX#175：`filter_remote` 收敛为 63 个非空融合段，聚合文本约 15.56 MiB / 575,498 条。

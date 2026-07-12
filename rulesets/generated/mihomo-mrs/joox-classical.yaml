@@ -1,2 +1,3 @@
 payload:
   - "PROCESS-NAME,com.tencent.ibg.joox"
+  - "DOMAIN-KEYWORD,jooxweb-api"

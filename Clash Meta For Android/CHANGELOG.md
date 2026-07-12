@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.3-cmfa.1 (2026-07-12)
+
+- FIX#FUSED-DOMAIN-PAYLOAD：融合 `behavior: domain` provider 现仅含 Mihomo 原生精确 / wildcard payload；keyword / regex 留在 classical residual，避免静默漏匹配或语义扩大。
+- AI-PRECEDENCE：OpenAI / ChatGPT 域名及其必要的 telemetry / Cloudflare 关联域名在广告与国外网站段之前命中 `🤖 AI 服务`。
+- SYNC：由 source graph v6.0.3 生成 124 个融合 rule-provider / 141 条规则，`unresolved=0`。
+
 ## v6.0.2-cmfa.1 (2026-07-10)
 
 - SYNC：跟随 source graph / Clash Party v6.0.2，更新为 113 个融合 rule-provider、130 条主规则和 55 个策略组。

@@ -4,6 +4,11 @@
 
 ---
 
+## v6.0.3-Loon.1 (2026-07-12)
+
+- SYNC：升级到 Clash Party v6.0.3，`[Remote Rule]` 为 64 个非空融合资产。
+- AI-PRECEDENCE：按 source graph 的前置顺序将 ChatGPT/OpenAI 及必要关联 host 分配给 `🤖 AI 服务`，不落入广告或国外网站兜底。
+
 ## v6.0.2-Loon.1 (2026-07-10)
 
 - FIX#175：`[Remote Rule]` 从 71 个放大分片收敛为 63 个非空融合段，聚合文本约 16.06 MiB / 575,499 条。

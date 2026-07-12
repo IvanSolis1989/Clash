@@ -4,6 +4,11 @@
 
 ---
 
+## v6.0.3-Surge.1 (2026-07-12)
+
+- SYNC：升级到 Clash Party v6.0.3，消费 64 个非空融合 RULE-SET，保持源图首匹配顺序。
+- AI-PRECEDENCE：OpenAI / ChatGPT、oaistatic、Cloudflare NEL 和必要 telemetry 在通用广告段、国外网站段之前进入 `🤖 AI 服务`。
+
 ## v6.0.2-Surge.1 (2026-07-10)
 
 - FIX#175：从 71 个放大分片收敛为 63 个非空融合 RULE-SET，聚合文本约 16.07 MiB / 575,673 条，满足 iOS 聚合预算。

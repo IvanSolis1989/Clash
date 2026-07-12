@@ -16,10 +16,10 @@ const PASSWALL2_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall2/shunt-rules');
 
 const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
 const FUSED_SRS_BASE_URL = `${SCKI_BASE}/rulesets/generated/fused/sing-box`;
-const BUILD_DATE = '2026-07-10';
-const V2RAYN_VERSION = 'v6.0.2-v2n.1';
-const PASSWALL_VERSION = 'v6.0.2-pw.1';
-const PASSWALL2_VERSION = 'v6.0.2-pw2.1';
+const BUILD_DATE = '2026-07-12';
+const V2RAYN_VERSION = 'v6.0.3-v2n.1';
+const PASSWALL_VERSION = 'v6.0.3-pw.1';
+const PASSWALL2_VERSION = 'v6.0.3-pw2.1';
 
 const DIRECT_POLICIES = new Set([
   'DIRECT',
@@ -379,7 +379,7 @@ function renderLegacyRemarkMatcher() {
   return LEGACY_PASSWALL_REMARKS.map((remark) => `    ${JSON.stringify(remark)} \\`).join('\n');
 }
 
-function renderPasswallScript({ appName, version, title, configName, nodeComment, segments }) {
+function renderPasswallScript({ appName, version, title, configName, nodeComment, segments, baselineVersion }) {
   const oldRemarkList = renderLegacyRemarkMatcher();
   const addCalls = segments.map((segment, index) => (
     `# [${String(index + 1).padStart(3, '0')}] ${segment.id} | ${segment.policy}\n`
@@ -389,7 +389,7 @@ function renderPasswallScript({ appName, version, title, configName, nodeComment
   return `#!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for ${title} — fused UCI batch helper
-# Version: ${version} | Build ${BUILD_DATE} | Baseline: Clash Party v6.0.2
+# Version: ${version} | Build ${BUILD_DATE} | Baseline: Clash Party ${baselineVersion}
 #
 # 用途：一次性在 ${title} 中创建 ${segments.length} 条 fused shunt rule。
 #       每条规则只引用 rulesets/generated/fused/sing-box/*.srs，不再维护手写域名/IP 展平列表。
@@ -484,12 +484,12 @@ echo "完成：已写入 ${segments.length} 条 Smart-Config-Kit fused shunt rul
 `;
 }
 
-function renderPasswallConf({ title, version, readmePath, segments }) {
+function renderPasswallConf({ title, version, readmePath, segments, baselineVersion }) {
   const lines = [
     '# ════════════════════════════════════════════════════════════════════════════',
     `#  Smart-Config-Kit for ${title} — Fused Shunt Rules Reference`,
     `#  Version: ${version} | Build: ${BUILD_DATE}`,
-    '#  Baseline: Clash Party v6.0.2',
+    `#  Baseline: Clash Party ${baselineVersion}`,
     '#  Source: rulesets/source/routing-graph.js -> rulesets/generated/fused/sing-box/*.srs',
     '#',
     `#  本文件为手工配置参考；推荐使用同目录 apply.sh 自动创建 ${segments.length} 条规则。`,
@@ -545,6 +545,7 @@ function writePasswallArtifacts(manifest) {
       configName: 'passwall',
       nodeComment: "# Passwall 全功能版可在 LuCI 中分别设置 tcp_node / udp_node。",
       segments,
+      baselineVersion: manifest.baseline_version,
     }),
   );
   writeText(
@@ -556,6 +557,7 @@ function writePasswallArtifacts(manifest) {
       configName: 'passwall2',
       nodeComment: "# Passwall2 在 LuCI 中设置统一 node。",
       segments,
+      baselineVersion: manifest.baseline_version,
     }),
   );
   writeText(
@@ -565,6 +567,7 @@ function writePasswallArtifacts(manifest) {
       version: PASSWALL_VERSION,
       readmePath: 'Passwall/README.md',
       segments,
+      baselineVersion: manifest.baseline_version,
     }),
   );
   writeText(
@@ -574,6 +577,7 @@ function writePasswallArtifacts(manifest) {
       version: PASSWALL2_VERSION,
       readmePath: 'Passwall2/README.md',
       segments,
+      baselineVersion: manifest.baseline_version,
     }),
   );
   return { passwallFiles: segments.length };

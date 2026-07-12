@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-10T20:04:56.581Z",
+  "generated_at": "2026-07-12T13:28:39.151Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
-  "mihomo_bin": "mihomo-v1.19.28",
+  "mihomo_bin": "mihomo-v1.19.28.exe",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
     {
@@ -65,22 +65,6 @@
           "behavior": "domain",
           "file": "acc-applenews.mrs",
           "entries": 12
-        }
-      ]
-    },
-    {
-      "id": "acc-aqara-cn",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Aqara/AqaraCN.yaml",
-      "type_counts": {
-        "domain": 15
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-aqara-cn.mrs",
-          "entries": 15
         }
       ]
     },
@@ -245,38 +229,6 @@
       ]
     },
     {
-      "id": "acc-bank-us",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankUS.yaml",
-      "type_counts": {
-        "domain": 46
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-bank-us.mrs",
-          "entries": 46
-        }
-      ]
-    },
-    {
-      "id": "acc-blockhttpdnsplus",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/BlockHttpDNSPlus/BlockHttpDNSPlus.yaml",
-      "type_counts": {
-        "domain": 12
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-blockhttpdnsplus.mrs",
-          "entries": 12
-        }
-      ]
-    },
-    {
       "id": "acc-chinamax",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -337,38 +289,6 @@
           "behavior": "ipcidr",
           "file": "acc-fastly.mrs",
           "entries": 21
-        }
-      ]
-    },
-    {
-      "id": "acc-fl-kuaishou",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationKuaiShou.yaml",
-      "type_counts": {
-        "domain": 2
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-fl-kuaishou.mrs",
-          "entries": 2
-        }
-      ]
-    },
-    {
-      "id": "acc-fl-weibo",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationWeiBo.yaml",
-      "type_counts": {
-        "domain": 4
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-fl-weibo.mrs",
-          "entries": 4
         }
       ]
     },
@@ -709,22 +629,6 @@
       ]
     },
     {
-      "id": "acc-homeip-us",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HomeIP/HomeIPUS.yaml",
-      "type_counts": {
-        "domain": 95
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-homeip-us.mrs",
-          "entries": 95
-        }
-      ]
-    },
-    {
       "id": "acc-kwai",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -757,22 +661,6 @@
       ]
     },
     {
-      "id": "acc-microsoftapps",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/MicrosoftAPPs/MicrosoftAPPs.yaml",
-      "type_counts": {
-        "domain": 63
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-microsoftapps.mrs",
-          "entries": 63
-        }
-      ]
-    },
-    {
       "id": "acc-parsec",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -785,38 +673,6 @@
           "behavior": "domain",
           "file": "acc-parsec.mrs",
           "entries": 1
-        }
-      ]
-    },
-    {
-      "id": "acc-pornhub",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Pornhub/Pornhub.yaml",
-      "type_counts": {
-        "domain": 24
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-pornhub.mrs",
-          "entries": 24
-        }
-      ]
-    },
-    {
-      "id": "acc-prerepaireasyprivacy",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/PreRepairEasyPrivacy/PreRepairEasyPrivacy.yaml",
-      "type_counts": {
-        "domain": 49
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-prerepaireasyprivacy.mrs",
-          "entries": 49
         }
       ]
     },
@@ -865,70 +721,6 @@
           "behavior": "domain",
           "file": "acc-unsupportvpn.mrs",
           "entries": 1
-        }
-      ]
-    },
-    {
-      "id": "acc-vf-monzo",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Monzo.yaml",
-      "type_counts": {
-        "domain": 4
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-vf-monzo.mrs",
-          "entries": 4
-        }
-      ]
-    },
-    {
-      "id": "acc-vf-revolut",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Revolut.yaml",
-      "type_counts": {
-        "domain": 3
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-vf-revolut.mrs",
-          "entries": 3
-        }
-      ]
-    },
-    {
-      "id": "acc-vf-wise",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Wise.yaml",
-      "type_counts": {
-        "domain": 2
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-vf-wise.mrs",
-          "entries": 2
-        }
-      ]
-    },
-    {
-      "id": "adobe",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Adobe/Adobe.yaml",
-      "type_counts": {
-        "domain": 137
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "adobe.mrs",
-          "entries": 137
         }
       ]
     },
@@ -1477,22 +1269,6 @@
       ]
     },
     {
-      "id": "dazn",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DAZN/DAZN.yaml",
-      "type_counts": {
-        "domain": 18
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "dazn.mrs",
-          "entries": 18
-        }
-      ]
-    },
-    {
       "id": "deezer",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -1569,22 +1345,6 @@
           "behavior": "domain",
           "file": "discord.mrs",
           "entries": 29
-        }
-      ]
-    },
-    {
-      "id": "discoveryplus",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DiscoveryPlus/DiscoveryPlus.yaml",
-      "type_counts": {
-        "domain": 15
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "discoveryplus.mrs",
-          "entries": 15
         }
       ]
     },
@@ -1845,22 +1605,6 @@
       ]
     },
     {
-      "id": "gemini",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml",
-      "type_counts": {
-        "domain": 13
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "gemini.mrs",
-          "entries": 13
-        }
-      ]
-    },
-    {
       "id": "gitbook",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -1937,22 +1681,6 @@
           "behavior": "domain",
           "file": "googlevoice.mrs",
           "entries": 1
-        }
-      ]
-    },
-    {
-      "id": "hamivideo",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HamiVideo/HamiVideo.yaml",
-      "type_counts": {
-        "domain": 4
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "hamivideo.mrs",
-          "entries": 4
         }
       ]
     },
@@ -2117,22 +1845,6 @@
       ]
     },
     {
-      "id": "instagram",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Instagram/Instagram.yaml",
-      "type_counts": {
-        "domain": 4
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "instagram.mrs",
-          "entries": 4
-        }
-      ]
-    },
-    {
       "id": "intel",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -2209,22 +1921,6 @@
           "behavior": "domain",
           "file": "itv.mrs",
           "entries": 3
-        }
-      ]
-    },
-    {
-      "id": "japonx",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Japonx/Japonx.yaml",
-      "type_counts": {
-        "domain": 10
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "japonx.mrs",
-          "entries": 10
         }
       ]
     },
@@ -2597,22 +2293,6 @@
       ]
     },
     {
-      "id": "mytvsuper",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/myTVSUPER/myTVSUPER.yaml",
-      "type_counts": {
-        "domain": 6
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "mytvsuper.mrs",
-          "entries": 6
-        }
-      ]
-    },
-    {
       "id": "nbc",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -2677,22 +2357,6 @@
       ]
     },
     {
-      "id": "nivodtv",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NivodTV/NivodTV.yaml",
-      "type_counts": {
-        "domain": 8
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "nivodtv.mrs",
-          "entries": 8
-        }
-      ]
-    },
-    {
       "id": "notion",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -2753,22 +2417,6 @@
           "behavior": "domain",
           "file": "nytimes.mrs",
           "entries": 16
-        }
-      ]
-    },
-    {
-      "id": "olevod",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Olevod/Olevod.yaml",
-      "type_counts": {
-        "domain": 5
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "olevod.mrs",
-          "entries": 5
         }
       ]
     },
@@ -2849,22 +2497,6 @@
           "behavior": "domain",
           "file": "paramount.mrs",
           "entries": 9
-        }
-      ]
-    },
-    {
-      "id": "paypal",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PayPal/PayPal.yaml",
-      "type_counts": {
-        "domain": 247
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "paypal.mrs",
-          "entries": 247
         }
       ]
     },
@@ -2977,22 +2609,6 @@
           "behavior": "domain",
           "file": "pptv.mrs",
           "entries": 19
-        }
-      ]
-    },
-    {
-      "id": "primevideo",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PrimeVideo/PrimeVideo.yaml",
-      "type_counts": {
-        "domain": 16
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "primevideo.mrs",
-          "entries": 16
         }
       ]
     },
@@ -3153,6 +2769,22 @@
           "behavior": "domain",
           "file": "scholar.mrs",
           "entries": 231
+        }
+      ]
+    },
+    {
+      "id": "scki-adfp-ai",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-ai.list",
+      "type_counts": {
+        "domain": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-adfp-ai.mrs",
+          "entries": 3
         }
       ]
     },
@@ -3381,22 +3013,6 @@
       ]
     },
     {
-      "id": "skygo",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SkyGO/SkyGO.yaml",
-      "type_counts": {
-        "domain": 15
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "skygo.mrs",
-          "entries": 15
-        }
-      ]
-    },
-    {
       "id": "slack",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -3509,22 +3125,6 @@
       ]
     },
     {
-      "id": "steam",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml",
-      "type_counts": {
-        "domain": 54
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "steam.mrs",
-          "entries": 54
-        }
-      ]
-    },
-    {
       "id": "steamcn",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -3537,22 +3137,6 @@
           "behavior": "domain",
           "file": "steamcn.mrs",
           "entries": 17
-        }
-      ]
-    },
-    {
-      "id": "stripe",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Stripe/Stripe.yaml",
-      "type_counts": {
-        "domain": 1
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "stripe.mrs",
-          "entries": 1
         }
       ]
     },
@@ -3578,13 +3162,13 @@
       "source_format": "text",
       "source_url": "https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt",
       "type_counts": {
-        "domain": 126317
+        "domain": 126569
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "sukka-phishing.mrs",
-          "entries": 126317
+          "entries": 126569
         }
       ]
     },
@@ -3605,38 +3189,6 @@
       ]
     },
     {
-      "id": "szkane-edutools",
-      "source_behavior": "classical",
-      "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Edutools.list",
-      "type_counts": {
-        "domain": 10
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "szkane-edutools.mrs",
-          "entries": 10
-        }
-      ]
-    },
-    {
-      "id": "szkane-khan",
-      "source_behavior": "classical",
-      "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Khan.list",
-      "type_counts": {
-        "domain": 18
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "szkane-khan.mrs",
-          "entries": 18
-        }
-      ]
-    },
-    {
       "id": "szkane-netflixip",
       "source_behavior": "classical",
       "source_format": "text",
@@ -3649,22 +3201,6 @@
           "behavior": "ipcidr",
           "file": "szkane-netflixip.mrs",
           "entries": 863
-        }
-      ]
-    },
-    {
-      "id": "szkane-uk",
-      "source_behavior": "classical",
-      "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/UK.list",
-      "type_counts": {
-        "domain": 21
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "szkane-uk.mrs",
-          "entries": 21
         }
       ]
     },
@@ -3777,22 +3313,6 @@
           "behavior": "domain",
           "file": "tesla.mrs",
           "entries": 12
-        }
-      ]
-    },
-    {
-      "id": "testflight",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TestFlight/TestFlight.yaml",
-      "type_counts": {
-        "domain": 3
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "testflight.mrs",
-          "entries": 3
         }
       ]
     },
@@ -4053,22 +3573,6 @@
       ]
     },
     {
-      "id": "weibo",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Weibo/Weibo.yaml",
-      "type_counts": {
-        "domain": 4
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "weibo.mrs",
-          "entries": 4
-        }
-      ]
-    },
-    {
       "id": "wikipedia",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -4279,50 +3783,6 @@
   ],
   "split": [
     {
-      "id": "acc-apple",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Apple/Apple.yaml",
-      "type_counts": {
-        "domain": 22,
-        "ipcidr": 1
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-apple-domain.mrs",
-          "entries": 22
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "acc-apple-ipcidr.mrs",
-          "entries": 1
-        }
-      ]
-    },
-    {
-      "id": "acc-aqara-global",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Aqara/AqaraGlobal.yaml",
-      "type_counts": {
-        "domain": 43,
-        "ipcidr": 3
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-aqara-global-domain.mrs",
-          "entries": 43
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "acc-aqara-global-ipcidr.mrs",
-          "entries": 3
-        }
-      ]
-    },
-    {
       "id": "acc-fl-bilibili",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -4389,72 +3849,6 @@
       ]
     },
     {
-      "id": "acc-fl-xianyu",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationXianYu.yaml",
-      "type_counts": {
-        "domain": 6,
-        "ipcidr": 10
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-fl-xianyu-domain.mrs",
-          "entries": 6
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "acc-fl-xianyu-ipcidr.mrs",
-          "entries": 10
-        }
-      ]
-    },
-    {
-      "id": "acc-fl-zhihu",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationZhiHu.yaml",
-      "type_counts": {
-        "domain": 4,
-        "ipcidr": 5
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-fl-zhihu-domain.mrs",
-          "entries": 4
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "acc-fl-zhihu-ipcidr.mrs",
-          "entries": 5
-        }
-      ]
-    },
-    {
-      "id": "acc-hijackingplus",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HijackingPlus/HijackingPlus.yaml",
-      "type_counts": {
-        "domain": 28,
-        "ipcidr": 2
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "acc-hijackingplus-domain.mrs",
-          "entries": 28
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "acc-hijackingplus-ipcidr.mrs",
-          "entries": 2
-        }
-      ]
-    },
-    {
       "id": "acc-waybackmachine",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -4517,50 +3911,6 @@
           "behavior": "ipcidr",
           "file": "adobeactivation-ipcidr.mrs",
           "entries": 30
-        }
-      ]
-    },
-    {
-      "id": "advertising",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Advertising/Advertising.yaml",
-      "type_counts": {
-        "domain": 278,
-        "ipcidr": 489
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "advertising-domain.mrs",
-          "entries": 278
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "advertising-ipcidr.mrs",
-          "entries": 489
-        }
-      ]
-    },
-    {
-      "id": "asianmedia",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AsianMedia/AsianMedia.yaml",
-      "type_counts": {
-        "domain": 24,
-        "ipcidr": 7
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "asianmedia-domain.mrs",
-          "entries": 24
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "asianmedia-ipcidr.mrs",
-          "entries": 7
         }
       ]
     },
@@ -4873,50 +4223,6 @@
       ]
     },
     {
-      "id": "privacy",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Privacy/Privacy.yaml",
-      "type_counts": {
-        "domain": 9,
-        "ipcidr": 11
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "privacy-domain.mrs",
-          "entries": 9
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "privacy-ipcidr.mrs",
-          "entries": 11
-        }
-      ]
-    },
-    {
-      "id": "privatetracker",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PrivateTracker/PrivateTracker.yaml",
-      "type_counts": {
-        "domain": 245,
-        "ipcidr": 3
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "privatetracker-domain.mrs",
-          "entries": 245
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "privatetracker-ipcidr.mrs",
-          "entries": 3
-        }
-      ]
-    },
-    {
       "id": "qobuz",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5005,28 +4311,6 @@
       ]
     },
     {
-      "id": "szkane-proxygfw",
-      "source_behavior": "classical",
-      "source_format": "text",
-      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/ProxyGFWlist.list",
-      "type_counts": {
-        "domain": 6480,
-        "ipcidr": 58
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "szkane-proxygfw-domain.mrs",
-          "entries": 6480
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "szkane-proxygfw-ipcidr.mrs",
-          "entries": 58
-        }
-      ]
-    },
-    {
       "id": "teamviewer",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5067,28 +4351,6 @@
           "behavior": "ipcidr",
           "file": "tencentvideo-ipcidr.mrs",
           "entries": 32
-        }
-      ]
-    },
-    {
-      "id": "whatsapp",
-      "source_behavior": "classical",
-      "source_format": "yaml",
-      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Whatsapp/Whatsapp.yaml",
-      "type_counts": {
-        "domain": 6,
-        "ipcidr": 11
-      },
-      "generated": [
-        {
-          "behavior": "domain",
-          "file": "whatsapp-domain.mrs",
-          "entries": 6
-        },
-        {
-          "behavior": "ipcidr",
-          "file": "whatsapp-ipcidr.mrs",
-          "entries": 11
         }
       ]
     },
@@ -5139,6 +4401,394 @@
   ],
   "partial": [
     {
+      "id": "acc-apple",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Apple/Apple.yaml",
+      "type_counts": {
+        "domain": 22,
+        "ipcidr": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-apple-domain.mrs",
+          "entries": 3
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "acc-apple-ipcidr.mrs",
+          "entries": 1
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-apple-classical.yaml",
+        "entries": 19
+      }
+    },
+    {
+      "id": "acc-aqara-cn",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Aqara/AqaraCN.yaml",
+      "type_counts": {
+        "domain": 15
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-aqara-cn-domain.mrs",
+          "entries": 14
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-aqara-cn-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "acc-aqara-global",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Aqara/AqaraGlobal.yaml",
+      "type_counts": {
+        "domain": 43,
+        "ipcidr": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-aqara-global-domain.mrs",
+          "entries": 37
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "acc-aqara-global-ipcidr.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-aqara-global-classical.yaml",
+        "entries": 6
+      }
+    },
+    {
+      "id": "acc-bank-us",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Bank/BankUS.yaml",
+      "type_counts": {
+        "domain": 46
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-bank-us-domain.mrs",
+          "entries": 43
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-bank-us-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "acc-fl-weibo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationWeiBo.yaml",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-fl-weibo-domain.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-fl-weibo-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "acc-fl-xianyu",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationXianYu.yaml",
+      "type_counts": {
+        "domain": 6,
+        "ipcidr": 10
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-fl-xianyu-domain.mrs",
+          "entries": 5
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "acc-fl-xianyu-ipcidr.mrs",
+          "entries": 10
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-fl-xianyu-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "acc-fl-zhihu",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationZhiHu.yaml",
+      "type_counts": {
+        "domain": 4,
+        "ipcidr": 5
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-fl-zhihu-domain.mrs",
+          "entries": 1
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "acc-fl-zhihu-ipcidr.mrs",
+          "entries": 5
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-fl-zhihu-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "acc-hijackingplus",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HijackingPlus/HijackingPlus.yaml",
+      "type_counts": {
+        "domain": 28,
+        "ipcidr": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-hijackingplus-domain.mrs",
+          "entries": 23
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "acc-hijackingplus-ipcidr.mrs",
+          "entries": 2
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-hijackingplus-classical.yaml",
+        "entries": 5
+      }
+    },
+    {
+      "id": "acc-homeip-us",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/HomeIP/HomeIPUS.yaml",
+      "type_counts": {
+        "domain": 95
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-homeip-us-domain.mrs",
+          "entries": 5
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-homeip-us-classical.yaml",
+        "entries": 90
+      }
+    },
+    {
+      "id": "acc-microsoftapps",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/MicrosoftAPPs/MicrosoftAPPs.yaml",
+      "type_counts": {
+        "domain": 63
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-microsoftapps-domain.mrs",
+          "entries": 7
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-microsoftapps-classical.yaml",
+        "entries": 56
+      }
+    },
+    {
+      "id": "acc-pornhub",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/Pornhub/Pornhub.yaml",
+      "type_counts": {
+        "domain": 24
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-pornhub-domain.mrs",
+          "entries": 21
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-pornhub-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "acc-prerepaireasyprivacy",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/PreRepairEasyPrivacy/PreRepairEasyPrivacy.yaml",
+      "type_counts": {
+        "domain": 49
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-prerepaireasyprivacy-domain.mrs",
+          "entries": 28
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-prerepaireasyprivacy-classical.yaml",
+        "entries": 21
+      }
+    },
+    {
+      "id": "acc-vf-monzo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Monzo.yaml",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-vf-monzo-domain.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-vf-monzo-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "acc-vf-revolut",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Revolut.yaml",
+      "type_counts": {
+        "domain": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-vf-revolut-domain.mrs",
+          "entries": 2
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-vf-revolut-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "acc-vf-wise",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/VirtualFinance/Wise.yaml",
+      "type_counts": {
+        "domain": 2
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "acc-vf-wise-domain.mrs",
+          "entries": 1
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "acc-vf-wise-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "adobe",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Adobe/Adobe.yaml",
+      "type_counts": {
+        "domain": 137
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "adobe-domain.mrs",
+          "entries": 136
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "adobe-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "advertising",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Advertising/Advertising.yaml",
+      "type_counts": {
+        "domain": 278,
+        "ipcidr": 489
+      },
+      "generated": [
+        {
+          "behavior": "ipcidr",
+          "file": "advertising-ipcidr.mrs",
+          "entries": 489
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "advertising-classical.yaml",
+        "entries": 278
+      }
+    },
+    {
       "id": "amazon",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5152,7 +4802,7 @@
         {
           "behavior": "domain",
           "file": "amazon-domain.mrs",
-          "entries": 187
+          "entries": 186
         },
         {
           "behavior": "ipcidr",
@@ -5163,7 +4813,7 @@
       "residual": {
         "behavior": "classical",
         "file": "amazon-classical.yaml",
-        "entries": 1
+        "entries": 2
       }
     },
     {
@@ -5255,6 +4905,33 @@
       }
     },
     {
+      "id": "asianmedia",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/AsianMedia/AsianMedia.yaml",
+      "type_counts": {
+        "domain": 24,
+        "ipcidr": 7
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "asianmedia-domain.mrs",
+          "entries": 23
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "asianmedia-ipcidr.mrs",
+          "entries": 7
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "asianmedia-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
       "id": "bytedance",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5318,7 +4995,7 @@
         {
           "behavior": "domain",
           "file": "copilot-domain.mrs",
-          "entries": 47
+          "entries": 46
         },
         {
           "behavior": "ipcidr",
@@ -5329,7 +5006,49 @@
       "residual": {
         "behavior": "classical",
         "file": "copilot-classical.yaml",
-        "entries": 2
+        "entries": 3
+      }
+    },
+    {
+      "id": "dazn",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DAZN/DAZN.yaml",
+      "type_counts": {
+        "domain": 18
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "dazn-domain.mrs",
+          "entries": 17
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "dazn-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "discoveryplus",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/DiscoveryPlus/DiscoveryPlus.yaml",
+      "type_counts": {
+        "domain": 15
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "discoveryplus-domain.mrs",
+          "entries": 14
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "discoveryplus-classical.yaml",
+        "entries": 1
       }
     },
     {
@@ -5367,13 +5086,13 @@
         {
           "behavior": "domain",
           "file": "download-domain.mrs",
-          "entries": 6
+          "entries": 1
         }
       ],
       "residual": {
         "behavior": "classical",
         "file": "download-classical.yaml",
-        "entries": 28
+        "entries": 33
       }
     },
     {
@@ -5389,13 +5108,13 @@
         {
           "behavior": "domain",
           "file": "emby-domain.mrs",
-          "entries": 51
+          "entries": 48
         }
       ],
       "residual": {
         "behavior": "classical",
         "file": "emby-classical.yaml",
-        "entries": 1
+        "entries": 4
       }
     },
     {
@@ -5412,7 +5131,7 @@
         {
           "behavior": "domain",
           "file": "facebook-domain.mrs",
-          "entries": 546
+          "entries": 544
         },
         {
           "behavior": "ipcidr",
@@ -5423,6 +5142,48 @@
       "residual": {
         "behavior": "classical",
         "file": "facebook-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "gemini",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml",
+      "type_counts": {
+        "domain": 13
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "gemini-domain.mrs",
+          "entries": 10
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "gemini-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "hamivideo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/HamiVideo/HamiVideo.yaml",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "hamivideo-domain.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "hamivideo-classical.yaml",
         "entries": 1
       }
     },
@@ -5471,6 +5232,27 @@
       }
     },
     {
+      "id": "instagram",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Instagram/Instagram.yaml",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "instagram-domain.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "instagram-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
       "id": "iqiyi",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5484,7 +5266,7 @@
         {
           "behavior": "domain",
           "file": "iqiyi-domain.mrs",
-          "entries": 35
+          "entries": 34
         },
         {
           "behavior": "ipcidr",
@@ -5495,7 +5277,7 @@
       "residual": {
         "behavior": "classical",
         "file": "iqiyi-classical.yaml",
-        "entries": 1
+        "entries": 2
       }
     },
     {
@@ -5549,6 +5331,27 @@
       }
     },
     {
+      "id": "japonx",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Japonx/Japonx.yaml",
+      "type_counts": {
+        "domain": 10
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "japonx-domain.mrs",
+          "entries": 8
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "japonx-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
       "id": "joox",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5562,7 +5365,7 @@
         {
           "behavior": "domain",
           "file": "joox-domain.mrs",
-          "entries": 4
+          "entries": 3
         },
         {
           "behavior": "ipcidr",
@@ -5573,7 +5376,7 @@
       "residual": {
         "behavior": "classical",
         "file": "joox-classical.yaml",
-        "entries": 1
+        "entries": 2
       }
     },
     {
@@ -5627,6 +5430,27 @@
       }
     },
     {
+      "id": "mytvsuper",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/myTVSUPER/myTVSUPER.yaml",
+      "type_counts": {
+        "domain": 6
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "mytvsuper-domain.mrs",
+          "entries": 4
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "mytvsuper-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
       "id": "naver",
       "source_behavior": "classical",
       "source_format": "yaml",
@@ -5655,6 +5479,181 @@
       }
     },
     {
+      "id": "nivodtv",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/NivodTV/NivodTV.yaml",
+      "type_counts": {
+        "domain": 8
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "nivodtv-domain.mrs",
+          "entries": 7
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "nivodtv-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "olevod",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Olevod/Olevod.yaml",
+      "type_counts": {
+        "domain": 5
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "olevod-domain.mrs",
+          "entries": 4
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "olevod-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "paypal",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PayPal/PayPal.yaml",
+      "type_counts": {
+        "domain": 247
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "paypal-domain.mrs",
+          "entries": 246
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "paypal-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "primevideo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PrimeVideo/PrimeVideo.yaml",
+      "type_counts": {
+        "domain": 16
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "primevideo-domain.mrs",
+          "entries": 15
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "primevideo-classical.yaml",
+        "entries": 1
+      }
+    },
+    {
+      "id": "privacy",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Privacy/Privacy.yaml",
+      "type_counts": {
+        "domain": 9,
+        "ipcidr": 11
+      },
+      "generated": [
+        {
+          "behavior": "ipcidr",
+          "file": "privacy-ipcidr.mrs",
+          "entries": 11
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "privacy-classical.yaml",
+        "entries": 9
+      }
+    },
+    {
+      "id": "privatetracker",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PrivateTracker/PrivateTracker.yaml",
+      "type_counts": {
+        "domain": 245,
+        "ipcidr": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "privatetracker-domain.mrs",
+          "entries": 241
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "privatetracker-ipcidr.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "privatetracker-classical.yaml",
+        "entries": 4
+      }
+    },
+    {
+      "id": "skygo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/SkyGO/SkyGO.yaml",
+      "type_counts": {
+        "domain": 15
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "skygo-domain.mrs",
+          "entries": 12
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "skygo-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "steam",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml",
+      "type_counts": {
+        "domain": 54
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "steam-domain.mrs",
+          "entries": 51
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "steam-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
       "id": "szkane-ai",
       "source_behavior": "classical",
       "source_format": "text",
@@ -5668,7 +5667,7 @@
         {
           "behavior": "domain",
           "file": "szkane-ai-domain.mrs",
-          "entries": 229
+          "entries": 213
         },
         {
           "behavior": "ipcidr",
@@ -5679,7 +5678,7 @@
       "residual": {
         "behavior": "classical",
         "file": "szkane-ai-classical.yaml",
-        "entries": 12
+        "entries": 28
       }
     },
     {
@@ -5696,7 +5695,7 @@
         {
           "behavior": "domain",
           "file": "szkane-ciciai-domain.mrs",
-          "entries": 52
+          "entries": 47
         },
         {
           "behavior": "ipcidr",
@@ -5707,7 +5706,7 @@
       "residual": {
         "behavior": "classical",
         "file": "szkane-ciciai-classical.yaml",
-        "entries": 11
+        "entries": 16
       }
     },
     {
@@ -5723,12 +5722,102 @@
         {
           "behavior": "domain",
           "file": "szkane-developer-domain.mrs",
-          "entries": 40
+          "entries": 38
         }
       ],
       "residual": {
         "behavior": "classical",
         "file": "szkane-developer-classical.yaml",
+        "entries": 4
+      }
+    },
+    {
+      "id": "szkane-edutools",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Edutools.list",
+      "type_counts": {
+        "domain": 10
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-edutools-domain.mrs",
+          "entries": 7
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-edutools-classical.yaml",
+        "entries": 3
+      }
+    },
+    {
+      "id": "szkane-khan",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/Ruleset/Khan.list",
+      "type_counts": {
+        "domain": 18
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-khan-domain.mrs",
+          "entries": 16
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-khan-classical.yaml",
+        "entries": 2
+      }
+    },
+    {
+      "id": "szkane-proxygfw",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/szkane/ClashRuleSet@main/Clash/ProxyGFWlist.list",
+      "type_counts": {
+        "domain": 6480,
+        "ipcidr": 58
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-proxygfw-domain.mrs",
+          "entries": 6457
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "szkane-proxygfw-ipcidr.mrs",
+          "entries": 58
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-proxygfw-classical.yaml",
+        "entries": 23
+      }
+    },
+    {
+      "id": "szkane-uk",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/mirrors/UK.list",
+      "type_counts": {
+        "domain": 21
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "szkane-uk-domain.mrs",
+          "entries": 19
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "szkane-uk-classical.yaml",
         "entries": 2
       }
     },
@@ -5745,13 +5834,34 @@
         {
           "behavior": "domain",
           "file": "szkane-web3-domain.mrs",
-          "entries": 295
+          "entries": 289
         }
       ],
       "residual": {
         "behavior": "classical",
         "file": "szkane-web3-classical.yaml",
-        "entries": 3
+        "entries": 9
+      }
+    },
+    {
+      "id": "testflight",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TestFlight/TestFlight.yaml",
+      "type_counts": {
+        "domain": 3
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "testflight-domain.mrs",
+          "entries": 2
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "testflight-classical.yaml",
+        "entries": 1
       }
     },
     {
@@ -5768,7 +5878,7 @@
         {
           "behavior": "domain",
           "file": "twitch-domain.mrs",
-          "entries": 9
+          "entries": 8
         },
         {
           "behavior": "ipcidr",
@@ -5779,7 +5889,7 @@
       "residual": {
         "behavior": "classical",
         "file": "twitch-classical.yaml",
-        "entries": 1
+        "entries": 2
       }
     },
     {
@@ -5840,7 +5950,7 @@
         {
           "behavior": "domain",
           "file": "vpsdance-ai-coding-domain.mrs",
-          "entries": 202
+          "entries": 196
         },
         {
           "behavior": "ipcidr",
@@ -5851,7 +5961,28 @@
       "residual": {
         "behavior": "classical",
         "file": "vpsdance-ai-coding-classical.yaml",
-        "entries": 3
+        "entries": 9
+      }
+    },
+    {
+      "id": "weibo",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Weibo/Weibo.yaml",
+      "type_counts": {
+        "domain": 4
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "weibo-domain.mrs",
+          "entries": 3
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "weibo-classical.yaml",
+        "entries": 1
       }
     },
     {
@@ -5880,6 +6011,33 @@
         "behavior": "classical",
         "file": "wetv-classical.yaml",
         "entries": 2
+      }
+    },
+    {
+      "id": "whatsapp",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Whatsapp/Whatsapp.yaml",
+      "type_counts": {
+        "domain": 6,
+        "ipcidr": 11
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "whatsapp-domain.mrs",
+          "entries": 5
+        },
+        {
+          "behavior": "ipcidr",
+          "file": "whatsapp-ipcidr.mrs",
+          "entries": 11
+        }
+      ],
+      "residual": {
+        "behavior": "classical",
+        "file": "whatsapp-classical.yaml",
+        "entries": 1
       }
     }
   ],
@@ -6061,6 +6219,26 @@
     }
   ],
   "retained": [
+    {
+      "id": "acc-blockhttpdnsplus",
+      "reason": "unsupported-rule-types",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/BlockHttpDNSPlus/BlockHttpDNSPlus.yaml",
+      "type_counts": {
+        "domain": 12
+      }
+    },
+    {
+      "id": "acc-fl-kuaishou",
+      "reason": "unsupported-rule-types",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://fastly.jsdelivr.net/gh/Accademia/Additional_Rule_For_Clash@main/FakeLocation/FakeLocationKuaiShou.yaml",
+      "type_counts": {
+        "domain": 2
+      }
+    },
     {
       "id": "acc-geo-ip-africa-central",
       "reason": "unsupported-rule-types",
@@ -6259,6 +6437,16 @@
       "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/work-process.list",
       "type_counts": {
         "PROCESS-NAME": 4
+      }
+    },
+    {
+      "id": "stripe",
+      "reason": "unsupported-rule-types",
+      "source_behavior": "classical",
+      "source_format": "yaml",
+      "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Stripe/Stripe.yaml",
+      "type_counts": {
+        "domain": 1
       }
     }
   ],

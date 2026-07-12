@@ -20,6 +20,12 @@ const {
   optimizeEntries,
   resolveOpaqueMrsSource,
 } = require('./lib/fused-rule-optimizer');
+const {
+  toMihomoDomainPayload,
+} = require('./lib/mihomo-domain-payload');
+const {
+  localPathForRepositoryRuleUrl,
+} = require('./lib/repository-rule-asset');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const MIHOMO_MRS_MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
@@ -254,23 +260,6 @@ function runSourceRoutingGraphBaseline() {
   };
 }
 
-function localPathForUrl(url) {
-  const text = String(url || '');
-  const prefixes = [
-    'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/',
-    'https://cdn.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/',
-    'https://raw.githubusercontent.com/IvanSolis1989/Smart-Config-Kit/main/',
-  ];
-  for (const prefix of prefixes) {
-    if (text.startsWith(prefix)) {
-      const relative = decodeURIComponent(text.slice(prefix.length).split(/[?#]/)[0]);
-      const candidate = path.resolve(REPO_ROOT, relative);
-      if (candidate.startsWith(REPO_ROOT) && fs.existsSync(candidate)) return candidate;
-    }
-  }
-  return null;
-}
-
 function encodeRuleAssetName(name) {
   return encodeURIComponent(name).replace(/%21/g, '%21');
 }
@@ -321,7 +310,7 @@ function sourceInfoForProvider(provider, byFile) {
   const providerFilter = provider.behavior === 'domain' || provider.behavior === 'ipcidr' ? provider.behavior : null;
   const opaqueMrs = resolveOpaqueMrsSource(provider.url);
   if (opaqueMrs) return opaqueMrs;
-  const local = localPathForUrl(provider.url);
+  const local = localPathForRepositoryRuleUrl(provider.url);
   if (local && !/\.mrs$/i.test(local)) return { localPath: local, sourceFilter: providerFilter };
 
   const generated = sourceInfoForGeneratedMihomoMrs(provider.url, byFile);
@@ -341,7 +330,7 @@ function sourceInfoForProvider(provider, byFile) {
 }
 
 async function fetchText(url) {
-  const local = localPathForUrl(url);
+  const local = localPathForRepositoryRuleUrl(url);
   if (local) return readText(local);
 
   const key = Buffer.from(url).toString('base64url');
@@ -436,16 +425,6 @@ function classifyEntry(entry) {
   return { bucket: 'unsupported', type, value: parts[1] || '', parts };
 }
 
-function normalizeDomainSetToClassical(value) {
-  let item = String(value || '').trim();
-  if (!item) return null;
-  if (item.startsWith('+.')) item = item.slice(2);
-  if (item.startsWith('.')) return `DOMAIN-SUFFIX,${item.slice(1)}`;
-  if (item.startsWith('*.')) return `DOMAIN-SUFFIX,${item.slice(2)}`;
-  if (item.includes('*')) return `DOMAIN-WILDCARD,${item}`;
-  return `DOMAIN,${item}`;
-}
-
 function entryToClassical(entry) {
   const classical = canonicalizeEntry(entry);
   const info = classifyEntry(classical);
@@ -535,7 +514,12 @@ function addEntriesToSegment(segment, rule, entries, noResolve) {
   for (const rawEntry of entries) {
     let entry = canonicalizeEntry(rawEntry);
     const info = classifyEntry(entry);
-    if (info.bucket === 'domain') segment.domain.push(entry);
+    if (info.bucket === 'domain') {
+      // DOMAIN-KEYWORD and DOMAIN-REGEX cannot be represented by a domain MRS.
+      // Keep them in the segment's classical residual provider instead of widening them.
+      if (toMihomoDomainPayload(entry)) segment.domain.push(entry);
+      else segment.residual.push(entry);
+    }
     else if (info.bucket === 'ipcidr') {
       const parts = splitTopLevel(entry);
       const entryNoResolve = parts.includes('no-resolve');
@@ -1133,7 +1117,10 @@ async function writeFusedRuleSets(segments) {
     if (segment.domain.length) {
       const yamlFile = `${segment.id}-domain.yaml`;
       const mrsFile = `${segment.id}-domain.mrs`;
-      writeText(path.join(FUSED_MIHOMO_DIR, yamlFile), renderPayload(segment.domain));
+      writeText(
+        path.join(FUSED_MIHOMO_DIR, yamlFile),
+        renderPayload(segment.domain.map(toMihomoDomainPayload).filter(Boolean)),
+      );
       convertWithMihomo(mihomoBin, 'domain', path.join(FUSED_MIHOMO_DIR, yamlFile), path.join(FUSED_MIHOMO_DIR, mrsFile));
       row.files.domain = { behavior: 'domain', format: 'mrs', file: mrsFile, source: yamlFile };
       generatedMrs += 1;

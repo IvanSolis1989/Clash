@@ -1,0 +1,4 @@
+payload:
+  - "DOMAIN-KEYWORD , httpdns                          , REJECT-DROP"
+  - "DOMAIN-KEYWORD , httpsdns                         , REJECT-DROP"
+  - "DOMAIN-KEYWORD , app-analytics-services           , REJECT-DROP"

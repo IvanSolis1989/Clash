@@ -4,6 +4,12 @@
 
 ---
 
+## v6.0.3-stash.1 (2026-07-12)
+
+- SYNC：由 CMFA v6.0.3-cmfa.1 重新生成，保留 124 个融合 rule-provider 与 141 条规则。
+- FIX#FUSED-DOMAIN-PAYLOAD：Stash 消费的融合 MRS 已使用原生 domain payload；不可安全转换的 keyword / regex 继续以 residual YAML 表达。
+- BUILD：产物头部 provider / rule / source 统计改从 CMFA 与 fused manifest 动态读取，避免生成器遗留旧数字。
+
 ## v6.0.2-stash.1 (2026-07-10)
 
 - SYNC：由 CMFA v6.0.2-cmfa.1 重新生成，保留 113 个融合 rule-provider 与 130 条规则。

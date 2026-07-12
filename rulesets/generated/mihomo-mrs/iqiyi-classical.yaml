@@ -1,2 +1,3 @@
 payload:
   - "PROCESS-NAME,com.qiyi.video"
+  - "DOMAIN-KEYWORD,qiyi"

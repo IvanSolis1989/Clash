@@ -14,12 +14,12 @@ const surgeNames = fixture.surgeMacProcessNames;
 const surgeWorkNames = fixture.surgeWorkProcessNames || [];
 const WORK_POLICY = '🧑‍💼 会议协作';
 const SCKI_REPO_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused';
-const MIHOMO_DIRECT_RULE_SET = 'scki-fused-007-direct-residual';
-const MIHOMO_WORK_RULE_SET = 'scki-fused-008-work-residual';
-const SINGBOX_DIRECT_RULE_SET = 'scki-fused-007-direct';
-const SINGBOX_WORK_RULE_SET = 'scki-fused-008-work';
-const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-007-direct.list`;
-const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-008-work.list`;
+const MIHOMO_DIRECT_RULE_SET = 'scki-fused-008-direct-residual';
+const MIHOMO_WORK_RULE_SET = 'scki-fused-009-work-residual';
+const SINGBOX_DIRECT_RULE_SET = 'scki-fused-008-direct';
+const SINGBOX_WORK_RULE_SET = 'scki-fused-009-work';
+const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-008-direct.list`;
+const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-009-work.list`;
 
 const mihomoJsTargets = [
   'Clash Party/ClashParty(mihomo-smart).js',
@@ -91,15 +91,15 @@ for (const target of mihomoRuleTextTargets) {
   if (!routeRules.some((rule) => rule.rule_set?.includes(SINGBOX_WORK_RULE_SET) && rule.outbound === WORK_POLICY)) {
     failures.push(`${target}: ${SINGBOX_WORK_RULE_SET} is not routed to ${WORK_POLICY}`);
   }
-  const directProcessNames = readSingBoxFusedProcessNames('scki-fused-007-direct');
-  const workProcessNames = readSingBoxFusedProcessNames('scki-fused-008-work');
+  const directProcessNames = readSingBoxFusedProcessNames('scki-fused-008-direct');
+  const workProcessNames = readSingBoxFusedProcessNames('scki-fused-009-work');
   const missing = mihomoNames.filter((name) => !directProcessNames.has(name));
   if (missing.length > 0) {
-    failures.push(`rulesets/generated/fused/sing-box/scki-fused-007-direct.json: missing ${missing.length} process_name entries: ${missing.join(', ')}`);
+    failures.push(`rulesets/generated/fused/sing-box/scki-fused-008-direct.json: missing ${missing.length} process_name entries: ${missing.join(', ')}`);
   }
   const missingWork = mihomoWorkNames.filter((name) => !workProcessNames.has(name));
   if (missingWork.length > 0) {
-    failures.push(`rulesets/generated/fused/sing-box/scki-fused-008-work.json: missing ${missingWork.length} RustDesk process_name entries: ${missingWork.join(', ')}`);
+    failures.push(`rulesets/generated/fused/sing-box/scki-fused-009-work.json: missing ${missingWork.length} RustDesk process_name entries: ${missingWork.join(', ')}`);
   }
 }
 

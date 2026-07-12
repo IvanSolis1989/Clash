@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const VERSION = 'v6.0.2-sing.1';
-const BUILD = '2026-07-10';
-const BASELINE = 'Clash Party v6.0.2';
+const VERSION = 'v6.0.3-sing.1';
+const BUILD = '2026-07-12';
+const BASELINE = 'Clash Party v6.0.3';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -505,6 +505,8 @@ function uniqueRuleSets(items) {
 
 const allRouteRuleSets = uniqueRuleSets([...ruleSet, ...requiredGeoRuleSets, ...extraGeoSiteTags]);
 const availableRuleSets = new Set(allRouteRuleSets.map((item) => item.tag));
+const adFusedRuleSet = fusedManifest.segments.find((segment) => segment.policy === BIZ.AD && segment.files && segment.files.sing_box);
+if (!adFusedRuleSet) throw new Error('missing fused ad rule set for Sing-box DNS rejection');
 // v5.4.22 #1 借鉴 Proxy-override：QUIC 精细化——sing-box 首命中模型逐条匹配。
 // 插入到 Clash 主线 5 条 AND/QUIC 规则所在位置，避免被后续普通规则或 route.final 改变语义。
 // YouTube/Google/MS/Apple QUIC → 走对应业务组；CN QUIC → DIRECT 放行；其余海外 QUIC → REJECT。
@@ -653,7 +655,7 @@ baseConfig.dns = {
       server: 'dns_direct'
     },
     {
-      rule_set: ['scki-fused-005-ad'],
+      rule_set: [adFusedRuleSet.id],
       action: 'reject'
     }
   ],

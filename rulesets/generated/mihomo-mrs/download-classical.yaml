@@ -27,3 +27,8 @@ payload:
   - "PROCESS-NAME,qbittorrent.exe"
   - "PROCESS-NAME,uTorrent"
   - "PROCESS-NAME,uTorrent.exe"
+  - "DOMAIN-KEYWORD,aria2"
+  - "DOMAIN-KEYWORD,thunder"
+  - "DOMAIN-KEYWORD,xlliveud"
+  - "DOMAIN-KEYWORD,xunlei"
+  - "DOMAIN-KEYWORD,yunpan"

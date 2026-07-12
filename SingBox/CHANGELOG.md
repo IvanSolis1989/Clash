@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.3-sing.1 (2026-07-12)
+
+- SYNC：Full JSON 由融合 manifest 重新生成，65 个唯一非空 `.srs`、72 个 remote rule_set（65 fused + 7 runtime GEO）和 82 条 route rule。
+- AI-PRECEDENCE：新增早期 AI guard SRS，ChatGPT 的 Sentry/DataDog telemetry 不会被后续广告规则抢占；OpenAI / oaistatic / Cloudflare 关联域名保持在 AI 路径。
+- BUILD：生成器不再硬编码广告 fused segment ID，按 manifest 的广告策略动态定位，避免插入前置语义段时发生路由引用漂移。
+
 ## v6.0.2-sing.1 (2026-07-10)
 
 - SYNC：Full JSON 升级到 Clash Party v6.0.2；113 个 Mihomo bucket provider 按 manifest 合并为 64 个非空、唯一 `.srs`，不再为同一 SRS 建立多个 tag 和重复路由。

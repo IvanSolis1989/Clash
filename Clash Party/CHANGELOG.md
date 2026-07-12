@@ -7,6 +7,12 @@
 
 ---
 
+## v6.0.3 / v6.0.3-normal.1 (2026-07-12)
+
+- FIX#FUSED-DOMAIN-PAYLOAD：Smart / Normal 统一消费正确的 fused MRS domain wildcard payload；`chatgpt.com`、`chat.openai.com`、`persistent.oaistatic.com` 不再失配后落入 `🌐 国外网站`。
+- AI-PRECEDENCE：DataDog / Sentry 的 ChatGPT telemetry host 在广告段之前进入 `🤖 AI 服务`，`a.nel.cloudflare.com` 也在 Google 与国外网站之前由 AI 段接管。
+- SYNC：同步为 124 个融合 rule-provider / 141 条主规则（源 513 / 970），不直接调用上游 rule-provider。
+
 ## v6.0.2-region.1（Smart 保持 v6.0.2 基线）/ v6.0.2-normal.2 (2026-07-12)
 
 - FIX#REGION-CARRIER-PRIORITY：修复节点名中的运营商/线路营销词抢占真实落地地区的问题。此前 `🇯🇵AWS日本01 | 电信移动联通推荐` 会先命中 `CN` 的 `电信/联通/移动` 关键词，只进入 `🌏 亚太节点`，不会进入 `🇯🇵 日韩节点`。

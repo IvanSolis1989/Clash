@@ -7,8 +7,9 @@ const path = require('node:path');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const SOURCE_FILE = 'Clash Meta For Android/CMFA(mihomo).yaml';
 const OUTPUT_FILE = 'Stash/Stash.yaml';
+const FUSED_MANIFEST_FILE = 'rulesets/generated/fused/manifest.json';
 const VERSION_SUFFIX = 'stash.1';
-const BUILD_DATE = '2026-07-10';
+const BUILD_DATE = '2026-07-12';
 
 const DNS_BOOTSTRAP_PLAINTEXT = ['223.5.5.5', '119.29.29.29', '1.1.1.1', '8.8.8.8'];
 const DNS_DOMESTIC_DOH = ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query'];
@@ -120,12 +121,33 @@ function extractVersions(source) {
   };
 }
 
-function buildHeader(versions) {
+function countRuleProviders(lines) {
+  const { start, end } = findTopLevelBlock(lines, 'rule-providers');
+  return lines.slice(start + 1, end).filter((line) => /^  [^\s#][^:]*:\s*$/.test(line)).length;
+}
+
+function countRules(lines) {
+  const { start, end } = findTopLevelBlock(lines, 'rules');
+  return lines.slice(start + 1, end).filter((line) => /^  - /.test(line)).length;
+}
+
+function extractCounts(source) {
+  const lines = source.replace(/\r\n/g, '\n').split('\n');
+  const manifest = JSON.parse(fs.readFileSync(relPath(FUSED_MANIFEST_FILE), 'utf8'));
+  return {
+    fusedProviders: countRuleProviders(lines),
+    fusedRules: countRules(lines),
+    sourceProviders: manifest.source_provider_count,
+    sourceRules: manifest.source_rule_count,
+  };
+}
+
+function buildHeader(versions, counts) {
   return [
     '# ================================================================',
     `# Stash Smart ${versions.stashVersion} - Stash (Clash Premium) 配置`,
     `# Build: ${BUILD_DATE}`,
-    '# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 113 融合 rule-providers / 130 rules（源 474/931）',
+    `# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + ${counts.fusedProviders} 融合 rule-providers / ${counts.fusedRules} rules（源 ${counts.sourceProviders}/${counts.sourceRules}）`,
     `# 规则源：rulesets/source/routing-graph.js ${versions.baselineVersion} / 派生：CMFA ${versions.cmfaVersion}`,
     '# 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）',
     '# 变更历史：见 `Stash/CHANGELOG.md`',
@@ -170,12 +192,12 @@ function buildProxyProviders(lines) {
   ];
 }
 
-function transformBody(source, versions) {
+function transformBody(source, versions, counts) {
   const sourceLines = source.replace(/\r\n/g, '\n').split('\n');
   const firstTopLevel = sourceLines.findIndex((line) => topLevelKey(line));
   if (firstTopLevel === -1) throw new Error('CMFA source has no top-level YAML body');
   const lines = sourceLines.slice(firstTopLevel);
-  const output = buildHeader(versions);
+  const output = buildHeader(versions, counts);
 
   for (let i = 0; i < lines.length; i += 1) {
     const key = topLevelKey(lines[i]);
@@ -208,7 +230,8 @@ function transformBody(source, versions) {
 function main() {
   const source = fs.readFileSync(relPath(SOURCE_FILE), 'utf8');
   const versions = extractVersions(source);
-  const output = transformBody(source, versions);
+  const counts = extractCounts(source);
+  const output = transformBody(source, versions, counts);
   const target = relPath(OUTPUT_FILE);
   fs.mkdirSync(path.dirname(target), { recursive: true });
   fs.writeFileSync(target, output, 'utf8');

@@ -10,6 +10,12 @@ const {
   SOURCE_GRAPH_ID,
   getRawRoutingGraph,
 } = require('../rulesets/source/routing-graph');
+const {
+  partitionMihomoDomainEntries,
+} = require('./lib/mihomo-domain-payload');
+const {
+  localPathForRepositoryRuleUrl,
+} = require('./lib/repository-rule-asset');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const OUTPUT_DIR = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs');
@@ -221,10 +227,6 @@ function classifyEntry(entry) {
   return type || 'unknown';
 }
 
-function normalizeDomainEntry(entry) {
-  return entry;
-}
-
 function normalizeIpCidrEntry(entry) {
   if (!entry.includes(',')) return entry.trim();
   const parts = splitTopLevel(entry);
@@ -247,6 +249,9 @@ function safeYamlFileName(name) {
 }
 
 async function fetchText(url) {
+  const local = localPathForRepositoryRuleUrl(url);
+  if (local) return readText(local);
+
   const candidates = [url];
   if (url.includes('fastly.jsdelivr.net/gh/')) candidates.push(url.replace('https://fastly.jsdelivr.net/gh/', 'https://cdn.jsdelivr.net/gh/'));
   if (url.includes('cdn.jsdelivr.net/gh/')) candidates.push(url.replace('https://cdn.jsdelivr.net/gh/', 'https://fastly.jsdelivr.net/gh/'));
@@ -352,7 +357,7 @@ function writeNormalizedSource(tempDir, id, behavior, entries) {
   const file = path.join(tempDir, `${id}-${behavior}.yaml`);
   const normalized = behavior === 'ipcidr'
     ? entries.map(normalizeIpCidrEntry).filter(Boolean)
-    : entries.map(normalizeDomainEntry).filter(Boolean);
+    : entries;
   fs.writeFileSync(file, renderPayload(normalized), 'utf8');
   return { file, count: normalized.length };
 }
@@ -437,10 +442,15 @@ async function main() {
       const types = Object.keys(typeCounts).sort();
       const domainEntries = entries.filter((entry) => classifyEntry(entry) === 'domain');
       const ipcidrEntries = entries.filter((entry) => classifyEntry(entry) === 'ipcidr');
-      const residualEntries = entries.filter((entry) => {
+      const unsupportedEntries = entries.filter((entry) => {
         const type = classifyEntry(entry);
         return type !== 'domain' && type !== 'ipcidr';
       });
+      const {
+        payload: domainPayloadEntries,
+        residual: domainResidualEntries,
+      } = partitionMihomoDomainEntries(domainEntries);
+      const residualEntries = [...unsupportedEntries, ...domainResidualEntries];
 
       if (entries.length === 0) {
         manifest.retained.push({ id: provider.name, reason: 'empty-source', url: provider.url });
@@ -448,9 +458,9 @@ async function main() {
       }
 
       const generated = [];
-      if (domainEntries.length > 0) {
-        const fileName = domainEntries.length === entries.length ? safeFileName(provider.name) : safeFileName(`${provider.name}-domain`);
-        const source = writeNormalizedSource(tempDir, provider.name, 'domain', domainEntries);
+      if (domainPayloadEntries.length > 0) {
+        const fileName = domainPayloadEntries.length === entries.length ? safeFileName(provider.name) : safeFileName(`${provider.name}-domain`);
+        const source = writeNormalizedSource(tempDir, provider.name, 'domain', domainPayloadEntries);
         convertWithMihomo(mihomoBin, 'domain', source.file, path.join(OUTPUT_DIR, fileName));
         generated.push({ behavior: 'domain', file: fileName, entries: source.count });
       }

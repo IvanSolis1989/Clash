@@ -1,0 +1,9 @@
+payload:
+  - "DOMAIN-KEYWORD,paypal"
+  - "DOMAIN-KEYWORD,stripe"
+  - "DOMAIN-KEYWORD,zellepay"
+  - "DOMAIN-KEYWORD,zelle"
+  - "DOMAIN-KEYWORD,bankofamerica"
+  - "DOMAIN-KEYWORD,transferwise"
+  - "DOMAIN-KEYWORD,monzo"
+  - "DOMAIN-KEYWORD,revolut"

@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.3-flclash.1 (2026-07-12)
+
+- SYNC：跟随 source graph v6.0.3，消费 124 个融合 `.mrs` / residual provider 与 141 条主规则。
+- FIX#FUSED-DOMAIN-PAYLOAD：与 Clash Party Normal 使用同一正确 domain payload，OpenAI/ChatGPT 域名不再因 MRS 语法失配落入国外网站兜底。
+
 ## v6.0.2-flclash.2 (2026-07-12)
 
 - FIX#REGION-CARRIER-PRIORITY：与 Clash Party Smart / Normal 同步修复运营商营销词抢占真实落地地区的分类缺陷。`🇯🇵AWS日本01 | 电信移动联通推荐` 现归类为 `JP`，同时进入 `🇯🇵 日韩节点` 和 `🌏 亚太节点`。

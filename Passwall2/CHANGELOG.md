@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.3-pw2.1 (2026-07-12)
+
+- SYNC：从 v6.0.3 fused sing-box 目标重新生成 65 条非空 `rule-set:remote` shunt rule、apply 脚本和参考配置。
+- AI-PRECEDENCE：新增的 AI telemetry guard 在广告和国外网站 fallback 前保持顺序生效，所有 shunt URL 只引用仓库 fused `.srs`。
+
 ## v6.0.2-pw2.1 (2026-07-10)
 
 - SYNC：从 v6.0.2 fused sing-box 目标重新生成 64 条非空 `rule-set:remote` shunt rule、apply 脚本和参考配置。

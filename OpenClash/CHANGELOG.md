@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.3-oc-normal.1 / v6.0.3-oc-smart.1 (2026-07-12)
+
+- SYNC：Normal / Smart 统一升级到 Clash Party v6.0.3，消费 124 个融合 provider 与 141 条规则。
+- FIX#FUSED-DOMAIN-PAYLOAD：两份 heredoc YAML 同步正确的 MRS domain wildcard 与 classical residual 分层，ChatGPT/OpenAI 不再落入国外网站尾段。
+
 ## v6.0.2-oc-normal.1 / v6.0.2-oc-smart.1 (2026-07-10)
 
 - SYNC：Normal / Smart 同步到 Clash Party v6.0.2，使用 113 个融合 provider、130 条规则和 55 个策略组。

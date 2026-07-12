@@ -1,3 +1,5 @@
 payload:
   - "PROCESS-NAME,OrbStack"
   - "PROCESS-NAME,OrbStack Helper"
+  - "DOMAIN-KEYWORD,registry"
+  - "DOMAIN-KEYWORD,huggingface"

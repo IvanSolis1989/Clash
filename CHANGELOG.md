@@ -6,6 +6,15 @@
 
 ---
 
+## v6.0.3 (2026-07-12)
+
+- FIX#FUSED-DOMAIN-PAYLOAD：修复融合编译器把 classical `DOMAIN` / `DOMAIN-SUFFIX` 行原样写入 Mihomo `behavior: domain` YAML 的根本错误。该行为的 payload 必须是裸精确域名或 wildcard（如 `+.chatgpt.com`）；旧产物虽可编译为 `.mrs`，但实际不会命中，因而会继续落入后续的“国外网站”段。
+- SEMANTIC-PRESERVATION：`DOMAIN` 转为精确 host，`DOMAIN-SUFFIX` 转为 `+.` wildcard；`DOMAIN-KEYWORD`、`DOMAIN-REGEX` 不被错误宽化为 wildcard，而是保留为 classical residual YAML。MRS 同步链与最终 fused 链共享同一转换器，避免两条生成链再次分叉。
+- AI-PRECEDENCE：新增小范围 `scki-adfp-ai` 前置守卫，覆盖 ChatGPT 使用的 DataDog / Sentry telemetry host，确保它们不会被通用广告/隐私列表先拦截；`chatgpt.com`、`chat.openai.com`、`oaistatic.com` 及 `a.nel.cloudflare.com` 均在广告段与“国外网站”段之前归入 `🤖 AI 服务`。
+- BUILD-CONSISTENCY：仓库自有规则 URL 在本地构建时优先读取工作区文件，再由 CI/发布使用同一 URL 映射，杜绝因 CDN 尚未包含未提交补充规则而生成陈旧 MRS。Stash 头部统计也改为从 CMFA 与 fused manifest 动态读取。
+- SYNC：源图更新为 513 providers / 970 rules，最终为 68 个语义段、124 个 Mihomo provider / 141 条主规则、64 个移动端非空文本资产、65 个 sing-box SRS / Passwall shunt rule、83 条 v2rayN Xray RuleObject、82 条 sing-box route rule，`unresolved=0`。
+- VERIFY：新增 domain payload / repository URL 回归测试，产物合同拒绝 classical 前缀混入 fused `*-domain.yaml`，并断言 AI 误伤守卫位于广告段之前；以 Clash Party 随附 Mihomo Smart 内核对 OpenAI 主站、子域、oaistatic、Sentry、DataDog 与 Cloudflare NEL 实际拨号命中进行回归。
+
 ## v6.0.2-region.1 (2026-07-12)
 
 - FIX#REGION-CARRIER-PRIORITY：修复 Clash Party Smart、Clash Party Normal 与 FlClash 的节点名区域分类。运营商/线路营销词（如 `中国电信`、`电信移动联通推荐`、`China Telecom`）不再先于国旗、国家名或 ISO 代码把海外节点错误归为 `CN`。

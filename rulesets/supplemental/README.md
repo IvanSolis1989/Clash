@@ -14,6 +14,10 @@ that should not stay as scattered inline rules in product profiles.
 Rules here intentionally omit policy targets. Each product binds the rule set to
 the correct policy in its own syntax.
 
+`adfp-*.list` files are deliberately narrow false-positive guards that run
+before broad ad/privacy feeds. `adfp-ai.list` protects verified ChatGPT
+telemetry hosts whose parent Sentry or Datadog domains occur in those feeds.
+
 Inline single rules in main product files are allowed only when the rule cannot
 be represented safely as a supplemental rule set, such as port rules, logical
 AND/OR/NOT rules, platform-local syntax traps, or documented engine gaps.

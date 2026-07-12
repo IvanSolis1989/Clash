@@ -1,0 +1,5 @@
+payload:
+  - "dns.google"
+  - "dns.google.com"
+  - "+.inflection.ai"
+  - "+.pi.ai"

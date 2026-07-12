@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.3-SR.1 (2026-07-12)
+
+- SYNC：移动端文本目标同步为 64 个非空融合 RULE-SET；所有 URL 仍只指向仓库生成资产，不直接调用上游规则集。
+- AI-PRECEDENCE：ChatGPT/OpenAI 主域、oaistatic、Cloudflare NEL 与必要 Sentry/DataDog telemetry 在广告和国外网站段之前进入 `🤖 AI 服务`。
+- SEMANTICS：文本规则沿源图顺序保留；Mihomo MRS grammar 修复不把 keyword/regex 错误扩展为 wildcard。
+
 ## v6.0.2-SR.1 (2026-07-10)
 
 - FIX#175：远程规则从 71 个放大分片收敛为 63 个移动端非空融合段；聚合体积由约 75.44 MiB 降至 16.06 MiB，文本规则由约 310 万条降至 575,499 条。

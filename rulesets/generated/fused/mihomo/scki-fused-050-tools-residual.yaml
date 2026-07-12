@@ -1,0 +1,6 @@
+payload:
+  - "PROCESS-NAME,UnityHub.exe"
+  - "DOMAIN-KEYWORD,registry"
+  - "DOMAIN-KEYWORD,huggingface"
+  - "PROCESS-NAME,OrbStack"
+  - "PROCESS-NAME,OrbStack Helper"

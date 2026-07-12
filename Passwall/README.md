@@ -1,8 +1,8 @@
-# Passwall 使用教程（对齐 Clash Party v6.0.2）
+# Passwall 使用教程（对齐 Clash Party v6.0.3）
 
 > 目录简介：这里提供 Passwall 全功能版的 fused shunt rule fallback、UCI 批量脚本和 OpenWrt 导入说明。
 >
-> 版本：**v6.0.2-pw.1**（Build 2026-07-10；基线：Clash Party v6.0.2；变更历史见 `Passwall/CHANGELOG.md`）。
+> 版本：**v6.0.3-pw.1**（Build 2026-07-12；基线：Clash Party v6.0.3；变更历史见 `Passwall/CHANGELOG.md`）。
 
 ---
 
@@ -10,7 +10,7 @@
 
 Passwall 是 OpenWrt 上的全功能代理插件，带直连/屏蔽/GFW/代理四列表、shunt rules、ACL 和 TCP/UDP 节点分选。它底层走 xray-core / sing-box，不打包 mihomo，也没有 Clash Party 的 proxy-groups 嵌套选择器。
 
-本目录因此只提供 fallback：从最终 fused 规则集生成 64 条非空 Passwall 原生 shunt rule。每条 rule 只引用一个远程 `.srs`：
+本目录因此只提供 fallback：从最终 fused 规则集生成 65 条非空 Passwall 原生 shunt rule。每条 rule 只引用一个远程 `.srs`：
 
 ```text
 rule-set:remote:https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/<segment>.srs
@@ -24,8 +24,8 @@ rule-set:remote:https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@ma
 
 | 文件 | 用途 |
 | --- | --- |
-| `Passwall(xray+sing-box)-apply.sh` | SSH 到路由器后执行，一次性创建 64 条 fused shunt rule |
-| `Passwall(xray+sing-box).conf` | 纯文本参考，展示 64 条 rule 的顺序、目标和 `.srs` URL |
+| `Passwall(xray+sing-box)-apply.sh` | SSH 到路由器后执行，一次性创建 65 条 fused shunt rule |
+| `Passwall(xray+sing-box).conf` | 纯文本参考，展示 65 条 rule 的顺序、目标和 `.srs` URL |
 | `shunt-rules/*.list` | 每个 fused 段一个 `.list`，方便在 LuCI 手工复制 |
 | `REFERENCE-passwall.md` | Passwall 语法和官方源码参考 |
 
@@ -72,7 +72,7 @@ Passwall / Passwall2 的 `shunt_rules.lua` 支持 `rule-set:remote:` / `rule-set
 
 | 能力 | Passwall fallback | OpenClash / Clash Party |
 | --- | --- | --- |
-| fused 规则顺序 | 64 条非空 shunt rule | 130 条 Mihomo 主规则 |
+| fused 规则顺序 | 65 条非空 shunt rule | 141 条 Mihomo 主规则 |
 | 远程规则集 | sing-box `.srs` | Mihomo `.mrs` / residual YAML |
 | 策略组嵌套 | 不支持 | 支持 |
 | 自动测速 | 由你配置节点或负载均衡 | 支持区域组 url-test / Smart |

@@ -1,0 +1,205 @@
+host-suffix, cerebras.ai
+host-suffix, a.nel.cloudflare.com
+host-suffix, usefathom.com
+host-suffix, recraft.ai
+host-suffix, lmsudio.ai
+host-suffix, api.github.com
+host-suffix, github.gallery.vsassets.io
+host-suffix, github.gallerycdn.vsassets.io
+host-suffix, applicationinsights.azure.com
+host-suffix, azurewebsites.net
+host-suffix, azureedge.net
+host-suffix, edge.microsoft.com
+host-suffix, nav-edge.smartscreen.microsoft.com
+host-suffix, live.com
+host-suffix, virtualearth.net
+host-suffix, windows.net
+host-suffix, onenote
+host-suffix, hexun.com
+host-suffix, msn.com
+host-suffix, variflight.com
+host-suffix, msftoffers.com
+host-suffix, chinacloudapp.cn
+host-suffix, cbsnews.com
+host-suffix, swx.cdn.skype.com
+host-suffix, swc.cdn.skype.com
+host-suffix, latest-swx.cdn.skype.com
+host-suffix, a.config.skype.com
+host-suffix, b.config.skype.com
+host-suffix, microsofttranslator.com
+host-suffix, facebook.net
+host-suffix, delve.office.com
+host-suffix, uservoice.com
+host-suffix, cdn.office.net
+host-suffix, platform.twitter.com
+host-suffix, cdn.syndication.twimg.com
+host-suffix, spoprod-a.akamaihd.net
+host-suffix, yahoo.co.jp
+host-suffix, r.msftstatic.com
+host-suffix, ssl.kaptcha.com
+host-suffix, tst.kaptcha.com
+host-suffix, cjfdbemmaeeohgibnhdhlakiahifjjcf
+host-suffix, bngpiglbalmenaabohcooocpnljgfemj
+host-suffix, app-measurement.net
+host-suffix, c.gle
+host-suffix, clickserve.dartsearch.net
+host-suffix, gtm.oasisfeng.com
+host-suffix, recaptcha.net
+host-suffix, settings.crashlytics.com
+host-suffix, cici.com
+host-suffix, lf-rc1.yhgfb-static.com
+host-suffix, itobsnssdk.com
+host-suffix, abtestvm-sg.bytedance.com
+host-suffix, bytedapm.com
+host-suffix, byteintl.net
+host-suffix, trae.ai
+host-suffix, bytednsdoc.com
+host-suffix, mchost.guru
+host-suffix, marscode.com
+host-suffix, zijieapi.com
+host-suffix, abtestvm.bytedance.com
+host-suffix, ibytedtos.com
+host-suffix, ipstatp.com
+host-suffix, muscdn.com
+host-suffix, musical.ly
+host-suffix, tik-tokapi.com
+host-suffix, tiktok.com
+host-suffix, tiktokv.com
+host-suffix, ulikecam.com
+host-suffix, capcut.com
+host-suffix, capcutapi.com
+host-suffix, ttwstatic.com
+host-suffix, ibyteimg.com
+host-suffix, snapkit.com
+host-suffix, pangle.io
+host-suffix, smoot.apple.com
+host, guzzoni.apple.com
+host, gspe1-ssl.ls.apple.com
+host, apple-relay.mask.apple-dns.net
+host, apple-relay.fastly-edge.com
+host, apple-relay.apple.com
+host, apple-relay.cloudflare.com
+host, cp4.cloudflare.com
+host-suffix, featureassets.org
+host-suffix, xai.chronosphere.io
+host-suffix, static.doubleclick.net
+host-suffix, td.doubleclick.net
+host-suffix, ecs.office.com
+host-suffix, designer.microsoft.com
+host-suffix, designerapp.osi.office.net
+host-suffix, prod.do.dsp.mp.microsoft.com
+host, browser.pipe.aria.microsoft.com
+host, aws-language-servers.us-east-1.amazonaws.com
+host, aws-toolkit-language-servers.amazonaws.com
+host, codewhisperer.us-east-1.amazonaws.com
+host, cognito-identity.us-east-1.amazonaws.com
+host, idetoolkits-hostedfiles.amazonaws.com
+host, idetoolkits.amazonwebservices.com
+host, q-developer-integration.us-east-1.api.aws
+host-suffix, aws.dev
+host-suffix, awsapps.com
+host-suffix, awsstatic.com
+host-suffix, console.aws.a2z.com
+host-suffix, q.eu-central-1.amazonaws.com
+host-suffix, q.us-east-1.amazonaws.com
+host-suffix, sso.amazonaws.com
+host-suffix, antspace.dev
+host-suffix, clau.de
+host-suffix, modelcontextprotocol.com
+host-suffix, modelcontextprotocol.io
+host-suffix, modelcontextprotocol.net
+host-suffix, modelcontextprotocol.org
+host, cdn.growthbook.io
+host-suffix, interface.feedback
+host-suffix, lcicat.org
+host-suffix, lcicollections.org
+host-suffix, mcpservertest.online
+host-suffix, muthos.com
+host-suffix, sillylittleguy.org
+host-suffix, augmentcode.com
+host-suffix, bolt.new
+host-suffix, bytegate-sg.byteintlapi.com
+host-suffix, coze.com
+host-suffix, tron-sg.bytelemon.com
+host-suffix, coderabbit.ai
+host-suffix, continue.dev
+host-suffix, crewai.com
+host-suffix, cursor-cdn.com
+host-suffix, cursorapi.com
+host-suffix, devin.ai
+host-suffix, dify.ai
+host-suffix, factory.ai
+host-suffix, grazie.ai
+host-suffix, grazie.aws.intellij.net
+host-suffix, jetbrains.ai
+host-suffix, kiro.dev
+host-suffix, langchain.com
+host-suffix, lovable.dev
+host-suffix, manus.im
+host-suffix, manuscdn.com
+host-suffix, ai.com
+host-suffix, api.statsig.com
+host-suffix, repl.co
+host-suffix, repl.it
+host-suffix, replit.app
+host-suffix, replit.com
+host-suffix, replit.dev
+host-suffix, ampcode.com
+host-suffix, ampworkers.com
+host-suffix, cody.dev
+host-suffix, sourcegraph.com
+host-suffix, tabnine.com
+host-suffix, v0.app
+host-suffix, codeium.com
+host-suffix, codeiumdata.com
+host-suffix, windsurf.build
+host-suffix, windsurf.com
+host-suffix, zed.dev
+ip-cidr, 64.233.177.188/32, no-resolve
+ip-cidr, 64.233.186.188/32, no-resolve
+ip-cidr, 64.233.187.188/32, no-resolve
+ip-cidr, 64.233.188.188/32, no-resolve
+ip-cidr, 64.233.189.188/32, no-resolve
+ip-cidr, 108.177.125.188/32, no-resolve
+ip-cidr, 142.250.4.188/32, no-resolve
+ip-cidr, 142.250.10.188/32, no-resolve
+ip-cidr, 142.250.31.188/32, no-resolve
+ip-cidr, 142.250.96.188/32, no-resolve
+ip-cidr, 172.217.194.188/32, no-resolve
+ip-cidr, 172.217.218.188/32, no-resolve
+ip-cidr, 172.217.219.188/32, no-resolve
+ip-cidr, 172.253.63.188/32, no-resolve
+ip-cidr, 172.253.122.188/32, no-resolve
+ip-cidr, 209.85.233.188/32, no-resolve
+ip-cidr, 23.41.4.0/22, no-resolve
+ip-cidr, 160.79.104.0/21, no-resolve
+ip6-cidr, 2607:6bc0::/32, no-resolve
+ip-cidr, 199.47.142.0/23, no-resolve
+ip-cidr, 24.199.123.28/32, no-resolve
+ip-cidr, 64.23.132.171/32, no-resolve
+ip6-cidr, 2604:f20::/32, no-resolve
+host-keyword, openai
+host-keyword, chatgpt
+host-keyword, datadoghq
+host-keyword, anthropic
+host-keyword, claude
+host-keyword, grok
+host-keyword, bing
+host-keyword, copilot
+host-keyword, edgeassetservice
+host-keyword, gmail
+host-keyword, google
+host-keyword, goog
+host-keyword, antigravity
+host-keyword, ciciai
+host-keyword, dola
+host-keyword, byteoversea
+host-keyword, tiktokcdn
+host-keyword, lemon8
+host-keyword, datadog
+host-keyword, sentry
+host-keyword, sift
+host-keyword, chatgpt-async-webps-prod
+ip-asn, 399358, no-resolve
+ip-asn, 14061, no-resolve
+ip-asn, 401518, no-resolve

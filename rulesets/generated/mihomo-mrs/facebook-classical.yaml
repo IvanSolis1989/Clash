@@ -1,2 +1,4 @@
 payload:
   - "IP-ASN,32934"
+  - "DOMAIN-KEYWORD,facebook"
+  - "DOMAIN-KEYWORD,fbcdn"

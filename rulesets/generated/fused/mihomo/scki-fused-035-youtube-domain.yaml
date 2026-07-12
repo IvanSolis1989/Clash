@@ -1,7 +1,0 @@
-payload:
-  - "DOMAIN,yt3.googleusercontent.com"
-  - "DOMAIN-SUFFIX,youtube.googleapis.com"
-  - "DOMAIN-SUFFIX,youtubeembeddedplayer.googleapis.com"
-  - "DOMAIN-SUFFIX,youtubei.googleapis.com"
-  - "DOMAIN-SUFFIX,youtube-ui.l.google.com"
-  - "DOMAIN-SUFFIX,wide-youtube.l.google.com"

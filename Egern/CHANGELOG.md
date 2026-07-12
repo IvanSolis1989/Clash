@@ -1,5 +1,11 @@
 # Egern — 变更日志
 
+## v6.0.3-egern.1 (2026-07-12)
+
+- SYNC：由 CMFA v6.0.3-cmfa.1 重建正式 Profile 与 Egern 原生资产；源端为 124 个融合 provider / 141 条规则，目标端按平台能力去重与空资产裁剪。
+- AI-PRECEDENCE：从 CMFA 的融合顺序继承 ChatGPT/OpenAI 与必要 telemetry 的前置 AI 路由，避免落入广告或国外网站后段。
+- CONTRACT：生成清单继续对 CMFA、source graph、Profile、每个原生 YAML 的内容哈希和引用顺序做确定性校验。
+
 ## v6.0.2-egern.2 (2026-07-11)
 
 - FIX：移除 Egern 产物合同中 `111 / 94 / 99` 的固定计数快照。上游规则内容变化会影响目标端的全局去重和空资产裁剪，固定数字会把合法刷新误判为失败。

@@ -1,0 +1,12 @@
+payload:
+  - "DOMAIN-KEYWORD,tencentvideo"
+  - "DOMAIN-KEYWORD,qiyi"
+  - "PROCESS-NAME,com.qiyi.video"
+  - "PROCESS-NAME,com.zhiliaoapp.musically"
+  - "DOMAIN-KEYWORD,weibo"
+  - "DOMAIN-KEYWORD,nivod"
+  - "DOMAIN-KEYWORD,olevod"
+  - "DOMAIN-KEYWORD,gifshow.com"
+  - "DOMAIN-KEYWORD,ksapisrv.com"
+  - "DOMAIN-KEYWORD,app-analytics-services"
+  - "DOMAIN-KEYWORD,acs.m.goofish.com"

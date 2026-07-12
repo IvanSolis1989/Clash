@@ -1,10 +1,11 @@
-# 🚀 Smart-Config-Kit v6.0.2
+# 🚀 Smart-Config-Kit v6.0.3
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
 > 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。融合编译器先规范化，再在同策略、同顺序段内删除精确重复和可证明被覆盖的域名/CIDR；GEOIP 国家码保留给支持原生数据库查询的平台，只有不支持该能力的目标才展开。
 >
-> - 🧠 **v6.0.2：融合规则集去重与 iOS 总量治理**：784,480 条规范化输入压缩为 575,652 条有序规则，安全删除 208,828 条；保留 67 个源语义段，产出 113 个 Mihomo provider / 130 条主规则；Shadowrocket 只引用 63 个非空远程资产，约 16.06 MiB / 575,499 条
+> - 🧠 **融合规则集语义保真**：源图当前 513 个 provider / 970 条规则按原始首匹配顺序编译为 68 个语义段、124 个 Mihomo provider / 141 条主规则；移动端只消费 64 个非空文本资产，sing-box / Passwall 系消费 65 个非空 `.srs`
+> - 🧭 **Mihomo domain 语法正确归一化**：`DOMAIN` / `DOMAIN-SUFFIX` 会转换为 `behavior: domain` 的精确 / `+.` wildcard payload；`DOMAIN-KEYWORD` 与正则保留 classical residual，避免把 ChatGPT 等域名静默漏匹配或扩大匹配范围
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
 > - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，v2rayN Xray 展平成 RuleObject，Passwall 系使用 `rule-set:remote` `.srs`
 > - 🧯 **双层体积门禁**：每个 jsDelivr 资产不超过 18 MiB；iOS Network Extension 类客户端还必须满足 32 MiB / 100 万文本规则的聚合预算，禁止靠分片绕过总量约束
@@ -26,9 +27,9 @@
 | Android Mihomo | `Clash Meta For Android/CMFA(mihomo).yaml` | CMFA 是同步产物，不是规则基准 |
 | Stash | `Stash/Stash.yaml` | 从 CMFA 自动裁剪生成，保持 Clash Premium 兼容 |
 | sing-box / Hiddify / HomeProxy | `SingBox/SingBox(sing-box)-full.json` | 使用 `.srs` 融合规则集 |
-| v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 64 个非空 fused sing-box JSON 展平成 82 条 Xray RuleObject |
+| v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 65 个非空 fused sing-box JSON 展平成 83 条 Xray RuleObject |
 | iOS / macOS 其他客户端 | `Egern/`、`Shadowrocket/`、`Surge/`、`Loon/`、`Quantumult X/` | 按各 APP 原生语法同步 |
-| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 64 条非空 fused `.srs` shunt rule |
+| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 65 条非空 fused `.srs` shunt rule |
 
 ---
 
@@ -130,7 +131,7 @@ flowchart LR
 - Shadowrocket / Surge / Loon / Quantumult X / Egern：`rulesets/generated/fused/<platform>/scki-fused-*`
 - sing-box / Hiddify / HomeProxy：`rulesets/generated/fused/sing-box/scki-fused-*.srs`
 - v2rayN Xray：由 fused sing-box JSON 展平成 Xray `RuleObject`
-- Passwall / Passwall2：64 条 `rule-set:remote` fused `.srs` shunt rule
+- Passwall / Passwall2：65 条 `rule-set:remote` fused `.srs` shunt rule
 
 
 ---

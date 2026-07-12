@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.3-v2n.1 (2026-07-12)
+
+- SYNC：从 65 个非空 fused sing-box JSON 重新展平为 83 条 Xray RuleObject（1 meta + 65 fused + 17 inline），保持 `proxy/direct/block` 三出站与首匹配顺序。
+- AI-PRECEDENCE：新增的 AI telemetry guard 在广告与国外网站 fallback 之前生效；Xray 路径不直接下载或调用任何上游规则集。
+
 ## v6.0.2-v2n.1 (2026-07-10)
 
 - SYNC：从 64 个 v6.0.2 非空 fused sing-box JSON 重新展平为 82 条 Xray RuleObject（1 meta + 64 fused + 17 inline），保持 `proxy/direct/block` 三出站。
