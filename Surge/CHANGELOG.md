@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.4-Surge.1 (2026-07-13)
+
+- DIRECT-ITWDB：默认 `DIRECT` 融合文本段新增 `DOMAIN-SUFFIX,itwdb.com`，保持源图首匹配顺序并覆盖 WorkPro 子域名。
+
 ## v6.0.3-Surge.1 (2026-07-12)
 
 - SYNC：升级到 Clash Party v6.0.3，消费 64 个非空融合 RULE-SET，保持源图首匹配顺序。

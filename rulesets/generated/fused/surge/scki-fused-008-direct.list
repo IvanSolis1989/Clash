@@ -131,6 +131,7 @@ DOMAIN-SUFFIX,1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip
 DOMAIN,ip.cip.cc
 DOMAIN-SUFFIX,chiphell.com
 DOMAIN-SUFFIX,iwipwedabay.com
+DOMAIN-SUFFIX,itwdb.com
 DOMAIN-SUFFIX,cdn.weixin.qq.com
 IP-CIDR,172.90.1.130/32,no-resolve
 IP-CIDR,0.0.0.0/8,no-resolve

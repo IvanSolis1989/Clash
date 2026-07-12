@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.4-SR.1 (2026-07-13)
+
+- DIRECT-ITWDB：默认 `DIRECT` 融合文本段新增 `DOMAIN-SUFFIX,itwdb.com`，Shadowrocket 同步覆盖 WorkPro 及全部子域名。
+
 ## v6.0.3-SR.1 (2026-07-12)
 
 - SYNC：移动端文本目标同步为 64 个非空融合 RULE-SET；所有 URL 仍只指向仓库生成资产，不直接调用上游规则集。

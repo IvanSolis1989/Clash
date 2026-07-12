@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.4-flclash.1 (2026-07-13)
+
+- DIRECT-ITWDB：标准 Mihomo 覆写消费的默认 `DIRECT` 融合 MRS 纳入 `itwdb.com`，覆盖 WorkPro 子域名且不新增单条主规则。
+
 ## v6.0.3-flclash.1 (2026-07-12)
 
 - SYNC：跟随 source graph v6.0.3，消费 124 个融合 `.mrs` / residual provider 与 141 条主规则。

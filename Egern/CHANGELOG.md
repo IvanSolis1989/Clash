@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.4-egern.1 (2026-07-13)
+
+- DIRECT-ITWDB：正式 Profile 与 Egern 原生 YAML 规则集已从 CMFA v6.0.4 重建，默认 direct domain set 包含 `itwdb.com`，覆盖 WorkPro 子域名。
+
 ## v6.0.3-egern.1 (2026-07-12)
 
 - SYNC：由 CMFA v6.0.3-cmfa.1 重建正式 Profile 与 Egern 原生资产；源端为 124 个融合 provider / 141 条规则，目标端按平台能力去重与空资产裁剪。

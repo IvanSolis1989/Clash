@@ -1,4 +1,4 @@
-# 🚀 Smart-Config-Kit v6.0.3
+# 🚀 Smart-Config-Kit v6.0.4
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >

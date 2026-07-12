@@ -135,6 +135,7 @@ domain_suffix_set:
   - "1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa"
   - "chiphell.com"
   - "iwipwedabay.com"
+  - "itwdb.com"
   - "cdn.weixin.qq.com"
 ip_cidr_set:
   - "172.90.1.130/32"

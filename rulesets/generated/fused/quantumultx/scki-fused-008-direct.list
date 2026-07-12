@@ -131,6 +131,7 @@ host-suffix, 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6
 host, ip.cip.cc
 host-suffix, chiphell.com
 host-suffix, iwipwedabay.com
+host-suffix, itwdb.com
 host-suffix, cdn.weixin.qq.com
 ip-cidr, 172.90.1.130/32, no-resolve
 ip-cidr, 0.0.0.0/8, no-resolve

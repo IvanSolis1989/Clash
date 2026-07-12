@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-12T21:07:06.691Z",
+  "generated_at": "2026-07-12T22:49:02.247Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
-  "mihomo_bin": "mihomo-v1.19.28",
+  "mihomo_bin": "mihomo-v1.19.28.exe",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
     {
@@ -4251,13 +4251,13 @@
       "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/local-direct.list",
       "type_counts": {
         "ipcidr": 1,
-        "domain": 4
+        "domain": 5
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "scki-local-direct-domain.mrs",
-          "entries": 4
+          "entries": 5
         },
         {
           "behavior": "ipcidr",

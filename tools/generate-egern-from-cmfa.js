@@ -18,8 +18,8 @@ const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit
 const SCKI_GENERATED_BASE = `${SCKI_BASE}/rulesets/generated/egern`;
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
-const EGERN_VERSION = 'v6.0.3-egern.1';
-const BUILD_DATE = '2026-07-12';
+const EGERN_VERSION = 'v6.0.4-egern.1';
+const BUILD_DATE = '2026-07-13';
 const FETCH_CONCURRENCY = 3;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
 // jsDelivr rejects files at 20 MB. Keep generated Egern-native rule sets below 18 MiB.
@@ -362,7 +362,7 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
     '# ======================================================================',
     `# Egern Smart ${EGERN_VERSION} - Egern Profile`,
     `# Build: ${BUILD_DATE}`,
-    '# Baseline: Clash Party v6.0.3',
+    '# Baseline: Clash Party v6.0.4',
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
     `# Egern rule sets: ${assetCount} generated native YAML files.`,

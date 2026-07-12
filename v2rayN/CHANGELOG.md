@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.4-v2n.1 (2026-07-13)
+
+- DIRECT-ITWDB：Xray fallback 由 fused sing-box JSON 重建，默认 direct RuleObject 包含 `domain:itwdb.com`，覆盖 WorkPro 子域名。
+
 ## v6.0.3-v2n.1 (2026-07-12)
 
 - SYNC：从 65 个非空 fused sing-box JSON 重新展平为 83 条 Xray RuleObject（1 meta + 65 fused + 17 inline），保持 `proxy/direct/block` 三出站与首匹配顺序。

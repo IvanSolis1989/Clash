@@ -1,15 +1,15 @@
-﻿// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v6.0.3 (2026-07-12)
+// Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
+// 版本：v6.0.4 (2026-07-13)
 // 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 141 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.3（513 providers / 970 rules -> fused 124 / 141；同策略规范化与语义去重）
-// v6.0.3：Mihomo domain MRS 使用 wildcard payload，ChatGPT Sentry/DataDog 误伤前置到 AI 守卫
+// 规则源：rulesets/source/routing-graph.js v6.0.4（513 providers / 970 rules -> fused 124 / 141；同策略规范化与语义去重）
+// v6.0.4：itwdb.com 主域名归入默认 DIRECT 补充规则集，覆盖 workpro.itwdb.com 及全部子域名
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.3'
+const VERSION = 'v6.0.4'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别

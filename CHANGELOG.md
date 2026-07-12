@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.4 (2026-07-13)
+
+- DIRECT-ITWDB：将 `itwdb.com` 主域名纳入仓库维护的默认直连补充规则集，`workpro.itwdb.com` 及全部子域名随 `DOMAIN-SUFFIX` 语义直连；未新增主分流内联规则。
+- SYNC：按 `source graph -> MRS -> fused -> 原生派生` 全链路重建 14 类产物；Mihomo MRS `failed=0`、融合规则集 `unresolved=0`，各端继续按原生格式消费直连段。
+
 ## v6.0.3 (2026-07-12)
 
 - FIX#FUSED-DOMAIN-PAYLOAD：修复融合编译器把 classical `DOMAIN` / `DOMAIN-SUFFIX` 行原样写入 Mihomo `behavior: domain` YAML 的根本错误。该行为的 payload 必须是裸精确域名或 wildcard（如 `+.chatgpt.com`）；旧产物虽可编译为 `.mrs`，但实际不会命中，因而会继续落入后续的“国外网站”段。

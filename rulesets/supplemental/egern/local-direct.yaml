@@ -6,6 +6,7 @@ domain_set:
 domain_suffix_set:
   - "chiphell.com"
   - "iwipwedabay.com"
+  - "itwdb.com"
   - "cdn.weixin.qq.com"
 ip_cidr_set:
   - "172.90.1.130/32"

@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.4-cmfa.1 (2026-07-13)
+
+- DIRECT-ITWDB：`itwdb.com` 随 `scki-local-direct` 编译为 Mihomo domain MRS 的 `+.itwdb.com` payload，固定命中默认 `DIRECT`，覆盖 WorkPro 子域名。
+- SYNC：由 source graph v6.0.4 重新生成融合 provider 与规则顺序，`unresolved=0`。
+
 ## v6.0.3-cmfa.1 (2026-07-12)
 
 - FIX#FUSED-DOMAIN-PAYLOAD：融合 `behavior: domain` provider 现仅含 Mihomo 原生精确 / wildcard payload；keyword / regex 留在 classical residual，避免静默漏匹配或语义扩大。

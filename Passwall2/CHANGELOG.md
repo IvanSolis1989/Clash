@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.4-pw2.1 (2026-07-13)
+
+- DIRECT-ITWDB：从 `scki-fused-008-direct.srs` 重建默认直连 shunt rule；`itwdb.com` 与 WorkPro 子域名保持 Passwall2 原生规则语义。
+
 ## v6.0.3-pw2.1 (2026-07-12)
 
 - SYNC：从 v6.0.3 fused sing-box 目标重新生成 65 条非空 `rule-set:remote` shunt rule、apply 脚本和参考配置。

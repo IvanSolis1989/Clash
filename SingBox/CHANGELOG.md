@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.4-sing.1 (2026-07-13)
+
+- DIRECT-ITWDB：Full JSON 由融合结果重新生成，`scki-fused-008-direct` 的 `.srs` / route 语义包含 `itwdb.com`，覆盖其全部子域名并落到 direct outbound。
+
 ## v6.0.3-sing.1 (2026-07-12)
 
 - SYNC：Full JSON 由融合 manifest 重新生成，65 个唯一非空 `.srs`、72 个 remote rule_set（65 fused + 7 runtime GEO）和 82 条 route rule。

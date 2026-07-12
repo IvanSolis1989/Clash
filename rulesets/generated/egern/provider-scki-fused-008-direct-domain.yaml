@@ -117,6 +117,7 @@ domain_suffix_set:
   - "home.arpa"
   - "internal"
   - "invalid"
+  - "itwdb.com"
   - "iwipwedabay.com"
   - "kis.v2.scr.kaspersky-labs.com"
   - "lan"

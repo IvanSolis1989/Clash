@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.4-QX.1 (2026-07-13)
+
+- DIRECT-ITWDB：`filter_remote` 的默认 direct 融合资产新增 `host-suffix, itwdb.com`，覆盖 WorkPro 子域名。
+
 ## v6.0.3-QX.1 (2026-07-12)
 
 - SYNC：升级到 Clash Party v6.0.3，`filter_remote` 为 64 个非空融合资产，继续保留 QX 原生 GEOIP / IP-ASN 表达。

@@ -16,10 +16,10 @@ const PASSWALL2_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall2/shunt-rules');
 
 const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
 const FUSED_SRS_BASE_URL = `${SCKI_BASE}/rulesets/generated/fused/sing-box`;
-const BUILD_DATE = '2026-07-12';
-const V2RAYN_VERSION = 'v6.0.3-v2n.1';
-const PASSWALL_VERSION = 'v6.0.3-pw.1';
-const PASSWALL2_VERSION = 'v6.0.3-pw2.1';
+const BUILD_DATE = '2026-07-13';
+const V2RAYN_VERSION = 'v6.0.4-v2n.1';
+const PASSWALL_VERSION = 'v6.0.4-pw.1';
+const PASSWALL2_VERSION = 'v6.0.4-pw2.1';
 
 const DIRECT_POLICIES = new Set([
   'DIRECT',

@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.4-oc-normal.1 / v6.0.4-oc-smart.1 (2026-07-13)
+
+- DIRECT-ITWDB：Normal / Smart heredoc YAML 同步默认 `DIRECT` 融合 MRS，`itwdb.com` 与 `workpro.itwdb.com` 不再依赖零散内联规则。
+
 ## v6.0.3-oc-normal.1 / v6.0.3-oc-smart.1 (2026-07-12)
 
 - SYNC：Normal / Smart 统一升级到 Clash Party v6.0.3，消费 124 个融合 provider 与 141 条规则。

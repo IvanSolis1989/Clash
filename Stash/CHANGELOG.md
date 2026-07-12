@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.4-stash.1 (2026-07-13)
+
+- DIRECT-ITWDB：由 CMFA v6.0.4-cmfa.1 重新生成，Stash 消费同一默认 `DIRECT` 融合 MRS，覆盖 `itwdb.com` 及其子域名。
+
 ## v6.0.3-stash.1 (2026-07-12)
 
 - SYNC：由 CMFA v6.0.3-cmfa.1 重新生成，保留 124 个融合 rule-provider 与 141 条规则。

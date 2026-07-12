@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.4-Loon.1 (2026-07-13)
+
+- DIRECT-ITWDB：`[Remote Rule]` 消费的默认 `DIRECT` 融合规则集新增 `itwdb.com`，覆盖 WorkPro 子域名。
+
 ## v6.0.3-Loon.1 (2026-07-12)
 
 - SYNC：升级到 Clash Party v6.0.3，`[Remote Rule]` 为 64 个非空融合资产。

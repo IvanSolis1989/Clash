@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.4 / v6.0.4-normal.1 (2026-07-13)
+
+- DIRECT-ITWDB：`itwdb.com` 进入 `scki-local-direct` 补充规则集，经 MRS 与融合编译后保持在默认 `DIRECT` 段；覆盖 `workpro.itwdb.com` 与所有子域名，不在 Smart / Normal 主规则内散写单条域名。
+
 ## v6.0.3 / v6.0.3-normal.1 (2026-07-12)
 
 - FIX#FUSED-DOMAIN-PAYLOAD：Smart / Normal 统一消费正确的 fused MRS domain wildcard payload；`chatgpt.com`、`chat.openai.com`、`persistent.oaistatic.com` 不再失配后落入 `🌐 国外网站`。
