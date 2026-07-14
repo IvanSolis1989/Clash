@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.5-v2n.1 (2026-07-14)
+
+- DIRECT-WORKPRO：Xray fallback 重建为 process 包含 WorkPro.exe 且 outboundTag 为 direct；仅在本机 Windows / Linux 的 Xray 进程匹配路径生效。
+
 ## v6.0.4-v2n.1 (2026-07-13)
 
 - DIRECT-ITWDB：Xray fallback 由 fused sing-box JSON 重建，默认 direct RuleObject 包含 `domain:itwdb.com`，覆盖 WorkPro 子域名。

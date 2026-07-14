@@ -1,9 +1,9 @@
 # ================================================================
-# Clash Smart v6.0.4-cmfa.1 - CMFA (Clash Meta for Android) 配置
-# Build: 2026-07-13
+# Clash Smart v6.0.5-cmfa.1 - CMFA (Clash Meta for Android) 配置
+# Build: 2026-07-14
 # 架构：proxy-providers 订阅 + 22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 141 rules
-# 基线：Clash Party v6.0.4（唯一主线）
-# v6.0.4: itwdb.com 主域名归入默认 DIRECT 补充规则集，覆盖 workpro.itwdb.com 及全部子域名 · v6.0.0: FUSED-RULESETS 大融合规则集编译
+# 基线：Clash Party v6.0.5（唯一主线）
+# v6.0.5: WorkPro.exe 纳入 local-process-direct 永久回归白名单；支持进程匹配的桌面产物固定 DIRECT · v6.0.0: FUSED-RULESETS 大融合规则集编译
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
 # 变更历史：见 `Clash Meta For Android/CHANGELOG.md`

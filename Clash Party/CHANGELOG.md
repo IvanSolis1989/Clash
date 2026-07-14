@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.5 / v6.0.5-normal.1 (2026-07-14)
+
+- DIRECT-WORKPRO：scki-local-process-direct 中既有的 WorkPro.exe 现在由进程白名单夹具强制校验；融合 direct 段仍在 work 段之前，Smart / Normal 固定路由到 DIRECT。
+
 ## v6.0.4 / v6.0.4-normal.1 (2026-07-13)
 
 - DIRECT-ITWDB：`itwdb.com` 进入 `scki-local-direct` 补充规则集，经 MRS 与融合编译后保持在默认 `DIRECT` 段；覆盖 `workpro.itwdb.com` 与所有子域名，不在 Smart / Normal 主规则内散写单条域名。

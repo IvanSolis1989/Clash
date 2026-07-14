@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-12T22:51:23.477Z",
+  "generated_at": "2026-07-14T01:03:39.297Z",
   "authority": "rulesets/source/routing-graph.js after Mihomo MRS normalization",
-  "baseline_version": "v6.0.4",
+  "baseline_version": "v6.0.5",
   "source_provider_count": 513,
   "source_rule_count": 970,
   "fused_provider_count": 124,

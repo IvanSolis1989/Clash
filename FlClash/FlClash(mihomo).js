@@ -1,8 +1,8 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v6.0.4-flclash.1 (2026-07-13)
+// 版本：v6.0.5-flclash.1 (2026-07-14)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 141 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.4（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
-// v6.0.4: itwdb.com 主域名归入默认 DIRECT 补充规则集，覆盖 workpro.itwdb.com 及全部子域名
+// 规则源：rulesets/source/routing-graph.js v6.0.5（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
+// v6.0.5：WorkPro.exe 纳入 local-process-direct 永久回归白名单，支持进程匹配的桌面产物固定 DIRECT
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -36,7 +36,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.4-flclash.1'
+const VERSION = 'v6.0.5-flclash.1'
 
 function log() {
   if (typeof console !== 'undefined' && console.log) console.log.apply(console, arguments)

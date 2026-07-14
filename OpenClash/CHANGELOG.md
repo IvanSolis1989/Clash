@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.5-oc-normal.1 / v6.0.5-oc-smart.1 (2026-07-14)
+
+- DIRECT-WORKPRO：两份 heredoc YAML 跟随 source graph 的永久直连契约消费同一 fused direct residual；路由器端不能识别局域网客户端进程名，保持平台例外。
+
 ## v6.0.4-oc-normal.1 / v6.0.4-oc-smart.1 (2026-07-13)
 
 - DIRECT-ITWDB：Normal / Smart heredoc YAML 同步默认 `DIRECT` 融合 MRS，`itwdb.com` 与 `workpro.itwdb.com` 不再依赖零散内联规则。

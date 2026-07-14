@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 
-const VERSION = 'v6.0.4-sing.1';
-const BUILD = '2026-07-13';
-const BASELINE = 'Clash Party v6.0.4';
+const VERSION = 'v6.0.5-sing.1';
+const BUILD = '2026-07-14';
+const BASELINE = 'Clash Party v6.0.5';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',

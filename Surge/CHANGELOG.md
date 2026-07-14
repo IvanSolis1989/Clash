@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.5-Surge.1 (2026-07-14)
+
+- PLATFORM：WorkPro.exe 是 Windows 桌面直连条目，不加入 Surge Mac 专用进程规则集；Windows Mihomo、sing-box 与 Xray 产物负责实际命中。
+
 ## v6.0.4-Surge.1 (2026-07-13)
 
 - DIRECT-ITWDB：默认 `DIRECT` 融合文本段新增 `DOMAIN-SUFFIX,itwdb.com`，保持源图首匹配顺序并覆盖 WorkPro 子域名。

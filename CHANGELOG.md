@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.5 (2026-07-14)
+
+- DIRECT-WORKPRO：将既有的 WorkPro.exe 本地直连条目纳入永久回归清单并完成全产物重建；桌面 Mihomo、sing-box 与 Xray fallback 固定输出 DIRECT，平台不支持进程匹配的路径保持明确豁免。
+
 ## v6.0.4 (2026-07-13)
 
 - DIRECT-ITWDB：将 `itwdb.com` 主域名纳入仓库维护的默认直连补充规则集，`workpro.itwdb.com` 及全部子域名随 `DOMAIN-SUFFIX` 语义直连；未新增主分流内联规则。

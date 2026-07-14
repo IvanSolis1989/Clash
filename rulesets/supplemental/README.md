@@ -14,6 +14,11 @@ that should not stay as scattered inline rules in product profiles.
 Rules here intentionally omit policy targets. Each product binds the rule set to
 the correct policy in its own syntax.
 
+`clash/local-process-direct.list` is the exact-name Windows desktop direct
+whitelist. `WorkPro.exe` is a repository-maintained entry guarded by
+`tools/fixtures/process-name-direct-tools.json` so it cannot be lost during a
+future fused-rule rebuild.
+
 `adfp-*.list` files are deliberately narrow false-positive guards that run
 before broad ad/privacy feeds. `adfp-ai.list` protects verified ChatGPT
 telemetry hosts whose parent Sentry or Datadog domains occur in those feeds.

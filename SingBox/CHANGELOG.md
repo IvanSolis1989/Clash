@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.5-sing.1 (2026-07-14)
+
+- DIRECT-WORKPRO：Full JSON 重新生成，scki-fused-008-direct 的原生 SRS 源包含 process_name WorkPro.exe 并路由至 DIRECT；官方字段仅用于 Linux / Windows / macOS。
+
 ## v6.0.4-sing.1 (2026-07-13)
 
 - DIRECT-ITWDB：Full JSON 由融合结果重新生成，`scki-fused-008-direct` 的 `.srs` / route 语义包含 `itwdb.com`，覆盖其全部子域名并落到 direct outbound。

@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.5-cmfa.1 (2026-07-14)
+
+- DIRECT-WORKPRO：WorkPro.exe 随 scki-local-process-direct 保留在默认 direct 融合 residual；回归清单要求桌面 Mihomo 消费端始终命中 DIRECT。
+
 ## v6.0.4-cmfa.1 (2026-07-13)
 
 - DIRECT-ITWDB：`itwdb.com` 随 `scki-local-direct` 编译为 Mihomo domain MRS 的 `+.itwdb.com` payload，固定命中默认 `DIRECT`，覆盖 WorkPro 子域名。

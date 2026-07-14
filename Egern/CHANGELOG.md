@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.5-egern.1 (2026-07-14)
+
+- PLATFORM：正式 Profile 由 CMFA v6.0.5-cmfa.1 重新生成；Egern 官方规则不提供 Clash 风格 PROCESS-NAME，WorkPro.exe 保持明确省略而非伪装同步。
+
 ## v6.0.4-egern.1 (2026-07-13)
 
 - DIRECT-ITWDB：正式 Profile 与 Egern 原生 YAML 规则集已从 CMFA v6.0.4 重建，默认 direct domain set 包含 `itwdb.com`，覆盖 WorkPro 子域名。

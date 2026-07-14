@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.5-Loon.1 (2026-07-14)
+
+- PLATFORM：WorkPro.exe 的 Windows 桌面直连由支持进程匹配的产物承载；Loon iOS 配置不新增主动进程规则。
+
 ## v6.0.4-Loon.1 (2026-07-13)
 
 - DIRECT-ITWDB：`[Remote Rule]` 消费的默认 `DIRECT` 融合规则集新增 `itwdb.com`，覆盖 WorkPro 子域名。

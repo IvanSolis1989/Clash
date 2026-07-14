@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.5-SR.1 (2026-07-14)
+
+- PLATFORM：WorkPro.exe 的 Windows 桌面直连由源图回归契约保护；Shadowrocket iOS 路径不伪造 PROCESS-NAME 规则。
+
 ## v6.0.4-SR.1 (2026-07-13)
 
 - DIRECT-ITWDB：默认 `DIRECT` 融合文本段新增 `DOMAIN-SUFFIX,itwdb.com`，Shadowrocket 同步覆盖 WorkPro 及全部子域名。

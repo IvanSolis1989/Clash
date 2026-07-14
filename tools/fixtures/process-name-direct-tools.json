@@ -7,9 +7,11 @@
   "notes": [
     "Use exact process names instead of broad PROCESS-NAME-REGEX patterns.",
     "The list is intended for desktop-capable clients first.",
-    "Mobile package names are intentionally not included until each client path is verified."
+    "Mobile package names are intentionally not included until each client path is verified.",
+    "WorkPro.exe is a repository-maintained Windows local exception and must remain in the DIRECT whitelist."
   ],
   "mihomoDesktopProcessNames": [
+    "WorkPro.exe",
     "Oray.exe",
     "OrayService.exe",
     "SunloginClient.exe",

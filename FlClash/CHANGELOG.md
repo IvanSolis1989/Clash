@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.5-flclash.1 (2026-07-14)
+
+- DIRECT-WORKPRO：标准 Mihomo 覆写跟随 scki-local-process-direct 的永久回归清单，WorkPro.exe 固定进入 fused direct residual。
+
 ## v6.0.4-flclash.1 (2026-07-13)
 
 - DIRECT-ITWDB：标准 Mihomo 覆写消费的默认 `DIRECT` 融合 MRS 纳入 `itwdb.com`，覆盖 WorkPro 子域名且不新增单条主规则。

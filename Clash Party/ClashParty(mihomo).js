@@ -1,8 +1,8 @@
 // Clash 覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v6.0.4-normal.1 (2026-07-13)
+// 版本：v6.0.5-normal.1 (2026-07-14)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 141 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.4（与 Smart 版规则 100% 等价，仅区域组从 smart 改为 url-test）
-// v6.0.4: itwdb.com 主域名归入默认 DIRECT 补充规则集，覆盖 workpro.itwdb.com 及全部子域名
+// 规则源：rulesets/source/routing-graph.js v6.0.5（与 Smart 版规则 100% 等价，仅区域组从 smart 改为 url-test）
+// v6.0.5：WorkPro.exe 纳入 local-process-direct 永久回归白名单，支持进程匹配的桌面产物固定 DIRECT
 // 适用：Mihomo / Clash.Meta 稳定版内核、不支持 smart + LightGBM 的分支；也适用于想完全关闭 ML 评估的用户
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
@@ -10,7 +10,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.4-normal.1'
+const VERSION = 'v6.0.5-normal.1'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别

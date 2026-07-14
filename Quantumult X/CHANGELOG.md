@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.5-QX.1 (2026-07-14)
+
+- PLATFORM：WorkPro.exe 的 Windows 桌面直连由支持进程匹配的产物承载；Quantumult X iOS 配置不新增主动进程规则。
+
 ## v6.0.4-QX.1 (2026-07-13)
 
 - DIRECT-ITWDB：`filter_remote` 的默认 direct 融合资产新增 `host-suffix, itwdb.com`，覆盖 WorkPro 子域名。

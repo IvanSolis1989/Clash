@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.5-stash.1 (2026-07-14)
+
+- DIRECT-WORKPRO：由 CMFA v6.0.5-cmfa.1 重新生成；同一 fused direct residual 保留 WorkPro.exe，实际进程命中取决于底层桌面内核能力。
+
 ## v6.0.4-stash.1 (2026-07-13)
 
 - DIRECT-ITWDB：由 CMFA v6.0.4-cmfa.1 重新生成，Stash 消费同一默认 `DIRECT` 融合 MRS，覆盖 `itwdb.com` 及其子域名。

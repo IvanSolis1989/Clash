@@ -1,4 +1,4 @@
-# 🚀 Smart-Config-Kit v6.0.4
+# 🚀 Smart-Config-Kit v6.0.5
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
@@ -6,6 +6,7 @@
 >
 > - 🧠 **融合规则集语义保真**：源图当前 513 个 provider / 970 条规则按原始首匹配顺序编译为 68 个语义段、124 个 Mihomo provider / 141 条主规则；移动端只消费 64 个非空文本资产，sing-box / Passwall 系消费 65 个非空 `.srs`
 > - 🧭 **Mihomo domain 语法正确归一化**：`DOMAIN` / `DOMAIN-SUFFIX` 会转换为 `behavior: domain` 的精确 / `+.` wildcard payload；`DOMAIN-KEYWORD` 与正则保留 classical residual，避免把 ChatGPT 等域名静默漏匹配或扩大匹配范围
+> - 🖥️ **桌面本地工具直连可验证**：`WorkPro.exe` 等精确进程名沉淀在补充规则集，并由回归契约验证 Mihomo、sing-box 与 Xray fallback 始终输出 `DIRECT`
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
 > - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，v2rayN Xray 展平成 RuleObject，Passwall 系使用 `rule-set:remote` `.srs`
 > - 🧯 **双层体积门禁**：每个 jsDelivr 资产不超过 18 MiB；iOS Network Extension 类客户端还必须满足 32 MiB / 100 万文本规则的聚合预算，禁止靠分片绕过总量约束

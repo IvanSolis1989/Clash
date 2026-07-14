@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.5-pw.1 (2026-07-14)
+
+- PLATFORM：fused SRS shunt rule 已重建；Passwall 路由器端无法看到 LAN 客户端 WorkPro.exe，不承诺进程级命中。
+
 ## v6.0.4-pw.1 (2026-07-13)
 
 - DIRECT-ITWDB：从 `scki-fused-008-direct.srs` 重建默认直连 shunt rule；`itwdb.com` 与 WorkPro 子域名不再需要 Passwall 手写域名列表。

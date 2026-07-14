@@ -5,7 +5,7 @@
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
-> 当前版本：**v6.0.4-flclash.1**（22 url-test 区域组 + 33 业务策略组 + 124 融合 rule-providers / 141 rules；标准 Mihomo 内核动态分流；变更历史见 `FlClash/CHANGELOG.md`）
+> 当前版本：**v6.0.5-flclash.1**（22 url-test 区域组 + 33 业务策略组 + 124 融合 rule-providers / 141 rules；标准 Mihomo 内核动态分流；变更历史见 `FlClash/CHANGELOG.md`）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
