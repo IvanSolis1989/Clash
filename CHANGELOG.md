@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.8 (2026-07-15)
+
+- FIX#176 全量审计：将全部共享边缘/CDN、`geolocation-!cn`、IP 与地域兜底规则置于国内权威策略之后，而非仅为已报告域名添加例外；`scki-fused-064-intl-site` 成为统一的通用国际兜底段。
+- RELEASE-CACHE：自托管融合资产统一使用 `?scki=v6.0.8`，Mihomo 同时写入版本化本地 `path`，避免配置更新后继续复用旧 `.mrs` / residual 文件。
+- VERIFY：新增全量泛化 fallback 顺序、Issue #176 域名族和资产缓存隔离回归；14 类派生产物均由正式链路重建，MRS `failed=0`、fused `unresolved=0`。
+
 ## v6.0.7 (2026-07-14)
 
 - FIX#176：修复首匹配优先级倒置。`RULE-SET,cn` 及具名国内域名策略现在先于共享 Cloudflare / CloudFront / Fastly IP、`GEOIP,ID` 和 16 个非中国地域 domain/IP 兜底执行；国内域名解析到境外 CDN / GeoIP 时不再被提前送往 `🌐 国外网站`。

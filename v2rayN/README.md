@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v6.0.7）
+# v2rayN 使用教程（对齐 Clash Party v6.0.8）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON fallback 产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.7-v2n.1（Build 2026-07-14；基线：Clash Party v6.0.7；变更历史见 `v2rayN/CHANGELOG.md`）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.8-v2n.1（Build 2026-07-15；基线：Clash Party v6.0.8；变更历史见 `v2rayN/CHANGELOG.md`）。
 
 ---
 

@@ -965,6 +965,7 @@ function rebuildNativeEgernManifest({ root, baselineRef, fusedManifest }) {
   const baseline = readJson(gitShow(baselineRef, `${NATIVE_EGERN_RELATIVE_ROOT}/manifest.json`), 'baseline Egern manifest');
   const rendered = baseline.rendered || {};
   const manifest = buildEgernGenerationManifest({
+    assetRevision: fusedManifest.asset_revision,
     cmfaSource: fs.readFileSync(path.join(root, 'Clash Meta For Android/CMFA(mihomo).yaml'), 'utf8'),
     routingGraphSource: fs.readFileSync(path.join(root, 'rulesets/source/routing-graph.js'), 'utf8'),
     profileSource: fs.readFileSync(path.join(root, 'Egern/Egern.yaml'), 'utf8'),

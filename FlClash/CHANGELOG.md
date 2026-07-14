@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.8-flclash.1 (2026-07-15)
+
+- 同步国内权威优先级和 Mihomo 版本化融合规则缓存，保持与 Clash Party Normal 的路由语义一致。
+
 ## v6.0.7-flclash.1 (2026-07-14)
 
 - FIX#176：标准 Mihomo 覆写同步 CN 域名权威段优先于共享 CDN / 国家 / 非中国地域 fallback 的融合顺序。

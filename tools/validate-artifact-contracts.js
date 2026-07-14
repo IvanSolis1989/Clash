@@ -13,7 +13,13 @@ const {
 } = require('./validate-generated-remote-asset-size');
 const { validateEgernGenerationManifest } = require('./lib/egern-generation-manifest');
 const {
+  getAssetRevisionFromUrl,
+  repositoryAssetUrl,
+} = require('./lib/generated-asset-url');
+const {
   SOURCE_GRAPH_ID,
+  DOMESTIC_AUTHORITY_ANCHOR_RULE,
+  GENERIC_INTL_FALLBACK_RULES,
   getRawRoutingGraph,
   getMihomoNormalizedRoutingGraph,
 } = require('../rulesets/source/routing-graph');
@@ -49,7 +55,6 @@ const EXPECTED_MIHOMO_MRS_FILES = 385;
 const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 70;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
 const EXPECTED_SINGBOX_ROUTE_RULES = 82;
-const ISSUE_176_CN_DOMAIN_SUFFIXES = ['mi.com', 'cn', 'yxt.com'];
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -303,8 +308,8 @@ function fusedTextRuleSetFiles(manifest, platform, segmentId) {
 }
 
 function fusedTextRuleSetUrls(manifest, platform, segmentId) {
-  const base = SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/fused');
-  return fusedTextRuleSetFiles(manifest, platform, segmentId).map((file) => `${base}/${platform}/${file}`);
+  return fusedTextRuleSetFiles(manifest, platform, segmentId)
+    .map((file) => repositoryAssetUrl(`rulesets/generated/fused/${platform}/${file}`, manifest.asset_revision));
 }
 
 function supplementalUrl(flavor, file) {
@@ -317,6 +322,55 @@ function generatedMihomoMrsUrl(file) {
 
 function generatedEgernUrl(id) {
   return `${SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/egern')}/provider-${id}.yaml`;
+}
+
+const GENERATED_ASSET_URL_RE = /https:\/\/(?:fastly\.)?jsdelivr\.net\/gh\/IvanSolis1989\/Smart-Config-Kit@main\/rulesets\/generated\/(?:fused|egern)\/[^\s,"'\\]+/g;
+
+function generatedAssetUrls(source) {
+  return [...source.matchAll(GENERATED_ASSET_URL_RE)].map((match) => match[0]);
+}
+
+function validateGeneratedAssetRevision(record) {
+  const manifest = readJson('rulesets/generated/fused/manifest.json');
+  const assetRevision = manifest.asset_revision;
+  const expectedRevision = getMihomoNormalizedRoutingGraph().version;
+  record.check('generated-assets.manifest-revision', assetRevision === expectedRevision, {
+    value: { assetRevision, expectedRevision },
+    message: 'fused manifest asset revision must match the source routing graph version',
+  });
+
+  const products = [
+    { id: 'clash-party-smart', file: 'Clash Party/ClashParty(mihomo-smart).js', mihomo: true },
+    { id: 'clash-party-normal', file: 'Clash Party/ClashParty(mihomo).js', mihomo: true },
+    { id: 'flclash', file: 'FlClash/FlClash(mihomo).js', mihomo: true },
+    { id: 'cmfa', file: 'Clash Meta For Android/CMFA(mihomo).yaml', mihomo: true },
+    { id: 'stash', file: 'Stash/Stash.yaml', mihomo: true },
+    { id: 'openclash-normal', file: 'OpenClash/OpenClash(mihomo).sh', mihomo: true },
+    { id: 'openclash-smart', file: 'OpenClash/OpenClash(mihomo-smart).sh', mihomo: true },
+    { id: 'shadowrocket', file: 'Shadowrocket/Shadowrocket.conf' },
+    { id: 'surge', file: 'Surge/Surge.conf' },
+    { id: 'loon', file: 'Loon/Loon.conf' },
+    { id: 'quantumult-x', file: 'Quantumult X/QuantumultX.conf' },
+    { id: 'egern', file: 'Egern/Egern.yaml' },
+    { id: 'sing-box', file: 'SingBox/SingBox(sing-box)-full.json' },
+    { id: 'passwall', file: 'Passwall/Passwall(xray+sing-box)-apply.sh' },
+    { id: 'passwall2', file: 'Passwall2/Passwall2(xray+sing-box)-apply.sh' },
+  ];
+  for (const product of products) {
+    const source = readText(product.file);
+    const urls = generatedAssetUrls(source);
+    const revisionOk = urls.length > 0 && urls.every((url) => getAssetRevisionFromUrl(url) === assetRevision);
+    record.check(`generated-assets.${product.id}.revisioned-urls`, revisionOk, {
+      value: { urlCount: urls.length, assetRevision },
+      message: `${product.file} must reference every generated asset with ?scki=${assetRevision}`,
+    });
+    if (product.mihomo) {
+      const cachePath = `./ruleset/${assetRevision}/`;
+      record.check(`generated-assets.${product.id}.versioned-mihomo-cache`, source.includes(cachePath) && !source.includes('./ruleset/scki-fused-'), {
+        message: `${product.file} must use a versioned Mihomo local rule-provider path`,
+      });
+    }
+  }
 }
 
 function supplementalMihomoProviderExpectations(spec) {
@@ -470,22 +524,23 @@ function fusedSegmentResidualEntries(segment) {
   return generatedYamlPayloadEntries(relPath('rulesets/generated/fused/mihomo', artifact.file));
 }
 
-function getIssue176FusedPriority(manifest) {
+function getDomesticAuthorityFusedPriority(manifest) {
   const segments = manifest.segments || [];
   const cnSegment = segments.find((segment) => (
     segment.policy === '🏠 国内网站'
-    && ISSUE_176_CN_DOMAIN_SUFFIXES.every((suffix) => fusedSegmentClashEntries(segment).includes(`DOMAIN-SUFFIX,${suffix}`))
+    && fusedSegmentClashEntries(segment).includes('DOMAIN-SUFFIX,cn')
   ));
   const internationalGeoSegment = segments.find((segment) => (
     segment.policy === '🌐 国外网站'
-    && fusedSegmentResidualEntries(segment).includes('GEOIP,US,no-resolve')
+    && fusedSegmentClashEntries(segment).includes('DOMAIN-SUFFIX,akamaiedge.net')
+    && fusedSegmentClashEntries(segment).includes('GEOIP,US,no-resolve')
   ));
   return { segments, cnSegment, internationalGeoSegment };
 }
 
-function checkIssue176PriorityOrder(record, artifactId, beforeIndex, afterIndex, beforeLabel, afterLabel) {
+function checkDomesticAuthorityPriorityOrder(record, artifactId, beforeIndex, afterIndex, beforeLabel, afterLabel) {
   const ok = beforeIndex !== -1 && afterIndex !== -1 && beforeIndex < afterIndex;
-  record.check(`${artifactId}.issue176-cn-before-generic-international-fallback`, ok, {
+  record.check(`${artifactId}.domestic-authority-before-generic-international-fallback`, ok, {
     value: { beforeIndex, afterIndex, before: beforeLabel, after: afterLabel },
     message: `expected ${beforeLabel} before ${afterLabel}`,
   });
@@ -825,8 +880,8 @@ function meaningfulRuleLines(relativePath) {
     .filter((line) => line && !line.startsWith('#'));
 }
 
-function fusedSrsUrl(segmentId) {
-  return `${SUPPLEMENTAL_RULESET_BASE.replace('/rulesets/supplemental', '/rulesets/generated/fused')}/sing-box/${segmentId}.srs`;
+function fusedSrsUrl(segmentId, assetRevision) {
+  return repositoryAssetUrl(`rulesets/generated/fused/sing-box/${segmentId}.srs`, assetRevision);
 }
 
 function fusedSingBoxText(segmentId) {
@@ -1672,6 +1727,7 @@ function validateEgern(record, baselineVersion, options) {
       generatedRuleSetDirectory: generatedEgernDirectory,
       expectedSourceProviderCount: MIN_FULL_PROVIDERS,
       expectedSourceRuleCount: MIN_FULL_RULES,
+      expectedAssetRevision: getMihomoNormalizedRoutingGraph().version,
     });
     for (const failure of generationValidation.failures) {
       record.check(`egern.generation-manifest.${failure.id}`, false, {
@@ -1705,7 +1761,7 @@ function validateEgern(record, baselineVersion, options) {
       message: `missing generated Egern fused mapping ${fusedId}`,
     });
   }
-  const { internationalGeoSegment } = getIssue176FusedPriority(readJson('rulesets/generated/fused/manifest.json'));
+  const { internationalGeoSegment } = getDomesticAuthorityFusedPriority(readJson('rulesets/generated/fused/manifest.json'));
   const egernGeoipResidualFile = internationalGeoSegment
     && internationalGeoSegment.files
     && internationalGeoSegment.files.residual
@@ -1783,7 +1839,7 @@ function validatePasswall(record, baselineVersion) {
     }
 
     for (const segment of passwallSegments) {
-      const url = fusedSrsUrl(segment.id);
+      const url = fusedSrsUrl(segment.id, manifest.asset_revision);
       record.check(`${spec.id}.script-fused-url.${segment.id}`, source.includes(`add_fused_shunt_rule '${segment.id} | ${segment.policy}' '${url}'`), {
         message: `missing ${segment.id} in apply script`,
       });
@@ -1890,26 +1946,16 @@ function extractMihomoFusedRules(relativePath) {
   }
 }
 
-function validateIssue176PriorityAcrossArtifacts(record) {
-  const graph = getMihomoNormalizedRoutingGraph();
-  const cnSourceRule = 'RULE-SET,acc-geo-ip-asia-china,🏠 国内网站,no-resolve';
-  const cnSourceIndex = graph.rules.indexOf(cnSourceRule);
-  const genericFallbackRules = [
-    'RULE-SET,cloudflare-ip,🌐 国外网站,no-resolve',
-    'RULE-SET,cloudfront-ip,🌐 国外网站,no-resolve',
-    'RULE-SET,fastly-ip,🌐 国外网站,no-resolve',
-    'RULE-SET,cloudflare-domain,🌐 国外网站',
-    'RULE-SET,cloudflare-ipcidr,🌐 国外网站',
-    'RULE-SET,acc-fastly,🌐 国外网站',
-    'GEOIP,ID,🌐 国外网站,no-resolve',
-  ];
-  const genericFallbackIndexes = genericFallbackRules.map((rule) => graph.rules.indexOf(rule));
+function validateDomesticAuthorityPriorityAcrossArtifacts(record) {
+  const graph = getRawRoutingGraph();
+  const cnSourceIndex = graph.rules.indexOf(DOMESTIC_AUTHORITY_ANCHOR_RULE);
+  const genericFallbackIndexes = GENERIC_INTL_FALLBACK_RULES.map((rule) => graph.rules.indexOf(rule));
   record.check(
-    'issue176.source.cn-before-generic-cdn-geo-fallbacks',
+    'domestic-authority.source.cn-before-generic-cdn-geo-fallbacks',
     cnSourceIndex !== -1 && genericFallbackIndexes.every((index) => index > cnSourceIndex),
     {
       value: { cnSourceIndex, genericFallbackIndexes },
-      message: `${cnSourceRule} must precede every generic CDN/GeoIP fallback after all CN authority rules`,
+      message: `${DOMESTIC_AUTHORITY_ANCHOR_RULE} must precede every shared edge, CDN, geolocation and GeoIP fallback`,
     },
   );
   const regionalFallbackIndexes = graph.rules
@@ -1917,33 +1963,33 @@ function validateIssue176PriorityAcrossArtifacts(record) {
     .filter(({ rule }) => /^RULE-SET,acc-geo-(?:d|ip)-(?!asia-china,)[^,]+,🌐 国外网站/.test(rule))
     .map(({ index }) => index);
   record.check(
-    'issue176.source.cn-before-regional-fallbacks',
+    'domestic-authority.source.cn-before-regional-fallbacks',
     regionalFallbackIndexes.length === 32 && regionalFallbackIndexes.every((index) => index > cnSourceIndex),
     {
       value: { cnSourceIndex, regionalFallbackIndexes },
-      message: 'all 16 non-China regional domain/IP fallbacks must follow all CN authority rules',
+      message: 'all non-China regional domain/IP fallbacks must follow domestic authority',
     },
   );
 
   const manifest = readJson('rulesets/generated/fused/manifest.json');
-  const { segments, cnSegment, internationalGeoSegment } = getIssue176FusedPriority(manifest);
+  const { segments, cnSegment, internationalGeoSegment } = getDomesticAuthorityFusedPriority(manifest);
   const cnSegmentIndex = segments.indexOf(cnSegment);
   const internationalGeoSegmentIndex = segments.indexOf(internationalGeoSegment);
-  record.check('issue176.fused.cn-domain-coverage', Boolean(cnSegment), {
+  record.check('domestic-authority.fused.cn-domain-coverage', Boolean(cnSegment), {
     value: cnSegment && cnSegment.id,
-    message: `one CN fused segment must cover ${ISSUE_176_CN_DOMAIN_SUFFIXES.join(', ')}`,
+    message: 'one domestic fused segment must cover the .cn authority suffix',
   });
-  record.check('issue176.fused.generic-international-geo-fallback', Boolean(internationalGeoSegment), {
+  record.check('domestic-authority.fused.generic-international-fallback', Boolean(internationalGeoSegment), {
     value: internationalGeoSegment && internationalGeoSegment.id,
-    message: 'a generic international GEOIP residual segment containing GEOIP,US must exist',
+    message: 'one generic international fused segment must contain shared edge domains and GEOIP fallback',
   });
-  checkIssue176PriorityOrder(
+  checkDomesticAuthorityPriorityOrder(
     record,
     'fused',
     cnSegmentIndex,
     internationalGeoSegmentIndex,
-    cnSegment ? cnSegment.id : 'missing CN segment',
-    internationalGeoSegment ? internationalGeoSegment.id : 'missing international GEOIP segment',
+    cnSegment ? cnSegment.id : 'missing domestic segment',
+    internationalGeoSegment ? internationalGeoSegment.id : 'missing generic international segment',
   );
 
   const cnId = cnSegment && cnSegment.id;
@@ -1956,7 +2002,7 @@ function validateIssue176PriorityAcrossArtifacts(record) {
     { id: 'flclash', file: 'FlClash/FlClash(mihomo).js' },
   ]) {
     const rules = extractMihomoFusedRules(spec.file);
-    checkIssue176PriorityOrder(record, spec.id, rules.indexOf(cnMihomoRule), rules.indexOf(internationalGeoMihomoRule), cnMihomoRule, internationalGeoMihomoRule);
+    checkDomesticAuthorityPriorityOrder(record, spec.id, rules.indexOf(cnMihomoRule), rules.indexOf(internationalGeoMihomoRule), cnMihomoRule, internationalGeoMihomoRule);
   }
 
   const mihomoProducts = [
@@ -1967,7 +2013,7 @@ function validateIssue176PriorityAcrossArtifacts(record) {
   ];
   for (const product of mihomoProducts) {
     const rules = extractYamlBlock(product.source, 'rules');
-    checkIssue176PriorityOrder(record, product.id, rules.indexOf(cnMihomoRule), rules.indexOf(internationalGeoMihomoRule), cnMihomoRule, internationalGeoMihomoRule);
+    checkDomesticAuthorityPriorityOrder(record, product.id, rules.indexOf(cnMihomoRule), rules.indexOf(internationalGeoMihomoRule), cnMihomoRule, internationalGeoMihomoRule);
   }
 
   const cnMobileNeedle = cnId ? `${cnId}.list` : '';
@@ -1979,13 +2025,13 @@ function validateIssue176PriorityAcrossArtifacts(record) {
     { id: 'quantumult-x', file: 'Quantumult X/QuantumultX.conf', section: 'filter_remote' },
   ]) {
     const section = extractConfSection(readText(spec.file), spec.section);
-    checkIssue176PriorityOrder(record, spec.id, section.indexOf(cnMobileNeedle), section.indexOf(internationalGeoMobileNeedle), cnMobileNeedle, internationalGeoMobileNeedle);
+    checkDomesticAuthorityPriorityOrder(record, spec.id, section.indexOf(cnMobileNeedle), section.indexOf(internationalGeoMobileNeedle), cnMobileNeedle, internationalGeoMobileNeedle);
   }
 
   const egernRules = extractYamlBlock(readText('Egern/Egern.yaml'), 'rules');
   const cnEgernNeedle = cnId ? `provider-${cnId}-domain.yaml` : '';
   const internationalGeoEgernNeedle = internationalGeoId ? `provider-${internationalGeoId}-residual.yaml` : '';
-  checkIssue176PriorityOrder(record, 'egern', egernRules.indexOf(cnEgernNeedle), egernRules.indexOf(internationalGeoEgernNeedle), cnEgernNeedle, internationalGeoEgernNeedle);
+  checkDomesticAuthorityPriorityOrder(record, 'egern', egernRules.indexOf(cnEgernNeedle), egernRules.indexOf(internationalGeoEgernNeedle), cnEgernNeedle, internationalGeoEgernNeedle);
 
   const singBox = readJson('SingBox/SingBox(sing-box)-full.json');
   const singBoxRules = singBox.route && Array.isArray(singBox.route.rules) ? singBox.route.rules : [];
@@ -1993,11 +2039,11 @@ function validateIssue176PriorityAcrossArtifacts(record) {
     const ruleSets = Array.isArray(rule.rule_set) ? rule.rule_set : [rule.rule_set];
     return ruleSets.includes(segmentId);
   }) : -1;
-  checkIssue176PriorityOrder(record, 'sing-box', singBoxRuleIndex(cnId), singBoxRuleIndex(internationalGeoId), cnId, internationalGeoId);
+  checkDomesticAuthorityPriorityOrder(record, 'sing-box', singBoxRuleIndex(cnId), singBoxRuleIndex(internationalGeoId), cnId, internationalGeoId);
 
   const xrayRules = readJson('v2rayN/v2rayN(xray).json');
   const xrayRuleIndex = (segmentId) => segmentId ? (Array.isArray(xrayRules) ? xrayRules : []).findIndex((rule) => rule.id === segmentId) : -1;
-  checkIssue176PriorityOrder(record, 'v2rayn-xray', xrayRuleIndex(cnId), xrayRuleIndex(internationalGeoId), cnId, internationalGeoId);
+  checkDomesticAuthorityPriorityOrder(record, 'v2rayn-xray', xrayRuleIndex(cnId), xrayRuleIndex(internationalGeoId), cnId, internationalGeoId);
 
   for (const spec of [
     { id: 'passwall', file: 'Passwall/Passwall(xray+sing-box)-apply.sh' },
@@ -2006,7 +2052,7 @@ function validateIssue176PriorityAcrossArtifacts(record) {
     const source = readText(spec.file);
     const cnNeedle = cnId ? `add_fused_shunt_rule '${cnId} | 🏠 国内网站'` : '';
     const internationalGeoNeedle = internationalGeoId ? `add_fused_shunt_rule '${internationalGeoId} | 🌐 国外网站'` : '';
-    checkIssue176PriorityOrder(record, spec.id, source.indexOf(cnNeedle), source.indexOf(internationalGeoNeedle), cnNeedle, internationalGeoNeedle);
+    checkDomesticAuthorityPriorityOrder(record, spec.id, source.indexOf(cnNeedle), source.indexOf(internationalGeoNeedle), cnNeedle, internationalGeoNeedle);
   }
 }
 
@@ -2054,7 +2100,8 @@ function main() {
   validateJsonProducts(record, baselineVersion);
   validateEgern(record, baselineVersion, options);
   validatePasswall(record, baselineVersion);
-  validateIssue176PriorityAcrossArtifacts(record);
+  validateGeneratedAssetRevision(record);
+  validateDomesticAuthorityPriorityAcrossArtifacts(record);
   const remoteAssetValidation = validateGeneratedRemoteAssetSizes();
   record.check('generated-remote-assets.size-limit', remoteAssetValidation.failures.length === 0, {
     value: { referenced_assets: remoteAssetValidation.references.size, max_bytes: MAX_JSDELIVR_ASSET_BYTES },

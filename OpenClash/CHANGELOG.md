@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.8-oc-normal.1 / v6.0.8-oc-smart.1 (2026-07-15)
+
+- Normal / Smart 同步国内权威优先级，并使用版本化融合 provider URL 与本地缓存路径。
+
 ## v6.0.7-oc-normal.1 / v6.0.7-oc-smart.1 (2026-07-14)
 
 - FIX#176：Normal / Smart heredoc YAML 同步使用国内域名优先、通用国际 CDN / GeoIP 后置的融合顺序；路由器端不依赖 DNS 归属猜测，直接遵守源图首匹配优先级。

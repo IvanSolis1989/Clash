@@ -3,10 +3,15 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const {
+  SCKI_REPOSITORY_BASE,
+  getAssetRevisionFromUrl,
+  normalizeAssetRevision,
+} = require('./generated-asset-url');
 
 const SCHEMA_VERSION = 1;
 const GENERATOR_PATH = 'tools/generate-egern-from-cmfa.js';
-const GENERATED_EGERN_RULE_SET_URL_PREFIX = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/';
+const GENERATED_EGERN_RULE_SET_URL_PREFIX = `${SCKI_REPOSITORY_BASE}/rulesets/generated/egern/`;
 
 function normalizeText(value) {
   return String(value).replace(/\r\n/g, '\n');
@@ -40,9 +45,18 @@ function getGeneratedEgernRuleSetReferences(profileSource) {
   for (const match of normalizeText(profileSource).matchAll(/^\s+match:\s+("[^"]+")\s*$/gm)) {
     const url = JSON.parse(match[1]);
     if (!url.startsWith(GENERATED_EGERN_RULE_SET_URL_PREFIX)) continue;
-    references.push(decodeURIComponent(url.slice(GENERATED_EGERN_RULE_SET_URL_PREFIX.length)));
+    references.push(decodeURIComponent(url.slice(GENERATED_EGERN_RULE_SET_URL_PREFIX.length).split(/[?#]/)[0]));
   }
   return references;
+}
+
+function getGeneratedEgernRuleSetRevisions(profileSource) {
+  const revisions = [];
+  for (const match of normalizeText(profileSource).matchAll(/^\s+match:\s+("[^"]+")\s*$/gm)) {
+    const url = JSON.parse(match[1]);
+    if (url.startsWith(GENERATED_EGERN_RULE_SET_URL_PREFIX)) revisions.push(getAssetRevisionFromUrl(url));
+  }
+  return revisions;
 }
 
 function listGeneratedEgernAssetRecords(directory) {
@@ -60,6 +74,7 @@ function listGeneratedEgernAssetRecords(directory) {
 }
 
 function buildEgernGenerationManifest({
+  assetRevision,
   cmfaSource,
   routingGraphSource,
   profileSource,
@@ -73,6 +88,7 @@ function buildEgernGenerationManifest({
   return {
     schema_version: SCHEMA_VERSION,
     generator: GENERATOR_PATH,
+    asset_revision: normalizeAssetRevision(assetRevision),
     source: {
       cmfa_sha256: sha256Text(cmfaSource),
       routing_graph_sha256: sha256Text(routingGraphSource),
@@ -108,6 +124,7 @@ function validateEgernGenerationManifest({
   generatedRuleSetDirectory,
   expectedSourceProviderCount,
   expectedSourceRuleCount,
+  expectedAssetRevision,
 }) {
   const failures = [];
   const check = (id, condition, message, value) => {
@@ -120,10 +137,12 @@ function validateEgernGenerationManifest({
   const actualMetrics = getRenderedRuleMetrics(profileSource);
   const actualAssets = listGeneratedEgernAssetRecords(generatedRuleSetDirectory);
   const actualReferences = getGeneratedEgernRuleSetReferences(profileSource);
+  const actualRevisions = getGeneratedEgernRuleSetRevisions(profileSource);
   const headerMatch = normalizeText(profileSource).match(/^# Egern rule sets:\s+(\d+) generated native YAML files\.$/m);
 
   check('schema', manifest && manifest.schema_version === SCHEMA_VERSION, `expected schema_version ${SCHEMA_VERSION}`);
   check('generator', manifest && manifest.generator === GENERATOR_PATH, `expected generator ${GENERATOR_PATH}`);
+  check('asset-revision', manifest && manifest.asset_revision === normalizeAssetRevision(expectedAssetRevision), 'Egern asset revision does not match the source graph');
   check('source.cmfa-sha256', source && source.cmfa_sha256 === sha256Text(cmfaSource), 'CMFA source hash does not match generated Egern artifact');
   check('source.routing-graph-sha256', source && source.routing_graph_sha256 === sha256Text(routingGraphSource), 'routing graph hash does not match generated Egern artifact');
   check('source.cmfa-provider-count', source && source.cmfa_provider_count === expectedSourceProviderCount, 'CMFA provider count metadata is inconsistent');
@@ -147,6 +166,7 @@ function validateEgernGenerationManifest({
   check('assets.referenced-files', assets && sameJson(assets.referenced_files, actualReferences), 'Egern generated asset references do not match generation manifest');
   check('assets.references-unique', new Set(actualReferences).size === actualReferences.length, 'Egern profile references a generated asset more than once');
   check('assets.references-cover-inventory', sameJson([...actualReferences].sort(), actualAssets.map((asset) => asset.file)), 'Egern generated asset inventory must be referenced exactly once by the profile');
+  check('assets.references-versioned', actualRevisions.length === actualReferences.length && actualRevisions.every((revision) => revision === manifest.asset_revision), 'Egern generated asset references must use the release asset revision', actualRevisions);
 
   return { failures, metrics: actualMetrics, assets: actualAssets, references: actualReferences };
 }
@@ -155,6 +175,7 @@ module.exports = {
   GENERATED_EGERN_RULE_SET_URL_PREFIX,
   buildEgernGenerationManifest,
   getGeneratedEgernRuleSetReferences,
+  getGeneratedEgernRuleSetRevisions,
   getRenderedRuleMetrics,
   listGeneratedEgernAssetRecords,
   normalizeText,

@@ -5,6 +5,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { optimizeEntries, resolveOpaqueMrsSource } = require('./lib/fused-rule-optimizer');
 const { buildEgernGenerationManifest } = require('./lib/egern-generation-manifest');
+const {
+  SCKI_REPOSITORY_BASE,
+  repositoryAssetUrl,
+  withAssetRevision,
+} = require('./lib/generated-asset-url');
+const { SOURCE_GRAPH_VERSION } = require('../rulesets/source/routing-graph');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const CMFA_FILE = path.join(REPO_ROOT, 'Clash Meta For Android/CMFA(mihomo).yaml');
@@ -16,12 +22,12 @@ const ROUTING_GRAPH_FILE = path.join(REPO_ROOT, 'rulesets/source/routing-graph.j
 const FUSED_SOURCE_CACHE_DIR = path.join(REPO_ROOT, '.cache/fused-rule-sets');
 const SCKI_OFFLINE = process.env.SCKI_OFFLINE === '1';
 
-const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
-const SCKI_GENERATED_BASE = `${SCKI_BASE}/rulesets/generated/egern`;
+const SCKI_BASE = SCKI_REPOSITORY_BASE;
+const ASSET_REVISION = SOURCE_GRAPH_VERSION;
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
-const EGERN_VERSION = 'v6.0.7-egern.1';
-const BUILD_DATE = '2026-07-14';
+const EGERN_VERSION = 'v6.0.8-egern.1';
+const BUILD_DATE = '2026-07-15';
 const FETCH_CONCURRENCY = 3;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
 // jsDelivr rejects files at 20 MB. Keep generated Egern-native rule sets below 18 MiB.
@@ -168,11 +174,12 @@ function sourceUrlForProvider(provider) {
 function sourceInfoForProvider(provider) {
   if (!provider) return null;
   if (!provider.url) return null;
-  const opaqueMrs = resolveOpaqueMrsSource(provider.url);
+  const providerUrl = String(provider.url).split(/[?#]/)[0];
+  const opaqueMrs = resolveOpaqueMrsSource(providerUrl);
   if (opaqueMrs) return opaqueMrs;
-  const localMrsSource = sourceInfoForGeneratedMihomoMrs(provider.url);
+  const localMrsSource = sourceInfoForGeneratedMihomoMrs(providerUrl);
   if (localMrsSource) return localMrsSource;
-  let url = provider.url;
+  let url = providerUrl;
   if (url.endsWith('.mrs')) url = url.replace(/\.mrs$/, '.yaml').replace('geolocation-!cn', 'geolocation-%21cn');
   return {
     sourceUrl: url.replace('https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/', 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/'),
@@ -219,14 +226,14 @@ function addGeneratedAsset(assets, id, sourceInfo, behavior, options = {}) {
   } else if (options.noResolve) {
     asset.noResolve = true;
   }
-  return asset.urls || [`${SCKI_GENERATED_BASE}/${file}`];
+  return asset.urls || [repositoryAssetUrl(`rulesets/generated/egern/${file}`, ASSET_REVISION)];
 }
 
 function providerUrlToEgern(provider, assets, options = {}) {
   if (!provider || !provider.url) return null;
   if (PROCESS_RULE_SETS.has(provider.name)) return null;
   if (provider.url.includes('/rulesets/supplemental/clash/')) {
-    return [provider.url.replace('/rulesets/supplemental/clash/', '/rulesets/supplemental/egern/').replace(/\.list$/, '.yaml')];
+    return [withAssetRevision(provider.url.replace('/rulesets/supplemental/clash/', '/rulesets/supplemental/egern/').replace(/\.list$/, '.yaml'), ASSET_REVISION)];
   }
   return addGeneratedAsset(assets, `provider-${provider.name}`, sourceInfoForProvider(provider), provider.behavior || 'classical', options);
 }
@@ -368,7 +375,7 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
     '# ======================================================================',
     `# Egern Smart ${EGERN_VERSION} - Egern Profile`,
     `# Build: ${BUILD_DATE}`,
-    '# Baseline: Clash Party v6.0.7',
+    '# Baseline: Clash Party v6.0.8',
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
     `# Egern rule sets: ${assetCount} generated native YAML files.`,
@@ -778,7 +785,7 @@ async function generateNativeRuleSets(assets, { outputDir = GENERATED_RULESET_DI
     totalEntries += convertedEntryCount(converted);
     const convertedParts = splitConvertedRuleSet(asset, converted);
     const files = convertedParts.map((part, index) => shardRuleSetFileName(asset.file, index, convertedParts.length));
-    asset.urls = files.map((file) => `${SCKI_GENERATED_BASE}/${file}`);
+    asset.urls = files.map((file) => repositoryAssetUrl(`rulesets/generated/egern/${file}`, ASSET_REVISION));
     for (let index = 0; index < convertedParts.length; index += 1) {
       const partAsset = convertedParts.length === 1 ? asset : { ...asset, file: files[index] };
       const rendered = renderEgernRuleSet(partAsset, convertedParts[index]);
@@ -829,6 +836,7 @@ async function main() {
 
   fs.writeFileSync(EGERN_FILE, output, 'utf8');
   const manifest = buildEgernGenerationManifest({
+    assetRevision: ASSET_REVISION,
     cmfaSource: cmfa,
     routingGraphSource: readText(ROUTING_GRAPH_FILE),
     profileSource: output,
@@ -854,4 +862,5 @@ module.exports = {
   generateNativeRuleSets,
   parsePayloadEntries,
   sourceCacheFile,
+  sourceInfoForProvider,
 };

@@ -1,6 +1,6 @@
 # Egern 使用教程
 
-> 版本：**v6.0.7-egern.1**（Build 2026-07-14；正式跟随 Clash Party v6.0.7 / CMFA 融合规则顺序）
+> 版本：**v6.0.8-egern.1**（Build 2026-07-15；正式跟随 Clash Party v6.0.8 / CMFA 融合规则顺序，原生规则集使用发布版本缓存键）
 
 ## 定位
 

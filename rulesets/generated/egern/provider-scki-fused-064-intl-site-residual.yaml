@@ -250,5 +250,3 @@ geoip_set:
   - "ZA"
   - "ZM"
   - "ZW"
-ip_cidr_set:
-  - "51.194.144.0/22"

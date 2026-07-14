@@ -26,6 +26,7 @@ const SCKI_GENERATED_MARKERS = [
   '/rulesets/generated/fused/',
 ];
 const CONCURRENCY = 8;
+const FETCH_ATTEMPTS = 3;
 
 const DOMAIN_RULE_TYPES = new Set([
   'DOMAIN',
@@ -248,6 +249,10 @@ function safeYamlFileName(name) {
   return `${String(name).toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'ruleset'}.yaml`;
 }
 
+function delay(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
 async function fetchText(url) {
   const local = localPathForRepositoryRuleUrl(url);
   if (local) return readText(local);
@@ -264,19 +269,27 @@ async function fetchText(url) {
 
   const errors = [];
   for (const candidate of [...new Set(candidates)]) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 90000);
-    try {
-      const response = await fetch(candidate, {
-        signal: controller.signal,
-        headers: { 'user-agent': 'Smart-Config-Kit-MRS-Sync/1.0' },
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return Buffer.from(await response.arrayBuffer()).toString('utf8');
-    } catch (error) {
-      errors.push(`${candidate} -> ${error.message}`);
-    } finally {
-      clearTimeout(timer);
+    for (let attempt = 1; attempt <= FETCH_ATTEMPTS; attempt += 1) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 90000);
+      try {
+        const response = await fetch(candidate, {
+          signal: controller.signal,
+          headers: { 'user-agent': 'Smart-Config-Kit-MRS-Sync/1.0' },
+        });
+        if (!response.ok) {
+          const error = new Error(`HTTP ${response.status}`);
+          error.retryable = response.status >= 500;
+          throw error;
+        }
+        return Buffer.from(await response.arrayBuffer()).toString('utf8');
+      } catch (error) {
+        errors.push(`${candidate} [${attempt}/${FETCH_ATTEMPTS}] -> ${error.message}`);
+        if (error.retryable === false || attempt === FETCH_ATTEMPTS) break;
+        await delay(attempt * 750);
+      } finally {
+        clearTimeout(timer);
+      }
     }
   }
   throw new Error(errors.join('; '));

@@ -26,6 +26,10 @@ const {
 const {
   localPathForRepositoryRuleUrl,
 } = require('./lib/repository-rule-asset');
+const {
+  mihomoAssetCachePath,
+  repositoryAssetUrl,
+} = require('./lib/generated-asset-url');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 const MIHOMO_MRS_MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
@@ -39,8 +43,6 @@ const FUSED_SING_BOX_DIR = path.join(FUSED_ROOT, 'sing-box');
 const CACHE_DIR = path.join(REPO_ROOT, '.cache/fused-rule-sets');
 const MIHOMO_CACHE_DIR = path.join(REPO_ROOT, '.cache/mihomo-mrs');
 
-const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
-const FUSED_BASE_URL = `${SCKI_BASE}/rulesets/generated/fused`;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
 const FUSED_MIHOMO_BASE_PATH = '/rulesets/generated/fused/mihomo/';
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
@@ -1180,7 +1182,7 @@ async function writeFusedRuleSets(segments) {
   return { manifestSegments, generatedMrs, generatedSrs, singBoxBinary: singBoxBin ? path.basename(singBoxBin) : null };
 }
 
-function buildMihomoProvidersAndRules(segments, baseProviders, passthroughProviderIds) {
+function buildMihomoProvidersAndRules(segments, baseProviders, passthroughProviderIds, assetRevision) {
   const providers = {};
   const rules = [];
   for (const id of REQUIRED_SUPPORT_PROVIDERS) {
@@ -1196,8 +1198,8 @@ function buildMihomoProvidersAndRules(segments, baseProviders, passthroughProvid
         type: 'http',
         behavior: 'domain',
         format: 'mrs',
-        url: `${FUSED_BASE_URL}/mihomo/${segment.id}-domain.mrs`,
-        path: `./ruleset/${segment.id}-domain.mrs`,
+        url: repositoryAssetUrl(`rulesets/generated/fused/mihomo/${segment.id}-domain.mrs`, assetRevision),
+        path: mihomoAssetCachePath(`${segment.id}-domain.mrs`, assetRevision),
         interval: 86400,
         proxy: '🚫 受限网站',
       };
@@ -1209,8 +1211,8 @@ function buildMihomoProvidersAndRules(segments, baseProviders, passthroughProvid
         type: 'http',
         behavior: 'ipcidr',
         format: 'mrs',
-        url: `${FUSED_BASE_URL}/mihomo/${segment.id}-ipcidr.mrs`,
-        path: `./ruleset/${segment.id}-ipcidr.mrs`,
+        url: repositoryAssetUrl(`rulesets/generated/fused/mihomo/${segment.id}-ipcidr.mrs`, assetRevision),
+        path: mihomoAssetCachePath(`${segment.id}-ipcidr.mrs`, assetRevision),
         interval: 86400,
         proxy: '🚫 受限网站',
       };
@@ -1222,8 +1224,8 @@ function buildMihomoProvidersAndRules(segments, baseProviders, passthroughProvid
         type: 'http',
         behavior: 'ipcidr',
         format: 'mrs',
-        url: `${FUSED_BASE_URL}/mihomo/${segment.id}-ipcidr-no-resolve.mrs`,
-        path: `./ruleset/${segment.id}-ipcidr-no-resolve.mrs`,
+        url: repositoryAssetUrl(`rulesets/generated/fused/mihomo/${segment.id}-ipcidr-no-resolve.mrs`, assetRevision),
+        path: mihomoAssetCachePath(`${segment.id}-ipcidr-no-resolve.mrs`, assetRevision),
         interval: 86400,
         proxy: '🚫 受限网站',
       };
@@ -1235,8 +1237,8 @@ function buildMihomoProvidersAndRules(segments, baseProviders, passthroughProvid
         type: 'http',
         behavior: 'classical',
         format: 'yaml',
-        url: `${FUSED_BASE_URL}/mihomo/${segment.id}-residual.yaml`,
-        path: `./ruleset/${segment.id}-residual.yaml`,
+        url: repositoryAssetUrl(`rulesets/generated/fused/mihomo/${segment.id}-residual.yaml`, assetRevision),
+        path: mihomoAssetCachePath(`${segment.id}-residual.yaml`, assetRevision),
         interval: 86400,
         proxy: '🚫 受限网站',
       };
@@ -1252,8 +1254,8 @@ function mainRuleTarget(rule) {
   return parts[2];
 }
 
-function mergeFusedRules(segments, timeline, baseProviders, passthroughProviderIds) {
-  const { providers, rules } = buildMihomoProvidersAndRules(segments, baseProviders, passthroughProviderIds);
+function mergeFusedRules(segments, timeline, baseProviders, passthroughProviderIds, assetRevision) {
+  const { providers, rules } = buildMihomoProvidersAndRules(segments, baseProviders, passthroughProviderIds, assetRevision);
   const finalRules = [];
   for (const marker of timeline) {
     if (marker.type === 'segment') {
@@ -1383,25 +1385,25 @@ function qxPolicy(policy) {
   return policy;
 }
 
-function platformRuleSetLines(platform, segment) {
+function platformRuleSetLines(platform, segment, assetRevision) {
   const policy = segment.policy;
   const target = platform === 'surge' ? 'surge' : platform === 'quantumultx' ? 'quantumultx' : 'clash';
   const files = (segment.remoteRuleSetFiles && segment.remoteRuleSetFiles[target]) || [`${segment.id}.list`];
   return files.map((file) => {
     const tag = path.basename(file, '.list');
-    if (platform === 'shadowrocket') return `RULE-SET,${FUSED_BASE_URL}/clash/${file},${policy}`;
-    if (platform === 'surge') return `RULE-SET,${FUSED_BASE_URL}/surge/${file},${policy}`;
-    if (platform === 'loon-remote') return `${FUSED_BASE_URL}/clash/${file}, policy=${policy}, tag=${tag}, enabled=true`;
-    if (platform === 'quantumultx') return `${FUSED_BASE_URL}/quantumultx/${file}, tag=${tag}, force-policy=${qxPolicy(policy)}, update-interval=86400, opt-parser=false, enabled=true`;
+    if (platform === 'shadowrocket') return `RULE-SET,${repositoryAssetUrl(`rulesets/generated/fused/clash/${file}`, assetRevision)},${policy}`;
+    if (platform === 'surge') return `RULE-SET,${repositoryAssetUrl(`rulesets/generated/fused/surge/${file}`, assetRevision)},${policy}`;
+    if (platform === 'loon-remote') return `${repositoryAssetUrl(`rulesets/generated/fused/clash/${file}`, assetRevision)}, policy=${policy}, tag=${tag}, enabled=true`;
+    if (platform === 'quantumultx') return `${repositoryAssetUrl(`rulesets/generated/fused/quantumultx/${file}`, assetRevision)}, tag=${tag}, force-policy=${qxPolicy(policy)}, update-interval=86400, opt-parser=false, enabled=true`;
     return null;
   }).filter(Boolean);
 }
 
-function renderMobileRules(platform, timeline) {
+function renderMobileRules(platform, timeline, assetRevision) {
   const lines = [];
   for (const event of timeline) {
     if (event.type === 'segment') {
-      lines.push(...platformRuleSetLines(platform, event.segment));
+      lines.push(...platformRuleSetLines(platform, event.segment, assetRevision));
       continue;
     }
     if (platform === 'loon-remote' || platform === 'quantumultx') continue;
@@ -1429,36 +1431,37 @@ function replaceSection(source, sectionName, replacementLines) {
   return `${normalized.slice(0, afterStart)}\n${replacementLines.join('\n')}\n${normalized.slice(end).replace(/^\n+/, '\n')}`;
 }
 
-function applyMobileConfigs(timeline) {
+function applyMobileConfigs(timeline, assetRevision) {
   const shadowrocket = path.join(REPO_ROOT, 'Shadowrocket/Shadowrocket.conf');
   let sr = readText(shadowrocket);
-  sr = replaceSection(sr, 'Rule', renderMobileRules('shadowrocket', timeline));
+  sr = replaceSection(sr, 'Rule', renderMobileRules('shadowrocket', timeline, assetRevision));
   writeText(shadowrocket, sr);
 
   const surge = path.join(REPO_ROOT, 'Surge/Surge.conf');
   let surgeText = readText(surge);
-  surgeText = replaceSection(surgeText, 'Rule', renderMobileRules('surge', timeline));
+  surgeText = replaceSection(surgeText, 'Rule', renderMobileRules('surge', timeline, assetRevision));
   writeText(surge, surgeText);
 
   const loon = path.join(REPO_ROOT, 'Loon/Loon.conf');
   let loonText = readText(loon);
-  loonText = replaceSection(loonText, 'Remote Rule', renderMobileRules('loon-remote', timeline));
-  loonText = replaceSection(loonText, 'Rule', renderMobileRules('loon-local', timeline));
+  loonText = replaceSection(loonText, 'Remote Rule', renderMobileRules('loon-remote', timeline, assetRevision));
+  loonText = replaceSection(loonText, 'Rule', renderMobileRules('loon-local', timeline, assetRevision));
   writeText(loon, loonText);
 
   const qx = path.join(REPO_ROOT, 'Quantumult X/QuantumultX.conf');
   let qxText = readText(qx);
-  qxText = replaceSection(qxText, 'filter_remote', renderMobileRules('quantumultx', timeline));
-  qxText = replaceSection(qxText, 'filter_local', renderMobileRules('quantumultx-local', timeline));
+  qxText = replaceSection(qxText, 'filter_remote', renderMobileRules('quantumultx', timeline, assetRevision));
+  qxText = replaceSection(qxText, 'filter_local', renderMobileRules('quantumultx-local', timeline, assetRevision));
   writeText(qx, qxText);
 }
 
 async function main() {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   const clashOutput = runSourceRoutingGraphBaseline();
+  const assetRevision = clashOutput.version;
   const { segments, inlineRules, timeline, stats } = await buildSegments(clashOutput);
   const writeStats = await writeFusedRuleSets(segments);
-  const fused = mergeFusedRules(segments, timeline, clashOutput.providers, stats.passthroughProviderIds);
+  const fused = mergeFusedRules(segments, timeline, clashOutput.providers, stats.passthroughProviderIds, assetRevision);
 
   for (const file of [
     'Clash Party/ClashParty(mihomo-smart).js',
@@ -1472,12 +1475,13 @@ async function main() {
     'OpenClash/OpenClash(mihomo-smart).sh',
   ]) replaceOpenClashYaml(file, fused.providers, fused.rules);
 
-  applyMobileConfigs(timeline);
+  applyMobileConfigs(timeline, assetRevision);
 
   const manifest = {
     generated_at: new Date().toISOString(),
     authority: `${SOURCE_GRAPH_ID} after Mihomo MRS normalization`,
     baseline_version: clashOutput.version,
+    asset_revision: assetRevision,
     source_provider_count: Object.keys(clashOutput.providers).length,
     source_rule_count: clashOutput.rules.length,
     fused_provider_count: Object.keys(fused.providers).length,

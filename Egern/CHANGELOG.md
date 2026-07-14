@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.8-egern.1 (2026-07-15)
+
+- 原生 YAML rule_set 同步国内权威优先级，并支持带发布缓存键的 Mihomo 融合源解析与 Egern 资产引用。
+
 ## v6.0.7-egern.1 (2026-07-14)
 
 - FIX#176：正式 Profile 由 CMFA v6.0.7-cmfa.1 重生成；Egern 原生 `rule_set` 顺序使国内域名 guard 先于通用国际 CDN / `geoip_set` fallback。

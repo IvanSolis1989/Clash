@@ -18,6 +18,13 @@ function read(relative) {
   return fs.readFileSync(path.join(REPO_ROOT, relative), 'utf8');
 }
 
+function generatedAssetPath(url, marker) {
+  const pathname = new URL(url).pathname;
+  const index = pathname.indexOf(marker);
+  assert.notEqual(index, -1, `unexpected generated asset URL: ${url}`);
+  return decodeURIComponent(pathname.slice(index + 1));
+}
+
 function nonCommentLines(file) {
   return fs.readFileSync(file, 'utf8')
     .split(/\r?\n/)
@@ -120,7 +127,7 @@ test('iOS fused payload stays within the repository Network Extension budget', (
   const files = uniqueUrls.map((url) => {
     const marker = '/rulesets/generated/';
     assert.ok(url.includes(marker), `unexpected non-fused URL: ${url}`);
-    return path.join(REPO_ROOT, decodeURIComponent(url.slice(url.indexOf(marker) + 1)));
+    return path.join(REPO_ROOT, generatedAssetPath(url, marker));
   });
   const bytes = files.reduce((total, file) => total + fs.statSync(file).size, 0);
   const rules = files.reduce((total, file) => total + nonCommentLines(file).length, 0);
@@ -241,7 +248,7 @@ test('Issue #176 replays native Egern assets from the baseline without cache dri
   );
   assert.deepEqual(asset('provider-scki-fused-058-intl-site-domain.yaml'), {
     noResolve: false,
-    sets: { domain_set: 56, domain_suffix_set: 11469 },
+    sets: { domain_set: 1, domain_suffix_set: 384 },
   });
   assert.deepEqual(asset('provider-scki-fused-058-intl-site-ipcidr.yaml'), {
     noResolve: false,
@@ -253,7 +260,7 @@ test('Issue #176 replays native Egern assets from the baseline without cache dri
   });
   assert.deepEqual(asset('provider-scki-fused-061-cn-site-domain.yaml'), {
     noResolve: false,
-    sets: { domain_set: 85, domain_suffix_set: 5187 },
+    sets: { domain_set: 85, domain_suffix_set: 4944 },
   });
   assert.deepEqual(asset('provider-scki-fused-061-cn-site-ipcidr-no-resolve.yaml'), {
     noResolve: true,
@@ -261,7 +268,7 @@ test('Issue #176 replays native Egern assets from the baseline without cache dri
   });
   assert.deepEqual(asset('provider-scki-fused-064-intl-site-domain.yaml'), {
     noResolve: false,
-    sets: { domain_suffix_set: 215 },
+    sets: { domain_set: 57, domain_suffix_set: 11363 },
   });
   assert.deepEqual(asset('provider-scki-fused-064-intl-site-ipcidr.yaml'), {
     noResolve: false,
@@ -273,7 +280,7 @@ test('Issue #176 replays native Egern assets from the baseline without cache dri
   });
   assert.deepEqual(asset('provider-scki-fused-064-intl-site-residual.yaml'), {
     noResolve: true,
-    sets: { geoip_set: 247, ip_cidr_set: 1 },
+    sets: { geoip_set: 247 },
   });
 });
 
@@ -420,7 +427,7 @@ test('later Egern rule-set assets do not repeat an exact rule already matched ea
   const files = [...config.matchAll(/^\s+match:\s+("[^"]+")\s*$/gm)]
     .map((match) => JSON.parse(match[1]))
     .filter((url) => url.includes(marker))
-    .map((url) => decodeURIComponent(url.slice(url.indexOf(marker) + marker.length)));
+    .map((url) => path.basename(generatedAssetPath(url, marker)));
   const seen = new Map();
   const duplicates = [];
   for (const file of files) {

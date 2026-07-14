@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.8-v2n.1 (2026-07-15)
+
+- 从更新后的融合 sing-box 源重新展平，保持国内权威段先于通用国际兜底的等价顺序。
+
 ## v6.0.7-v2n.1 (2026-07-14)
 
 - FIX#176：Xray fallback 从后置国际 SRS 段重生成，国内域名 RuleObject 在共享 CDN / GeoIP 的 proxy fallback 前命中 direct。

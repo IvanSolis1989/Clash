@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { repositoryAssetUrl } = require('../tools/lib/generated-asset-url');
 
-const VERSION = 'v6.0.7-sing.1';
-const BUILD = '2026-07-14';
-const BASELINE = 'Clash Party v6.0.7';
+const VERSION = 'v6.0.8-sing.1';
+const BUILD = '2026-07-15';
+const BASELINE = 'Clash Party v6.0.8';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -184,7 +185,6 @@ const providers = out['rule-providers'] || {};
 const rules = out.rules || [];
 const ADS_OUTBOUND = '🛑 广告拦截';
 const FUSED_MANIFEST_FILE = path.join(__dirname, '..', 'rulesets', 'generated', 'fused', 'manifest.json');
-const FUSED_SRS_BASE_URL = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box';
 
 function loadFusedManifest() {
   if (!fs.existsSync(FUSED_MANIFEST_FILE)) throw new Error(`missing fused manifest: ${FUSED_MANIFEST_FILE}`);
@@ -194,6 +194,7 @@ function loadFusedManifest() {
 }
 
 const fusedManifest = loadFusedManifest();
+const fusedAssetRevision = fusedManifest.asset_revision;
 const fusedProviderToSegment = new Map();
 for (const segment of fusedManifest.segments) {
   const targetTag = segment.files && segment.files.sing_box ? segment.id : null;
@@ -454,7 +455,7 @@ const ruleSet = fusedManifest.segments.filter((segment) => (
     type: 'remote',
     tag: segment.id,
     format: 'binary',
-    url: `${FUSED_SRS_BASE_URL}/${segment.files.sing_box.file}`,
+    url: repositoryAssetUrl(`rulesets/generated/fused/sing-box/${segment.files.sing_box.file}`, fusedAssetRevision),
     http_client: { detour: SMART.GLOBAL },
     update_interval: '1d'
   };

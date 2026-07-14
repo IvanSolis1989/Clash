@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.8-pw2.1 (2026-07-15)
+
+- 65 条 fused shunt rule 同步国内权威优先级，并为远程 `.srs` 使用发布版本缓存键。
+
 ## v6.0.7-pw2.1 (2026-07-14)
 
 - FIX#176：65 条 fused SRS shunt rule 重生成；Passwall2 与 Passwall 共同保持国内域名优先于通用国际 CDN / GeoIP fallback。

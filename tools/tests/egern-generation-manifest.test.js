@@ -15,9 +15,10 @@ const {
   fetchText,
   generateNativeRuleSets,
   sourceCacheFile,
+  sourceInfoForProvider,
 } = require('../generate-egern-from-cmfa');
 
-function renderProfile({ ruleCount, ruleSetRefs, assetCount }) {
+function renderProfile({ ruleCount, ruleSetRefs, assetCount, assetRevision }) {
   const nestedRefs = assetCount - ruleSetRefs;
   const topLevelRules = ruleCount - nestedRefs;
   const lines = [
@@ -29,7 +30,7 @@ function renderProfile({ ruleCount, ruleSetRefs, assetCount }) {
   for (let index = 0; index < topLevelRules; index += 1) {
     if (index < ruleSetRefs) {
       lines.push('  - rule_set:');
-      lines.push(`      match: "${GENERATED_EGERN_RULE_SET_URL_PREFIX}asset-${String(index).padStart(3, '0')}.yaml"`);
+      lines.push(`      match: "${GENERATED_EGERN_RULE_SET_URL_PREFIX}asset-${String(index).padStart(3, '0')}.yaml?scki=${assetRevision}"`);
       lines.push('      policy: "DIRECT"');
     } else {
       lines.push('  - domain:');
@@ -42,7 +43,7 @@ function renderProfile({ ruleCount, ruleSetRefs, assetCount }) {
     lines.push('  - and:');
     lines.push('      match:');
     lines.push('        - rule_set:');
-    lines.push(`            match: "${GENERATED_EGERN_RULE_SET_URL_PREFIX}asset-${String(index).padStart(3, '0')}.yaml"`);
+    lines.push(`            match: "${GENERATED_EGERN_RULE_SET_URL_PREFIX}asset-${String(index).padStart(3, '0')}.yaml?scki=${assetRevision}"`);
     lines.push('      policy: "DIRECT"');
   }
   return `${lines.join('\n')}\n`;
@@ -58,8 +59,10 @@ test('Egern generation manifest accepts valid upstream-driven count changes and 
       const file = `asset-${String(index).padStart(3, '0')}.yaml`;
       fs.writeFileSync(path.join(directory, file), `domain_set:\n  - "example-${index}.test"\n`, 'utf8');
     }
-    const profileSource = renderProfile({ ruleCount: 109, ruleSetRefs: 92, assetCount: 97 });
+    const assetRevision = 'v6.0.8';
+    const profileSource = renderProfile({ ruleCount: 109, ruleSetRefs: 92, assetCount: 97, assetRevision });
     const manifest = buildEgernGenerationManifest({
+      assetRevision,
       cmfaSource,
       routingGraphSource,
       profileSource,
@@ -81,6 +84,7 @@ test('Egern generation manifest accepts valid upstream-driven count changes and 
       generatedRuleSetDirectory: directory,
       expectedSourceProviderCount: 113,
       expectedSourceRuleCount: 130,
+      expectedAssetRevision: assetRevision,
     });
 
     assert.deepEqual(result.failures, []);
@@ -95,6 +99,7 @@ test('Egern generation manifest accepts valid upstream-driven count changes and 
       generatedRuleSetDirectory: directory,
       expectedSourceProviderCount: 113,
       expectedSourceRuleCount: 130,
+      expectedAssetRevision: assetRevision,
     });
     assert.ok(staleResult.failures.some((failure) => failure.id === 'rendered.rule-count'));
     assert.ok(staleResult.failures.some((failure) => failure.id === 'rendered.profile-sha256'));
@@ -128,6 +133,17 @@ test('Egern generator uses the fused cache offline and fails closed on a cache m
     global.fetch = originalFetch;
     fs.rmSync(directory, { recursive: true, force: true });
   }
+});
+
+test('Egern source resolution strips the release cache key before converting a fused MRS source', () => {
+  const source = sourceInfoForProvider({
+    url: 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cn-site-domain.mrs?scki=v6.0.8',
+  });
+
+  assert.deepEqual(source, {
+    sourceUrl: 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cn-site-domain.yaml',
+    sourceFilter: null,
+  });
 });
 
 test('Egern generator preserves existing native rule sets when source preflight fails', async () => {

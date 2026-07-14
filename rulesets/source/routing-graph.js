@@ -5,7 +5,7 @@
 // upstream provider/rule relationship used by MRS and fused-rule compilers.
 
 const SOURCE_GRAPH_ID = 'rulesets/source/routing-graph.js';
-const SOURCE_GRAPH_VERSION = 'v6.0.7';
+const SOURCE_GRAPH_VERSION = 'v6.0.8';
 const VERSION = SOURCE_GRAPH_VERSION;
 
 let SCKI_DISABLE_MIHOMO_MRS_OVERRIDES = false;
@@ -37,6 +37,60 @@ const BIZ = {
   GFW: '🚫 受限网站', INTL_SITE: '🌐 国外网站',
   FINAL: '🐟 漏网之鱼', AD: '🛑 广告拦截',
 }
+
+const DOMESTIC_AUTHORITY_ANCHOR_RULE = `RULE-SET,acc-geo-ip-asia-china,${BIZ.CN_SITE},no-resolve`;
+const GENERIC_INTL_GEOIP_FALLBACK_RULE = `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`;
+const GENERIC_INTL_EDGE_FALLBACK_RULES = [
+  `DOMAIN-SUFFIX,amazonaws.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,awsstatic.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,akamai.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,akamaized.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,akamaihd.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,akamaiedge.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,akamaitechnologies.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,edgekey.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,edgesuite.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,cloudfront.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,fastly.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,fastlylb.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,kxcdn.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,stackpathdns.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,stackpathcdn.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,b-cdn.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,bunny.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,bunnycdn.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,cdn77.org,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,azureedge.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,azurefd.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,msecnd.net,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,unpkg.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,r2.dev,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,ziffstatic.com,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,ucoz.ru,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,ucoz.net,${BIZ.INTL_SITE}`,
+  `RULE-SET,akamai,${BIZ.INTL_SITE}`,
+  `RULE-SET,digicert,${BIZ.INTL_SITE}`,
+  `RULE-SET,globalsign,${BIZ.INTL_SITE}`,
+  `RULE-SET,sectigo,${BIZ.INTL_SITE}`,
+  `RULE-SET,brightcove,${BIZ.INTL_SITE}`,
+  `RULE-SET,jwplayer,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,letsencrypt.org,${BIZ.INTL_SITE}`,
+  `DOMAIN-SUFFIX,lencr.org,${BIZ.INTL_SITE}`,
+  `RULE-SET,proxy,${BIZ.INTL_SITE}`,
+];
+const GENERIC_INTL_NETWORK_FALLBACK_RULES = [
+  `RULE-SET,cloudflare-ip,${BIZ.INTL_SITE},no-resolve`,
+  `RULE-SET,cloudfront-ip,${BIZ.INTL_SITE},no-resolve`,
+  `RULE-SET,fastly-ip,${BIZ.INTL_SITE},no-resolve`,
+  `RULE-SET,cloudflare,${BIZ.INTL_SITE}`,
+  `RULE-SET,acc-fastly,${BIZ.INTL_SITE}`,
+  `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
+];
+const GENERIC_INTL_FALLBACK_RULES = [
+  ...GENERIC_INTL_EDGE_FALLBACK_RULES,
+  ...GENERIC_INTL_NETWORK_FALLBACK_RULES,
+  GENERIC_INTL_GEOIP_FALLBACK_RULE,
+];
 
 // v5.4.25: 预计算静态规则数组，避免 injectRules() 每次调用重建
 const ACC_BANK_RULES = ['US','UK','HK','SG','JP','AU','CA','DE','NL','FR'].map(function(cc) { return 'RULE-SET,acc-bank-' + cc.toLowerCase() + ',' + BIZ.PAYMENTS })
@@ -1693,41 +1747,6 @@ function injectRules(config) {
     `RULE-SET,sony,${BIZ.GAME_INTL}`,
 
     // ============ 🌐 国外网站 ============
-    `DOMAIN-SUFFIX,amazonaws.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,awsstatic.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,akamai.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,akamaized.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,akamaihd.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,akamaiedge.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,akamaitechnologies.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,edgekey.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,edgesuite.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,cloudfront.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,fastly.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,fastlylb.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,kxcdn.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,stackpathdns.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,stackpathcdn.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,b-cdn.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,bunny.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,bunnycdn.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,cdn77.org,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,azureedge.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,azurefd.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,msecnd.net,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,unpkg.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,r2.dev,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,ziffstatic.com,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,ucoz.ru,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,ucoz.net,${BIZ.INTL_SITE}`,
-    `RULE-SET,akamai,${BIZ.INTL_SITE}`,
-    `RULE-SET,digicert,${BIZ.INTL_SITE}`,
-    `RULE-SET,globalsign,${BIZ.INTL_SITE}`,
-    `RULE-SET,sectigo,${BIZ.INTL_SITE}`,
-    `RULE-SET,brightcove,${BIZ.INTL_SITE}`,
-    `RULE-SET,jwplayer,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,letsencrypt.org,${BIZ.INTL_SITE}`,
-    `DOMAIN-SUFFIX,lencr.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tokopedia.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tokopedia.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,shopee.co.id,${BIZ.INTL_SITE}`,
@@ -1779,7 +1798,6 @@ function injectRules(config) {
     `RULE-SET,mega,${BIZ.INTL_SITE}`,
     `RULE-SET,wikipedia,${BIZ.INTL_SITE}`,
     `RULE-SET,duolingo,${BIZ.INTL_SITE}`,
-    `RULE-SET,proxy,${BIZ.INTL_SITE}`,
     `RULE-SET,acc-waybackmachine,${BIZ.INTL_SITE}`,
     `RULE-SET,acc-pornhub,${BIZ.INTL_SITE}`,
     `RULE-SET,szkane-khan,${BIZ.INTL_SITE}`,
@@ -1912,20 +1930,15 @@ function injectRules(config) {
     `RULE-SET,acc-geo-ip-asia-china,${BIZ.CN_SITE},no-resolve`,
 
     // ============ 🌐 国际网络与地域兜底 ============
-    // v6.0.7 FIX#176: 共享 CDN / 国家 / 区域规则只能在所有具名域名策略之后兜底；
-    // 否则中国域名落在境外 CDN IP 时会先被错误地送往国外网站。
-    `RULE-SET,cloudflare-ip,${BIZ.INTL_SITE},no-resolve`,
-    `RULE-SET,cloudfront-ip,${BIZ.INTL_SITE},no-resolve`,
-    `RULE-SET,fastly-ip,${BIZ.INTL_SITE},no-resolve`,
-    // Keep the whole provider here: MRS normalization splits its domain/IP halves together.
-    `RULE-SET,cloudflare,${BIZ.INTL_SITE}`,
-    `RULE-SET,acc-fastly,${BIZ.INTL_SITE}`,
-    `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
+    // v6.0.8 FIX#176: all shared edge/CDN, geolocation-!cn, IP and region
+    // fallbacks stay after domestic authority so first-match routing is stable.
+    ...GENERIC_INTL_EDGE_FALLBACK_RULES,
+    ...GENERIC_INTL_NETWORK_FALLBACK_RULES,
     ...GEO_REGIONS_INTL_D_RULES,
     ...GEO_REGIONS_INTL_IP_RULES,
 
     // ============ GEOIP 标签路由 ============
-    `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`,
+    GENERIC_INTL_GEOIP_FALLBACK_RULE,
     `GEOIP,telegram,${BIZ.IM},no-resolve`,
     `GEOIP,netflix,${BIZ.NFLX},no-resolve`,
     `GEOIP,facebook,${BIZ.SOCIAL},no-resolve`,
@@ -1973,6 +1986,8 @@ module.exports = {
   SOURCE_GRAPH_ID,
   SOURCE_GRAPH_VERSION,
   BIZ,
+  DOMESTIC_AUTHORITY_ANCHOR_RULE,
+  GENERIC_INTL_FALLBACK_RULES,
   buildMihomoRoutingGraph,
   getRawRoutingGraph,
   getMihomoNormalizedRoutingGraph,

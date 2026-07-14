@@ -3,6 +3,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const { repositoryAssetUrl } = require('./lib/generated-asset-url');
+const { SOURCE_GRAPH_VERSION } = require('../rulesets/source/routing-graph');
 
 const ROOT = path.resolve(__dirname, '..');
 const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'process-name-direct-tools.json');
@@ -13,13 +15,12 @@ const mihomoWorkNames = fixture.mihomoWorkProcessNames || [];
 const surgeNames = fixture.surgeMacProcessNames;
 const surgeWorkNames = fixture.surgeWorkProcessNames || [];
 const WORK_POLICY = '🧑‍💼 会议协作';
-const SCKI_REPO_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused';
 const MIHOMO_DIRECT_RULE_SET = 'scki-fused-008-direct-residual';
 const MIHOMO_WORK_RULE_SET = 'scki-fused-009-work-residual';
 const SINGBOX_DIRECT_RULE_SET = 'scki-fused-008-direct';
 const SINGBOX_WORK_RULE_SET = 'scki-fused-009-work';
-const SURGE_DIRECT_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-008-direct.list`;
-const SURGE_WORK_PROCESS_URL = `${SCKI_REPO_BASE}/surge/scki-fused-009-work.list`;
+const SURGE_DIRECT_PROCESS_URL = repositoryAssetUrl('rulesets/generated/fused/surge/scki-fused-008-direct.list', SOURCE_GRAPH_VERSION);
+const SURGE_WORK_PROCESS_URL = repositoryAssetUrl('rulesets/generated/fused/surge/scki-fused-009-work.list', SOURCE_GRAPH_VERSION);
 
 const mihomoJsTargets = [
   'Clash Party/ClashParty(mihomo-smart).js',

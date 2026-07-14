@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.8 / v6.0.8-normal.1 (2026-07-15)
+
+- FIX#176 全量修复：Smart / Normal 把共享边缘/CDN、`geolocation-!cn`、IP 与地域兜底统一放到国内权威段之后，不再依赖针对单个域名的快照迁移。
+- CACHE-ISOLATION：所有融合 provider 的远程 URL 与本地 Mihomo `path` 均按 `v6.0.8` 隔离，配置更新会建立新缓存文件而非等待旧路径的更新周期。
+
 ## v6.0.7 / v6.0.7-normal.1 (2026-07-14)
 
 - FIX#176：Smart / Normal 的最终融合规则将 `scki-fused-061-cn-site` 放在通用国际 CDN / GEOIP fallback 前；`mi.com`、`yunxuetang.cn`、`yxt.com` 等国内域名不会因解析到境外 IP 被提前代理。
