@@ -1,10 +1,11 @@
-# 🚀 Smart-Config-Kit v6.0.6
+# 🚀 Smart-Config-Kit v6.0.7
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
 > 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。融合编译器先规范化，再在同策略、同顺序段内删除精确重复和可证明被覆盖的域名/CIDR；GEOIP 国家码保留给支持原生数据库查询的平台，只有不支持该能力的目标才展开。
 >
-> - 🧠 **融合规则集语义保真**：源图当前 513 个 provider / 970 条规则按原始首匹配顺序编译为 68 个语义段、124 个 Mihomo provider / 141 条主规则；移动端只消费 64 个非空文本资产，sing-box / Passwall 系消费 65 个非空 `.srs`
+> - 🧠 **融合规则集语义保真**：源图当前 513 个 provider / 970 条规则按原始首匹配顺序编译为 68 个语义段、126 个 Mihomo provider / 143 条主规则；移动端只消费 65 个非空文本资产，sing-box / Passwall 系消费 65 个非空 `.srs`
+> - 🧭 **国内域名优先**：国内域名权威段先于共享 CDN 与非中国地域 fallback；解析到境外 IP 不会改变 `mi.com`、`yunxuetang.cn`、`yxt.com` 等中国站点的直连策略。
 > - 🧭 **Mihomo domain 语法正确归一化**：`DOMAIN` / `DOMAIN-SUFFIX` 会转换为 `behavior: domain` 的精确 / `+.` wildcard payload；`DOMAIN-KEYWORD` 与正则保留 classical residual，避免把 ChatGPT 等域名静默漏匹配或扩大匹配范围
 > - 🖥️ **桌面本地工具直连可验证**：`WorkPro.exe`、`WorkProWebProcess.exe` 等精确进程名沉淀在补充规则集，并由回归契约验证 Mihomo、sing-box 与 Xray fallback 始终输出 `DIRECT`
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致

@@ -29,13 +29,13 @@ const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const EXPECTED_SINGBOX_URLTEST_INTERVAL = '5m';
 const SOURCE_FULL_PROVIDERS = 513;
 const SOURCE_FULL_RULES = 970;
-const MIN_FULL_PROVIDERS = 124;
+const MIN_FULL_PROVIDERS = 126;
 const EXPECTED_SINGBOX_RUNTIME_GEO_RULE_SETS = 7;
-const MIN_FULL_RULES = 141;
+const MIN_FULL_RULES = 143;
 const EXPECTED_FUSED_SEGMENTS = 68;
-const EXPECTED_FUSED_MOBILE_SEGMENTS = 64;
+const EXPECTED_FUSED_MOBILE_SEGMENTS = 65;
 const EXPECTED_FUSED_INLINE_RULES = 17;
-const EXPECTED_FUSED_MRS_FILES = 89;
+const EXPECTED_FUSED_MRS_FILES = 91;
 const EXPECTED_FUSED_SRS_FILES = 65;
 const EXPECTED_FUSED_PASSWALL_FILES = 65;
 const EXPECTED_FUSED_XRAY_SEGMENTS = 65;
@@ -49,6 +49,7 @@ const EXPECTED_MIHOMO_MRS_FILES = 385;
 const EXPECTED_MIHOMO_MRS_RESIDUAL_FILES = 70;
 const EXPECTED_MIHOMO_MRS_PROVIDER_REFS = EXPECTED_MIHOMO_MRS_FILES + EXPECTED_MIHOMO_MRS_EXISTING;
 const EXPECTED_SINGBOX_ROUTE_RULES = 82;
+const ISSUE_176_CN_DOMAIN_SUFFIXES = ['mi.com', 'cn', 'yxt.com'];
 const RESTRICTED_SITE = '\u{1F6AB} \u53D7\u9650\u7F51\u7AD9';
 const RESTRICTED_SITE_RUBY = '\\U0001F6AB \u53D7\u9650\u7F51\u7AD9';
 const CLOUD_CDN = '\u2601\uFE0F \u4E91\u4E0ECDN';
@@ -454,6 +455,40 @@ function generatedYamlPayloadEntries(filePath) {
     .map((line) => line.match(/^\s*-\s+(.+)\s*$/))
     .filter(Boolean)
     .map((match) => JSON.parse(match[1]));
+}
+
+function fusedSegmentClashEntries(segment) {
+  const artifact = segment && segment.files && segment.files.clash;
+  if (!artifact) return [];
+  const files = Array.isArray(artifact.parts) ? artifact.parts : [artifact.file];
+  return files.filter(Boolean).flatMap((file) => meaningfulRuleLines(path.join('rulesets/generated/fused/clash', file)));
+}
+
+function fusedSegmentResidualEntries(segment) {
+  const artifact = segment && segment.files && segment.files.residual;
+  if (!artifact || !artifact.file) return [];
+  return generatedYamlPayloadEntries(relPath('rulesets/generated/fused/mihomo', artifact.file));
+}
+
+function getIssue176FusedPriority(manifest) {
+  const segments = manifest.segments || [];
+  const cnSegment = segments.find((segment) => (
+    segment.policy === '🏠 国内网站'
+    && ISSUE_176_CN_DOMAIN_SUFFIXES.every((suffix) => fusedSegmentClashEntries(segment).includes(`DOMAIN-SUFFIX,${suffix}`))
+  ));
+  const internationalGeoSegment = segments.find((segment) => (
+    segment.policy === '🌐 国外网站'
+    && fusedSegmentResidualEntries(segment).includes('GEOIP,US,no-resolve')
+  ));
+  return { segments, cnSegment, internationalGeoSegment };
+}
+
+function checkIssue176PriorityOrder(record, artifactId, beforeIndex, afterIndex, beforeLabel, afterLabel) {
+  const ok = beforeIndex !== -1 && afterIndex !== -1 && beforeIndex < afterIndex;
+  record.check(`${artifactId}.issue176-cn-before-generic-international-fallback`, ok, {
+    value: { beforeIndex, afterIndex, before: beforeLabel, after: afterLabel },
+    message: `expected ${beforeLabel} before ${afterLabel}`,
+  });
 }
 
 function validateMihomoDomainPayloadGrammar(record, manifest, fusedDir) {
@@ -1670,9 +1705,15 @@ function validateEgern(record, baselineVersion, options) {
       message: `missing generated Egern fused mapping ${fusedId}`,
     });
   }
-  const egernGeoipResidual = readText('rulesets/generated/egern/provider-scki-fused-058-intl-site-residual.yaml');
+  const { internationalGeoSegment } = getIssue176FusedPriority(readJson('rulesets/generated/fused/manifest.json'));
+  const egernGeoipResidualFile = internationalGeoSegment
+    && internationalGeoSegment.files
+    && internationalGeoSegment.files.residual
+    && `rulesets/generated/egern/provider-${internationalGeoSegment.id}-residual.yaml`;
+  const egernGeoipResidual = egernGeoipResidualFile ? readText(egernGeoipResidualFile) : '';
   record.check('egern.geoip-native', egernGeoipResidual.includes('geoip_set:') && !/Skipped unsupported source rule types:.*GEOIP/.test(egernGeoipResidual), {
-    message: 'Egern fused residual must preserve country GEOIP through geoip_set',
+    value: egernGeoipResidualFile,
+    message: 'Egern generic international GEOIP residual must preserve country GEOIP through geoip_set',
   });
   for (const fileName of fs.readdirSync(relPath('rulesets/generated/egern')).filter((entry) => entry.endsWith('.yaml'))) {
     const egernFile = `rulesets/generated/egern/${fileName}`;
@@ -1838,6 +1879,137 @@ function validatePasswall(record, baselineVersion) {
   }
 }
 
+function extractMihomoFusedRules(relativePath) {
+  const source = readText(relativePath);
+  const match = source.match(/const\s+MIHOMO_FUSED_RULES\s*=\s*(\[[^\r\n]*\])/);
+  if (!match) return [];
+  try {
+    return JSON.parse(match[1]);
+  } catch {
+    return [];
+  }
+}
+
+function validateIssue176PriorityAcrossArtifacts(record) {
+  const graph = getMihomoNormalizedRoutingGraph();
+  const cnSourceRule = 'RULE-SET,acc-geo-ip-asia-china,🏠 国内网站,no-resolve';
+  const cnSourceIndex = graph.rules.indexOf(cnSourceRule);
+  const genericFallbackRules = [
+    'RULE-SET,cloudflare-ip,🌐 国外网站,no-resolve',
+    'RULE-SET,cloudfront-ip,🌐 国外网站,no-resolve',
+    'RULE-SET,fastly-ip,🌐 国外网站,no-resolve',
+    'RULE-SET,cloudflare-domain,🌐 国外网站',
+    'RULE-SET,cloudflare-ipcidr,🌐 国外网站',
+    'RULE-SET,acc-fastly,🌐 国外网站',
+    'GEOIP,ID,🌐 国外网站,no-resolve',
+  ];
+  const genericFallbackIndexes = genericFallbackRules.map((rule) => graph.rules.indexOf(rule));
+  record.check(
+    'issue176.source.cn-before-generic-cdn-geo-fallbacks',
+    cnSourceIndex !== -1 && genericFallbackIndexes.every((index) => index > cnSourceIndex),
+    {
+      value: { cnSourceIndex, genericFallbackIndexes },
+      message: `${cnSourceRule} must precede every generic CDN/GeoIP fallback after all CN authority rules`,
+    },
+  );
+  const regionalFallbackIndexes = graph.rules
+    .map((rule, index) => ({ rule, index }))
+    .filter(({ rule }) => /^RULE-SET,acc-geo-(?:d|ip)-(?!asia-china,)[^,]+,🌐 国外网站/.test(rule))
+    .map(({ index }) => index);
+  record.check(
+    'issue176.source.cn-before-regional-fallbacks',
+    regionalFallbackIndexes.length === 32 && regionalFallbackIndexes.every((index) => index > cnSourceIndex),
+    {
+      value: { cnSourceIndex, regionalFallbackIndexes },
+      message: 'all 16 non-China regional domain/IP fallbacks must follow all CN authority rules',
+    },
+  );
+
+  const manifest = readJson('rulesets/generated/fused/manifest.json');
+  const { segments, cnSegment, internationalGeoSegment } = getIssue176FusedPriority(manifest);
+  const cnSegmentIndex = segments.indexOf(cnSegment);
+  const internationalGeoSegmentIndex = segments.indexOf(internationalGeoSegment);
+  record.check('issue176.fused.cn-domain-coverage', Boolean(cnSegment), {
+    value: cnSegment && cnSegment.id,
+    message: `one CN fused segment must cover ${ISSUE_176_CN_DOMAIN_SUFFIXES.join(', ')}`,
+  });
+  record.check('issue176.fused.generic-international-geo-fallback', Boolean(internationalGeoSegment), {
+    value: internationalGeoSegment && internationalGeoSegment.id,
+    message: 'a generic international GEOIP residual segment containing GEOIP,US must exist',
+  });
+  checkIssue176PriorityOrder(
+    record,
+    'fused',
+    cnSegmentIndex,
+    internationalGeoSegmentIndex,
+    cnSegment ? cnSegment.id : 'missing CN segment',
+    internationalGeoSegment ? internationalGeoSegment.id : 'missing international GEOIP segment',
+  );
+
+  const cnId = cnSegment && cnSegment.id;
+  const internationalGeoId = internationalGeoSegment && internationalGeoSegment.id;
+  const cnMihomoRule = cnId ? `RULE-SET,${cnId}-domain,🏠 国内网站` : '';
+  const internationalGeoMihomoRule = internationalGeoId ? `RULE-SET,${internationalGeoId}-residual,🌐 国外网站` : '';
+  for (const spec of [
+    { id: 'clash-party-smart', file: 'Clash Party/ClashParty(mihomo-smart).js' },
+    { id: 'clash-party-normal', file: 'Clash Party/ClashParty(mihomo).js' },
+    { id: 'flclash', file: 'FlClash/FlClash(mihomo).js' },
+  ]) {
+    const rules = extractMihomoFusedRules(spec.file);
+    checkIssue176PriorityOrder(record, spec.id, rules.indexOf(cnMihomoRule), rules.indexOf(internationalGeoMihomoRule), cnMihomoRule, internationalGeoMihomoRule);
+  }
+
+  const mihomoProducts = [
+    { id: 'cmfa', source: readText('Clash Meta For Android/CMFA(mihomo).yaml') },
+    { id: 'stash', source: readText('Stash/Stash.yaml') },
+    { id: 'openclash-normal', source: extractOpenClashOverride('OpenClash/OpenClash(mihomo).sh') },
+    { id: 'openclash-smart', source: extractOpenClashOverride('OpenClash/OpenClash(mihomo-smart).sh') },
+  ];
+  for (const product of mihomoProducts) {
+    const rules = extractYamlBlock(product.source, 'rules');
+    checkIssue176PriorityOrder(record, product.id, rules.indexOf(cnMihomoRule), rules.indexOf(internationalGeoMihomoRule), cnMihomoRule, internationalGeoMihomoRule);
+  }
+
+  const cnMobileNeedle = cnId ? `${cnId}.list` : '';
+  const internationalGeoMobileNeedle = internationalGeoId ? `${internationalGeoId}.list` : '';
+  for (const spec of [
+    { id: 'shadowrocket', file: 'Shadowrocket/Shadowrocket.conf', section: 'Rule' },
+    { id: 'surge', file: 'Surge/Surge.conf', section: 'Rule' },
+    { id: 'loon', file: 'Loon/Loon.conf', section: 'Remote Rule' },
+    { id: 'quantumult-x', file: 'Quantumult X/QuantumultX.conf', section: 'filter_remote' },
+  ]) {
+    const section = extractConfSection(readText(spec.file), spec.section);
+    checkIssue176PriorityOrder(record, spec.id, section.indexOf(cnMobileNeedle), section.indexOf(internationalGeoMobileNeedle), cnMobileNeedle, internationalGeoMobileNeedle);
+  }
+
+  const egernRules = extractYamlBlock(readText('Egern/Egern.yaml'), 'rules');
+  const cnEgernNeedle = cnId ? `provider-${cnId}-domain.yaml` : '';
+  const internationalGeoEgernNeedle = internationalGeoId ? `provider-${internationalGeoId}-residual.yaml` : '';
+  checkIssue176PriorityOrder(record, 'egern', egernRules.indexOf(cnEgernNeedle), egernRules.indexOf(internationalGeoEgernNeedle), cnEgernNeedle, internationalGeoEgernNeedle);
+
+  const singBox = readJson('SingBox/SingBox(sing-box)-full.json');
+  const singBoxRules = singBox.route && Array.isArray(singBox.route.rules) ? singBox.route.rules : [];
+  const singBoxRuleIndex = (segmentId) => segmentId ? singBoxRules.findIndex((rule) => {
+    const ruleSets = Array.isArray(rule.rule_set) ? rule.rule_set : [rule.rule_set];
+    return ruleSets.includes(segmentId);
+  }) : -1;
+  checkIssue176PriorityOrder(record, 'sing-box', singBoxRuleIndex(cnId), singBoxRuleIndex(internationalGeoId), cnId, internationalGeoId);
+
+  const xrayRules = readJson('v2rayN/v2rayN(xray).json');
+  const xrayRuleIndex = (segmentId) => segmentId ? (Array.isArray(xrayRules) ? xrayRules : []).findIndex((rule) => rule.id === segmentId) : -1;
+  checkIssue176PriorityOrder(record, 'v2rayn-xray', xrayRuleIndex(cnId), xrayRuleIndex(internationalGeoId), cnId, internationalGeoId);
+
+  for (const spec of [
+    { id: 'passwall', file: 'Passwall/Passwall(xray+sing-box)-apply.sh' },
+    { id: 'passwall2', file: 'Passwall2/Passwall2(xray+sing-box)-apply.sh' },
+  ]) {
+    const source = readText(spec.file);
+    const cnNeedle = cnId ? `add_fused_shunt_rule '${cnId} | 🏠 国内网站'` : '';
+    const internationalGeoNeedle = internationalGeoId ? `add_fused_shunt_rule '${internationalGeoId} | 🌐 国外网站'` : '';
+    checkIssue176PriorityOrder(record, spec.id, source.indexOf(cnNeedle), source.indexOf(internationalGeoNeedle), cnNeedle, internationalGeoNeedle);
+  }
+}
+
 function buildManifest(baselineVersion) {
   return {
     generatedAt: new Date().toISOString(),
@@ -1882,6 +2054,7 @@ function main() {
   validateJsonProducts(record, baselineVersion);
   validateEgern(record, baselineVersion, options);
   validatePasswall(record, baselineVersion);
+  validateIssue176PriorityAcrossArtifacts(record);
   const remoteAssetValidation = validateGeneratedRemoteAssetSizes();
   record.check('generated-remote-assets.size-limit', remoteAssetValidation.failures.length === 0, {
     value: { referenced_assets: remoteAssetValidation.references.size, max_bytes: MAX_JSDELIVR_ASSET_BYTES },

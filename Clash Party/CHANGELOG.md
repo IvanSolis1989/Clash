@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.7 / v6.0.7-normal.1 (2026-07-14)
+
+- FIX#176：Smart / Normal 的最终融合规则将 `scki-fused-061-cn-site` 放在通用国际 CDN / GEOIP fallback 前；`mi.com`、`yunxuetang.cn`、`yxt.com` 等国内域名不会因解析到境外 IP 被提前代理。
+- REGRESSION：覆写契约以语义段而非固定编号验证 CN 域名段在所有通用 Cloudflare / CloudFront / Fastly、国家及非中国地域兜底之前。
+
 ## v6.0.6 / v6.0.6-normal.1 (2026-07-14)
 
 - TUN-DIRECT-WORKPRO：`WorkPro.exe` 与 `WorkProWebProcess.exe` 固定进入 TUN，再命中 `scki-local-process-direct` 的融合 `DIRECT` residual；两份覆写均移除 WorkPro 的 `tun.exclude-process` 绕过，避免连接直接落到物理网卡。

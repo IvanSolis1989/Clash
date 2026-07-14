@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.7-Surge.1 (2026-07-14)
+
+- FIX#176：融合远程 RULE-SET 顺序同步国内域名优先于通用国际 CDN / GeoIP fallback；后置 fallback 使非中国 IP 不再抢占中国域名。
+
 ## v6.0.6-Surge.1 (2026-07-14)
 
 - PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面产物承载；Surge 不写 Windows 进程规则，继续消费同步后的融合文本资产。

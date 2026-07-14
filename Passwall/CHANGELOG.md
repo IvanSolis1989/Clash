@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.7-pw.1 (2026-07-14)
+
+- FIX#176：65 条 fused SRS shunt rule 重生成；国内域名段在通用国际 CDN / GeoIP fallback 之前，路由器端保持与源图相同的首匹配顺序。
+
 ## v6.0.6-pw.1 (2026-07-14)
 
 - SYNC：fused SRS shunt rule 已随 v6.0.6 重建；Passwall 路由器端无法看到 LAN 客户端的 `WorkPro.exe` / `WorkProWebProcess.exe`，不承诺进程级命中。

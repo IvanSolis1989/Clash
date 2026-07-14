@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.7-egern.1 (2026-07-14)
+
+- FIX#176：正式 Profile 由 CMFA v6.0.7-cmfa.1 重生成；Egern 原生 `rule_set` 顺序使国内域名 guard 先于通用国际 CDN / `geoip_set` fallback。
+
 ## v6.0.6-egern.1 (2026-07-14)
 
 - PLATFORM：正式 Profile 已由 CMFA v6.0.6-cmfa.1 重新生成；Egern 原生规则集明确跳过 Windows `PROCESS-NAME` 条目，`WorkPro.exe` / `WorkProWebProcess.exe` 不被伪装为不兼容规则。

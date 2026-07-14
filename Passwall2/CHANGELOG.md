@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.7-pw2.1 (2026-07-14)
+
+- FIX#176：65 条 fused SRS shunt rule 重生成；Passwall2 与 Passwall 共同保持国内域名优先于通用国际 CDN / GeoIP fallback。
+
 ## v6.0.6-pw2.1 (2026-07-14)
 
 - SYNC：fused SRS shunt rule 已随 v6.0.6 重建；Passwall2 路由器端无法看到 LAN 客户端的 `WorkPro.exe` / `WorkProWebProcess.exe`，不承诺进程级命中。

@@ -1,11 +1,11 @@
 ---
 # ======================================================================
-# Egern Smart v6.0.6-egern.1 - Egern Profile
+# Egern Smart v6.0.7-egern.1 - Egern Profile
 # Build: 2026-07-14
-# Baseline: Clash Party v6.0.6
+# Baseline: Clash Party v6.0.7
 # Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.
-# Rule parity: generated from CMFA 124 rule-providers and 141 rules.
-# Egern rule sets: 119 generated native YAML files.
+# Rule parity: generated from CMFA 126 rule-providers and 143 rules.
+# Egern rule sets: 121 generated native YAML files.
 # Platform limit: Egern official rules do not expose Clash PROCESS-NAME.
 # Change history: see Egern/CHANGELOG.md
 # ======================================================================
@@ -799,10 +799,6 @@ rules:
       policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
-      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-058-intl-site-ipcidr-no-resolve.yaml"
-      policy: "🌐 国外网站"
-      update_interval: 86400
-  - rule_set:
       match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-058-intl-site-residual.yaml"
       policy: "🌐 国外网站"
       update_interval: 86400
@@ -841,6 +837,18 @@ rules:
   - rule_set:
       match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-063-cn-site-residual.yaml"
       policy: "🏠 国内网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-064-intl-site-domain.yaml"
+      policy: "🌐 国外网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-064-intl-site-ipcidr.yaml"
+      policy: "🌐 国外网站"
+      update_interval: 86400
+  - rule_set:
+      match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-064-intl-site-ipcidr-no-resolve.yaml"
+      policy: "🌐 国外网站"
       update_interval: 86400
   - rule_set:
       match: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/egern/provider-scki-fused-064-intl-site-residual.yaml"

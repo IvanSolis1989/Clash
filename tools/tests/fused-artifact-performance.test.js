@@ -9,6 +9,7 @@ const {
   validateGeneratedRemoteAssetSizes,
 } = require('../validate-generated-remote-asset-size');
 const { optimizeEntries } = require('../lib/fused-rule-optimizer');
+const { getMihomoNormalizedRoutingGraph } = require('../../rulesets/source/routing-graph');
 
 const REPO_ROOT = path.resolve(__dirname, '../..');
 const FUSED_ROOT = path.join(REPO_ROOT, 'rulesets/generated/fused');
@@ -30,6 +31,87 @@ function payloadEntries(file) {
     .filter(Boolean)
     .map((match) => JSON.parse(match[1]));
 }
+
+function segmentClashEntries(segment) {
+  const record = segment.files && segment.files.clash;
+  if (!record) return [];
+  return (record.parts || [record.file])
+    .flatMap((file) => nonCommentLines(path.join(FUSED_ROOT, 'clash', file)));
+}
+
+function segmentResidualEntries(segment) {
+  const record = segment.files && segment.files.residual;
+  if (!record) return [];
+  return payloadEntries(path.join(FUSED_ROOT, 'mihomo', record.file));
+}
+
+function egernNativeRuleSet(file) {
+  const source = fs.readFileSync(file, 'utf8');
+  const sets = {};
+  let current = null;
+  for (const line of source.split(/\r?\n/)) {
+    if (/^no_resolve:\s*true\s*$/i.test(line)) continue;
+    const field = line.match(/^([a-z0-9_]+):\s*$/i);
+    if (field) {
+      current = field[1];
+      sets[current] = 0;
+      continue;
+    }
+    if (current && /^  - /.test(line)) sets[current] += 1;
+  }
+  return { noResolve: /^no_resolve:\s*true\s*$/im.test(source), sets };
+}
+
+test('Issue #176 CN domain guards precede generic international Geo/CDN fallbacks', () => {
+  const graph = getMihomoNormalizedRoutingGraph();
+  const cnAuthorityRule = 'RULE-SET,acc-geo-ip-asia-china,🏠 国内网站,no-resolve';
+  const cnRuleIndex = graph.rules.indexOf(cnAuthorityRule);
+  assert.notEqual(cnRuleIndex, -1, 'the final CN authority rule must exist in the source graph');
+
+  const genericFallbackRules = [
+    'RULE-SET,cloudflare-ip,🌐 国外网站,no-resolve',
+    'RULE-SET,cloudfront-ip,🌐 国外网站,no-resolve',
+    'RULE-SET,fastly-ip,🌐 国外网站,no-resolve',
+    'RULE-SET,cloudflare-domain,🌐 国外网站',
+    'RULE-SET,cloudflare-ipcidr,🌐 国外网站',
+    'RULE-SET,acc-fastly,🌐 国外网站',
+    'GEOIP,ID,🌐 国外网站,no-resolve',
+  ];
+  for (const rule of genericFallbackRules) {
+    const index = graph.rules.indexOf(rule);
+    assert.ok(index > cnRuleIndex, `${rule} must follow every CN authority rule`);
+  }
+
+  const regionalFallbackIndexes = graph.rules
+    .map((rule, index) => ({ rule, index }))
+    .filter(({ rule }) => /^RULE-SET,acc-geo-(?:d|ip)-(?!asia-china,)[^,]+,🌐 国外网站/.test(rule))
+    .map(({ index }) => index);
+  assert.equal(regionalFallbackIndexes.length, 32, 'all 16 non-China regional domain/IP fallbacks must remain present');
+  assert.ok(regionalFallbackIndexes.every((index) => index > cnRuleIndex), 'non-China regional fallbacks must follow every CN authority rule');
+
+  const manifest = JSON.parse(fs.readFileSync(path.join(FUSED_ROOT, 'manifest.json'), 'utf8'));
+  const issueCorpus = [
+    ['www.mi.com', 'mi.com'],
+    ['api-paas.yunxuetang.cn', 'cn'],
+    ['apiws-phx-tc.yunxuetang.cn', 'cn'],
+    ['images.yxt.com', 'yxt.com'],
+    ['stc.yxt.com', 'yxt.com'],
+  ];
+  const cnIndexes = issueCorpus.map(([host, suffix]) => {
+    const index = manifest.segments.findIndex((segment) => (
+      segment.policy === '🏠 国内网站'
+      && segmentClashEntries(segment).includes(`DOMAIN-SUFFIX,${suffix}`)
+    ));
+    assert.notEqual(index, -1, `CN fused payload must cover ${host}`);
+    return index;
+  });
+  const genericGeoIndex = manifest.segments.findIndex((segment) => (
+    segment.policy === '🌐 国外网站'
+    && segmentResidualEntries(segment).includes('GEOIP,US,no-resolve')
+  ));
+  assert.notEqual(genericGeoIndex, -1, 'foreign GEOIP fallback must exist');
+  assert.ok(cnIndexes.every((index) => index < genericGeoIndex), 'Issue #176 CN domain guards must win before foreign GEOIP fallback');
+});
 
 test('iOS fused payload stays within the repository Network Extension budget', () => {
   const config = read('Shadowrocket/Shadowrocket.conf');
@@ -147,6 +229,52 @@ test('Egern native rule sets do not silently drop GEOIP rules', () => {
     .filter((file) => file.endsWith('.yaml'))
     .filter((file) => /Skipped unsupported source rule types:.*GEOIP/.test(fs.readFileSync(path.join(directory, file), 'utf8')));
   assert.deepEqual(skippedGeoip, []);
+});
+
+test('Issue #176 replays native Egern assets from the baseline without cache drift', () => {
+  const directory = path.join(REPO_ROOT, 'rulesets/generated/egern');
+  const asset = (name) => egernNativeRuleSet(path.join(directory, name));
+  assert.equal(
+    fs.existsSync(path.join(directory, 'provider-scki-fused-058-intl-site-ipcidr-no-resolve.yaml')),
+    false,
+    'the emptied old international no-resolve asset must be removed',
+  );
+  assert.deepEqual(asset('provider-scki-fused-058-intl-site-domain.yaml'), {
+    noResolve: false,
+    sets: { domain_set: 56, domain_suffix_set: 11469 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-058-intl-site-ipcidr.yaml'), {
+    noResolve: false,
+    sets: { ip_cidr_set: 36, ip_cidr6_set: 8 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-058-intl-site-residual.yaml'), {
+    noResolve: false,
+    sets: { domain_keyword_set: 105 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-061-cn-site-domain.yaml'), {
+    noResolve: false,
+    sets: { domain_set: 85, domain_suffix_set: 5187 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-061-cn-site-ipcidr-no-resolve.yaml'), {
+    noResolve: true,
+    sets: { ip_cidr_set: 4216, ip_cidr6_set: 1534 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-064-intl-site-domain.yaml'), {
+    noResolve: false,
+    sets: { domain_suffix_set: 215 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-064-intl-site-ipcidr.yaml'), {
+    noResolve: false,
+    sets: { ip_cidr_set: 34, ip_cidr6_set: 9 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-064-intl-site-ipcidr-no-resolve.yaml'), {
+    noResolve: true,
+    sets: { ip_cidr_set: 792, ip_cidr6_set: 207 },
+  });
+  assert.deepEqual(asset('provider-scki-fused-064-intl-site-residual.yaml'), {
+    noResolve: true,
+    sets: { geoip_set: 247, ip_cidr_set: 1 },
+  });
 });
 
 test('generated Clash and Surge payloads contain no removable duplicate rules', () => {

@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.7-v2n.1 (2026-07-14)
+
+- FIX#176：Xray fallback 从后置国际 SRS 段重生成，国内域名 RuleObject 在共享 CDN / GeoIP 的 proxy fallback 前命中 direct。
+
 ## v6.0.6-v2n.1 (2026-07-14)
 
 - DIRECT-WORKPRO-WEB：Xray fallback 重新生成，默认 direct RuleObject 的 `process` 同时包含 `WorkPro.exe` 和 `WorkProWebProcess.exe`；仅在本机 Windows / Linux 的进程匹配路径生效。

@@ -13,12 +13,14 @@ const GENERATED_RULESET_DIR = path.join(REPO_ROOT, 'rulesets/generated/egern');
 const EGERN_GENERATION_MANIFEST_FILE = path.join(GENERATED_RULESET_DIR, 'manifest.json');
 const MIHOMO_MRS_MANIFEST_FILE = path.join(REPO_ROOT, 'rulesets/generated/mihomo-mrs/manifest.json');
 const ROUTING_GRAPH_FILE = path.join(REPO_ROOT, 'rulesets/source/routing-graph.js');
+const FUSED_SOURCE_CACHE_DIR = path.join(REPO_ROOT, '.cache/fused-rule-sets');
+const SCKI_OFFLINE = process.env.SCKI_OFFLINE === '1';
 
 const SCKI_BASE = 'https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main';
 const SCKI_GENERATED_BASE = `${SCKI_BASE}/rulesets/generated/egern`;
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
-const EGERN_VERSION = 'v6.0.6-egern.1';
+const EGERN_VERSION = 'v6.0.7-egern.1';
 const BUILD_DATE = '2026-07-14';
 const FETCH_CONCURRENCY = 3;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
@@ -66,6 +68,10 @@ const EGERN_SET_ORDER = [
 
 function readText(file) {
   return fs.readFileSync(file, 'utf8');
+}
+
+function sourceCacheFile(url, cacheDir = FUSED_SOURCE_CACHE_DIR) {
+  return path.join(cacheDir, `${Buffer.from(url).toString('base64url')}.txt`);
 }
 
 function yamlQuote(value) {
@@ -362,7 +368,7 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
     '# ======================================================================',
     `# Egern Smart ${EGERN_VERSION} - Egern Profile`,
     `# Build: ${BUILD_DATE}`,
-    '# Baseline: Clash Party v6.0.6',
+    '# Baseline: Clash Party v6.0.7',
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
     `# Egern rule sets: ${assetCount} generated native YAML files.`,
@@ -616,9 +622,14 @@ function localSckiPath(url) {
   return target;
 }
 
-async function fetchText(url) {
+async function fetchText(url, { cacheDir = FUSED_SOURCE_CACHE_DIR, offline = SCKI_OFFLINE } = {}) {
   const local = localSckiPath(url);
   if (local && fs.existsSync(local)) return readText(local);
+  if (local && offline) throw new Error(`SCKI_OFFLINE missing local repository source: ${url}`);
+
+  const cacheFile = sourceCacheFile(url, cacheDir);
+  if (fs.existsSync(cacheFile)) return readText(cacheFile);
+  if (offline) throw new Error(`SCKI_OFFLINE cache miss: ${url}`);
 
   const candidates = fetchCandidates(url);
 
@@ -633,6 +644,8 @@ async function fetchText(url) {
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const buffer = Buffer.from(await response.arrayBuffer());
+      fs.mkdirSync(cacheDir, { recursive: true });
+      fs.writeFileSync(cacheFile, buffer);
       return buffer.toString('utf8');
     } catch (error) {
       errors.push(`${candidate} -> ${error.message}`);
@@ -645,7 +658,7 @@ async function fetchText(url) {
 
 const geoipSourceCache = new Map();
 
-async function materializeEgernGeoIp(entries) {
+async function materializeEgernGeoIp(entries, fetcher = fetchText) {
   const output = [];
   for (const entry of entries) {
     const parts = splitTopLevel(entry);
@@ -667,7 +680,7 @@ async function materializeEgernGeoIp(entries) {
     } else {
       const cacheKey = name.toLowerCase();
       if (!geoipSourceCache.has(cacheKey)) {
-        const source = await fetchText(geoipUrl(cacheKey));
+        const source = await fetcher(geoipUrl(cacheKey));
         const nested = parsePayloadEntries(source).filter((candidate) => classifyClashEntry(candidate) === 'ipcidr');
         if (!nested.length) throw new Error(`GEOIP:${name} resolved to an empty Egern CIDR set`);
         geoipSourceCache.set(cacheKey, nested);
@@ -725,9 +738,7 @@ function convertedEntryCount(converted) {
   return EGERN_SET_ORDER.reduce((total, key) => total + converted.sets[key].size, 0);
 }
 
-async function generateNativeRuleSets(assets) {
-  fs.rmSync(GENERATED_RULESET_DIR, { recursive: true, force: true });
-  fs.mkdirSync(GENERATED_RULESET_DIR, { recursive: true });
+async function generateNativeRuleSets(assets, { outputDir = GENERATED_RULESET_DIR, fetcher = fetchText } = {}) {
   const assetList = [...assets.values()];
   let assetCount = 0;
   let totalEntries = 0;
@@ -736,16 +747,19 @@ async function generateNativeRuleSets(assets) {
   let emptyAssets = 0;
   const skippedTypes = new Set();
   const prepared = await runLimited(assetList, FETCH_CONCURRENCY, async (asset) => {
-    const source = await fetchText(asset.sourceUrl);
+    const source = await fetcher(asset.sourceUrl);
     let entries = parsePayloadEntries(source);
     if (asset.sourceFilter === 'domain' || asset.sourceFilter === 'ipcidr') {
       entries = entries.filter((entry) => classifyClashEntry(entry) === asset.sourceFilter);
     }
-    entries = await materializeEgernGeoIp(entries);
+    entries = await materializeEgernGeoIp(entries, fetcher);
     const optimized = optimizeEntries(entries);
     const converted = convertEntriesToSets(optimized.entries, asset.behavior);
     return { asset, converted, locallyRemoved: optimized.stats.input - optimized.stats.output };
   });
+
+  fs.rmSync(outputDir, { recursive: true, force: true });
+  fs.mkdirSync(outputDir, { recursive: true });
 
   const seen = new Set();
   for (const row of prepared) {
@@ -769,7 +783,7 @@ async function generateNativeRuleSets(assets) {
       const partAsset = convertedParts.length === 1 ? asset : { ...asset, file: files[index] };
       const rendered = renderEgernRuleSet(partAsset, convertedParts[index]);
       if (Buffer.byteLength(rendered) > MAX_REMOTE_RULE_SET_BYTES) throw new Error(`${files[index]} exceeds ${MAX_REMOTE_RULE_SET_BYTES} bytes after rendering`);
-      fs.writeFileSync(path.join(GENERATED_RULESET_DIR, files[index]), rendered, 'utf8');
+      fs.writeFileSync(path.join(outputDir, files[index]), rendered, 'utf8');
     }
     assetCount += files.length;
   }
@@ -827,7 +841,17 @@ async function main() {
   console.log(`Generated Egern/Egern.yaml rules=${manifest.rendered.rule_count} rule_set_refs=${manifest.rendered.rule_set_ref_count} native_rule_sets=${manifest.rendered.native_rule_set_count} source_entries=${ruleSetStats.totalEntries} dedup_removed=${ruleSetStats.removedEntries} global_exact_removed=${ruleSetStats.globalExactDuplicates} empty_assets=${ruleSetStats.emptyAssets} skipped_process=${stats.skippedProcessRuleSets.join(',') || 'none'} skipped_empty=${stats.skippedEmptyRuleSets.join(',') || 'none'} skipped_source_types=${ruleSetStats.skippedTypes.join(',') || 'none'}`);
 }
 
-main().catch((error) => {
-  console.error(error.stack || error.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(error.stack || error.message);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  convertEntriesToSets,
+  fetchText,
+  generateNativeRuleSets,
+  parsePayloadEntries,
+  sourceCacheFile,
+};

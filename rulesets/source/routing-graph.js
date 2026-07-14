@@ -5,7 +5,7 @@
 // upstream provider/rule relationship used by MRS and fused-rule compilers.
 
 const SOURCE_GRAPH_ID = 'rulesets/source/routing-graph.js';
-const SOURCE_GRAPH_VERSION = 'v6.0.6';
+const SOURCE_GRAPH_VERSION = 'v6.0.7';
 const VERSION = SOURCE_GRAPH_VERSION;
 
 let SCKI_DISABLE_MIHOMO_MRS_OVERRIDES = false;
@@ -1695,9 +1695,6 @@ function injectRules(config) {
     // ============ 🌐 国外网站 ============
     `DOMAIN-SUFFIX,amazonaws.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,awsstatic.com,${BIZ.INTL_SITE}`,
-    `RULE-SET,cloudflare-ip,${BIZ.INTL_SITE},no-resolve`,
-    `RULE-SET,cloudfront-ip,${BIZ.INTL_SITE},no-resolve`,
-    `RULE-SET,fastly-ip,${BIZ.INTL_SITE},no-resolve`,
     `DOMAIN-SUFFIX,akamai.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,akamaized.net,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,akamaihd.net,${BIZ.INTL_SITE}`,
@@ -1723,14 +1720,12 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,ziffstatic.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,ucoz.ru,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,ucoz.net,${BIZ.INTL_SITE}`,
-    `RULE-SET,cloudflare,${BIZ.INTL_SITE}`,
     `RULE-SET,akamai,${BIZ.INTL_SITE}`,
     `RULE-SET,digicert,${BIZ.INTL_SITE}`,
     `RULE-SET,globalsign,${BIZ.INTL_SITE}`,
     `RULE-SET,sectigo,${BIZ.INTL_SITE}`,
     `RULE-SET,brightcove,${BIZ.INTL_SITE}`,
     `RULE-SET,jwplayer,${BIZ.INTL_SITE}`,
-    `RULE-SET,acc-fastly,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,letsencrypt.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,lencr.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,tokopedia.com,${BIZ.INTL_SITE}`,
@@ -1769,7 +1764,6 @@ function injectRules(config) {
     `DOMAIN-SUFFIX,gofood.co.id,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,grabfood.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,66tutup.com,${BIZ.INTL_SITE}`,
-    `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-homeip-us,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-homeip-jp,${BIZ.INTL_SITE},no-resolve`,
     `RULE-SET,acc-aqara-global,${BIZ.INTL_SITE}`,
@@ -1792,8 +1786,6 @@ function injectRules(config) {
     `RULE-SET,szkane-edutools,${BIZ.INTL_SITE}`,
     `RULE-SET,naver,${BIZ.INTL_SITE}`,
     `RULE-SET,ehgallery,${BIZ.INTL_SITE}`,
-    ...GEO_REGIONS_INTL_D_RULES,
-    ...GEO_REGIONS_INTL_IP_RULES,
     `DOMAIN-SUFFIX,archive.org,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,udemy.com,${BIZ.INTL_SITE}`,
     `DOMAIN-SUFFIX,udemycdn.com,${BIZ.INTL_SITE}`,
@@ -1918,6 +1910,19 @@ function injectRules(config) {
     `RULE-SET,acc-aqara-cn,${BIZ.CN_SITE}`,
     `RULE-SET,acc-geo-d-asia-china,${BIZ.CN_SITE}`,
     `RULE-SET,acc-geo-ip-asia-china,${BIZ.CN_SITE},no-resolve`,
+
+    // ============ 🌐 国际网络与地域兜底 ============
+    // v6.0.7 FIX#176: 共享 CDN / 国家 / 区域规则只能在所有具名域名策略之后兜底；
+    // 否则中国域名落在境外 CDN IP 时会先被错误地送往国外网站。
+    `RULE-SET,cloudflare-ip,${BIZ.INTL_SITE},no-resolve`,
+    `RULE-SET,cloudfront-ip,${BIZ.INTL_SITE},no-resolve`,
+    `RULE-SET,fastly-ip,${BIZ.INTL_SITE},no-resolve`,
+    // Keep the whole provider here: MRS normalization splits its domain/IP halves together.
+    `RULE-SET,cloudflare,${BIZ.INTL_SITE}`,
+    `RULE-SET,acc-fastly,${BIZ.INTL_SITE}`,
+    `GEOIP,ID,${BIZ.INTL_SITE},no-resolve`,
+    ...GEO_REGIONS_INTL_D_RULES,
+    ...GEO_REGIONS_INTL_IP_RULES,
 
     // ============ GEOIP 标签路由 ============
     `GEOIP,cloudflare,${BIZ.INTL_SITE},no-resolve`,

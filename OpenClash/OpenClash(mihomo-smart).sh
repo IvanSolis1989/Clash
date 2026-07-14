@@ -2,31 +2,31 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v6.0.6-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
+# Clash Smart v6.0.7-oc-smart.1 — OpenClash 覆写脚本（与 Clash Party 主线同等规则量）
 # Build: 2026-07-14
 # ============================================================================
-# v6.0.6: WorkPro.exe / WorkProWebProcess.exe 纳入 source graph 的永久 DIRECT 回归契约；路由器端本地进程匹配为已记录的平台例外 · v6.0.0: FUSED-RULESETS 大融合规则集编译
+# v6.0.7: FIX#176 将共享 CDN / 非中国地域兜底置于国内域名权威规则之后，避免中国域名被境外 IP 先行匹配
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
-# 定位：对齐 Clash Party v6.0.6 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
+# 定位：对齐 Clash Party v6.0.7 JS 主线的 OpenClash 全量版本。v5.4.2: P0-FIX#41 小米白名单。
 #       与同目录 OpenClash(mihomo).sh（Normal）互补：
 #         - Normal 面向稳定版 mihomo / 经典 url-test
 #         - full  面向 4GB+ 路由器 / 需要与 Clash Party 桌面端一致的细粒度分流
 # 架构：
 #   • 22 Smart 区域组（11 全部 + 11 家宽；全部 uselightgbm: true）
 #   • 33 业务策略组（流媒体按平台拆分：TikTok / Netflix / Disney+ / HBO/Max / Hulu / Prime Video / YouTube / 音乐流媒体 / 其他国外流媒体）
-#   • 124 融合 rule-providers（源 513 providers，全部 proxy: "🚫 受限网站"）
-#   • 141 条 rules（源 970 rules；仅保留 17 条必要内联规则）
+#   • 126 融合 rule-providers（源 513 providers，全部 proxy: "🚫 受限网站"）
+#   • 143 条 rules（源 970 rules；仅保留 17 条必要内联规则）
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / Smart 组生成 / TLS 指纹注入
-# 基线：Clash Party v6.0.6（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
+# 基线：Clash Party v6.0.7（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
 #       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Full 部分）。
 # ============================================================================
 
 
 
-VERSION_TAG="v6.0.6-oc-smart.1"
+VERSION_TAG="v6.0.7-oc-smart.1"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 
@@ -508,11 +508,11 @@ proxy-groups:
 OVERRIDE_EOF
 
 # ============================================================================
-# OVERRIDE YAML (续) — Fused Rule-Providers：124 项，对齐 Clash Party v6.0.6 主线
+# OVERRIDE YAML (续) — Fused Rule-Providers：126 项，对齐 Clash Party v6.0.7 主线
 # 策略：
 #   ✓ 与 Clash Party 主线（BIZ.GFW = '🚫 受限网站'）一致：所有 provider 都走 GFW 组
 #     下载，在中国走代理、在印尼走 DIRECT，规避 jsdelivr/GitHub 冷启动死锁。
-#   ✓ 22 Smart 区域组 + 33 业务组 + 124 融合 rule-providers + 141 条规则
+#   ✓ 22 Smart 区域组 + 33 业务组 + 126 融合 rule-providers + 143 条规则
 #   ✓ Smart 组统一 uselightgbm: true + include-all-proxies: true
 #   ✓ TLS 指纹注入（Ruby 阶段 _simple_hash 分配）
 # ============================================================================
@@ -1382,14 +1382,6 @@ rule-providers:
     path: "./ruleset/scki-fused-058-intl-site-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
-  scki-fused-058-intl-site-ipcidr-no-resolve:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-intl-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-058-intl-site-ipcidr-no-resolve.mrs"
-    interval: 86400
-    proxy: "🚫 受限网站"
   scki-fused-058-intl-site-residual:
     type: http
     behavior: classical
@@ -1468,6 +1460,30 @@ rule-providers:
     format: yaml
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-cn-site-residual.yaml"
     path: "./ruleset/scki-fused-063-cn-site-residual.yaml"
+    interval: 86400
+    proxy: "🚫 受限网站"
+  scki-fused-064-intl-site-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-intl-site-domain.mrs"
+    path: "./ruleset/scki-fused-064-intl-site-domain.mrs"
+    interval: 86400
+    proxy: "🚫 受限网站"
+  scki-fused-064-intl-site-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-intl-site-ipcidr.mrs"
+    path: "./ruleset/scki-fused-064-intl-site-ipcidr.mrs"
+    interval: 86400
+    proxy: "🚫 受限网站"
+  scki-fused-064-intl-site-ipcidr-no-resolve:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-intl-site-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-064-intl-site-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-064-intl-site-residual:
@@ -1635,7 +1651,6 @@ rules:
 - "RULE-SET,scki-fused-057-game-intl-residual,🎮 国外游戏"
 - "RULE-SET,scki-fused-058-intl-site-domain,🌐 国外网站"
 - "RULE-SET,scki-fused-058-intl-site-ipcidr,🌐 国外网站"
-- "RULE-SET,scki-fused-058-intl-site-ipcidr-no-resolve,🌐 国外网站,no-resolve"
 - "RULE-SET,scki-fused-058-intl-site-residual,🌐 国外网站"
 - "RULE-SET,scki-fused-059-payments-domain,🏦 金融支付"
 - "RULE-SET,scki-fused-060-cnmedia-domain,📺 国内流媒体"
@@ -1646,6 +1661,9 @@ rules:
 - "RULE-SET,scki-fused-062-direct-domain,DIRECT"
 - "RULE-SET,scki-fused-063-cn-site-domain,🏠 国内网站"
 - "RULE-SET,scki-fused-063-cn-site-residual,🏠 国内网站"
+- "RULE-SET,scki-fused-064-intl-site-domain,🌐 国外网站"
+- "RULE-SET,scki-fused-064-intl-site-ipcidr,🌐 国外网站"
+- "RULE-SET,scki-fused-064-intl-site-ipcidr-no-resolve,🌐 国外网站,no-resolve"
 - "RULE-SET,scki-fused-064-intl-site-residual,🌐 国外网站"
 - "RULE-SET,scki-fused-065-im-residual,💬 即时通讯"
 - "RULE-SET,scki-fused-066-netflix-residual,🎥 Netflix"
@@ -1666,7 +1684,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v6.0.6-oc-smart.1"
+VERSION = "v6.0.7-oc-smart.1"
 
 STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

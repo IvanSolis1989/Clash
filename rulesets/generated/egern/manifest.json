@@ -2,16 +2,16 @@
   "schema_version": 1,
   "generator": "tools/generate-egern-from-cmfa.js",
   "source": {
-    "cmfa_sha256": "bfe95ac0258d5071917648a5bbc8b832eb84bd1e14f980a1d60b4e01847d0e43",
-    "routing_graph_sha256": "d67cb35b7e7852b3816b329f21c17758f4623d21bd11193f02d367b8c3c8bd73",
-    "cmfa_provider_count": 124,
-    "cmfa_rule_count": 141
+    "cmfa_sha256": "cb718f108c364c8e4a4cbd3a7aa116f33ab1be54d02e63d3e19a0ad85f6fc6e7",
+    "routing_graph_sha256": "786ce1e375195e1f156dff6bf7599cd1e82a54eaec3d0160bd7f3dcd6e10ad56",
+    "cmfa_provider_count": 126,
+    "cmfa_rule_count": 143
   },
   "rendered": {
-    "profile_sha256": "a20259fc8e56ee99761f6ce84362875cf6bd41ca55e0c70560262757a84e6275",
-    "rule_count": 131,
-    "rule_set_ref_count": 114,
-    "native_rule_set_count": 119,
+    "profile_sha256": "5824f606a6a55255b6f766b01de5782b55d9194c0729d44c09e0df019402acde",
+    "rule_count": 133,
+    "rule_set_ref_count": 116,
+    "native_rule_set_count": 121,
     "source_entry_count": 594206,
     "dedup_removed": 123919,
     "global_exact_duplicates_removed": 123371,
@@ -536,23 +536,18 @@
       },
       {
         "file": "provider-scki-fused-058-intl-site-domain.yaml",
-        "bytes": 244563,
-        "sha256": "0405830d074a8670fea022fa4dd3d9e5ccb355d691ea5fff85c7ba499c10229f"
-      },
-      {
-        "file": "provider-scki-fused-058-intl-site-ipcidr-no-resolve.yaml",
-        "bytes": 22403,
-        "sha256": "7cff399cf9ecc60843ca6b27f393dc88d7dd5fd5863509254be83dd2293c57cf"
+        "bytes": 242609,
+        "sha256": "40ef79db7a5bda4e8210a28a2c42b327b7d90f8bc4bd4e3e987a287e0555f698"
       },
       {
         "file": "provider-scki-fused-058-intl-site-ipcidr.yaml",
-        "bytes": 2173,
-        "sha256": "17e6df6cf24ccf356102a4d7a1e687c8d48467412b8e420ad57b379f2763e14b"
+        "bytes": 1253,
+        "sha256": "e72dda2f40728dc91a9835ba4da635e2dc55912be67ccaafd329bc41ec072228"
       },
       {
         "file": "provider-scki-fused-058-intl-site-residual.yaml",
-        "bytes": 4708,
-        "sha256": "5941aeb8f57666fd70b4884b605c378bd223b5cbd64e0040f771f70783a609b5"
+        "bytes": 2457,
+        "sha256": "b7599cd60ba707d9fb2573804c7b7225127fc27937273e2dc836749cffb8be8c"
       },
       {
         "file": "provider-scki-fused-059-payments-domain.yaml",
@@ -600,9 +595,24 @@
         "sha256": "85cf94ce97cd281a9c13222776f34478b72a7bf3769e2e7a6b5a6a5a37b0de07"
       },
       {
+        "file": "provider-scki-fused-064-intl-site-domain.yaml",
+        "bytes": 2226,
+        "sha256": "a37c3e0d18bec17f8e211a1e63f6db326ad911827c0742063ae2a3c01ee9dd0f"
+      },
+      {
+        "file": "provider-scki-fused-064-intl-site-ipcidr-no-resolve.yaml",
+        "bytes": 22403,
+        "sha256": "d8525e547a9cf46ddb57724a47f83283833f460674b8de1913443925a11de109"
+      },
+      {
+        "file": "provider-scki-fused-064-intl-site-ipcidr.yaml",
+        "bytes": 1200,
+        "sha256": "44d343a76e2a36213a355b53ce0a4037ac8f2990dd2b9405f2310323e0cc3122"
+      },
+      {
         "file": "provider-scki-fused-064-intl-site-residual.yaml",
-        "bytes": 309,
-        "sha256": "06f79a5756594ca909ef487b6b064a9f63f1824ab1ecada03793b60fa4c5d8cf"
+        "bytes": 2543,
+        "sha256": "63f5c18e0dffd19253895bd8db84fcd7ef91a2beadf57d9b188fa263a5b7512b"
       },
       {
         "file": "provider-scki-fused-066-netflix-residual.yaml",
@@ -721,7 +731,6 @@
       "provider-scki-fused-057-game-intl-residual.yaml",
       "provider-scki-fused-058-intl-site-domain.yaml",
       "provider-scki-fused-058-intl-site-ipcidr.yaml",
-      "provider-scki-fused-058-intl-site-ipcidr-no-resolve.yaml",
       "provider-scki-fused-058-intl-site-residual.yaml",
       "provider-scki-fused-059-payments-domain.yaml",
       "provider-scki-fused-060-cnmedia-domain.yaml",
@@ -732,6 +741,9 @@
       "provider-scki-fused-062-direct-domain.yaml",
       "provider-scki-fused-063-cn-site-domain.yaml",
       "provider-scki-fused-063-cn-site-residual.yaml",
+      "provider-scki-fused-064-intl-site-domain.yaml",
+      "provider-scki-fused-064-intl-site-ipcidr.yaml",
+      "provider-scki-fused-064-intl-site-ipcidr-no-resolve.yaml",
       "provider-scki-fused-064-intl-site-residual.yaml",
       "provider-scki-fused-066-netflix-residual.yaml",
       "provider-scki-fused-068-google-residual.yaml"

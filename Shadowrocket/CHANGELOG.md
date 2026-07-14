@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.7-SR.1 (2026-07-14)
+
+- FIX#176：iOS 融合文本引用顺序更新，国内域名段位于通用国际 CDN / GeoIP fallback 之前；新增后置 fallback 文本资产后总数为 65。
+
 ## v6.0.6-SR.1 (2026-07-14)
 
 - PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面 Mihomo、sing-box 与 Xray 产物承载；Shadowrocket iOS 不伪造不支持的 `PROCESS-NAME` 规则，继续消费同步后的融合文本资产。

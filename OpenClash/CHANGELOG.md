@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.7-oc-normal.1 / v6.0.7-oc-smart.1 (2026-07-14)
+
+- FIX#176：Normal / Smart heredoc YAML 同步使用国内域名优先、通用国际 CDN / GeoIP 后置的融合顺序；路由器端不依赖 DNS 归属猜测，直接遵守源图首匹配优先级。
+
 ## v6.0.6-oc-normal.1 / v6.0.6-oc-smart.1 (2026-07-14)
 
 - SYNC：Normal / Smart heredoc YAML 已按同一融合链重建。`PROCESS-NAME` 补丁仍是 Windows 桌面能力，路由器无法看到 LAN 客户端的 WorkPro 父进程或 Web 子进程，保持明确平台豁免。

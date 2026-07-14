@@ -19384,6 +19384,10 @@ host-suffix, ceyice.net
 host-suffix, ceyige.com
 host-suffix, cezhu.net
 host-suffix, cf-china.info
+host-suffix, cf-ns.com
+host-suffix, cf-ns.net
+host-suffix, cf-ns.site
+host-suffix, cf-ns.tech
 host-suffix, cf01e170e475757b.com
 host-suffix, cf115.com
 host-suffix, cf69.com
@@ -19452,6 +19456,8 @@ host-suffix, cfsuper.com
 host-suffix, cftcredit.com
 host-suffix, cftea.com
 host-suffix, cftecgroup.com
+host-suffix, cftest7.com
+host-suffix, cftest8.com
 host-suffix, cftsupport.com
 host-suffix, cftzqinzhou.com
 host-suffix, cfucn.com
@@ -22474,11 +22480,17 @@ host-suffix, clouddn.com
 host-suffix, clouddongying.com
 host-suffix, clouddream.net
 host-suffix, cloudencent.com
+host-suffix, cloudflare-cn.com
 host-suffix, cloudflare.fun
 host-suffix, cloudflareanycast.net
+host-suffix, cloudflarecn.net
 host-suffix, cloudflareglobal.net
+host-suffix, cloudflareinsights-cn.com
 host-suffix, cloudflareip.com
 host-suffix, cloudflareperf.com
+host-suffix, cloudflareprod.com
+host-suffix, cloudflarestaging.com
+host-suffix, cloudflarestoragegw.com
 host-suffix, cloudfoshan.com
 host-suffix, cloudfront-cn.net
 host-suffix, cloudfuqing.com
@@ -78011,7 +78023,6 @@ host-suffix, schxzx.com
 host-suffix, sci-bioland.com
 host-suffix, sci-fifans.net
 host-suffix, sci-gz.com
-host-suffix, sci-hub.ee
 host-suffix, sci-hub.shop
 host-suffix, sci-inv.com
 host-suffix, sci-it.com
@@ -110010,7 +110021,6 @@ host-suffix, vankeclub.com.hk
 host-suffix, upos-hz-mirrorakam.akamaized.net
 host-suffix, upd.kaspersky.com
 host-suffix, unsemi.com.tw
-host-suffix, alibabacloud.co.in
 host-suffix, txwy.com.tw
 host-suffix, turnitin.org.in
 host-suffix, travel6.co.uk
@@ -110023,20 +110033,15 @@ host-suffix, th.bing.com
 host-suffix, tencent.com.hk
 host-suffix, tencent.co.id
 host-suffix, tanxlog.istreamsche.com
-host-suffix, alibabacloud.com.au
-host-suffix, alibabacloud.com.hk
 host-suffix, icbcbr.com.br
 host-suffix, legion.com.hk
 host-suffix, storeedge.microsoft.com
-host-suffix, alibabacloud.com.my
 host-suffix, stats.ipinyou.com
 host-suffix, static.eprintsw.com
 host-suffix, static.cdnetworks.com
 host-suffix, icbc.com.sg
-host-suffix, alibabacloud.com.sg
 host-suffix, sinowealth.com.hk
 host-suffix, sialiagames.com.tw
-host-suffix, alibabacloud.com.tw
 host-suffix, shitsu.co.jp
 host-suffix, api.anythinktech.com
 host-suffix, sdx.microsoft.com
@@ -110097,7 +110102,6 @@ host-suffix, icbc.com.vn
 host-suffix, lazada.com.ph
 host-suffix, lazada.com.my
 host-suffix, lazada.co.th
-host-suffix, lazada.co.id
 host-suffix, laoevisa.gov.la
 host-suffix, kssip.msi.com
 host-suffix, ksair.com.tw
@@ -121016,3 +121020,11 @@ ip6-cidr, 2c0f:f7a8:8211::/48, no-resolve
 ip6-cidr, 2c0f:f7a8:9020::/48, no-resolve
 ip6-cidr, 2c0f:f7a8:9041::/48, no-resolve
 ip6-cidr, 2c0f:f7a8:9220::/48, no-resolve
+host-suffix, sci-hub.ee
+host-suffix, alibabacloud.co.in
+host-suffix, alibabacloud.com.au
+host-suffix, alibabacloud.com.hk
+host-suffix, alibabacloud.com.my
+host-suffix, alibabacloud.com.sg
+host-suffix, alibabacloud.com.tw
+host-suffix, lazada.co.id

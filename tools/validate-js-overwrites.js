@@ -8,8 +8,8 @@ const vm = require('node:vm');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const RESTRICTED_SITE = '🚫 受限网站';
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
-const EXPECTED_FUSED_PROVIDERS = 124;
-const EXPECTED_FUSED_RULES = 141;
+const EXPECTED_FUSED_PROVIDERS = 126;
+const EXPECTED_FUSED_RULES = 143;
 
 const TARGETS = [
   {

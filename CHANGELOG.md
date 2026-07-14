@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.7 (2026-07-14)
+
+- FIX#176：修复首匹配优先级倒置。`RULE-SET,cn` 及具名国内域名策略现在先于共享 Cloudflare / CloudFront / Fastly IP、`GEOIP,ID` 和 16 个非中国地域 domain/IP 兜底执行；国内域名解析到境外 CDN / GeoIP 时不再被提前送往 `🌐 国外网站`。
+- REGRESSION：以 `www.mi.com`、`api-paas.yunxuetang.cn`、`apiws-phx-tc.yunxuetang.cn`、`images.yxt.com`、`stc.yxt.com` 建立回归语义，并把源图与 14 类产物的 CN 段 → 通用国际 fallback 顺序纳入合同校验。
+- SYNC：按 `source graph -> MRS -> fused -> 原生派生` 重建；MRS `failed=0`、fused `unresolved=0`，输出为 126 个 Mihomo provider / 143 条主规则、65 个移动端文本资产、65 个 sing-box SRS / Passwall shunt rule、83 条 v2rayN Xray RuleObject。
+
 ## v6.0.6 (2026-07-14)
 
 - DIRECT-WORKPRO-WEB：将 `WorkProWebProcess.exe` 纳入 `local-process-direct` 补充规则集；`WorkPro.exe` 与其 Web 子进程统一进入 TUN 后由融合 `PROCESS-NAME` 规则命中 `DIRECT`，不再以 TUN 排除或 IP 路由排除绕过规则引擎。

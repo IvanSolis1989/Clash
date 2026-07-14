@@ -1,8 +1,8 @@
 # ================================================================
-# Stash Smart v6.0.6-stash.1 - Stash (Clash Premium) 配置
+# Stash Smart v6.0.7-stash.1 - Stash (Clash Premium) 配置
 # Build: 2026-07-14
-# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 0 rules（源 513/970）
-# 规则源：rulesets/source/routing-graph.js v6.0.6 / 派生：CMFA v6.0.6-cmfa.1
+# 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 126 融合 rule-providers / 0 rules（源 513/970）
+# 规则源：rulesets/source/routing-graph.js v6.0.7 / 派生：CMFA v6.0.7-cmfa.1
 # 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）
 # 变更历史：见 `Stash/CHANGELOG.md`
 # 注意：Stash 不支持 Mihomo Smart + LightGBM；本产物使用 url-test 区域组
@@ -1447,13 +1447,6 @@ rule-providers:
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-intl-site-ipcidr.mrs"
     path: "./ruleset/scki-fused-058-intl-site-ipcidr.mrs"
     interval: 86400
-  scki-fused-058-intl-site-ipcidr-no-resolve:
-    type: http
-    behavior: ipcidr
-    format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-intl-site-ipcidr-no-resolve.mrs"
-    path: "./ruleset/scki-fused-058-intl-site-ipcidr-no-resolve.mrs"
-    interval: 86400
   scki-fused-058-intl-site-residual:
     type: http
     behavior: classical
@@ -1523,6 +1516,27 @@ rule-providers:
     format: yaml
     url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-cn-site-residual.yaml"
     path: "./ruleset/scki-fused-063-cn-site-residual.yaml"
+    interval: 86400
+  scki-fused-064-intl-site-domain:
+    type: http
+    behavior: domain
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-intl-site-domain.mrs"
+    path: "./ruleset/scki-fused-064-intl-site-domain.mrs"
+    interval: 86400
+  scki-fused-064-intl-site-ipcidr:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-intl-site-ipcidr.mrs"
+    path: "./ruleset/scki-fused-064-intl-site-ipcidr.mrs"
+    interval: 86400
+  scki-fused-064-intl-site-ipcidr-no-resolve:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-intl-site-ipcidr-no-resolve.mrs"
+    path: "./ruleset/scki-fused-064-intl-site-ipcidr-no-resolve.mrs"
     interval: 86400
   scki-fused-064-intl-site-residual:
     type: http
@@ -1684,7 +1698,6 @@ rules:
 - "RULE-SET,scki-fused-057-game-intl-residual,🎮 国外游戏"
 - "RULE-SET,scki-fused-058-intl-site-domain,🌐 国外网站"
 - "RULE-SET,scki-fused-058-intl-site-ipcidr,🌐 国外网站"
-- "RULE-SET,scki-fused-058-intl-site-ipcidr-no-resolve,🌐 国外网站,no-resolve"
 - "RULE-SET,scki-fused-058-intl-site-residual,🌐 国外网站"
 - "RULE-SET,scki-fused-059-payments-domain,🏦 金融支付"
 - "RULE-SET,scki-fused-060-cnmedia-domain,📺 国内流媒体"
@@ -1695,6 +1708,9 @@ rules:
 - "RULE-SET,scki-fused-062-direct-domain,DIRECT"
 - "RULE-SET,scki-fused-063-cn-site-domain,🏠 国内网站"
 - "RULE-SET,scki-fused-063-cn-site-residual,🏠 国内网站"
+- "RULE-SET,scki-fused-064-intl-site-domain,🌐 国外网站"
+- "RULE-SET,scki-fused-064-intl-site-ipcidr,🌐 国外网站"
+- "RULE-SET,scki-fused-064-intl-site-ipcidr-no-resolve,🌐 国外网站,no-resolve"
 - "RULE-SET,scki-fused-064-intl-site-residual,🌐 国外网站"
 - "RULE-SET,scki-fused-065-im-residual,💬 即时通讯"
 - "RULE-SET,scki-fused-066-netflix-residual,🎥 Netflix"

@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.7-Loon.1 (2026-07-14)
+
+- FIX#176：`[Remote Rule]` 的融合资产顺序同步国内域名优先于通用国际 CDN / GeoIP fallback。
+
 ## v6.0.6-Loon.1 (2026-07-14)
 
 - PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面产物承载；Loon iOS 不新增主动进程规则，继续消费同步后的融合远程规则集。

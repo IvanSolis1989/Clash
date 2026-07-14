@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.7-QX.1 (2026-07-14)
+
+- FIX#176：`filter_remote` 顺序同步国内域名优先于通用国际 CDN / GeoIP fallback，新增后置 fallback filter 并保持首匹配语义。
+
 ## v6.0.6-QX.1 (2026-07-14)
 
 - PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面产物承载；Quantumult X iOS 不新增主动进程规则，继续消费同步后的融合 remote filter。

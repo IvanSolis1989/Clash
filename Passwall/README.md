@@ -1,8 +1,8 @@
-# Passwall 使用教程（对齐 Clash Party v6.0.6）
+# Passwall 使用教程（对齐 Clash Party v6.0.7）
 
 > 目录简介：这里提供 Passwall 全功能版的 fused shunt rule fallback、UCI 批量脚本和 OpenWrt 导入说明。
 >
-> 版本：**v6.0.6-pw.1**（Build 2026-07-14；基线：Clash Party v6.0.6；变更历史见 `Passwall/CHANGELOG.md`）。
+> 版本：**v6.0.7-pw.1**（Build 2026-07-14；基线：Clash Party v6.0.7；变更历史见 `Passwall/CHANGELOG.md`）。
 
 ---
 
@@ -72,7 +72,7 @@ Passwall / Passwall2 的 `shunt_rules.lua` 支持 `rule-set:remote:` / `rule-set
 
 | 能力 | Passwall fallback | OpenClash / Clash Party |
 | --- | --- | --- |
-| fused 规则顺序 | 65 条非空 shunt rule | 141 条 Mihomo 主规则 |
+| fused 规则顺序 | 65 条非空 shunt rule | 143 条 Mihomo 主规则 |
 | 远程规则集 | sing-box `.srs` | Mihomo `.mrs` / residual YAML |
 | 策略组嵌套 | 不支持 | 支持 |
 | 自动测速 | 由你配置节点或负载均衡 | 支持区域组 url-test / Smart |

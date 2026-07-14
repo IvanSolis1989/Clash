@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.7-flclash.1 (2026-07-14)
+
+- FIX#176：标准 Mihomo 覆写同步 CN 域名权威段优先于共享 CDN / 国家 / 非中国地域 fallback 的融合顺序。
+
 ## v6.0.6-flclash.1 (2026-07-14)
 
 - DIRECT-WORKPRO-WEB：标准 Mihomo 覆写同步 fused direct residual，父进程与 Web 子进程均以精确 `PROCESS-NAME` 命中 `DIRECT`；不使用 TUN 排除绕过。

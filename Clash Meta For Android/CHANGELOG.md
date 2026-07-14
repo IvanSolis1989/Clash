@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.7-cmfa.1 (2026-07-14)
+
+- FIX#176：CMFA 规则顺序同步国内域名权威段优先于通用国际 CDN / GeoIP fallback；中国站点落在境外 CDN IP 时继续命中 `🏠 国内网站`。
+
 ## v6.0.6-cmfa.1 (2026-07-14)
 
 - DIRECT-WORKPRO-WEB：`scki-local-process-direct` 的 fused direct residual 同时包含 `WorkPro.exe` 和 `WorkProWebProcess.exe`；支持进程匹配的桌面 Mihomo 消费端固定路由至 `DIRECT`。
