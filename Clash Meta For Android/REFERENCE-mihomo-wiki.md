@@ -4,7 +4,7 @@
 > 更新于 2026-04-30：最新稳定版 v1.19.24（2026-04-20）。v1.19.17 已移除 relay 组类型（改用 dialer-proxy）——本仓库未使用 relay，无影响。v1.19.24 新增 XHTTP H3/HTTP1.1 模式、BBR profile。Smart/LightGBM 字段无变更。
 > 更新于 2026-05-30：批 A #5 落地——WebFetch `wiki/config/dns` + WebSearch 确认 `direct-nameserver-follow-policy` 语义：默认 `false`（忽略 nameserver-policy），`true` 时 direct 出口域名解析也遵守 nameserver-policy，仅当 direct-nameserver 非空时生效；官方 use case 即「direct 用国内 DoH + policy 指定域名走指定 DNS」。与 `direct-nameserver` 同字段族（耦合添加），本仓库已使用 direct-nameserver，故置 true 不抬高最低内核要求。
 > 更新于 2026-05-30：default-nameserver 由"必须为 IP，不能为域名"修正为"必须为 IP，**可为加密 DNS**"——host 须为 IP，但 scheme 可为 tls://IP / https://IP/dns-query（官方原文"必须为 IP, 可为加密 DNS"）。
-> 更新于 2026-07-14：复核官方“路由规则”页面（页面更新时间 2026-07-08）。`PROCESS-NAME,<进程名>,<策略>` 仍为正式规则类型，支持精确进程名匹配；本仓库使用的 `WorkPro.exe` 写法无字段或语义变更。
+> 更新于 2026-07-14：复核官方“路由规则”页面（页面更新时间 2026-07-08）。`PROCESS-NAME,<进程名>,<策略>` 仍为正式规则类型，支持精确进程名匹配；本仓库使用的 `WorkPro.exe` / `WorkProWebProcess.exe` 写法无字段或语义变更。
 > 本文件为本地参考，用于审核本仓库各配置文件与官方文档的兼容性。
 
 ---

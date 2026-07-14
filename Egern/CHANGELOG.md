@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.6-egern.1 (2026-07-14)
+
+- PLATFORM：正式 Profile 已由 CMFA v6.0.6-cmfa.1 重新生成；Egern 原生规则集明确跳过 Windows `PROCESS-NAME` 条目，`WorkPro.exe` / `WorkProWebProcess.exe` 不被伪装为不兼容规则。
+
 ## v6.0.5-egern.1 (2026-07-14)
 
 - PLATFORM：正式 Profile 由 CMFA v6.0.5-cmfa.1 重新生成；Egern 官方规则不提供 Clash 风格 PROCESS-NAME，WorkPro.exe 保持明确省略而非伪装同步。

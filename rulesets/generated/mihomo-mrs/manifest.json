@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-14T01:00:22.408Z",
+  "generated_at": "2026-07-14T07:19:03.317Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
   "mihomo_bin": "mihomo-v1.19.28.exe",
   "output_dir": "rulesets/generated/mihomo-mrs",
@@ -6426,7 +6426,7 @@
       "source_format": "text",
       "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/local-process-direct.list",
       "type_counts": {
-        "PROCESS-NAME": 81
+        "PROCESS-NAME": 82
       }
     },
     {

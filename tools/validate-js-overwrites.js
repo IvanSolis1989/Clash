@@ -545,9 +545,11 @@ function validateRulesAndProviders(output, record, target) {
     const excludes = output.tun && output.tun['exclude-process'];
     record.expect(Array.isArray(excludes), 'TUN exclude-process list exists');
     if (Array.isArray(excludes)) {
-      for (const proc of ['GSCService.exe', 'GCUService.exe', 'WorkPro.exe']) {
+      for (const proc of ['GSCService.exe', 'GCUService.exe']) {
         record.expect(excludes.includes(proc), `TUN exclude-process contains ${proc}`);
       }
+      record.expect(!excludes.includes('WorkPro.exe'), 'WorkPro.exe enters TUN and uses the fused PROCESS-NAME DIRECT rule');
+      record.expect(!excludes.includes('WorkProWebProcess.exe'), 'WorkProWebProcess.exe enters TUN and uses the fused PROCESS-NAME DIRECT rule');
     }
   }
 }

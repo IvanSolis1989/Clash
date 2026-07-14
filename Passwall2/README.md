@@ -1,8 +1,8 @@
-# Passwall2 使用教程（对齐 Clash Party v6.0.5）
+# Passwall2 使用教程（对齐 Clash Party v6.0.6）
 
 > 目录简介：这里提供 Passwall2 精简分流版的 fused shunt rule fallback、UCI 批量脚本和 OpenWrt 导入说明。
 >
-> 版本：**v6.0.5-pw2.1**（Build 2026-07-14；基线：Clash Party v6.0.5；变更历史见 `Passwall2/CHANGELOG.md`）。
+> 版本：**v6.0.6-pw2.1**（Build 2026-07-14；基线：Clash Party v6.0.6；变更历史见 `Passwall2/CHANGELOG.md`）。
 
 ---
 

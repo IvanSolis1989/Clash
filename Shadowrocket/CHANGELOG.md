@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.6-SR.1 (2026-07-14)
+
+- PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面 Mihomo、sing-box 与 Xray 产物承载；Shadowrocket iOS 不伪造不支持的 `PROCESS-NAME` 规则，继续消费同步后的融合文本资产。
+
 ## v6.0.5-SR.1 (2026-07-14)
 
 - PLATFORM：WorkPro.exe 的 Windows 桌面直连由源图回归契约保护；Shadowrocket iOS 路径不伪造 PROCESS-NAME 规则。

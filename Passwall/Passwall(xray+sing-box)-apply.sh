@@ -1,7 +1,7 @@
 #!/bin/sh
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit for Passwall — fused UCI batch helper
-# Version: v6.0.5-pw.1 | Build 2026-07-14 | Baseline: Clash Party v6.0.5
+# Version: v6.0.6-pw.1 | Build 2026-07-14 | Baseline: Clash Party v6.0.6
 #
 # 用途：一次性在 Passwall 中创建 65 条 fused shunt rule。
 #       每条规则只引用 rulesets/generated/fused/sing-box/*.srs，不再维护手写域名/IP 展平列表。
@@ -14,7 +14,7 @@
 set -e
 
 CONFIG_NAME="passwall"
-VERSION_TAG="v6.0.5-pw.1"
+VERSION_TAG="v6.0.6-pw.1"
 MODE="${1:---replace}"
 
 case "${MODE}" in

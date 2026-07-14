@@ -8,7 +8,7 @@
 
 - 主规则只使用精确 `PROCESS-NAME`，不照搬宽泛 `PROCESS-NAME-REGEX,(?i).*vpn.*` / `.*vnc.*`。
 - PC / 桌面端优先：Windows 使用 `.exe`，macOS / Linux 使用无扩展名进程名。
-- `WorkPro.exe` 是本仓库维护的 Windows 本地业务客户端例外，固定进入 `DIRECT` 白名单并由回归校验覆盖。
+- `WorkPro.exe` 与 `WorkProWebProcess.exe` 是本仓库维护的 Windows 本地业务客户端例外，固定进入 `DIRECT` 白名单并由回归校验覆盖；不得以 TUN `exclude-process` 绕过规则引擎。
 - 移动端包名暂不进入主规则，除非对应客户端路径已验证不会导入报错且确实能匹配。
 - 路由器端 Passwall / Passwall2 不承载本清单，因为它们看不到局域网客户端进程名。
 - RustDesk 是例外：公网 relay/API 需要走 `🧑‍💼 会议协作`，不再进入 `DIRECT` 白名单；局域网/私有 IP 连接仍由私有地址规则直连。

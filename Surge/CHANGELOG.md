@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.6-Surge.1 (2026-07-14)
+
+- PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面产物承载；Surge 不写 Windows 进程规则，继续消费同步后的融合文本资产。
+
 ## v6.0.5-Surge.1 (2026-07-14)
 
 - PLATFORM：WorkPro.exe 是 Windows 桌面直连条目，不加入 Surge Mac 专用进程规则集；Windows Mihomo、sing-box 与 Xray 产物负责实际命中。

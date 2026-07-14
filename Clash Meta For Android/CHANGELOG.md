@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.6-cmfa.1 (2026-07-14)
+
+- DIRECT-WORKPRO-WEB：`scki-local-process-direct` 的 fused direct residual 同时包含 `WorkPro.exe` 和 `WorkProWebProcess.exe`；支持进程匹配的桌面 Mihomo 消费端固定路由至 `DIRECT`。
+
 ## v6.0.5-cmfa.1 (2026-07-14)
 
 - DIRECT-WORKPRO：WorkPro.exe 随 scki-local-process-direct 保留在默认 direct 融合 residual；回归清单要求桌面 Mihomo 消费端始终命中 DIRECT。

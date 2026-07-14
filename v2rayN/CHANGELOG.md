@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.6-v2n.1 (2026-07-14)
+
+- DIRECT-WORKPRO-WEB：Xray fallback 重新生成，默认 direct RuleObject 的 `process` 同时包含 `WorkPro.exe` 和 `WorkProWebProcess.exe`；仅在本机 Windows / Linux 的进程匹配路径生效。
+
 ## v6.0.5-v2n.1 (2026-07-14)
 
 - DIRECT-WORKPRO：Xray fallback 重建为 process 包含 WorkPro.exe 且 outboundTag 为 direct；仅在本机 Windows / Linux 的 Xray 进程匹配路径生效。

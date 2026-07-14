@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.6 (2026-07-14)
+
+- DIRECT-WORKPRO-WEB：将 `WorkProWebProcess.exe` 纳入 `local-process-direct` 补充规则集；`WorkPro.exe` 与其 Web 子进程统一进入 TUN 后由融合 `PROCESS-NAME` 规则命中 `DIRECT`，不再以 TUN 排除或 IP 路由排除绕过规则引擎。
+- SYNC：按 `source graph -> MRS -> fused -> 原生派生` 完成 14 类产物重建；Mihomo MRS `failed=0`、融合规则集 `unresolved=0`，主规则仍为 124 个融合 provider / 141 条规则。
+
 ## v6.0.5 (2026-07-14)
 
 - DIRECT-WORKPRO：将既有的 WorkPro.exe 本地直连条目纳入永久回归清单并完成全产物重建；桌面 Mihomo、sing-box 与 Xray fallback 固定输出 DIRECT，平台不支持进程匹配的路径保持明确豁免。

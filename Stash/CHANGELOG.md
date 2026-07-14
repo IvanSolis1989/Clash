@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.6-stash.1 (2026-07-14)
+
+- DIRECT-WORKPRO-WEB：由 CMFA v6.0.6-cmfa.1 重新生成；fused direct residual 同时保留 WorkPro 父进程与 Web 子进程，实际命中取决于底层内核的进程匹配能力。
+
 ## v6.0.5-stash.1 (2026-07-14)
 
 - DIRECT-WORKPRO：由 CMFA v6.0.5-cmfa.1 重新生成；同一 fused direct residual 保留 WorkPro.exe，实际进程命中取决于底层桌面内核能力。

@@ -15,7 +15,7 @@ Rules here intentionally omit policy targets. Each product binds the rule set to
 the correct policy in its own syntax.
 
 `clash/local-process-direct.list` is the exact-name Windows desktop direct
-whitelist. `WorkPro.exe` is a repository-maintained entry guarded by
+whitelist. `WorkPro.exe` and `WorkProWebProcess.exe` are repository-maintained entries guarded by
 `tools/fixtures/process-name-direct-tools.json` so it cannot be lost during a
 future fused-rule rebuild.
 

@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.6-QX.1 (2026-07-14)
+
+- PLATFORM：Windows 的 `WorkPro.exe` / `WorkProWebProcess.exe` 进程直连由桌面产物承载；Quantumult X iOS 不新增主动进程规则，继续消费同步后的融合 remote filter。
+
 ## v6.0.5-QX.1 (2026-07-14)
 
 - PLATFORM：WorkPro.exe 的 Windows 桌面直连由支持进程匹配的产物承载；Quantumult X iOS 配置不新增主动进程规则。

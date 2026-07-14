@@ -1,4 +1,5 @@
 PROCESS-NAME,WorkPro.exe
+PROCESS-NAME,WorkProWebProcess.exe
 PROCESS-NAME,GCUService.exe
 PROCESS-NAME,GCUBridge.exe
 PROCESS-NAME,CCUWinUI.exe

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-14T01:03:39.297Z",
+  "generated_at": "2026-07-14T07:21:54.671Z",
   "authority": "rulesets/source/routing-graph.js after Mihomo MRS normalization",
-  "baseline_version": "v6.0.5",
+  "baseline_version": "v6.0.6",
   "source_provider_count": 513,
   "source_rule_count": 970,
   "fused_provider_count": 124,
@@ -13,8 +13,8 @@
   "sing_box_binary": "sing-box.exe",
   "remote_asset_max_bytes": 18874368,
   "optimization": {
-    "input": 787503,
-    "output": 594113,
+    "input": 787504,
+    "output": 594114,
     "exactDuplicates": 103941,
     "domainSubsumed": 77166,
     "cidrSubsumed": 33,
@@ -956,11 +956,11 @@
         "domain": 135,
         "ipcidr": 0,
         "ipcidr_no_resolve": 1,
-        "residual": 82
+        "residual": 83
       },
       "optimization": {
-        "input": 218,
-        "output": 218,
+        "input": 219,
+        "output": 219,
         "exactDuplicates": 0,
         "domainSubsumed": 0,
         "cidrSubsumed": 0,
@@ -992,8 +992,8 @@
             "normalized": 0
           },
           "residual": {
-            "input": 82,
-            "output": 82,
+            "input": 83,
+            "output": 83,
             "exactDuplicates": 0,
             "domainSubsumed": 0,
             "cidrSubsumed": 0,
@@ -1003,8 +1003,8 @@
         "globalExactDuplicates": 0
       },
       "target_counts": {
-        "mobile": 234,
-        "sing_box": 234
+        "mobile": 235,
+        "sing_box": 235
       },
       "target_ip_counts": {
         "mobile": 18,
@@ -1012,8 +1012,8 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 235,
-          "output": 234,
+          "input": 236,
+          "output": 235,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 1,
@@ -1021,8 +1021,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 235,
-          "output": 234,
+          "input": 236,
+          "output": 235,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 1,

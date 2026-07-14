@@ -1,9 +1,9 @@
-# Surge 使用教程（对齐 Clash Party v6.0.5）
+# Surge 使用教程（对齐 Clash Party v6.0.6）
 
 > 目录简介：这里维护 Surge iOS/macOS 配置和导入教程，按 Surge 语法对齐 Clash Party 分流策略。
 >
 > 配置文件：`Surge/Surge.conf`
-> 版本：**v6.0.5-Surge.1**（Build 2026-07-14，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v6.0.5 基线；68 个源语义段对应 64 个非空远程 RULE-SET）
+> 版本：**v6.0.6-Surge.1**（Build 2026-07-14，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v6.0.6 基线；68 个源语义段对应 64 个非空远程 RULE-SET）
 > 目标：**Surge 5 / Surge Mac**（付费正版；iOS + macOS 通用）
 > 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 33 业务策略组 + 64 个非空融合 RULE-SET（受聚合预算门禁）
 
@@ -245,7 +245,7 @@ Surge 的节点来源有两种方式，任选其一：
 
 ## 九、验证
 
-1. Surge → **首页** → **已启用的配置**：应显示 `Surge Smart v6.0.5-Surge.1`。
+1. Surge → **首页** → **已启用的配置**：应显示 `Surge Smart v6.0.6-Surge.1`。
 2. **策略组** 面板应出现 22 区域 + 33 业务共 55 组（不得少于 50 组）。
 3. 访问以下网站做功能验证：
    - `https://chat.openai.com` → 命中「🤖 AI 服务」

@@ -1,15 +1,15 @@
 // Clash Smart 内核覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v6.0.5 (2026-07-14)
+// 版本：v6.0.6 (2026-07-14)
 // 架构：SUB-STORE 多机场融合 + 22 Smart 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 141 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.5（513 providers / 970 rules -> fused 124 / 141；同策略规范化与语义去重）
-// v6.0.5：WorkPro.exe 纳入 local-process-direct 永久回归白名单，支持进程匹配的桌面产物固定 DIRECT
+// 规则源：rulesets/source/routing-graph.js v6.0.6（513 providers / 970 rules -> fused 124 / 141；同策略规范化与语义去重）
+// v6.0.6：WorkPro.exe / WorkProWebProcess.exe 经 TUN 进入 local-process-direct 融合规则集并固定 DIRECT
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
 // ================================================================
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.5'
+const VERSION = 'v6.0.6'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别
@@ -498,7 +498,8 @@ function overwriteGeneral(config) {
   })
   if (!config.tun) config.tun = {}
   if (!config.tun['exclude-process']) config.tun['exclude-process'] = []
-  var gcuExcludes = ['GCUService.exe', 'GCUBridge.exe', 'WorkPro.exe', 'GSCService.exe', 'gsupservice.exe', 'gchsvc.exe']
+  // WorkPro processes must enter TUN and match the fused PROCESS-NAME DIRECT rules.
+  var gcuExcludes = ['GCUService.exe', 'GCUBridge.exe', 'GSCService.exe', 'gsupservice.exe', 'gchsvc.exe']
   gcuExcludes.forEach(function(proc) {
     if (config.tun['exclude-process'].indexOf(proc) === -1) { config.tun['exclude-process'].push(proc) }
   })

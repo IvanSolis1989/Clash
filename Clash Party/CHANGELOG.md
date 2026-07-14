@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.6 / v6.0.6-normal.1 (2026-07-14)
+
+- TUN-DIRECT-WORKPRO：`WorkPro.exe` 与 `WorkProWebProcess.exe` 固定进入 TUN，再命中 `scki-local-process-direct` 的融合 `DIRECT` residual；两份覆写均移除 WorkPro 的 `tun.exclude-process` 绕过，避免连接直接落到物理网卡。
+- REGRESSION：进程白名单夹具同时覆盖父进程和 Web 子进程，并断言二者都不在 TUN 排除列表。
+
 ## v6.0.5 / v6.0.5-normal.1 (2026-07-14)
 
 - DIRECT-WORKPRO：scki-local-process-direct 中既有的 WorkPro.exe 现在由进程白名单夹具强制校验；融合 direct 段仍在 work 段之前，Smart / Normal 固定路由到 DIRECT。

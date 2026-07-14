@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.6-flclash.1 (2026-07-14)
+
+- DIRECT-WORKPRO-WEB：标准 Mihomo 覆写同步 fused direct residual，父进程与 Web 子进程均以精确 `PROCESS-NAME` 命中 `DIRECT`；不使用 TUN 排除绕过。
+
 ## v6.0.5-flclash.1 (2026-07-14)
 
 - DIRECT-WORKPRO：标准 Mihomo 覆写跟随 scki-local-process-direct 的永久回归清单，WorkPro.exe 固定进入 fused direct residual。

@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v6.0.5）
+# v2rayN 使用教程（对齐 Clash Party v6.0.6）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON fallback 产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.5-v2n.1（Build 2026-07-14；基线：Clash Party v6.0.5；变更历史见 `v2rayN/CHANGELOG.md`）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.6-v2n.1（Build 2026-07-14；基线：Clash Party v6.0.6；变更历史见 `v2rayN/CHANGELOG.md`）。
 
 ---
 
@@ -52,7 +52,7 @@ SingBox Full 使用 `rulesets/generated/fused/sing-box/*.srs`，是本仓库 fus
 
 Xray routing 支持 `domain`、`ip`、`port`、`process`、`outboundTag` 等 RuleObject 字段，但没有 sing-box `.srs` 远程 rule-set 字段。因此路径 C 不能像 sing-box 一样引用远程 `.srs`，只能把 fused JSON 展开为 Xray 原生数组。广告段很大，所以 JSON 文件体积明显大于旧手写版。
 
-本机 Windows / Linux 的进程规则会随 fused direct 段导入；`WorkPro.exe` 由 `local-process-direct` 的永久回归契约保持为 `direct`。这类规则只对运行 Xray 的本机有效。
+本机 Windows / Linux 的进程规则会随 fused direct 段导入；`WorkPro.exe` 与 `WorkProWebProcess.exe` 由 `local-process-direct` 的永久回归契约保持为 `direct`。这类规则只对运行 Xray 的本机有效。
 
 导入步骤：
 

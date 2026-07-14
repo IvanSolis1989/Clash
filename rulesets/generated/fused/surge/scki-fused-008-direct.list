@@ -152,6 +152,7 @@ IP-CIDR6,::1/128,no-resolve
 IP-CIDR6,fc00::/7,no-resolve
 IP-CIDR6,fe80::/10,no-resolve
 PROCESS-NAME,WorkPro.exe
+PROCESS-NAME,WorkProWebProcess.exe
 PROCESS-NAME,GCUService.exe
 PROCESS-NAME,GCUBridge.exe
 PROCESS-NAME,CCUWinUI.exe

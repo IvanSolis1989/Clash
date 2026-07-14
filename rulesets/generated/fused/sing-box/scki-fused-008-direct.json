@@ -163,6 +163,7 @@
       ],
       "process_name": [
         "WorkPro.exe",
+        "WorkProWebProcess.exe",
         "GCUService.exe",
         "GCUBridge.exe",
         "CCUWinUI.exe",

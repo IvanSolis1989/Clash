@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.6-sing.1 (2026-07-14)
+
+- DIRECT-WORKPRO-WEB：Full JSON 重新生成，`scki-fused-008-direct` 的原生 SRS 源同时包含 `process_name: WorkPro.exe` 与 `WorkProWebProcess.exe`，Windows / Linux / macOS 进程匹配路径均路由至 direct outbound。
+
 ## v6.0.5-sing.1 (2026-07-14)
 
 - DIRECT-WORKPRO：Full JSON 重新生成，scki-fused-008-direct 的原生 SRS 源包含 process_name WorkPro.exe 并路由至 DIRECT；官方字段仅用于 Linux / Windows / macOS。

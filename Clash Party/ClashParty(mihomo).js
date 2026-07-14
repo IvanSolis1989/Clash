@@ -1,8 +1,8 @@
 // Clash 覆写脚本 - SUB-STORE 多机场精细分流版
-// 版本：v6.0.5-normal.1 (2026-07-14)
+// 版本：v6.0.6-normal.1 (2026-07-14)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 124 融合 rule-providers / 141 rules
-// 规则源：rulesets/source/routing-graph.js v6.0.5（与 Smart 版规则 100% 等价，仅区域组从 smart 改为 url-test）
-// v6.0.5：WorkPro.exe 纳入 local-process-direct 永久回归白名单，支持进程匹配的桌面产物固定 DIRECT
+// 规则源：rulesets/source/routing-graph.js v6.0.6（与 Smart 版规则 100% 等价，仅区域组从 smart 改为 url-test）
+// v6.0.6：WorkPro.exe / WorkProWebProcess.exe 经 TUN 进入 local-process-direct 融合规则集并固定 DIRECT
 // 适用：Mihomo / Clash.Meta 稳定版内核、不支持 smart + LightGBM 的分支；也适用于想完全关闭 ML 评估的用户
 // 变更历史：见 `Clash Party/CHANGELOG.md`
 
@@ -10,7 +10,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.5-normal.1'
+const VERSION = 'v6.0.6-normal.1'
 
 // ================================================================
 //  模块 A：节点过滤 / 家宽识别
@@ -427,7 +427,8 @@ function overwriteGeneral(config) {
   if (!config.tun) config.tun = {}
   if (!config.tun['exclude-process']) config.tun['exclude-process'] = []
   // v5.2.1 FIX#20: GSCService.exe 加入排除列表，fake-ip 模式下 ip.cip.cc 无法解析
-  var gcuExcludes = ['GCUService.exe', 'GCUBridge.exe', 'WorkPro.exe', 'GSCService.exe', 'gsupservice.exe', 'gchsvc.exe']
+  // WorkPro processes must enter TUN and match the fused PROCESS-NAME DIRECT rules.
+  var gcuExcludes = ['GCUService.exe', 'GCUBridge.exe', 'GSCService.exe', 'gsupservice.exe', 'gchsvc.exe']
   gcuExcludes.forEach(function(proc) {
     if (config.tun['exclude-process'].indexOf(proc) === -1) { config.tun['exclude-process'].push(proc) }
   })

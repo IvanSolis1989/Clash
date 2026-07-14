@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.6-pw2.1 (2026-07-14)
+
+- SYNC：fused SRS shunt rule 已随 v6.0.6 重建；Passwall2 路由器端无法看到 LAN 客户端的 `WorkPro.exe` / `WorkProWebProcess.exe`，不承诺进程级命中。
+
 ## v6.0.5-pw2.1 (2026-07-14)
 
 - PLATFORM：fused SRS shunt rule 已重建；Passwall2 路由器端无法看到 LAN 客户端 WorkPro.exe，不承诺进程级命中。
