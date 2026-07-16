@@ -22,8 +22,8 @@
 #   • 143 条 rules（源 970 rules；仅保留 17 条必要内联规则）
 #   • DNS fake-ip + 嗅探（HTTP/TLS/QUIC）+ nameserver-policy 救援
 #   • Ruby 阶段做：节点过滤 / 区域分类 / url-test 组生成 / TLS 指纹注入
-# 基线：Clash Party v6.0.8（唯一主线；v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改 Clash Party JS，
-#       再同步到此文件。参见仓库根目录 CLAUDE.md / AGENTS.md。
+# 基线：Clash Party v6.0.8（v5.3.1/v5.3.2 为桌面端 PROCESS-NAME 改动，路由器端不适用）── 任何规则/组/DNS 改动必须先改源规则图，
+#       再按生成链同步到此文件。参见仓库根目录 AGENTS.md。
 # 变更历史：见 `OpenClash/CHANGELOG.md`（Normal 部分）。
 # ============================================================================
 

@@ -6,6 +6,12 @@
 
 ---
 
+## 文档治理 (2026-07-16)
+
+- GOVERNANCE-SINGLE-SOURCE：将原 `CLAUDE.md` 的完整维护手册与原 `AGENTS.md` 的多代理协作、受保护文件和常见错误约定合并为唯一入口 `AGENTS.md`，删除双文件优先级与同步负担。
+- AUTOMATION：Issue 模板、AI 自动回复工作流、OpenClash 产物注释、测试和设计文档统一引用 `AGENTS.md`；规则权威源仍为 `rulesets/source/routing-graph.js`，本次不修改任何运行时规则或客户端版本。
+- REPO-HYGIENE：将本机 `.claude/` 配置和内部 `.full-review/` 审查工作区加入 `.gitignore`，从公开仓库索引移除但保留本机文件。
+
 ## v6.0.8 (2026-07-15)
 
 - FIX#176 全量审计：将全部共享边缘/CDN、`geolocation-!cn`、IP 与地域兜底规则置于国内权威策略之后，而非仅为已报告域名添加例外；`scki-fused-064-intl-site` 成为统一的通用国际兜底段。

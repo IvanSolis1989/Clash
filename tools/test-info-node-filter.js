@@ -5,7 +5,7 @@
 // ----------------------------------------------------------------------------
 // 背景：#6 给 junk 节点过滤器补充关键词 `免费/试用/应急`（中文子串）+
 //       `Sign/Login/Register/Help/FAQ`（英文，必须 \b 词边界，否则 RE2/Ruby 子串
-//       引擎会把 "Signal" 当 "Sign" 误伤——参见 CLAUDE.md §3.5.3 正则语义差异）。
+//       引擎会把 "Signal" 当 "Sign" 误伤——参见 AGENTS.md §3.5.3 正则语义差异）。
 // 分工：
 //   - 行为回归（junk 真被过滤 + "Signal" 不被误伤）：tools/validate-js-overwrites.js
 //     的 fixture 已含正例(免费/试用/应急/Sign Up/Login/Register/Help/FAQ)与

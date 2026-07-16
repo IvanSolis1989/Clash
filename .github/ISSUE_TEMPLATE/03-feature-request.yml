@@ -13,7 +13,7 @@ body:
         >
         > ---
         >
-        > 请对照加法原则先自查（详见 README 的 🎯 差异化价值章节 + `CLAUDE.md`），能大幅提高被采纳率。
+        > 请对照加法原则先自查（详见 README 的 🎯 差异化价值章节 + `AGENTS.md`），能大幅提高被采纳率。
 
   - type: dropdown
     id: kind

@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        > 🤖 **AI 会先帮你判断"到底是不是 bug"**——很多报告其实是配置没按 README 走、或用户理解偏差。AI 会对照 CLAUDE.md / README / CHANGELOG / 其他客户端同组产物做初步分析，给出 4 类结论之一：
+        > 🤖 **AI 会先帮你判断"到底是不是 bug"**——很多报告其实是配置没按 README 走、或用户理解偏差。AI 会对照 AGENTS.md / README / CHANGELOG / 其他客户端同组产物做初步分析，给出 4 类结论之一：
         >
         > 1. 明显不是 bug（引用文档说明实际是设计如此）
         > 2. 可能是 bug + 指可能的根因方向（供维护者验证）
@@ -40,7 +40,7 @@ body:
         - v2rayN/v2rayn-smart-xray-routing.json
         - Passwall2/*.conf
         - 多个产物都有（跨客户端不一致）
-        - 文档 / CHANGELOG / CLAUDE.md / AGENTS.md
+        - 文档 / CHANGELOG / AGENTS.md
     validations:
       required: true
 

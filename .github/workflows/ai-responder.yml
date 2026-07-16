@@ -94,11 +94,8 @@ jobs:
         run: |
           # ── 1. 基础上下文（仓库文档）──
           {
-            echo "===== CLAUDE.md（仓库维护契约）====="
-            head -150 CLAUDE.md 2>/dev/null || echo "(CLAUDE.md not found)"
-            echo
-            echo "===== AGENTS.md（代理协作契约）====="
-            head -80 AGENTS.md 2>/dev/null || echo "(AGENTS.md not found)"
+            echo "===== AGENTS.md（仓库维护与代理协作契约）====="
+            head -260 AGENTS.md 2>/dev/null || echo "(AGENTS.md not found)"
             echo
             echo "===== 根 README.md 节选（前 150 行）====="
             head -150 README.md 2>/dev/null || echo "(README.md not found)"
@@ -353,7 +350,7 @@ jobs:
           CMFA YAML / Stash YAML / OpenClash Normal+Smart / Shadowrocket / SingBox Full /
           Surge / Loon / Quantumult X / v2rayN / Passwall / Passwall2 / FlClash。
           架构核心：33 业务组 × 22 区域组（11 全部 + 11 家宽）+ 多源 rule-providers + LightGBM 智能选路。
-          仓库维护契约见 CLAUDE.md（每次改动必须全版本联动）。
+          仓库维护契约见 AGENTS.md（每次改动必须全版本联动）。
 
           【你的角色】
           维护者人工处理前的**初步分析**层。4 种 issue 类型都会路由到你：
@@ -363,7 +360,7 @@ jobs:
                DNS / 平台差异。有把握就直接给答案。
 
           2. 🐛 bug（用户报告的疑似 bug）
-             → 先判断"到底是不是 bug"：对照 CLAUDE.md 的设计约束、README 使用说明、
+             → 先判断"到底是不是 bug"：对照 AGENTS.md 的设计约束、README 使用说明、
                对应子目录 CHANGELOG.md、其他客户端同组产物的行为，四类结论：
                A. 明显不是 bug（用户理解偏差 / 配置没按 README 走 / 依赖版本不够）
                   → 礼貌指出实际行为是设计如此，引用文档路径
@@ -380,7 +377,7 @@ jobs:
                如果落在 4 类之一 → 给出肯定评估，**可直接实现**（见下方代码修改模式）。
 
           4. 📝 documentation（文档反馈）
-             → 定位对应文件（根 README.md / CLAUDE.md / AGENTS.md / 各子目录 README.md
+             → 定位对应文件（根 README.md / AGENTS.md / 各子目录 README.md
                或 CHANGELOG.md），判断描述与现状是否一致：
                 - 确实过时 / 错字 / 链接 404 → 说明哪里错、应该是什么，**直接修改**
                 - 描述其实正确但用户读懂有歧义 → 解释正确含义
@@ -388,7 +385,7 @@ jobs:
           5. 💬 /ai-help 评论召唤 → 针对评论上下文答，不要重复整个 issue 分析
 
           【引用文档】
-          精确路径，别泛指："CLAUDE.md" / "AGENTS.md" /
+          精确路径，别泛指："AGENTS.md" /
           "Clash Party/ClashParty(mihomo-smart).js" / "OpenClash/CHANGELOG.md" /
           "SingBox/README.md §2a" 之类。
 
@@ -438,8 +435,8 @@ jobs:
             **只输出 <!-- AI_REPLY --> 块**，不要输出 AI_PATCH 和 AI_PR 块。
           - **只有在你确认需要改代码时才输出完整的三段结构。**
           - AI_PATCH 里的路径必须是仓库内真实相对路径，不能是绝对路径，不能包含 `..`、反斜杠或 `.git`，内容必须是完整的文件内容（不是 diff）。
-          - 修 bug / 加功能时，**必须遵循 CLAUDE.md §1 全版本联动规则**——
-            先改 Clash Party JS 基线，再同步所有受影响的产物文件。
+          - 修 bug / 加功能时，**必须遵循 AGENTS.md §1 全版本联动规则**——
+            先改 rulesets/source/routing-graph.js 权威源，再按规定生成链同步所有受影响的产物文件。
             **所有需要改动的文件都要各自一个 AI_PATCH 块。**
           - 修文档时只改对应的 README.md / CHANGELOG.md。
           - AI_PR 标题和正文用中文，PR 正文列出影响面和每个修改的文件。

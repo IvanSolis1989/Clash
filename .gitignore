@@ -1,4 +1,7 @@
 UsersUserDocumentsGitHubGithub-API-scan/
 .cache/
-.claude/worktrees/
+# 本机代理配置与临时工作树，不属于公开产物
+.claude/
+# 内部全量审查过程文件，不参与规则生成或发布
+.full-review/
 cache.db

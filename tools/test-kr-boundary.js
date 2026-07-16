@@ -12,7 +12,7 @@
  *       子串误伤：KRAKEN / DARKROOM。
  *   主线 Clash Party×3 JS（_getWordBoundaryRegex）与 CMFA filter 本就带边界，未受影响。
  *
- * 修复（各自贴合所在文件既有风格，不机械统一 —— 见 CLAUDE.md §3.5）
+ * 修复（各自贴合所在文件既有风格，不机械统一 —— 见 AGENTS.md §3.5）
  *   · OpenClash Ruby×2  → `\bKR\b`               （同文件 HK/TW/JP/SG/US 均用 \b）
  *   · Loon/SR/Surge/QX  → `(?<![a-zA-Z])KR(?![a-zA-Z])` （同文件 US/SG 均用此写法）
  *

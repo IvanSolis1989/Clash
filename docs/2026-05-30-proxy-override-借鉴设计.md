@@ -119,7 +119,7 @@ AND,((DST-PORT,443),(NETWORK,UDP),(NOT,((GEOSITE,cn)))),REJECT
 | **C** | #1 QUIC 精细化 | 🟡中 | 逐产物核对 AND/NOT 语法 |
 | **D** | #4 DoH-over-IP bootstrap | 🟡中 | 先核对 sing-box/v2rayN/Passwall（见 #4 待办）|
 
-每批必须遵守 CLAUDE.md：§1 全产物联动、§1.5 同构审计（#6 节点分类）、§2 官方文档核对、§5 自检、§1.3 版本+CHANGELOG。
+每批必须遵守 AGENTS.md：§1 全产物联动、§1.5 同构审计（#6 节点分类）、§2 官方文档核对、§5 自检、§1.3 版本+CHANGELOG。
 
 ---
 
