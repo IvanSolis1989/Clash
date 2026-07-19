@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.9-v2n.1 (2026-07-19)
+
+- Xray fallback 增加两条可表达的 `process + domain` RuleObject：仅 `Code Helper` / `Code Helper (Plugin)` 访问 `api.github.com` 时保持 proxy AI 语义；通用 GitHub API 段先于上游广义 AI 段。
+- SYNC：重建为 86 条 RuleObject（1 meta + 66 fused + 19 inline）。
+
 ## v6.0.8-v2n.1 (2026-07-15)
 
 - 从更新后的融合 sing-box 源重新展平，保持国内权威段先于通用国际兜底的等价顺序。

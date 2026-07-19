@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.9 / v6.0.9-normal.1 (2026-07-19)
+
+- FIX#176 后续审计：通用 `api.github.com` 融合进 `🔧 工具与服务` 并置于上游广义 AI 规则之前；仅 `Code Helper` / `Code Helper (Plugin)` 的进程加域名组合继续命中 `🤖 AI 服务`。
+
 ## v6.0.8 / v6.0.8-normal.1 (2026-07-15)
 
 - FIX#176 全量修复：Smart / Normal 把共享边缘/CDN、`geolocation-!cn`、IP 与地域兜底统一放到国内权威段之后，不再依赖针对单个域名的快照迁移。

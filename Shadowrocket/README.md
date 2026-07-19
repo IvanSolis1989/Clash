@@ -3,9 +3,9 @@
 > 目录简介：这里维护 Shadowrocket 小火箭配置和使用教程，覆盖 iOS/macOS 私有 conf 语法下的分流实现。
 >
 > 配置文件：`Shadowrocket.conf`
-> 版本：**v6.0.8-SR.1**（Build 2026-07-15，跟随 Clash Party v6.0.8 基线；68 个源语义段对应 65 个移动端非空远程 RULE-SET；远程资产按发布版本缓存）
+> 版本：**v6.0.9-SR.1**（Build 2026-07-19，跟随 Clash Party v6.0.9 基线；69 个源语义段对应 66 个移动端非空远程 RULE-SET；远程资产按发布版本缓存）
 > 目标：**Shadowrocket iOS（App Store 正版）** / macOS 通用
-> 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 33 业务策略组 + 65 个非空融合 rule-set（受聚合预算门禁）
+> 架构：22 区域组（11 全部 + 11 家宽，`url-test` + `policy-regex-filter` 按节点名自动分类）+ 33 业务策略组 + 66 个非空融合 rule-set（受聚合预算门禁）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -132,7 +132,7 @@ Shadowrocket 不像桌面端那样支持本地脚本覆写；必须把配置文�
 3. 粘贴配置 URL，点击**下载**。
 4. 下载完成后，点击该配置行 → 选择「**使用配置（Use Config）**」。
 
-此时 Shadowrocket 会开始下载 **65 个本仓库融合 rule-set**，首次通常需要 **1–3 分钟**，期间请保持代理开启。融合产物受 32 MiB / 100 万条聚合硬门禁约束。
+此时 Shadowrocket 会开始下载 **66 个本仓库融合 rule-set**，首次通常需要 **1–3 分钟**，期间请保持代理开启。融合产物受 32 MiB / 100 万条聚合硬门禁约束。
 
 ---
 

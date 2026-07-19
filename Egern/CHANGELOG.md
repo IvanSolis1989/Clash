@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.9-egern.1 (2026-07-19)
+
+- 正式 Profile 由 CMFA v6.0.9-cmfa.1 重生成；通用 `api.github.com` 原生规则集前置到工具组，两个 Windows 进程逻辑规则明确跳过而不伪造兼容性。
+
 ## v6.0.8-egern.1 (2026-07-15)
 
 - 原生 YAML rule_set 同步国内权威优先级，并支持带发布缓存键的 Mihomo 融合源解析与 Egern 资产引用。

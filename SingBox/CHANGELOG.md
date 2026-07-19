@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.9-sing.1 (2026-07-19)
+
+- Full JSON 重新生成：`api.github.com` 默认进入工具组，原生 `process_name + domain` 规则仅为 `Code Helper` / `Code Helper (Plugin)` 保留 AI 路由。
+
 ## v6.0.8-sing.1 (2026-07-15)
 
 - 全量同步国内权威优先级；65 个融合 `.srs` 远程资产使用发布版本缓存键。

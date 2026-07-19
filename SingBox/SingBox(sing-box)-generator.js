@@ -3,9 +3,9 @@ const path = require('path');
 const vm = require('vm');
 const { repositoryAssetUrl } = require('../tools/lib/generated-asset-url');
 
-const VERSION = 'v6.0.8-sing.1';
-const BUILD = '2026-07-15';
-const BASELINE = 'Clash Party v6.0.8';
+const VERSION = 'v6.0.9-sing.1';
+const BUILD = '2026-07-19';
+const BASELINE = 'Clash Party v6.0.9';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',
@@ -375,6 +375,50 @@ function isRejectTarget(target) {
   return target === 'REJECT' || target === ADS_OUTBOUND;
 }
 
+function splitTopLevel(rule) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const char of String(rule)) {
+    if (char === ',' && depth === 0) {
+      parts.push(current);
+      current = '';
+      continue;
+    }
+    if (char === '(') depth += 1;
+    else if (char === ')') depth -= 1;
+    current += char;
+  }
+  parts.push(current);
+  return parts.map((part) => part.trim());
+}
+
+function splitTupleList(value) {
+  const inner = String(value || '').trim().replace(/^\(/, '').replace(/\)$/, '');
+  return splitTopLevel(inner)
+    .map((item) => item.trim().replace(/^\(/, '').replace(/\)$/, ''))
+    .filter(Boolean);
+}
+
+function toSingAndRule(ruleText) {
+  const [type, value, policy] = splitTopLevel(ruleText);
+  if (type !== 'AND' || !policy) return null;
+
+  const conditions = splitTupleList(value).map(splitTopLevel);
+  const process = conditions.find((condition) => condition[0] === 'PROCESS-NAME');
+  const domain = conditions.find((condition) => ['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD', 'DOMAIN-REGEX'].includes(condition[0]));
+  if (!process || !domain || conditions.length !== 2) return null;
+
+  const result = isRejectTarget(policy)
+    ? { process_name: [process[1]], action: 'reject' }
+    : { process_name: [process[1]], action: 'route', outbound: policy };
+  if (domain[0] === 'DOMAIN') result.domain = [domain[1]];
+  else if (domain[0] === 'DOMAIN-SUFFIX') result.domain_suffix = [domain[1]];
+  else if (domain[0] === 'DOMAIN-KEYWORD') result.domain_keyword = [domain[1]];
+  else result.domain_regex = [domain[1]];
+  return result;
+}
+
 function toSingRule(ruleText, availableRuleSets) {
   if (typeof ruleText !== 'string') return null;
   const parts = ruleText.split(',');
@@ -529,6 +573,12 @@ for (const rule of rules) {
       convertedRules.push(...quicRules);
       insertedQuicRules = true;
     }
+    continue;
+  }
+  const logical = toSingAndRule(rule);
+  if (logical) {
+    convertedRules.push(logical);
+    convertedSourceRules++;
     continue;
   }
   const parts = String(rule).split(',');

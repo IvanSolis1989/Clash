@@ -1,0 +1,3 @@
+# api.github.com is a shared GitHub API endpoint, not an AI-only endpoint.
+# Process-scoped Copilot traffic is handled by source-graph AND rules before this set.
+DOMAIN,api.github.com

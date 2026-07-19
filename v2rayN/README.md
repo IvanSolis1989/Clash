@@ -1,8 +1,8 @@
-# v2rayN 使用教程（对齐 Clash Party v6.0.8）
+# v2rayN 使用教程（对齐 Clash Party v6.0.9）
 
 > 目录简介：这里提供 v2rayN 多核心导入教程和 Xray 路由 JSON fallback 产物说明。
 >
-> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.8-v2n.1（Build 2026-07-15；基线：Clash Party v6.0.8；变更历史见 `v2rayN/CHANGELOG.md`）。
+> 路径 C（Xray 核）产物：`v2rayN/v2rayN(xray).json` v6.0.9-v2n.1（Build 2026-07-19；基线：Clash Party v6.0.9；变更历史见 `v2rayN/CHANGELOG.md`）。
 
 ---
 
@@ -46,8 +46,8 @@ SingBox Full 使用 `rulesets/generated/fused/sing-box/*.srs`，是本仓库 fus
 `v2rayN/v2rayN(xray).json` 是给 Xray 核心准备的降级路由规则数组。当前文件由 `tools/generate-fused-fallback-artifacts.js` 从 `rulesets/generated/fused/sing-box/*.json` 展平成原生 Xray RuleObject：
 
 - 1 条禁用 meta 规则。
-- 65 条非空 fused 顺序段 + 17 条必要内联规则 + 1 条元数据，共 83 条 Xray RuleObject，保持源规则图的首匹配顺序。
-- 17 条端口、逻辑组合和 `MATCH` 等必要内联规则。
+- 66 条非空 fused 顺序段 + 19 条可表达内联规则 + 1 条元数据，共 86 条 Xray RuleObject，保持源规则图的首匹配顺序。
+- 19 条端口、进程加域名逻辑组合和 `MATCH` 等必要内联规则。
 - 出站只使用 `proxy`、`direct`、`block` 三个标签。
 
 Xray routing 支持 `domain`、`ip`、`port`、`process`、`outboundTag` 等 RuleObject 字段，但没有 sing-box `.srs` 远程 rule-set 字段。因此路径 C 不能像 sing-box 一样引用远程 `.srs`，只能把 fused JSON 展开为 Xray 原生数组。广告段很大，所以 JSON 文件体积明显大于旧手写版。

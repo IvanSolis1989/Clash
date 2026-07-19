@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.9 (2026-07-19)
+
+- FIX#176 后续全量审计：上游 `szkane-ai` 的 `api.github.com` 规则覆盖浏览器普通 GitHub API 调用，现将通用域名放入 `scki-github-api-tools` 补充规则集，并在广义 AI 规则前融合到 `🔧 工具与服务`。
+- PRECISION：桌面 Mihomo、sing-box 与 Xray fallback 仅在 `Code Helper` 或 `Code Helper (Plugin)` 访问 `api.github.com` 时保留 `🤖 AI 服务`；无进程识别能力的 Egern、iOS 与路由器产物使用通用工具组回退，`api.githubcopilot.com` 继续归入 AI。
+- SYNC：源图 `514 providers / 973 rules` 编译为 `69` 段、`127` 个 Mihomo provider / `146` 条主规则、`66` 个文本 / SRS 资产、`86` 条 Xray RuleObject；MRS `failed=0`、fused `unresolved=0`。
+
 ## 文档治理 (2026-07-16)
 
 - GOVERNANCE-SINGLE-SOURCE：将原 `CLAUDE.md` 的完整维护手册与原 `AGENTS.md` 的多代理协作、受保护文件和常见错误约定合并为唯一入口 `AGENTS.md`，删除双文件优先级与同步负担。

@@ -1,21 +1,21 @@
 {
-  "generated_at": "2026-07-14T23:11:43.648Z",
+  "generated_at": "2026-07-19T00:37:16.636Z",
   "authority": "rulesets/source/routing-graph.js after Mihomo MRS normalization",
-  "baseline_version": "v6.0.8",
-  "asset_revision": "v6.0.8",
-  "source_provider_count": 513,
-  "source_rule_count": 970,
-  "fused_provider_count": 126,
-  "fused_rule_count": 143,
-  "inline_rule_count": 17,
-  "segment_count": 68,
-  "generated_mrs_files": 91,
-  "generated_srs_files": 65,
+  "baseline_version": "v6.0.9",
+  "asset_revision": "v6.0.9",
+  "source_provider_count": 514,
+  "source_rule_count": 973,
+  "fused_provider_count": 127,
+  "fused_rule_count": 146,
+  "inline_rule_count": 19,
+  "segment_count": 69,
+  "generated_mrs_files": 92,
+  "generated_srs_files": 66,
   "sing_box_binary": "sing-box.exe",
   "remote_asset_max_bytes": 18874368,
   "optimization": {
-    "input": 787504,
-    "output": 594200,
+    "input": 787505,
+    "output": 594201,
     "exactDuplicates": 103618,
     "domainSubsumed": 77113,
     "cidrSubsumed": 33,
@@ -24,7 +24,7 @@
     "removed": 193304
   },
   "pruned_empty_segments": [
-    "scki-fused-069-cn-site"
+    "scki-fused-070-cn-site"
   ],
   "unresolved_providers": [],
   "unresolved_sources": [],
@@ -2652,58 +2652,180 @@
       }
     },
     {
-      "id": "scki-fused-022-ai",
+      "id": "scki-fused-022-tools",
+      "policy": "🔧 工具与服务",
+      "source_rules": 1,
+      "files": {
+        "domain": {
+          "behavior": "domain",
+          "format": "mrs",
+          "file": "scki-fused-022-tools-domain.mrs",
+          "source": "scki-fused-022-tools-domain.yaml"
+        },
+        "clash": {
+          "format": "text",
+          "file": "scki-fused-022-tools.list"
+        },
+        "surge": {
+          "format": "text",
+          "file": "scki-fused-022-tools.list"
+        },
+        "quantumultx": {
+          "format": "text",
+          "file": "scki-fused-022-tools.list"
+        },
+        "egern": {
+          "format": "yaml",
+          "file": "scki-fused-022-tools.yaml"
+        },
+        "sing_box": {
+          "format": "binary",
+          "file": "scki-fused-022-tools.srs",
+          "source": "scki-fused-022-tools.json"
+        },
+        "passwall": {
+          "format": "text",
+          "file": "scki-fused-022-tools.list",
+          "source": "sing-box/scki-fused-022-tools.srs"
+        },
+        "xray": {
+          "format": "inline-json",
+          "file": "v2rayN/v2rayN(xray).json",
+          "source": "sing-box/scki-fused-022-tools.json"
+        }
+      },
+      "counts": {
+        "domain": 1,
+        "ipcidr": 0,
+        "ipcidr_no_resolve": 0,
+        "residual": 0
+      },
+      "optimization": {
+        "input": 1,
+        "output": 1,
+        "exactDuplicates": 0,
+        "domainSubsumed": 0,
+        "cidrSubsumed": 0,
+        "normalized": 0,
+        "removed": 0,
+        "buckets": {
+          "domain": {
+            "input": 1,
+            "output": 1,
+            "exactDuplicates": 0,
+            "domainSubsumed": 0,
+            "cidrSubsumed": 0,
+            "normalized": 0
+          },
+          "ipcidr": {
+            "input": 0,
+            "output": 0,
+            "exactDuplicates": 0,
+            "domainSubsumed": 0,
+            "cidrSubsumed": 0,
+            "normalized": 0
+          },
+          "ipcidrNoResolve": {
+            "input": 0,
+            "output": 0,
+            "exactDuplicates": 0,
+            "domainSubsumed": 0,
+            "cidrSubsumed": 0,
+            "normalized": 0
+          },
+          "residual": {
+            "input": 0,
+            "output": 0,
+            "exactDuplicates": 0,
+            "domainSubsumed": 0,
+            "cidrSubsumed": 0,
+            "normalized": 0
+          }
+        },
+        "globalExactDuplicates": 0
+      },
+      "target_counts": {
+        "mobile": 1,
+        "sing_box": 1
+      },
+      "target_ip_counts": {
+        "mobile": 0,
+        "sing_box": 0
+      },
+      "target_optimization": {
+        "mobile": {
+          "input": 1,
+          "output": 1,
+          "exactDuplicates": 0,
+          "domainSubsumed": 0,
+          "cidrSubsumed": 0,
+          "normalized": 0,
+          "globalExactDuplicates": 0
+        },
+        "sing_box": {
+          "input": 1,
+          "output": 1,
+          "exactDuplicates": 0,
+          "domainSubsumed": 0,
+          "cidrSubsumed": 0,
+          "normalized": 0,
+          "globalExactDuplicates": 0
+        }
+      }
+    },
+    {
+      "id": "scki-fused-023-ai",
       "policy": "🤖 AI 服务",
       "source_rules": 13,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-022-ai-domain.mrs",
-          "source": "scki-fused-022-ai-domain.yaml"
+          "file": "scki-fused-023-ai-domain.mrs",
+          "source": "scki-fused-023-ai-domain.yaml"
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-022-ai-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-022-ai-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-023-ai-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-023-ai-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-022-ai-residual.yaml"
+          "file": "scki-fused-023-ai-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-022-ai.list"
+          "file": "scki-fused-023-ai.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-022-ai.list"
+          "file": "scki-fused-023-ai.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-022-ai.list"
+          "file": "scki-fused-023-ai.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-022-ai.yaml"
+          "file": "scki-fused-023-ai.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-022-ai.srs",
-          "source": "scki-fused-022-ai.json"
+          "file": "scki-fused-023-ai.srs",
+          "source": "scki-fused-023-ai.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-022-ai.list",
-          "source": "sing-box/scki-fused-022-ai.srs"
+          "file": "scki-fused-023-ai.list",
+          "source": "sing-box/scki-fused-023-ai.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-022-ai.json"
+          "source": "sing-box/scki-fused-023-ai.json"
         }
       },
       "counts": {
@@ -2789,51 +2911,51 @@
       }
     },
     {
-      "id": "scki-fused-023-crypto",
+      "id": "scki-fused-024-crypto",
       "policy": "💰 加密货币",
       "source_rules": 11,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-023-crypto-domain.mrs",
-          "source": "scki-fused-023-crypto-domain.yaml"
+          "file": "scki-fused-024-crypto-domain.mrs",
+          "source": "scki-fused-024-crypto-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-023-crypto-residual.yaml"
+          "file": "scki-fused-024-crypto-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-023-crypto.list"
+          "file": "scki-fused-024-crypto.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-023-crypto.list"
+          "file": "scki-fused-024-crypto.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-023-crypto.list"
+          "file": "scki-fused-024-crypto.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-023-crypto.yaml"
+          "file": "scki-fused-024-crypto.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-023-crypto.srs",
-          "source": "scki-fused-023-crypto.json"
+          "file": "scki-fused-024-crypto.srs",
+          "source": "scki-fused-024-crypto.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-023-crypto.list",
-          "source": "sing-box/scki-fused-023-crypto.srs"
+          "file": "scki-fused-024-crypto.list",
+          "source": "sing-box/scki-fused-024-crypto.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-023-crypto.json"
+          "source": "sing-box/scki-fused-024-crypto.json"
         }
       },
       "counts": {
@@ -2917,51 +3039,51 @@
       }
     },
     {
-      "id": "scki-fused-024-payments",
+      "id": "scki-fused-025-payments",
       "policy": "🏦 金融支付",
       "source_rules": 42,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-024-payments-domain.mrs",
-          "source": "scki-fused-024-payments-domain.yaml"
+          "file": "scki-fused-025-payments-domain.mrs",
+          "source": "scki-fused-025-payments-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-024-payments-residual.yaml"
+          "file": "scki-fused-025-payments-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-024-payments.list"
+          "file": "scki-fused-025-payments.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-024-payments.list"
+          "file": "scki-fused-025-payments.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-024-payments.list"
+          "file": "scki-fused-025-payments.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-024-payments.yaml"
+          "file": "scki-fused-025-payments.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-024-payments.srs",
-          "source": "scki-fused-024-payments.json"
+          "file": "scki-fused-025-payments.srs",
+          "source": "scki-fused-025-payments.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-024-payments.list",
-          "source": "sing-box/scki-fused-024-payments.srs"
+          "file": "scki-fused-025-payments.list",
+          "source": "sing-box/scki-fused-025-payments.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-024-payments.json"
+          "source": "sing-box/scki-fused-025-payments.json"
         }
       },
       "counts": {
@@ -3045,46 +3167,46 @@
       }
     },
     {
-      "id": "scki-fused-025-microsoft",
+      "id": "scki-fused-026-microsoft",
       "policy": "Ⓜ️ 微软服务",
       "source_rules": 3,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-025-microsoft-domain.mrs",
-          "source": "scki-fused-025-microsoft-domain.yaml"
+          "file": "scki-fused-026-microsoft-domain.mrs",
+          "source": "scki-fused-026-microsoft-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-025-microsoft.list"
+          "file": "scki-fused-026-microsoft.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-025-microsoft.list"
+          "file": "scki-fused-026-microsoft.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-025-microsoft.list"
+          "file": "scki-fused-026-microsoft.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-025-microsoft.yaml"
+          "file": "scki-fused-026-microsoft.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-025-microsoft.srs",
-          "source": "scki-fused-025-microsoft.json"
+          "file": "scki-fused-026-microsoft.srs",
+          "source": "scki-fused-026-microsoft.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-025-microsoft.list",
-          "source": "sing-box/scki-fused-025-microsoft.srs"
+          "file": "scki-fused-026-microsoft.list",
+          "source": "sing-box/scki-fused-026-microsoft.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-025-microsoft.json"
+          "source": "sing-box/scki-fused-026-microsoft.json"
         }
       },
       "counts": {
@@ -3167,46 +3289,46 @@
       }
     },
     {
-      "id": "scki-fused-026-intl-site",
+      "id": "scki-fused-027-intl-site",
       "policy": "🌐 国外网站",
       "source_rules": 21,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-026-intl-site-domain.mrs",
-          "source": "scki-fused-026-intl-site-domain.yaml"
+          "file": "scki-fused-027-intl-site-domain.mrs",
+          "source": "scki-fused-027-intl-site-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-026-intl-site.list"
+          "file": "scki-fused-027-intl-site.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-026-intl-site.list"
+          "file": "scki-fused-027-intl-site.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-026-intl-site.list"
+          "file": "scki-fused-027-intl-site.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-026-intl-site.yaml"
+          "file": "scki-fused-027-intl-site.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-026-intl-site.srs",
-          "source": "scki-fused-026-intl-site.json"
+          "file": "scki-fused-027-intl-site.srs",
+          "source": "scki-fused-027-intl-site.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-026-intl-site.list",
-          "source": "sing-box/scki-fused-026-intl-site.srs"
+          "file": "scki-fused-027-intl-site.list",
+          "source": "sing-box/scki-fused-027-intl-site.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-026-intl-site.json"
+          "source": "sing-box/scki-fused-027-intl-site.json"
         }
       },
       "counts": {
@@ -3290,46 +3412,46 @@
       }
     },
     {
-      "id": "scki-fused-027-direct",
+      "id": "scki-fused-028-direct",
       "policy": "DIRECT",
       "source_rules": 5,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-027-direct-domain.mrs",
-          "source": "scki-fused-027-direct-domain.yaml"
+          "file": "scki-fused-028-direct-domain.mrs",
+          "source": "scki-fused-028-direct-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-027-direct.list"
+          "file": "scki-fused-028-direct.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-027-direct.list"
+          "file": "scki-fused-028-direct.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-027-direct.list"
+          "file": "scki-fused-028-direct.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-027-direct.yaml"
+          "file": "scki-fused-028-direct.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-027-direct.srs",
-          "source": "scki-fused-027-direct.json"
+          "file": "scki-fused-028-direct.srs",
+          "source": "scki-fused-028-direct.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-027-direct.list",
-          "source": "sing-box/scki-fused-027-direct.srs"
+          "file": "scki-fused-028-direct.list",
+          "source": "sing-box/scki-fused-028-direct.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-027-direct.json"
+          "source": "sing-box/scki-fused-028-direct.json"
         }
       },
       "counts": {
@@ -3412,65 +3534,65 @@
       }
     },
     {
-      "id": "scki-fused-028-im",
+      "id": "scki-fused-029-im",
       "policy": "💬 即时通讯",
       "source_rules": 35,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-028-im-domain.mrs",
-          "source": "scki-fused-028-im-domain.yaml"
+          "file": "scki-fused-029-im-domain.mrs",
+          "source": "scki-fused-029-im-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-028-im-ipcidr.mrs",
-          "source": "scki-fused-028-im-ipcidr.yaml",
+          "file": "scki-fused-029-im-ipcidr.mrs",
+          "source": "scki-fused-029-im-ipcidr.yaml",
           "no_resolve": false
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-028-im-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-028-im-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-029-im-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-029-im-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-028-im-residual.yaml"
+          "file": "scki-fused-029-im-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-028-im.list"
+          "file": "scki-fused-029-im.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-028-im.list"
+          "file": "scki-fused-029-im.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-028-im.list"
+          "file": "scki-fused-029-im.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-028-im.yaml"
+          "file": "scki-fused-029-im.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-028-im.srs",
-          "source": "scki-fused-028-im.json"
+          "file": "scki-fused-029-im.srs",
+          "source": "scki-fused-029-im.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-028-im.list",
-          "source": "sing-box/scki-fused-028-im.srs"
+          "file": "scki-fused-029-im.list",
+          "source": "sing-box/scki-fused-029-im.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-028-im.json"
+          "source": "sing-box/scki-fused-029-im.json"
         }
       },
       "counts": {
@@ -3554,65 +3676,65 @@
       }
     },
     {
-      "id": "scki-fused-029-social",
+      "id": "scki-fused-030-social",
       "policy": "📱 社交媒体",
       "source_rules": 28,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-029-social-domain.mrs",
-          "source": "scki-fused-029-social-domain.yaml"
+          "file": "scki-fused-030-social-domain.mrs",
+          "source": "scki-fused-030-social-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-029-social-ipcidr.mrs",
-          "source": "scki-fused-029-social-ipcidr.yaml",
+          "file": "scki-fused-030-social-ipcidr.mrs",
+          "source": "scki-fused-030-social-ipcidr.yaml",
           "no_resolve": false
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-029-social-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-029-social-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-030-social-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-030-social-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-029-social-residual.yaml"
+          "file": "scki-fused-030-social-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-029-social.list"
+          "file": "scki-fused-030-social.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-029-social.list"
+          "file": "scki-fused-030-social.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-029-social.list"
+          "file": "scki-fused-030-social.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-029-social.yaml"
+          "file": "scki-fused-030-social.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-029-social.srs",
-          "source": "scki-fused-029-social.json"
+          "file": "scki-fused-030-social.srs",
+          "source": "scki-fused-030-social.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-029-social.list",
-          "source": "sing-box/scki-fused-029-social.srs"
+          "file": "scki-fused-030-social.list",
+          "source": "sing-box/scki-fused-030-social.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-029-social.json"
+          "source": "sing-box/scki-fused-030-social.json"
         }
       },
       "counts": {
@@ -3697,46 +3819,46 @@
       }
     },
     {
-      "id": "scki-fused-030-cn-site",
+      "id": "scki-fused-031-cn-site",
       "policy": "🏠 国内网站",
       "source_rules": 1,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-030-cn-site-domain.mrs",
-          "source": "scki-fused-030-cn-site-domain.yaml"
+          "file": "scki-fused-031-cn-site-domain.mrs",
+          "source": "scki-fused-031-cn-site-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-030-cn-site.list"
+          "file": "scki-fused-031-cn-site.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-030-cn-site.list"
+          "file": "scki-fused-031-cn-site.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-030-cn-site.list"
+          "file": "scki-fused-031-cn-site.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-030-cn-site.yaml"
+          "file": "scki-fused-031-cn-site.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-030-cn-site.srs",
-          "source": "scki-fused-030-cn-site.json"
+          "file": "scki-fused-031-cn-site.srs",
+          "source": "scki-fused-031-cn-site.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-030-cn-site.list",
-          "source": "sing-box/scki-fused-030-cn-site.srs"
+          "file": "scki-fused-031-cn-site.list",
+          "source": "sing-box/scki-fused-031-cn-site.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-030-cn-site.json"
+          "source": "sing-box/scki-fused-031-cn-site.json"
         }
       },
       "counts": {
@@ -3819,46 +3941,46 @@
       }
     },
     {
-      "id": "scki-fused-031-social",
+      "id": "scki-fused-032-social",
       "policy": "📱 社交媒体",
       "source_rules": 3,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-031-social-domain.mrs",
-          "source": "scki-fused-031-social-domain.yaml"
+          "file": "scki-fused-032-social-domain.mrs",
+          "source": "scki-fused-032-social-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-031-social.list"
+          "file": "scki-fused-032-social.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-031-social.list"
+          "file": "scki-fused-032-social.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-031-social.list"
+          "file": "scki-fused-032-social.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-031-social.yaml"
+          "file": "scki-fused-032-social.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-031-social.srs",
-          "source": "scki-fused-031-social.json"
+          "file": "scki-fused-032-social.srs",
+          "source": "scki-fused-032-social.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-031-social.list",
-          "source": "sing-box/scki-fused-031-social.srs"
+          "file": "scki-fused-032-social.list",
+          "source": "sing-box/scki-fused-032-social.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-031-social.json"
+          "source": "sing-box/scki-fused-032-social.json"
         }
       },
       "counts": {
@@ -3942,58 +4064,58 @@
       }
     },
     {
-      "id": "scki-fused-032-work",
+      "id": "scki-fused-033-work",
       "policy": "🧑‍💼 会议协作",
       "source_rules": 34,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-032-work-domain.mrs",
-          "source": "scki-fused-032-work-domain.yaml"
+          "file": "scki-fused-033-work-domain.mrs",
+          "source": "scki-fused-033-work-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-032-work-ipcidr.mrs",
-          "source": "scki-fused-032-work-ipcidr.yaml",
+          "file": "scki-fused-033-work-ipcidr.mrs",
+          "source": "scki-fused-033-work-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-032-work-residual.yaml"
+          "file": "scki-fused-033-work-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-032-work.list"
+          "file": "scki-fused-033-work.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-032-work.list"
+          "file": "scki-fused-033-work.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-032-work.list"
+          "file": "scki-fused-033-work.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-032-work.yaml"
+          "file": "scki-fused-033-work.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-032-work.srs",
-          "source": "scki-fused-032-work.json"
+          "file": "scki-fused-033-work.srs",
+          "source": "scki-fused-033-work.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-032-work.list",
-          "source": "sing-box/scki-fused-032-work.srs"
+          "file": "scki-fused-033-work.list",
+          "source": "sing-box/scki-fused-033-work.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-032-work.json"
+          "source": "sing-box/scki-fused-033-work.json"
         }
       },
       "counts": {
@@ -4078,46 +4200,46 @@
       }
     },
     {
-      "id": "scki-fused-033-direct",
+      "id": "scki-fused-034-direct",
       "policy": "DIRECT",
       "source_rules": 3,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-033-direct-domain.mrs",
-          "source": "scki-fused-033-direct-domain.yaml"
+          "file": "scki-fused-034-direct-domain.mrs",
+          "source": "scki-fused-034-direct-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-033-direct.list"
+          "file": "scki-fused-034-direct.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-033-direct.list"
+          "file": "scki-fused-034-direct.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-033-direct.list"
+          "file": "scki-fused-034-direct.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-033-direct.yaml"
+          "file": "scki-fused-034-direct.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-033-direct.srs",
-          "source": "scki-fused-033-direct.json"
+          "file": "scki-fused-034-direct.srs",
+          "source": "scki-fused-034-direct.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-033-direct.list",
-          "source": "sing-box/scki-fused-033-direct.srs"
+          "file": "scki-fused-034-direct.list",
+          "source": "sing-box/scki-fused-034-direct.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-033-direct.json"
+          "source": "sing-box/scki-fused-034-direct.json"
         }
       },
       "counts": {
@@ -4200,46 +4322,46 @@
       }
     },
     {
-      "id": "scki-fused-034-cnmedia",
+      "id": "scki-fused-035-cnmedia",
       "policy": "📺 国内流媒体",
       "source_rules": 1,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-034-cnmedia-domain.mrs",
-          "source": "scki-fused-034-cnmedia-domain.yaml"
+          "file": "scki-fused-035-cnmedia-domain.mrs",
+          "source": "scki-fused-035-cnmedia-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-034-cnmedia.list"
+          "file": "scki-fused-035-cnmedia.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-034-cnmedia.list"
+          "file": "scki-fused-035-cnmedia.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-034-cnmedia.list"
+          "file": "scki-fused-035-cnmedia.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-034-cnmedia.yaml"
+          "file": "scki-fused-035-cnmedia.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-034-cnmedia.srs",
-          "source": "scki-fused-034-cnmedia.json"
+          "file": "scki-fused-035-cnmedia.srs",
+          "source": "scki-fused-035-cnmedia.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-034-cnmedia.list",
-          "source": "sing-box/scki-fused-034-cnmedia.srs"
+          "file": "scki-fused-035-cnmedia.list",
+          "source": "sing-box/scki-fused-035-cnmedia.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-034-cnmedia.json"
+          "source": "sing-box/scki-fused-035-cnmedia.json"
         }
       },
       "counts": {
@@ -4322,46 +4444,46 @@
       }
     },
     {
-      "id": "scki-fused-035-tiktok",
+      "id": "scki-fused-036-tiktok",
       "policy": "🎵 TikTok",
       "source_rules": 1,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-035-tiktok-domain.mrs",
-          "source": "scki-fused-035-tiktok-domain.yaml"
+          "file": "scki-fused-036-tiktok-domain.mrs",
+          "source": "scki-fused-036-tiktok-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-035-tiktok.list"
+          "file": "scki-fused-036-tiktok.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-035-tiktok.list"
+          "file": "scki-fused-036-tiktok.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-035-tiktok.list"
+          "file": "scki-fused-036-tiktok.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-035-tiktok.yaml"
+          "file": "scki-fused-036-tiktok.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-035-tiktok.srs",
-          "source": "scki-fused-035-tiktok.json"
+          "file": "scki-fused-036-tiktok.srs",
+          "source": "scki-fused-036-tiktok.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-035-tiktok.list",
-          "source": "sing-box/scki-fused-035-tiktok.srs"
+          "file": "scki-fused-036-tiktok.list",
+          "source": "sing-box/scki-fused-036-tiktok.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-035-tiktok.json"
+          "source": "sing-box/scki-fused-036-tiktok.json"
         }
       },
       "counts": {
@@ -4445,46 +4567,46 @@
       }
     },
     {
-      "id": "scki-fused-036-youtube",
+      "id": "scki-fused-037-youtube",
       "policy": "📹 YouTube",
       "source_rules": 1,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-036-youtube-domain.mrs",
-          "source": "scki-fused-036-youtube-domain.yaml"
+          "file": "scki-fused-037-youtube-domain.mrs",
+          "source": "scki-fused-037-youtube-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-036-youtube.list"
+          "file": "scki-fused-037-youtube.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-036-youtube.list"
+          "file": "scki-fused-037-youtube.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-036-youtube.list"
+          "file": "scki-fused-037-youtube.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-036-youtube.yaml"
+          "file": "scki-fused-037-youtube.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-036-youtube.srs",
-          "source": "scki-fused-036-youtube.json"
+          "file": "scki-fused-037-youtube.srs",
+          "source": "scki-fused-037-youtube.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-036-youtube.list",
-          "source": "sing-box/scki-fused-036-youtube.srs"
+          "file": "scki-fused-037-youtube.list",
+          "source": "sing-box/scki-fused-037-youtube.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-036-youtube.json"
+          "source": "sing-box/scki-fused-037-youtube.json"
         }
       },
       "counts": {
@@ -4568,53 +4690,53 @@
       }
     },
     {
-      "id": "scki-fused-037-netflix",
+      "id": "scki-fused-038-netflix",
       "policy": "🎥 Netflix",
       "source_rules": 3,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-037-netflix-domain.mrs",
-          "source": "scki-fused-037-netflix-domain.yaml"
+          "file": "scki-fused-038-netflix-domain.mrs",
+          "source": "scki-fused-038-netflix-domain.yaml"
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-037-netflix-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-037-netflix-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-038-netflix-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-038-netflix-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-037-netflix.list"
+          "file": "scki-fused-038-netflix.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-037-netflix.list"
+          "file": "scki-fused-038-netflix.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-037-netflix.list"
+          "file": "scki-fused-038-netflix.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-037-netflix.yaml"
+          "file": "scki-fused-038-netflix.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-037-netflix.srs",
-          "source": "scki-fused-037-netflix.json"
+          "file": "scki-fused-038-netflix.srs",
+          "source": "scki-fused-038-netflix.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-037-netflix.list",
-          "source": "sing-box/scki-fused-037-netflix.srs"
+          "file": "scki-fused-038-netflix.list",
+          "source": "sing-box/scki-fused-038-netflix.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-037-netflix.json"
+          "source": "sing-box/scki-fused-038-netflix.json"
         }
       },
       "counts": {
@@ -4697,51 +4819,51 @@
       }
     },
     {
-      "id": "scki-fused-038-disney",
+      "id": "scki-fused-039-disney",
       "policy": "🎬 Disney+",
       "source_rules": 2,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-038-disney-domain.mrs",
-          "source": "scki-fused-038-disney-domain.yaml"
+          "file": "scki-fused-039-disney-domain.mrs",
+          "source": "scki-fused-039-disney-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-038-disney-residual.yaml"
+          "file": "scki-fused-039-disney-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-038-disney.list"
+          "file": "scki-fused-039-disney.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-038-disney.list"
+          "file": "scki-fused-039-disney.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-038-disney.list"
+          "file": "scki-fused-039-disney.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-038-disney.yaml"
+          "file": "scki-fused-039-disney.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-038-disney.srs",
-          "source": "scki-fused-038-disney.json"
+          "file": "scki-fused-039-disney.srs",
+          "source": "scki-fused-039-disney.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-038-disney.list",
-          "source": "sing-box/scki-fused-038-disney.srs"
+          "file": "scki-fused-039-disney.list",
+          "source": "sing-box/scki-fused-039-disney.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-038-disney.json"
+          "source": "sing-box/scki-fused-039-disney.json"
         }
       },
       "counts": {
@@ -4825,51 +4947,51 @@
       }
     },
     {
-      "id": "scki-fused-039-hbo-max",
+      "id": "scki-fused-040-hbo-max",
       "policy": "📡 HBO/Max",
       "source_rules": 2,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-039-hbo-max-domain.mrs",
-          "source": "scki-fused-039-hbo-max-domain.yaml"
+          "file": "scki-fused-040-hbo-max-domain.mrs",
+          "source": "scki-fused-040-hbo-max-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-039-hbo-max-residual.yaml"
+          "file": "scki-fused-040-hbo-max-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-039-hbo-max.list"
+          "file": "scki-fused-040-hbo-max.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-039-hbo-max.list"
+          "file": "scki-fused-040-hbo-max.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-039-hbo-max.list"
+          "file": "scki-fused-040-hbo-max.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-039-hbo-max.yaml"
+          "file": "scki-fused-040-hbo-max.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-039-hbo-max.srs",
-          "source": "scki-fused-039-hbo-max.json"
+          "file": "scki-fused-040-hbo-max.srs",
+          "source": "scki-fused-040-hbo-max.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-039-hbo-max.list",
-          "source": "sing-box/scki-fused-039-hbo-max.srs"
+          "file": "scki-fused-040-hbo-max.list",
+          "source": "sing-box/scki-fused-040-hbo-max.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-039-hbo-max.json"
+          "source": "sing-box/scki-fused-040-hbo-max.json"
         }
       },
       "counts": {
@@ -4953,51 +5075,51 @@
       }
     },
     {
-      "id": "scki-fused-040-hulu",
+      "id": "scki-fused-041-hulu",
       "policy": "📺 Hulu",
       "source_rules": 2,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-040-hulu-domain.mrs",
-          "source": "scki-fused-040-hulu-domain.yaml"
+          "file": "scki-fused-041-hulu-domain.mrs",
+          "source": "scki-fused-041-hulu-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-040-hulu-residual.yaml"
+          "file": "scki-fused-041-hulu-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-040-hulu.list"
+          "file": "scki-fused-041-hulu.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-040-hulu.list"
+          "file": "scki-fused-041-hulu.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-040-hulu.list"
+          "file": "scki-fused-041-hulu.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-040-hulu.yaml"
+          "file": "scki-fused-041-hulu.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-040-hulu.srs",
-          "source": "scki-fused-040-hulu.json"
+          "file": "scki-fused-041-hulu.srs",
+          "source": "scki-fused-041-hulu.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-040-hulu.list",
-          "source": "sing-box/scki-fused-040-hulu.srs"
+          "file": "scki-fused-041-hulu.list",
+          "source": "sing-box/scki-fused-041-hulu.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-040-hulu.json"
+          "source": "sing-box/scki-fused-041-hulu.json"
         }
       },
       "counts": {
@@ -5080,58 +5202,58 @@
       }
     },
     {
-      "id": "scki-fused-041-prime-video",
+      "id": "scki-fused-042-prime-video",
       "policy": "🎬 Prime Video",
       "source_rules": 5,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-041-prime-video-domain.mrs",
-          "source": "scki-fused-041-prime-video-domain.yaml"
+          "file": "scki-fused-042-prime-video-domain.mrs",
+          "source": "scki-fused-042-prime-video-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-041-prime-video-ipcidr.mrs",
-          "source": "scki-fused-041-prime-video-ipcidr.yaml",
+          "file": "scki-fused-042-prime-video-ipcidr.mrs",
+          "source": "scki-fused-042-prime-video-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-041-prime-video-residual.yaml"
+          "file": "scki-fused-042-prime-video-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-041-prime-video.list"
+          "file": "scki-fused-042-prime-video.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-041-prime-video.list"
+          "file": "scki-fused-042-prime-video.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-041-prime-video.list"
+          "file": "scki-fused-042-prime-video.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-041-prime-video.yaml"
+          "file": "scki-fused-042-prime-video.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-041-prime-video.srs",
-          "source": "scki-fused-041-prime-video.json"
+          "file": "scki-fused-042-prime-video.srs",
+          "source": "scki-fused-042-prime-video.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-041-prime-video.list",
-          "source": "sing-box/scki-fused-041-prime-video.srs"
+          "file": "scki-fused-042-prime-video.list",
+          "source": "sing-box/scki-fused-042-prime-video.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-041-prime-video.json"
+          "source": "sing-box/scki-fused-042-prime-video.json"
         }
       },
       "counts": {
@@ -5216,53 +5338,53 @@
       }
     },
     {
-      "id": "scki-fused-042-music",
+      "id": "scki-fused-043-music",
       "policy": "🎵 音乐流媒体",
       "source_rules": 10,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-042-music-domain.mrs",
-          "source": "scki-fused-042-music-domain.yaml"
+          "file": "scki-fused-043-music-domain.mrs",
+          "source": "scki-fused-043-music-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-042-music-ipcidr.mrs",
-          "source": "scki-fused-042-music-ipcidr.yaml",
+          "file": "scki-fused-043-music-ipcidr.mrs",
+          "source": "scki-fused-043-music-ipcidr.yaml",
           "no_resolve": false
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-042-music.list"
+          "file": "scki-fused-043-music.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-042-music.list"
+          "file": "scki-fused-043-music.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-042-music.list"
+          "file": "scki-fused-043-music.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-042-music.yaml"
+          "file": "scki-fused-043-music.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-042-music.srs",
-          "source": "scki-fused-042-music.json"
+          "file": "scki-fused-043-music.srs",
+          "source": "scki-fused-043-music.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-042-music.list",
-          "source": "sing-box/scki-fused-042-music.srs"
+          "file": "scki-fused-043-music.list",
+          "source": "sing-box/scki-fused-043-music.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-042-music.json"
+          "source": "sing-box/scki-fused-043-music.json"
         }
       },
       "counts": {
@@ -5345,58 +5467,58 @@
       }
     },
     {
-      "id": "scki-fused-043-stream-hk",
+      "id": "scki-fused-044-stream-hk",
       "policy": "🇭🇰 香港流媒体",
       "source_rules": 17,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-043-stream-hk-domain.mrs",
-          "source": "scki-fused-043-stream-hk-domain.yaml"
+          "file": "scki-fused-044-stream-hk-domain.mrs",
+          "source": "scki-fused-044-stream-hk-domain.yaml"
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-043-stream-hk-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-043-stream-hk-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-044-stream-hk-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-044-stream-hk-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-043-stream-hk-residual.yaml"
+          "file": "scki-fused-044-stream-hk-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-043-stream-hk.list"
+          "file": "scki-fused-044-stream-hk.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-043-stream-hk.list"
+          "file": "scki-fused-044-stream-hk.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-043-stream-hk.list"
+          "file": "scki-fused-044-stream-hk.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-043-stream-hk.yaml"
+          "file": "scki-fused-044-stream-hk.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-043-stream-hk.srs",
-          "source": "scki-fused-043-stream-hk.json"
+          "file": "scki-fused-044-stream-hk.srs",
+          "source": "scki-fused-044-stream-hk.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-043-stream-hk.list",
-          "source": "sing-box/scki-fused-043-stream-hk.srs"
+          "file": "scki-fused-044-stream-hk.list",
+          "source": "sing-box/scki-fused-044-stream-hk.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-043-stream-hk.json"
+          "source": "sing-box/scki-fused-044-stream-hk.json"
         }
       },
       "counts": {
@@ -5480,51 +5602,51 @@
       }
     },
     {
-      "id": "scki-fused-044-stream-tw",
+      "id": "scki-fused-045-stream-tw",
       "policy": "🇹🇼 台湾流媒体",
       "source_rules": 16,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-044-stream-tw-domain.mrs",
-          "source": "scki-fused-044-stream-tw-domain.yaml"
+          "file": "scki-fused-045-stream-tw-domain.mrs",
+          "source": "scki-fused-045-stream-tw-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-044-stream-tw-residual.yaml"
+          "file": "scki-fused-045-stream-tw-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-044-stream-tw.list"
+          "file": "scki-fused-045-stream-tw.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-044-stream-tw.list"
+          "file": "scki-fused-045-stream-tw.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-044-stream-tw.list"
+          "file": "scki-fused-045-stream-tw.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-044-stream-tw.yaml"
+          "file": "scki-fused-045-stream-tw.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-044-stream-tw.srs",
-          "source": "scki-fused-044-stream-tw.json"
+          "file": "scki-fused-045-stream-tw.srs",
+          "source": "scki-fused-045-stream-tw.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-044-stream-tw.list",
-          "source": "sing-box/scki-fused-044-stream-tw.srs"
+          "file": "scki-fused-045-stream-tw.list",
+          "source": "sing-box/scki-fused-045-stream-tw.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-044-stream-tw.json"
+          "source": "sing-box/scki-fused-045-stream-tw.json"
         }
       },
       "counts": {
@@ -5608,58 +5730,58 @@
       }
     },
     {
-      "id": "scki-fused-045-stream-jpkr",
+      "id": "scki-fused-046-stream-jpkr",
       "policy": "🇯🇵 日韩流媒体",
       "source_rules": 39,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-045-stream-jpkr-domain.mrs",
-          "source": "scki-fused-045-stream-jpkr-domain.yaml"
+          "file": "scki-fused-046-stream-jpkr-domain.mrs",
+          "source": "scki-fused-046-stream-jpkr-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-045-stream-jpkr-ipcidr.mrs",
-          "source": "scki-fused-045-stream-jpkr-ipcidr.yaml",
+          "file": "scki-fused-046-stream-jpkr-ipcidr.mrs",
+          "source": "scki-fused-046-stream-jpkr-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-045-stream-jpkr-residual.yaml"
+          "file": "scki-fused-046-stream-jpkr-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-045-stream-jpkr.list"
+          "file": "scki-fused-046-stream-jpkr.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-045-stream-jpkr.list"
+          "file": "scki-fused-046-stream-jpkr.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-045-stream-jpkr.list"
+          "file": "scki-fused-046-stream-jpkr.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-045-stream-jpkr.yaml"
+          "file": "scki-fused-046-stream-jpkr.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-045-stream-jpkr.srs",
-          "source": "scki-fused-045-stream-jpkr.json"
+          "file": "scki-fused-046-stream-jpkr.srs",
+          "source": "scki-fused-046-stream-jpkr.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-045-stream-jpkr.list",
-          "source": "sing-box/scki-fused-045-stream-jpkr.srs"
+          "file": "scki-fused-046-stream-jpkr.list",
+          "source": "sing-box/scki-fused-046-stream-jpkr.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-045-stream-jpkr.json"
+          "source": "sing-box/scki-fused-046-stream-jpkr.json"
         }
       },
       "counts": {
@@ -5743,51 +5865,51 @@
       }
     },
     {
-      "id": "scki-fused-046-stream-eu",
+      "id": "scki-fused-047-stream-eu",
       "policy": "🇪🇺 欧洲流媒体",
       "source_rules": 33,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-046-stream-eu-domain.mrs",
-          "source": "scki-fused-046-stream-eu-domain.yaml"
+          "file": "scki-fused-047-stream-eu-domain.mrs",
+          "source": "scki-fused-047-stream-eu-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-046-stream-eu-residual.yaml"
+          "file": "scki-fused-047-stream-eu-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-046-stream-eu.list"
+          "file": "scki-fused-047-stream-eu.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-046-stream-eu.list"
+          "file": "scki-fused-047-stream-eu.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-046-stream-eu.list"
+          "file": "scki-fused-047-stream-eu.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-046-stream-eu.yaml"
+          "file": "scki-fused-047-stream-eu.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-046-stream-eu.srs",
-          "source": "scki-fused-046-stream-eu.json"
+          "file": "scki-fused-047-stream-eu.srs",
+          "source": "scki-fused-047-stream-eu.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-046-stream-eu.list",
-          "source": "sing-box/scki-fused-046-stream-eu.srs"
+          "file": "scki-fused-047-stream-eu.list",
+          "source": "sing-box/scki-fused-047-stream-eu.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-046-stream-eu.json"
+          "source": "sing-box/scki-fused-047-stream-eu.json"
         }
       },
       "counts": {
@@ -5871,58 +5993,58 @@
       }
     },
     {
-      "id": "scki-fused-047-stream-other",
+      "id": "scki-fused-048-stream-other",
       "policy": "🌐 其他国外流媒体",
       "source_rules": 59,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-047-stream-other-domain.mrs",
-          "source": "scki-fused-047-stream-other-domain.yaml"
+          "file": "scki-fused-048-stream-other-domain.mrs",
+          "source": "scki-fused-048-stream-other-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-047-stream-other-ipcidr.mrs",
-          "source": "scki-fused-047-stream-other-ipcidr.yaml",
+          "file": "scki-fused-048-stream-other-ipcidr.mrs",
+          "source": "scki-fused-048-stream-other-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-047-stream-other-residual.yaml"
+          "file": "scki-fused-048-stream-other-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-047-stream-other.list"
+          "file": "scki-fused-048-stream-other.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-047-stream-other.list"
+          "file": "scki-fused-048-stream-other.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-047-stream-other.list"
+          "file": "scki-fused-048-stream-other.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-047-stream-other.yaml"
+          "file": "scki-fused-048-stream-other.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-047-stream-other.srs",
-          "source": "scki-fused-047-stream-other.json"
+          "file": "scki-fused-048-stream-other.srs",
+          "source": "scki-fused-048-stream-other.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-047-stream-other.list",
-          "source": "sing-box/scki-fused-047-stream-other.srs"
+          "file": "scki-fused-048-stream-other.list",
+          "source": "sing-box/scki-fused-048-stream-other.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-047-stream-other.json"
+          "source": "sing-box/scki-fused-048-stream-other.json"
         }
       },
       "counts": {
@@ -6006,46 +6128,46 @@
       }
     },
     {
-      "id": "scki-fused-048-tools",
+      "id": "scki-fused-049-tools",
       "policy": "🔧 工具与服务",
       "source_rules": 12,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-048-tools-domain.mrs",
-          "source": "scki-fused-048-tools-domain.yaml"
+          "file": "scki-fused-049-tools-domain.mrs",
+          "source": "scki-fused-049-tools-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-048-tools.list"
+          "file": "scki-fused-049-tools.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-048-tools.list"
+          "file": "scki-fused-049-tools.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-048-tools.list"
+          "file": "scki-fused-049-tools.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-048-tools.yaml"
+          "file": "scki-fused-049-tools.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-048-tools.srs",
-          "source": "scki-fused-048-tools.json"
+          "file": "scki-fused-049-tools.srs",
+          "source": "scki-fused-049-tools.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-048-tools.list",
-          "source": "sing-box/scki-fused-048-tools.srs"
+          "file": "scki-fused-049-tools.list",
+          "source": "sing-box/scki-fused-049-tools.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-048-tools.json"
+          "source": "sing-box/scki-fused-049-tools.json"
         }
       },
       "counts": {
@@ -6129,46 +6251,46 @@
       }
     },
     {
-      "id": "scki-fused-049-google",
+      "id": "scki-fused-050-google",
       "policy": "🔍 Google 服务",
       "source_rules": 1,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-049-google-domain.mrs",
-          "source": "scki-fused-049-google-domain.yaml"
+          "file": "scki-fused-050-google-domain.mrs",
+          "source": "scki-fused-050-google-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-049-google.list"
+          "file": "scki-fused-050-google.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-049-google.list"
+          "file": "scki-fused-050-google.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-049-google.list"
+          "file": "scki-fused-050-google.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-049-google.yaml"
+          "file": "scki-fused-050-google.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-049-google.srs",
-          "source": "scki-fused-049-google.json"
+          "file": "scki-fused-050-google.srs",
+          "source": "scki-fused-050-google.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-049-google.list",
-          "source": "sing-box/scki-fused-049-google.srs"
+          "file": "scki-fused-050-google.list",
+          "source": "sing-box/scki-fused-050-google.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-049-google.json"
+          "source": "sing-box/scki-fused-050-google.json"
         }
       },
       "counts": {
@@ -6251,58 +6373,58 @@
       }
     },
     {
-      "id": "scki-fused-050-tools",
+      "id": "scki-fused-051-tools",
       "policy": "🔧 工具与服务",
       "source_rules": 62,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-050-tools-domain.mrs",
-          "source": "scki-fused-050-tools-domain.yaml"
+          "file": "scki-fused-051-tools-domain.mrs",
+          "source": "scki-fused-051-tools-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-050-tools-ipcidr.mrs",
-          "source": "scki-fused-050-tools-ipcidr.yaml",
+          "file": "scki-fused-051-tools-ipcidr.mrs",
+          "source": "scki-fused-051-tools-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-050-tools-residual.yaml"
+          "file": "scki-fused-051-tools-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-050-tools.list"
+          "file": "scki-fused-051-tools.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-050-tools.list"
+          "file": "scki-fused-051-tools.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-050-tools.list"
+          "file": "scki-fused-051-tools.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-050-tools.yaml"
+          "file": "scki-fused-051-tools.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-050-tools.srs",
-          "source": "scki-fused-050-tools.json"
+          "file": "scki-fused-051-tools.srs",
+          "source": "scki-fused-051-tools.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-050-tools.list",
-          "source": "sing-box/scki-fused-050-tools.srs"
+          "file": "scki-fused-051-tools.list",
+          "source": "sing-box/scki-fused-051-tools.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-050-tools.json"
+          "source": "sing-box/scki-fused-051-tools.json"
         }
       },
       "counts": {
@@ -6386,51 +6508,51 @@
       }
     },
     {
-      "id": "scki-fused-051-microsoft",
+      "id": "scki-fused-052-microsoft",
       "policy": "Ⓜ️ 微软服务",
       "source_rules": 5,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-051-microsoft-domain.mrs",
-          "source": "scki-fused-051-microsoft-domain.yaml"
+          "file": "scki-fused-052-microsoft-domain.mrs",
+          "source": "scki-fused-052-microsoft-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-051-microsoft-residual.yaml"
+          "file": "scki-fused-052-microsoft-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-051-microsoft.list"
+          "file": "scki-fused-052-microsoft.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-051-microsoft.list"
+          "file": "scki-fused-052-microsoft.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-051-microsoft.list"
+          "file": "scki-fused-052-microsoft.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-051-microsoft.yaml"
+          "file": "scki-fused-052-microsoft.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-051-microsoft.srs",
-          "source": "scki-fused-051-microsoft.json"
+          "file": "scki-fused-052-microsoft.srs",
+          "source": "scki-fused-052-microsoft.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-051-microsoft.list",
-          "source": "sing-box/scki-fused-051-microsoft.srs"
+          "file": "scki-fused-052-microsoft.list",
+          "source": "sing-box/scki-fused-052-microsoft.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-051-microsoft.json"
+          "source": "sing-box/scki-fused-052-microsoft.json"
         }
       },
       "counts": {
@@ -6514,58 +6636,58 @@
       }
     },
     {
-      "id": "scki-fused-052-apple",
+      "id": "scki-fused-053-apple",
       "policy": "🍎 苹果服务",
       "source_rules": 20,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-052-apple-domain.mrs",
-          "source": "scki-fused-052-apple-domain.yaml"
+          "file": "scki-fused-053-apple-domain.mrs",
+          "source": "scki-fused-053-apple-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-052-apple-ipcidr.mrs",
-          "source": "scki-fused-052-apple-ipcidr.yaml",
+          "file": "scki-fused-053-apple-ipcidr.mrs",
+          "source": "scki-fused-053-apple-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-052-apple-residual.yaml"
+          "file": "scki-fused-053-apple-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-052-apple.list"
+          "file": "scki-fused-053-apple.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-052-apple.list"
+          "file": "scki-fused-053-apple.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-052-apple.list"
+          "file": "scki-fused-053-apple.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-052-apple.yaml"
+          "file": "scki-fused-053-apple.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-052-apple.srs",
-          "source": "scki-fused-052-apple.json"
+          "file": "scki-fused-053-apple.srs",
+          "source": "scki-fused-053-apple.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-052-apple.list",
-          "source": "sing-box/scki-fused-052-apple.srs"
+          "file": "scki-fused-053-apple.list",
+          "source": "sing-box/scki-fused-053-apple.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-052-apple.json"
+          "source": "sing-box/scki-fused-053-apple.json"
         }
       },
       "counts": {
@@ -6649,58 +6771,58 @@
       }
     },
     {
-      "id": "scki-fused-053-download",
+      "id": "scki-fused-054-download",
       "policy": "📥 下载更新",
       "source_rules": 36,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-053-download-domain.mrs",
-          "source": "scki-fused-053-download-domain.yaml"
+          "file": "scki-fused-054-download-domain.mrs",
+          "source": "scki-fused-054-download-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-053-download-ipcidr.mrs",
-          "source": "scki-fused-053-download-ipcidr.yaml",
+          "file": "scki-fused-054-download-ipcidr.mrs",
+          "source": "scki-fused-054-download-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-053-download-residual.yaml"
+          "file": "scki-fused-054-download-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-053-download.list"
+          "file": "scki-fused-054-download.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-053-download.list"
+          "file": "scki-fused-054-download.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-053-download.list"
+          "file": "scki-fused-054-download.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-053-download.yaml"
+          "file": "scki-fused-054-download.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-053-download.srs",
-          "source": "scki-fused-053-download.json"
+          "file": "scki-fused-054-download.srs",
+          "source": "scki-fused-054-download.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-053-download.list",
-          "source": "sing-box/scki-fused-053-download.srs"
+          "file": "scki-fused-054-download.list",
+          "source": "sing-box/scki-fused-054-download.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-053-download.json"
+          "source": "sing-box/scki-fused-054-download.json"
         }
       },
       "counts": {
@@ -6784,58 +6906,58 @@
       }
     },
     {
-      "id": "scki-fused-054-tracker",
+      "id": "scki-fused-055-tracker",
       "policy": "🛰️ BT/PT Tracker",
       "source_rules": 12,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-054-tracker-domain.mrs",
-          "source": "scki-fused-054-tracker-domain.yaml"
+          "file": "scki-fused-055-tracker-domain.mrs",
+          "source": "scki-fused-055-tracker-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-054-tracker-ipcidr.mrs",
-          "source": "scki-fused-054-tracker-ipcidr.yaml",
+          "file": "scki-fused-055-tracker-ipcidr.mrs",
+          "source": "scki-fused-055-tracker-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-054-tracker-residual.yaml"
+          "file": "scki-fused-055-tracker-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-054-tracker.list"
+          "file": "scki-fused-055-tracker.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-054-tracker.list"
+          "file": "scki-fused-055-tracker.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-054-tracker.list"
+          "file": "scki-fused-055-tracker.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-054-tracker.yaml"
+          "file": "scki-fused-055-tracker.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-054-tracker.srs",
-          "source": "scki-fused-054-tracker.json"
+          "file": "scki-fused-055-tracker.srs",
+          "source": "scki-fused-055-tracker.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-054-tracker.list",
-          "source": "sing-box/scki-fused-054-tracker.srs"
+          "file": "scki-fused-055-tracker.list",
+          "source": "sing-box/scki-fused-055-tracker.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-054-tracker.json"
+          "source": "sing-box/scki-fused-055-tracker.json"
         }
       },
       "counts": {
@@ -6919,58 +7041,58 @@
       }
     },
     {
-      "id": "scki-fused-055-gfw",
+      "id": "scki-fused-056-gfw",
       "policy": "🚫 受限网站",
       "source_rules": 8,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-055-gfw-domain.mrs",
-          "source": "scki-fused-055-gfw-domain.yaml"
+          "file": "scki-fused-056-gfw-domain.mrs",
+          "source": "scki-fused-056-gfw-domain.yaml"
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-055-gfw-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-055-gfw-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-056-gfw-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-056-gfw-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-055-gfw-residual.yaml"
+          "file": "scki-fused-056-gfw-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-055-gfw.list"
+          "file": "scki-fused-056-gfw.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-055-gfw.list"
+          "file": "scki-fused-056-gfw.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-055-gfw.list"
+          "file": "scki-fused-056-gfw.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-055-gfw.yaml"
+          "file": "scki-fused-056-gfw.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-055-gfw.srs",
-          "source": "scki-fused-055-gfw.json"
+          "file": "scki-fused-056-gfw.srs",
+          "source": "scki-fused-056-gfw.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-055-gfw.list",
-          "source": "sing-box/scki-fused-055-gfw.srs"
+          "file": "scki-fused-056-gfw.list",
+          "source": "sing-box/scki-fused-056-gfw.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-055-gfw.json"
+          "source": "sing-box/scki-fused-056-gfw.json"
         }
       },
       "counts": {
@@ -7056,46 +7178,46 @@
       }
     },
     {
-      "id": "scki-fused-056-game-cn",
+      "id": "scki-fused-057-game-cn",
       "policy": "🕹️ 国内游戏",
       "source_rules": 28,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-056-game-cn-domain.mrs",
-          "source": "scki-fused-056-game-cn-domain.yaml"
+          "file": "scki-fused-057-game-cn-domain.mrs",
+          "source": "scki-fused-057-game-cn-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-056-game-cn.list"
+          "file": "scki-fused-057-game-cn.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-056-game-cn.list"
+          "file": "scki-fused-057-game-cn.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-056-game-cn.list"
+          "file": "scki-fused-057-game-cn.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-056-game-cn.yaml"
+          "file": "scki-fused-057-game-cn.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-056-game-cn.srs",
-          "source": "scki-fused-056-game-cn.json"
+          "file": "scki-fused-057-game-cn.srs",
+          "source": "scki-fused-057-game-cn.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-056-game-cn.list",
-          "source": "sing-box/scki-fused-056-game-cn.srs"
+          "file": "scki-fused-057-game-cn.list",
+          "source": "sing-box/scki-fused-057-game-cn.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-056-game-cn.json"
+          "source": "sing-box/scki-fused-057-game-cn.json"
         }
       },
       "counts": {
@@ -7179,58 +7301,58 @@
       }
     },
     {
-      "id": "scki-fused-057-game-intl",
+      "id": "scki-fused-058-game-intl",
       "policy": "🎮 国外游戏",
       "source_rules": 20,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-057-game-intl-domain.mrs",
-          "source": "scki-fused-057-game-intl-domain.yaml"
+          "file": "scki-fused-058-game-intl-domain.mrs",
+          "source": "scki-fused-058-game-intl-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-057-game-intl-ipcidr.mrs",
-          "source": "scki-fused-057-game-intl-ipcidr.yaml",
+          "file": "scki-fused-058-game-intl-ipcidr.mrs",
+          "source": "scki-fused-058-game-intl-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-057-game-intl-residual.yaml"
+          "file": "scki-fused-058-game-intl-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-057-game-intl.list"
+          "file": "scki-fused-058-game-intl.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-057-game-intl.list"
+          "file": "scki-fused-058-game-intl.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-057-game-intl.list"
+          "file": "scki-fused-058-game-intl.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-057-game-intl.yaml"
+          "file": "scki-fused-058-game-intl.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-057-game-intl.srs",
-          "source": "scki-fused-057-game-intl.json"
+          "file": "scki-fused-058-game-intl.srs",
+          "source": "scki-fused-058-game-intl.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-057-game-intl.list",
-          "source": "sing-box/scki-fused-057-game-intl.srs"
+          "file": "scki-fused-058-game-intl.list",
+          "source": "sing-box/scki-fused-058-game-intl.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-057-game-intl.json"
+          "source": "sing-box/scki-fused-058-game-intl.json"
         }
       },
       "counts": {
@@ -7314,58 +7436,58 @@
       }
     },
     {
-      "id": "scki-fused-058-intl-site",
+      "id": "scki-fused-059-intl-site",
       "policy": "🌐 国外网站",
       "source_rules": 81,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-058-intl-site-domain.mrs",
-          "source": "scki-fused-058-intl-site-domain.yaml"
+          "file": "scki-fused-059-intl-site-domain.mrs",
+          "source": "scki-fused-059-intl-site-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-058-intl-site-ipcidr.mrs",
-          "source": "scki-fused-058-intl-site-ipcidr.yaml",
+          "file": "scki-fused-059-intl-site-ipcidr.mrs",
+          "source": "scki-fused-059-intl-site-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-058-intl-site-residual.yaml"
+          "file": "scki-fused-059-intl-site-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-058-intl-site.list"
+          "file": "scki-fused-059-intl-site.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-058-intl-site.list"
+          "file": "scki-fused-059-intl-site.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-058-intl-site.list"
+          "file": "scki-fused-059-intl-site.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-058-intl-site.yaml"
+          "file": "scki-fused-059-intl-site.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-058-intl-site.srs",
-          "source": "scki-fused-058-intl-site.json"
+          "file": "scki-fused-059-intl-site.srs",
+          "source": "scki-fused-059-intl-site.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-058-intl-site.list",
-          "source": "sing-box/scki-fused-058-intl-site.srs"
+          "file": "scki-fused-059-intl-site.list",
+          "source": "sing-box/scki-fused-059-intl-site.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-058-intl-site.json"
+          "source": "sing-box/scki-fused-059-intl-site.json"
         }
       },
       "counts": {
@@ -7451,46 +7573,46 @@
       }
     },
     {
-      "id": "scki-fused-059-payments",
+      "id": "scki-fused-060-payments",
       "policy": "🏦 金融支付",
       "source_rules": 13,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-059-payments-domain.mrs",
-          "source": "scki-fused-059-payments-domain.yaml"
+          "file": "scki-fused-060-payments-domain.mrs",
+          "source": "scki-fused-060-payments-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-059-payments.list"
+          "file": "scki-fused-060-payments.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-059-payments.list"
+          "file": "scki-fused-060-payments.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-059-payments.list"
+          "file": "scki-fused-060-payments.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-059-payments.yaml"
+          "file": "scki-fused-060-payments.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-059-payments.srs",
-          "source": "scki-fused-059-payments.json"
+          "file": "scki-fused-060-payments.srs",
+          "source": "scki-fused-060-payments.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-059-payments.list",
-          "source": "sing-box/scki-fused-059-payments.srs"
+          "file": "scki-fused-060-payments.list",
+          "source": "sing-box/scki-fused-060-payments.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-059-payments.json"
+          "source": "sing-box/scki-fused-060-payments.json"
         }
       },
       "counts": {
@@ -7573,58 +7695,58 @@
       }
     },
     {
-      "id": "scki-fused-060-cnmedia",
+      "id": "scki-fused-061-cnmedia",
       "policy": "📺 国内流媒体",
       "source_rules": 101,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-060-cnmedia-domain.mrs",
-          "source": "scki-fused-060-cnmedia-domain.yaml"
+          "file": "scki-fused-061-cnmedia-domain.mrs",
+          "source": "scki-fused-061-cnmedia-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-060-cnmedia-ipcidr.mrs",
-          "source": "scki-fused-060-cnmedia-ipcidr.yaml",
+          "file": "scki-fused-061-cnmedia-ipcidr.mrs",
+          "source": "scki-fused-061-cnmedia-ipcidr.yaml",
           "no_resolve": false
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-060-cnmedia-residual.yaml"
+          "file": "scki-fused-061-cnmedia-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-060-cnmedia.list"
+          "file": "scki-fused-061-cnmedia.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-060-cnmedia.list"
+          "file": "scki-fused-061-cnmedia.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-060-cnmedia.list"
+          "file": "scki-fused-061-cnmedia.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-060-cnmedia.yaml"
+          "file": "scki-fused-061-cnmedia.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-060-cnmedia.srs",
-          "source": "scki-fused-060-cnmedia.json"
+          "file": "scki-fused-061-cnmedia.srs",
+          "source": "scki-fused-061-cnmedia.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-060-cnmedia.list",
-          "source": "sing-box/scki-fused-060-cnmedia.srs"
+          "file": "scki-fused-061-cnmedia.list",
+          "source": "sing-box/scki-fused-061-cnmedia.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-060-cnmedia.json"
+          "source": "sing-box/scki-fused-061-cnmedia.json"
         }
       },
       "counts": {
@@ -7710,53 +7832,53 @@
       }
     },
     {
-      "id": "scki-fused-061-cn-site",
+      "id": "scki-fused-062-cn-site",
       "policy": "🏠 国内网站",
       "source_rules": 15,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-061-cn-site-domain.mrs",
-          "source": "scki-fused-061-cn-site-domain.yaml"
+          "file": "scki-fused-062-cn-site-domain.mrs",
+          "source": "scki-fused-062-cn-site-domain.yaml"
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-061-cn-site-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-061-cn-site-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-062-cn-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-062-cn-site-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-061-cn-site.list"
+          "file": "scki-fused-062-cn-site.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-061-cn-site.list"
+          "file": "scki-fused-062-cn-site.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-061-cn-site.list"
+          "file": "scki-fused-062-cn-site.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-061-cn-site.yaml"
+          "file": "scki-fused-062-cn-site.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-061-cn-site.srs",
-          "source": "scki-fused-061-cn-site.json"
+          "file": "scki-fused-062-cn-site.srs",
+          "source": "scki-fused-062-cn-site.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-061-cn-site.list",
-          "source": "sing-box/scki-fused-061-cn-site.srs"
+          "file": "scki-fused-062-cn-site.list",
+          "source": "sing-box/scki-fused-062-cn-site.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-061-cn-site.json"
+          "source": "sing-box/scki-fused-062-cn-site.json"
         }
       },
       "counts": {
@@ -7841,46 +7963,46 @@
       }
     },
     {
-      "id": "scki-fused-062-direct",
+      "id": "scki-fused-063-direct",
       "policy": "DIRECT",
       "source_rules": 1,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-062-direct-domain.mrs",
-          "source": "scki-fused-062-direct-domain.yaml"
+          "file": "scki-fused-063-direct-domain.mrs",
+          "source": "scki-fused-063-direct-domain.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-062-direct.list"
+          "file": "scki-fused-063-direct.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-062-direct.list"
+          "file": "scki-fused-063-direct.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-062-direct.list"
+          "file": "scki-fused-063-direct.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-062-direct.yaml"
+          "file": "scki-fused-063-direct.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-062-direct.srs",
-          "source": "scki-fused-062-direct.json"
+          "file": "scki-fused-063-direct.srs",
+          "source": "scki-fused-063-direct.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-062-direct.list",
-          "source": "sing-box/scki-fused-062-direct.srs"
+          "file": "scki-fused-063-direct.list",
+          "source": "sing-box/scki-fused-063-direct.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-062-direct.json"
+          "source": "sing-box/scki-fused-063-direct.json"
         }
       },
       "counts": {
@@ -7963,51 +8085,51 @@
       }
     },
     {
-      "id": "scki-fused-063-cn-site",
+      "id": "scki-fused-064-cn-site",
       "policy": "🏠 国内网站",
       "source_rules": 4,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-063-cn-site-domain.mrs",
-          "source": "scki-fused-063-cn-site-domain.yaml"
+          "file": "scki-fused-064-cn-site-domain.mrs",
+          "source": "scki-fused-064-cn-site-domain.yaml"
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-063-cn-site-residual.yaml"
+          "file": "scki-fused-064-cn-site-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-063-cn-site.list"
+          "file": "scki-fused-064-cn-site.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-063-cn-site.list"
+          "file": "scki-fused-064-cn-site.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-063-cn-site.list"
+          "file": "scki-fused-064-cn-site.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-063-cn-site.yaml"
+          "file": "scki-fused-064-cn-site.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-063-cn-site.srs",
-          "source": "scki-fused-063-cn-site.json"
+          "file": "scki-fused-064-cn-site.srs",
+          "source": "scki-fused-064-cn-site.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-063-cn-site.list",
-          "source": "sing-box/scki-fused-063-cn-site.srs"
+          "file": "scki-fused-064-cn-site.list",
+          "source": "sing-box/scki-fused-064-cn-site.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-063-cn-site.json"
+          "source": "sing-box/scki-fused-064-cn-site.json"
         }
       },
       "counts": {
@@ -8091,65 +8213,65 @@
       }
     },
     {
-      "id": "scki-fused-064-intl-site",
+      "id": "scki-fused-065-intl-site",
       "policy": "🌐 国外网站",
       "source_rules": 76,
       "files": {
         "domain": {
           "behavior": "domain",
           "format": "mrs",
-          "file": "scki-fused-064-intl-site-domain.mrs",
-          "source": "scki-fused-064-intl-site-domain.yaml"
+          "file": "scki-fused-065-intl-site-domain.mrs",
+          "source": "scki-fused-065-intl-site-domain.yaml"
         },
         "ipcidr": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-064-intl-site-ipcidr.mrs",
-          "source": "scki-fused-064-intl-site-ipcidr.yaml",
+          "file": "scki-fused-065-intl-site-ipcidr.mrs",
+          "source": "scki-fused-065-intl-site-ipcidr.yaml",
           "no_resolve": false
         },
         "ipcidr_no_resolve": {
           "behavior": "ipcidr",
           "format": "mrs",
-          "file": "scki-fused-064-intl-site-ipcidr-no-resolve.mrs",
-          "source": "scki-fused-064-intl-site-ipcidr-no-resolve.yaml",
+          "file": "scki-fused-065-intl-site-ipcidr-no-resolve.mrs",
+          "source": "scki-fused-065-intl-site-ipcidr-no-resolve.yaml",
           "no_resolve": true
         },
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-064-intl-site-residual.yaml"
+          "file": "scki-fused-065-intl-site-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-064-intl-site.list"
+          "file": "scki-fused-065-intl-site.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-064-intl-site.list"
+          "file": "scki-fused-065-intl-site.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-064-intl-site.list"
+          "file": "scki-fused-065-intl-site.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-064-intl-site.yaml"
+          "file": "scki-fused-065-intl-site.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-064-intl-site.srs",
-          "source": "scki-fused-064-intl-site.json"
+          "file": "scki-fused-065-intl-site.srs",
+          "source": "scki-fused-065-intl-site.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-064-intl-site.list",
-          "source": "sing-box/scki-fused-064-intl-site.srs"
+          "file": "scki-fused-065-intl-site.list",
+          "source": "sing-box/scki-fused-065-intl-site.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-064-intl-site.json"
+          "source": "sing-box/scki-fused-065-intl-site.json"
         }
       },
       "counts": {
@@ -8234,14 +8356,14 @@
       }
     },
     {
-      "id": "scki-fused-065-im",
+      "id": "scki-fused-066-im",
       "policy": "💬 即时通讯",
       "source_rules": 1,
       "files": {
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-065-im-residual.yaml"
+          "file": "scki-fused-066-im-residual.yaml"
         }
       },
       "counts": {
@@ -8324,45 +8446,45 @@
       }
     },
     {
-      "id": "scki-fused-066-netflix",
+      "id": "scki-fused-067-netflix",
       "policy": "🎥 Netflix",
       "source_rules": 1,
       "files": {
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-066-netflix-residual.yaml"
+          "file": "scki-fused-067-netflix-residual.yaml"
         },
         "clash": {
           "format": "text",
-          "file": "scki-fused-066-netflix.list"
+          "file": "scki-fused-067-netflix.list"
         },
         "surge": {
           "format": "text",
-          "file": "scki-fused-066-netflix.list"
+          "file": "scki-fused-067-netflix.list"
         },
         "quantumultx": {
           "format": "text",
-          "file": "scki-fused-066-netflix.list"
+          "file": "scki-fused-067-netflix.list"
         },
         "egern": {
           "format": "yaml",
-          "file": "scki-fused-066-netflix.yaml"
+          "file": "scki-fused-067-netflix.yaml"
         },
         "sing_box": {
           "format": "binary",
-          "file": "scki-fused-066-netflix.srs",
-          "source": "scki-fused-066-netflix.json"
+          "file": "scki-fused-067-netflix.srs",
+          "source": "scki-fused-067-netflix.json"
         },
         "passwall": {
           "format": "text",
-          "file": "scki-fused-066-netflix.list",
-          "source": "sing-box/scki-fused-066-netflix.srs"
+          "file": "scki-fused-067-netflix.list",
+          "source": "sing-box/scki-fused-067-netflix.srs"
         },
         "xray": {
           "format": "inline-json",
           "file": "v2rayN/v2rayN(xray).json",
-          "source": "sing-box/scki-fused-066-netflix.json"
+          "source": "sing-box/scki-fused-067-netflix.json"
         }
       },
       "counts": {
@@ -8445,14 +8567,14 @@
       }
     },
     {
-      "id": "scki-fused-067-social",
+      "id": "scki-fused-068-social",
       "policy": "📱 社交媒体",
       "source_rules": 2,
       "files": {
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-067-social-residual.yaml"
+          "file": "scki-fused-068-social-residual.yaml"
         }
       },
       "counts": {
@@ -8535,14 +8657,14 @@
       }
     },
     {
-      "id": "scki-fused-068-google",
+      "id": "scki-fused-069-google",
       "policy": "🔍 Google 服务",
       "source_rules": 1,
       "files": {
         "residual": {
           "behavior": "classical",
           "format": "yaml",
-          "file": "scki-fused-068-google-residual.yaml"
+          "file": "scki-fused-069-google-residual.yaml"
         }
       },
       "counts": {
@@ -8642,9 +8764,11 @@
     "DST-PORT,19302,DIRECT",
     "DST-PORT,19305,DIRECT",
     "DST-PORT,19307,DIRECT",
+    "AND,((PROCESS-NAME,Code Helper),(DOMAIN,api.github.com)),🤖 AI 服务",
+    "AND,((PROCESS-NAME,Code Helper (Plugin)),(DOMAIN,api.github.com)),🤖 AI 服务",
     "MATCH,🐟 漏网之鱼"
   ],
-  "generated_passwall_files": 65,
-  "generated_xray_rules": 83,
-  "generated_xray_fused_segments": 65
+  "generated_passwall_files": 66,
+  "generated_xray_rules": 86,
+  "generated_xray_fused_segments": 66
 }

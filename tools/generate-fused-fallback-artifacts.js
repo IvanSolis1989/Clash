@@ -15,10 +15,10 @@ const V2RAYN_FILE = path.join(REPO_ROOT, 'v2rayN/v2rayN(xray).json');
 const PASSWALL_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall/shunt-rules');
 const PASSWALL2_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall2/shunt-rules');
 
-const BUILD_DATE = '2026-07-15';
-const V2RAYN_VERSION = 'v6.0.8-v2n.1';
-const PASSWALL_VERSION = 'v6.0.8-pw.1';
-const PASSWALL2_VERSION = 'v6.0.8-pw2.1';
+const BUILD_DATE = '2026-07-19';
+const V2RAYN_VERSION = 'v6.0.9-v2n.1';
+const PASSWALL_VERSION = 'v6.0.9-pw.1';
+const PASSWALL2_VERSION = 'v6.0.9-pw2.1';
 
 const DIRECT_POLICIES = new Set([
   'DIRECT',
@@ -251,6 +251,23 @@ function splitTopLevel(rule) {
   return parts.map((part) => part.trim());
 }
 
+function splitTupleList(value) {
+  const inner = String(value || '').trim().replace(/^\(/, '').replace(/\)$/, '');
+  return splitTopLevel(inner)
+    .map((item) => item.trim().replace(/^\(/, '').replace(/\)$/, ''))
+    .filter(Boolean);
+}
+
+function xrayDomainFromCondition(condition) {
+  const [type, value] = condition;
+  if (!value) return null;
+  if (type === 'DOMAIN') return `full:${value}`;
+  if (type === 'DOMAIN-SUFFIX') return `domain:${value}`;
+  if (type === 'DOMAIN-KEYWORD') return `keyword:${value}`;
+  if (type === 'DOMAIN-REGEX') return `regexp:${value}`;
+  return null;
+}
+
 function renderInlineXrayRule(rule, index) {
   const parts = splitTopLevel(rule);
   if (parts[0] === 'DST-PORT') {
@@ -276,6 +293,25 @@ function renderInlineXrayRule(rule, index) {
     };
   }
   if (parts[0] === 'AND') {
+    const conditions = splitTupleList(parts[1]).map(splitTopLevel);
+    const process = conditions.find((condition) => condition[0] === 'PROCESS-NAME');
+    const domainCondition = conditions.find((condition) => (
+      ['DOMAIN', 'DOMAIN-SUFFIX', 'DOMAIN-KEYWORD', 'DOMAIN-REGEX'].includes(condition[0])
+    ));
+    const processDomain = domainCondition && xrayDomainFromCondition(domainCondition);
+    if (process && processDomain && conditions.length === 2) {
+      return {
+        id: `scki-inline-${String(index).padStart(3, '0')}-process-domain`,
+        remarks: `inline ${rule} -> ${outboundTag(parts[2])}`,
+        outboundTag: outboundTag(parts[2]),
+        domain: [processDomain],
+        ip: [],
+        port: '',
+        network: 'tcp,udp',
+        process: [process[1]],
+      };
+    }
+
     const body = parts[1];
     const policy = parts[2];
     const portMatch = body.match(/DST-PORT,([0-9-]+)/);

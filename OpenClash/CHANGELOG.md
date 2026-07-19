@@ -11,6 +11,10 @@
 
 - MAINT#AGENTS-SINGLE-SOURCE：Normal / Smart 文件头统一指向根目录唯一维护契约 `AGENTS.md`，并明确源规则图优先；仅修改注释，不改变脚本运行时、规则内容或版本号。
 
+## v6.0.9-oc-normal.1 / v6.0.9-oc-smart.1 (2026-07-19)
+
+- 同步 `api.github.com` 的通用工具组融合段；路由器环境无桌面进程身份，因此不伪造 Copilot 进程例外。
+
 ## v6.0.8-oc-normal.1 / v6.0.8-oc-smart.1 (2026-07-15)
 
 - Normal / Smart 同步国内权威优先级，并使用版本化融合 provider URL 与本地缓存路径。

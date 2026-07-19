@@ -8,8 +8,9 @@ const vm = require('node:vm');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const RESTRICTED_SITE = '🚫 受限网站';
 const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
-const EXPECTED_FUSED_PROVIDERS = 126;
-const EXPECTED_FUSED_RULES = 143;
+const FUSED_MANIFEST = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'rulesets/generated/fused/manifest.json'), 'utf8'));
+const EXPECTED_FUSED_PROVIDERS = FUSED_MANIFEST.fused_provider_count;
+const EXPECTED_FUSED_RULES = FUSED_MANIFEST.fused_rule_count;
 
 const TARGETS = [
   {
@@ -342,17 +343,49 @@ function extractRuleSetNames(rule) {
   return Array.from(String(rule).matchAll(/RULE-SET,([^,\)]+)/g), (match) => match[1]);
 }
 
-function extractRuleTarget(rule) {
-  const value = String(rule);
-  if (value.startsWith('AND,') || value.startsWith('OR,')) {
-    const match = value.match(/\)\),([^,]+)(?:,|$)/);
-    return match ? match[1] : null;
+function splitTopLevel(rule) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const char of String(rule)) {
+    if (char === ',' && depth === 0) {
+      parts.push(current);
+      current = '';
+      continue;
+    }
+    if (char === '(') depth += 1;
+    else if (char === ')') depth -= 1;
+    current += char;
   }
-  const parts = value.split(',');
+  parts.push(current);
+  return parts.map((part) => part.trim());
+}
+
+function extractRuleTarget(rule) {
+  const parts = splitTopLevel(rule);
+  if (parts[0] === 'AND' || parts[0] === 'OR') return parts[2] || null;
   if (parts[0] === 'MATCH') return parts[1] || null;
   if (parts[0] === 'RULE-SET') return parts[2] || null;
   if (parts.length >= 3) return parts[2] || null;
   return null;
+}
+
+function fusedRuleIndexes(rules, suffix, policy) {
+  const matcher = new RegExp(`^scki-fused-\\d+-${suffix}$`);
+  return rules.reduce((indexes, rule, index) => {
+    const parts = splitTopLevel(rule);
+    if (parts[0] === 'RULE-SET' && matcher.test(parts[1]) && parts[2] === policy) indexes.push(index);
+    return indexes;
+  }, []);
+}
+
+function firstFusedRuleIndex(rules, suffix, policy) {
+  return fusedRuleIndexes(rules, suffix, policy)[0] ?? -1;
+}
+
+function lastFusedRuleIndex(rules, suffix, policy) {
+  const indexes = fusedRuleIndexes(rules, suffix, policy);
+  return indexes.length > 0 ? indexes[indexes.length - 1] : -1;
 }
 
 function firstExistingRuleIndex(rules, candidates) {
@@ -456,38 +489,33 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(!rules.some((rule) => String(rule).includes('机场自动选择')), 'subscription-native rules are removed');
   record.expect(!providerNames.has('legacy_provider'), 'subscription-native rule-providers are removed');
 
-  const indexOfPrefix = (prefix) => rules.findIndex((rule) => String(rule).startsWith(prefix));
-  const fusedIntlPreAd = indexOfPrefix('RULE-SET,scki-fused-002-intl-site-domain,🌐 国外网站');
-  const fusedCnMediaPreTikTok = indexOfPrefix('RULE-SET,scki-fused-005-cnmedia-domain,📺 国内流媒体');
-  const fusedAd = indexOfPrefix('RULE-SET,scki-fused-006-ad-domain,🛑 广告拦截');
-  const fusedAmap = indexOfPrefix('RULE-SET,scki-fused-007-cn-site-domain,🏠 国内网站');
-  const fusedLocalProcess = indexOfPrefix('RULE-SET,scki-fused-008-direct-residual,DIRECT');
-  const fusedWorkProcess = indexOfPrefix('RULE-SET,scki-fused-009-work-residual,🧑‍💼 会议协作');
-  const fusedScholar = indexOfPrefix('RULE-SET,scki-fused-021-google-domain,🔍 Google 服务');
-  const fusedWork = indexOfPrefix('RULE-SET,scki-fused-032-work-residual,🧑‍💼 会议协作');
-  const fusedTikTok = indexOfPrefix('RULE-SET,scki-fused-035-tiktok-domain,🎵 TikTok');
-  const fusedGfw = indexOfPrefix('RULE-SET,scki-fused-055-gfw-domain,🚫 受限网站');
-  const fusedCnGame = indexOfPrefix('RULE-SET,scki-fused-056-game-cn-domain,🕹️ 国内游戏');
-  const fusedIntlGame = indexOfPrefix('RULE-SET,scki-fused-057-game-intl-domain,🎮 国外游戏');
-  const fusedForeignTail = indexOfPrefix('RULE-SET,scki-fused-058-intl-site-domain,🌐 国外网站');
+  const fusedIntlPreAd = firstFusedRuleIndex(rules, 'intl-site-domain', '🌐 国外网站');
+  const fusedCnMediaPreTikTok = firstFusedRuleIndex(rules, 'cnmedia-domain', '📺 国内流媒体');
+  const fusedAd = firstFusedRuleIndex(rules, 'ad-domain', '🛑 广告拦截');
+  const fusedAmap = firstFusedRuleIndex(rules, 'cn-site-domain', '🏠 国内网站');
+  const fusedLocalProcess = firstFusedRuleIndex(rules, 'direct-residual', 'DIRECT');
+  const fusedWorkProcess = firstFusedRuleIndex(rules, 'work-residual', '🧑‍💼 会议协作');
+  const fusedScholar = firstFusedRuleIndex(rules, 'google-domain', '🔍 Google 服务');
+  const fusedWork = lastFusedRuleIndex(rules, 'work-residual', '🧑‍💼 会议协作');
+  const fusedTikTok = firstFusedRuleIndex(rules, 'tiktok-domain', '🎵 TikTok');
+  const fusedGfw = firstFusedRuleIndex(rules, 'gfw-domain', '🚫 受限网站');
+  const fusedCnGame = firstFusedRuleIndex(rules, 'game-cn-domain', '🕹️ 国内游戏');
+  const fusedIntlGame = firstFusedRuleIndex(rules, 'game-intl-domain', '🎮 国外游戏');
+  const fusedForeignTail = lastFusedRuleIndex(rules, 'intl-site-domain', '🌐 国外网站');
 
-  for (const providerName of [
-    'scki-fused-002-intl-site-domain',
-    'scki-fused-005-cnmedia-domain',
-    'scki-fused-006-ad-domain',
-    'scki-fused-006-ad-ipcidr',
-    'scki-fused-007-cn-site-domain',
-    'scki-fused-008-direct-residual',
-    'scki-fused-009-work-residual',
-    'scki-fused-021-google-domain',
-    'scki-fused-032-work-residual',
-    'scki-fused-035-tiktok-domain',
-    'scki-fused-055-gfw-domain',
-    'scki-fused-056-game-cn-domain',
-    'scki-fused-057-game-intl-domain',
-    'scki-fused-058-intl-site-domain',
+  for (const [suffix, policy] of [
+    ['intl-site-domain', '🌐 国外网站'],
+    ['cnmedia-domain', '📺 国内流媒体'],
+    ['ad-domain', '🛑 广告拦截'],
+    ['direct-residual', 'DIRECT'],
+    ['work-residual', '🧑‍💼 会议协作'],
+    ['google-domain', '🔍 Google 服务'],
+    ['tiktok-domain', '🎵 TikTok'],
+    ['gfw-domain', '🚫 受限网站'],
+    ['game-cn-domain', '🕹️ 国内游戏'],
+    ['game-intl-domain', '🎮 国外游戏'],
   ]) {
-    record.expect(providerNames.has(providerName), `fused provider exists: ${providerName}`);
+    record.expect(firstFusedRuleIndex(rules, suffix, policy) !== -1, `fused semantic segment exists: ${suffix}`);
   }
 
   record.expect(fusedIntlPreAd !== -1 && fusedAd !== -1 && fusedIntlPreAd < fusedAd, 'Cloudflare R2 allowlist fused segment stays before ad/phishing reject rules');
@@ -535,10 +563,19 @@ function validateRulesAndProviders(output, record, target) {
   record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,microsoft') && String(r).endsWith('Ⓜ️ 微软服务'); }), 'QUIC AND: Microsoft whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('GEOSITE,apple') && String(r).endsWith('🍎 苹果服务'); }), 'QUIC AND: Apple whitelist intact');
   record.expect(quicAndRules.some(function(r) { return String(r).includes('NOT,((GEOSITE,cn))') && String(r).endsWith('REJECT'); }), 'QUIC AND: non-CN REJECT fallback intact');
-  const fusedRustDeskGuard = indexOfPrefix('RULE-SET,scki-fused-015-work-domain,🧑‍💼 会议协作');
-  const fusedCopilot = indexOfPrefix('RULE-SET,scki-fused-022-ai-domain,🤖 AI 服务');
+  const fusedRustDeskGuard = firstFusedRuleIndex(rules, 'work-domain', '🧑‍💼 会议协作');
+  const githubApiProcessIndexes = [
+    'AND,((PROCESS-NAME,Code Helper),(DOMAIN,api.github.com)),🤖 AI 服务',
+    'AND,((PROCESS-NAME,Code Helper (Plugin)),(DOMAIN,api.github.com)),🤖 AI 服务',
+  ].map((rule) => rules.indexOf(rule));
+  record.expect(githubApiProcessIndexes.every((index) => index !== -1), 'GitHub API process-scoped AI rules remain explicit');
+  const githubApiProcessEnd = Math.max(...githubApiProcessIndexes);
+  const fusedCopilot = rules.findIndex((rule, index) => (
+    index > githubApiProcessEnd && splitTopLevel(rule)[0] === 'RULE-SET'
+    && /-ai-domain$/.test(splitTopLevel(rule)[1]) && splitTopLevel(rule)[2] === '🤖 AI 服务'
+  ));
   record.expect(fusedRustDeskGuard !== -1 && fusedCopilot !== -1 && fusedRustDeskGuard < fusedCopilot, 'RustDesk domain guard fused segment stays before broad Copilot ASN rules');
-  const fusedCopilotTencent = indexOfPrefix('RULE-SET,scki-fused-013-cn-site-domain,🏠 国内网站');
+  const fusedCopilotTencent = fusedAmap;
   record.expect(fusedCopilotTencent !== -1 && fusedCopilot !== -1 && fusedCopilotTencent < fusedCopilot, 'copilot.tencent.com domestic fused guard stays before AI provider segments');
 
   if (target.requireTunExcludes) {

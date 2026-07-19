@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.9-flclash.1 (2026-07-19)
+
+- 与 Clash Party Normal 同步：普通 `api.github.com` 先归工具组，仅指定 Code Helper 进程组合保留 AI 路由。
+
 ## v6.0.8-flclash.1 (2026-07-15)
 
 - 同步国内权威优先级和 Mihomo 版本化融合规则缓存，保持与 Clash Party Normal 的路由语义一致。

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-14T23:08:53.327Z",
+  "generated_at": "2026-07-19T00:34:14.853Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
-  "mihomo_bin": "mihomo-v1.19.28.exe",
+  "mihomo_bin": "mihomo-v1.19.29.exe",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
     {
@@ -2917,6 +2917,22 @@
       ]
     },
     {
+      "id": "scki-github-api-tools",
+      "source_behavior": "classical",
+      "source_format": "text",
+      "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/github-api-tools.list",
+      "type_counts": {
+        "domain": 1
+      },
+      "generated": [
+        {
+          "behavior": "domain",
+          "file": "scki-github-api-tools.mrs",
+          "entries": 1
+        }
+      ]
+    },
+    {
       "id": "scki-google-mail-intl",
       "source_behavior": "classical",
       "source_format": "text",
@@ -3162,13 +3178,13 @@
       "source_format": "text",
       "source_url": "https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt",
       "type_counts": {
-        "domain": 133324
+        "domain": 136488
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "sukka-phishing.mrs",
-          "entries": 133324
+          "entries": 136488
         }
       ]
     },
@@ -5942,7 +5958,7 @@
       "source_format": "yaml",
       "source_url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml",
       "type_counts": {
-        "domain": 203,
+        "domain": 204,
         "ipcidr": 6,
         "IP-ASN": 3
       },
@@ -5950,7 +5966,7 @@
         {
           "behavior": "domain",
           "file": "vpsdance-ai-coding-domain.mrs",
-          "entries": 197
+          "entries": 198
         },
         {
           "behavior": "ipcidr",

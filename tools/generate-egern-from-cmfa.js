@@ -26,8 +26,8 @@ const SCKI_BASE = SCKI_REPOSITORY_BASE;
 const ASSET_REVISION = SOURCE_GRAPH_VERSION;
 const META_GEOSITE_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite';
 const META_GEOIP_BASE = 'https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip';
-const EGERN_VERSION = 'v6.0.8-egern.1';
-const BUILD_DATE = '2026-07-15';
+const EGERN_VERSION = 'v6.0.9-egern.1';
+const BUILD_DATE = '2026-07-19';
 const FETCH_CONCURRENCY = 3;
 const MIHOMO_MRS_BASE_PATH = '/rulesets/generated/mihomo-mrs/';
 // jsDelivr rejects files at 20 MB. Keep generated Egern-native rule sets below 18 MiB.
@@ -36,6 +36,11 @@ const MAX_REMOTE_RULE_SET_BYTES = 18 * 1024 * 1024;
 const PROCESS_RULE_SETS = new Set([
   'scki-local-process-direct',
   'scki-work-process',
+]);
+const PROCESS_MATCH_TYPES = new Set([
+  'PROCESS-NAME',
+  'PROCESS-PATH',
+  'PROCESS-PATH-REGEX',
 ]);
 
 const PRIVATE_CIDRS = [
@@ -148,6 +153,15 @@ function splitTupleList(value) {
   return splitTopLevel(inner)
     .map((item) => item.trim().replace(/^\(/, '').replace(/\)$/, ''))
     .filter(Boolean);
+}
+
+function containsProcessMatch(condition) {
+  const parts = splitTopLevel(condition);
+  if (PROCESS_MATCH_TYPES.has(parts[0])) return true;
+  if (parts[0] === 'AND' || parts[0] === 'OR' || parts[0] === 'NOT') {
+    return splitTupleList(parts[1]).some(containsProcessMatch);
+  }
+  return false;
 }
 
 function encodeRuleAssetName(name) {
@@ -342,8 +356,13 @@ function renderEgernRule(rule, providers, assets, stats) {
   }
   if (type === 'AND') {
     const policy = parts[2];
+    const conditions = splitTupleList(parts[1]);
+    if (conditions.some(containsProcessMatch)) {
+      stats.skippedProcessLogicRules.push(rule);
+      return [];
+    }
     const lines = ['  - and:', '      match:'];
-    for (const condition of splitTupleList(parts[1])) {
+    for (const condition of conditions) {
       const nested = renderNestedCondition(condition, providers, assets);
       if (nested.length === 0) return [];
       lines.push(...nested);
@@ -367,7 +386,7 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
     .replace(/  - auto_test:/g, '  - smart:')
     .replace(/\n      interval: 300\n      tolerance: 100\n      timeout: 5/g, '')
     .replace(/\n      interval: 300\n      tolerance: 100/g, '')
-    .replace(/(?:\n# Generated from Clash Meta For Android\/CMFA\(mihomo\)\.yaml\.\n# Non-supplemental provider rule_set URLs point at generated Egern-native\n# YAML files under rulesets\/generated\/egern\/.\n# The two PROCESS-NAME supplemental rule sets are omitted because Egern\n# does not document a process-name rule or process-name rule-set field\.\n# Target-empty rule sets removed by global first-match deduplication are omitted\.\s*)+$/, '')
+    .replace(/(?:\n# Generated from Clash Meta For Android\/CMFA\(mihomo\)\.yaml\.\n# Non-supplemental provider rule_set URLs point at generated Egern-native\n# YAML files under rulesets\/generated\/egern\/.\n# (?:The two PROCESS-NAME supplemental rule sets|PROCESS-NAME supplemental rule sets and process-scoped logic rules) are omitted because Egern\n# does not document a process-name rule or process-name rule-set field\.\n# Target-empty rule sets removed by global first-match deduplication are omitted\.\s*)+$/, '')
     .replace(/(?:\n# Generated from Clash Meta For Android\/CMFA\(mihomo\)\.yaml\.\n# The two PROCESS-NAME supplemental rule sets are omitted because Egern\n# does not document a process-name rule or process-name rule-set field\.\s*)+$/, '');
 
   return [
@@ -375,7 +394,7 @@ function renderPrefix(assetCount, cmfaProviderCount, cmfaRuleCount) {
     '# ======================================================================',
     `# Egern Smart ${EGERN_VERSION} - Egern Profile`,
     `# Build: ${BUILD_DATE}`,
-    '# Baseline: Clash Party v6.0.8',
+    `# Baseline: Clash Party ${SOURCE_GRAPH_VERSION}`,
     '# Architecture: 22 smart region groups + 33 business groups + fused CMFA rule order.',
     `# Rule parity: generated from CMFA ${cmfaProviderCount} rule-providers and ${cmfaRuleCount} rules.`,
     `# Egern rule sets: ${assetCount} generated native YAML files.`,
@@ -809,11 +828,11 @@ async function main() {
   const providers = parseProviders(cmfa);
   const rules = parseRules(cmfa);
   const assets = new Map();
-  const discoveryStats = { ruleSetRefs: 0, skippedProcessRuleSets: [], skippedEmptyRuleSets: [] };
+  const discoveryStats = { ruleSetRefs: 0, skippedProcessRuleSets: [], skippedProcessLogicRules: [], skippedEmptyRuleSets: [] };
   for (const rule of rules) renderEgernRule(rule, providers, assets, discoveryStats);
 
   const ruleSetStats = await generateNativeRuleSets(assets);
-  const stats = { ruleSetRefs: 0, skippedProcessRuleSets: [], skippedEmptyRuleSets: [] };
+  const stats = { ruleSetRefs: 0, skippedProcessRuleSets: [], skippedProcessLogicRules: [], skippedEmptyRuleSets: [] };
   const renderedRules = [];
 
   for (const rule of rules) {
@@ -826,7 +845,7 @@ async function main() {
     '# Generated from Clash Meta For Android/CMFA(mihomo).yaml.',
     '# Non-supplemental provider rule_set URLs point at generated Egern-native',
     '# YAML files under rulesets/generated/egern/.',
-    '# The two PROCESS-NAME supplemental rule sets are omitted because Egern',
+    '# PROCESS-NAME supplemental rule sets and process-scoped logic rules are omitted because Egern',
     '# does not document a process-name rule or process-name rule-set field.',
     '# Target-empty rule sets removed by global first-match deduplication are omitted.',
     'rules:',
@@ -846,7 +865,7 @@ async function main() {
     ruleSetStats,
   });
   fs.writeFileSync(EGERN_GENERATION_MANIFEST_FILE, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
-  console.log(`Generated Egern/Egern.yaml rules=${manifest.rendered.rule_count} rule_set_refs=${manifest.rendered.rule_set_ref_count} native_rule_sets=${manifest.rendered.native_rule_set_count} source_entries=${ruleSetStats.totalEntries} dedup_removed=${ruleSetStats.removedEntries} global_exact_removed=${ruleSetStats.globalExactDuplicates} empty_assets=${ruleSetStats.emptyAssets} skipped_process=${stats.skippedProcessRuleSets.join(',') || 'none'} skipped_empty=${stats.skippedEmptyRuleSets.join(',') || 'none'} skipped_source_types=${ruleSetStats.skippedTypes.join(',') || 'none'}`);
+  console.log(`Generated Egern/Egern.yaml rules=${manifest.rendered.rule_count} rule_set_refs=${manifest.rendered.rule_set_ref_count} native_rule_sets=${manifest.rendered.native_rule_set_count} source_entries=${ruleSetStats.totalEntries} dedup_removed=${ruleSetStats.removedEntries} global_exact_removed=${ruleSetStats.globalExactDuplicates} empty_assets=${ruleSetStats.emptyAssets} skipped_process=${stats.skippedProcessRuleSets.join(',') || 'none'} skipped_process_logic=${stats.skippedProcessLogicRules.length} skipped_empty=${stats.skippedEmptyRuleSets.join(',') || 'none'} skipped_source_types=${ruleSetStats.skippedTypes.join(',') || 'none'}`);
 }
 
 if (require.main === module) {

@@ -1,11 +1,12 @@
-# 🚀 Smart-Config-Kit v6.0.8
+# 🚀 Smart-Config-Kit v6.0.9
 
 > 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
 >
 > 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。融合编译器先规范化，再在同策略、同顺序段内删除精确重复和可证明被覆盖的域名/CIDR；GEOIP 国家码保留给支持原生数据库查询的平台，只有不支持该能力的目标才展开。
 >
-> - 🧠 **融合规则集语义保真**：源图当前 513 个 provider / 970 条规则按原始首匹配顺序编译为 68 个语义段、126 个 Mihomo provider / 143 条主规则；移动端只消费 65 个非空文本资产，sing-box / Passwall 系消费 65 个非空 `.srs`
+> - 🧠 **融合规则集语义保真**：源图当前 514 个 provider / 973 条规则按原始首匹配顺序编译为 69 个语义段、127 个 Mihomo provider / 146 条主规则；移动端只消费 66 个非空文本资产，sing-box / Passwall 系消费 66 个非空 `.srs`
 > - 🧭 **国内权威优先**：具名国内策略与 `.cn` 权威段先于共享边缘/CDN、`geolocation-!cn`、IP 与地域 fallback；解析到境外 IP 不会改变国内站点的目标策略。
+> - 🎯 **共享 API 精确分流**：`api.github.com` 默认归入 `🔧 工具与服务`；仅桌面 `Code Helper` / `Code Helper (Plugin)` 的同域访问保留 `🤖 AI 服务`，避免浏览器 GitHub API 请求被上游 AI 规则误收。
 > - 🔐 **发布资产隔离**：每次融合发布为自托管规则集附加版本缓存键；Mihomo 同时使用版本化本地 `path`，杜绝新配置与旧规则文件混用。
 > - 🧭 **Mihomo domain 语法正确归一化**：`DOMAIN` / `DOMAIN-SUFFIX` 会转换为 `behavior: domain` 的精确 / `+.` wildcard payload；`DOMAIN-KEYWORD` 与正则保留 classical residual，避免把 ChatGPT 等域名静默漏匹配或扩大匹配范围
 > - 🖥️ **桌面本地工具直连可验证**：`WorkPro.exe`、`WorkProWebProcess.exe` 等精确进程名沉淀在补充规则集，并由回归契约验证 Mihomo、sing-box 与 Xray fallback 始终输出 `DIRECT`
@@ -30,9 +31,9 @@
 | Android Mihomo | `Clash Meta For Android/CMFA(mihomo).yaml` | CMFA 是同步产物，不是规则基准 |
 | Stash | `Stash/Stash.yaml` | 从 CMFA 自动裁剪生成，保持 Clash Premium 兼容 |
 | sing-box / Hiddify / HomeProxy | `SingBox/SingBox(sing-box)-full.json` | 使用 `.srs` 融合规则集 |
-| v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 65 个非空 fused sing-box JSON 展平成 83 条 Xray RuleObject |
+| v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 66 个非空 fused sing-box JSON 展平成 86 条 Xray RuleObject |
 | iOS / macOS 其他客户端 | `Egern/`、`Shadowrocket/`、`Surge/`、`Loon/`、`Quantumult X/` | 按各 APP 原生语法同步 |
-| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 65 条非空 fused `.srs` shunt rule |
+| OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 66 条非空 fused `.srs` shunt rule |
 
 ---
 

@@ -240,45 +240,60 @@ test('Egern native rule sets do not silently drop GEOIP rules', () => {
 
 test('Issue #176 replays native Egern assets from the baseline without cache drift', () => {
   const directory = path.join(REPO_ROOT, 'rulesets/generated/egern');
-  const asset = (name) => egernNativeRuleSet(path.join(directory, name));
+  const manifest = JSON.parse(read('rulesets/generated/fused/manifest.json'));
+  const segments = manifest.segments || [];
+  const findSegment = (suffix, startIndex = 0, reverse = false) => {
+    const indexes = segments.map((segment, index) => ({ segment, index }))
+      .filter(({ segment, index }) => index >= startIndex && segment.id.endsWith(`-${suffix}`));
+    return reverse ? indexes[indexes.length - 1] : indexes[0];
+  };
+  const gameIntl = findSegment('game-intl');
+  const genericIntl = gameIntl && findSegment('intl-site', gameIntl.index + 1);
+  const lateCnmedia = findSegment('cnmedia', 0, true);
+  const lateCnsite = lateCnmedia && findSegment('cn-site', lateCnmedia.index + 1);
+  const intlTail = findSegment('intl-site', 0, true);
+  assert.ok(genericIntl, 'the generic international fallback following international games must exist');
+  assert.ok(lateCnsite, 'the late CN site authority segment must exist');
+  assert.ok(intlTail, 'the final international fallback segment must exist');
+  const asset = (segment, part) => egernNativeRuleSet(path.join(directory, `provider-${segment.id}-${part}.yaml`));
   assert.equal(
-    fs.existsSync(path.join(directory, 'provider-scki-fused-058-intl-site-ipcidr-no-resolve.yaml')),
+    fs.existsSync(path.join(directory, `provider-${genericIntl.segment.id}-ipcidr-no-resolve.yaml`)),
     false,
     'the emptied old international no-resolve asset must be removed',
   );
-  assert.deepEqual(asset('provider-scki-fused-058-intl-site-domain.yaml'), {
+  assert.deepEqual(asset(genericIntl.segment, 'domain'), {
     noResolve: false,
     sets: { domain_set: 1, domain_suffix_set: 384 },
   });
-  assert.deepEqual(asset('provider-scki-fused-058-intl-site-ipcidr.yaml'), {
+  assert.deepEqual(asset(genericIntl.segment, 'ipcidr'), {
     noResolve: false,
     sets: { ip_cidr_set: 36, ip_cidr6_set: 8 },
   });
-  assert.deepEqual(asset('provider-scki-fused-058-intl-site-residual.yaml'), {
+  assert.deepEqual(asset(genericIntl.segment, 'residual'), {
     noResolve: false,
     sets: { domain_keyword_set: 105 },
   });
-  assert.deepEqual(asset('provider-scki-fused-061-cn-site-domain.yaml'), {
+  assert.deepEqual(asset(lateCnsite.segment, 'domain'), {
     noResolve: false,
     sets: { domain_set: 85, domain_suffix_set: 4944 },
   });
-  assert.deepEqual(asset('provider-scki-fused-061-cn-site-ipcidr-no-resolve.yaml'), {
+  assert.deepEqual(asset(lateCnsite.segment, 'ipcidr-no-resolve'), {
     noResolve: true,
     sets: { ip_cidr_set: 4216, ip_cidr6_set: 1534 },
   });
-  assert.deepEqual(asset('provider-scki-fused-064-intl-site-domain.yaml'), {
+  assert.deepEqual(asset(intlTail.segment, 'domain'), {
     noResolve: false,
     sets: { domain_set: 57, domain_suffix_set: 11363 },
   });
-  assert.deepEqual(asset('provider-scki-fused-064-intl-site-ipcidr.yaml'), {
+  assert.deepEqual(asset(intlTail.segment, 'ipcidr'), {
     noResolve: false,
     sets: { ip_cidr_set: 34, ip_cidr6_set: 9 },
   });
-  assert.deepEqual(asset('provider-scki-fused-064-intl-site-ipcidr-no-resolve.yaml'), {
+  assert.deepEqual(asset(intlTail.segment, 'ipcidr-no-resolve'), {
     noResolve: true,
     sets: { ip_cidr_set: 792, ip_cidr6_set: 207 },
   });
-  assert.deepEqual(asset('provider-scki-fused-064-intl-site-residual.yaml'), {
+  assert.deepEqual(asset(intlTail.segment, 'residual'), {
     noResolve: true,
     sets: { geoip_set: 247 },
   });
