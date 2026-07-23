@@ -638,6 +638,10 @@ function validateFlClashRefs(target, config, refs, record) {
   record.expect(config['rule-providers'] === refs.providers, 'FlClash preserves rule-providers object identity for QuickJS/Dart bridge');
 }
 
+function validateFlClashGeneral(output, record) {
+  record.expectEqual(output.ipv6, false, 'FlClash disables top-level IPv6 to match the DNS IPv6 policy');
+}
+
 function runTarget(target, options) {
   const record = makeRecorder(target);
   const { exports: api, logs, source } = loadOverwrite(target);
@@ -663,6 +667,7 @@ function runTarget(target, options) {
     validateGroups(target, output, record);
     validateRulesAndProviders(output, record, target);
     validateGeneral(output, record);
+    if (target.id === 'flclash') validateFlClashGeneral(output, record);
   }
 
   const summary = output ? {

@@ -1,5 +1,5 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v6.0.9-flclash.1 (2026-07-19)
+// 版本：v6.0.9-flclash.2 (2026-07-24)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 127 融合 rule-providers / 146 rules
 // 规则源：rulesets/source/routing-graph.js v6.0.9（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
 // v6.0.9：api.github.com 默认进入工具组，仅 Code Helper 的 Copilot 请求保留 AI 例外
@@ -36,7 +36,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.9-flclash.1'
+const VERSION = 'v6.0.9-flclash.2'
 
 function log() {
   if (typeof console !== 'undefined' && console.log) console.log.apply(console, arguments)
@@ -378,6 +378,8 @@ function overwriteGeneral(config) {
   config['unified-delay'] = true
   config['tcp-concurrent'] = true
   config['find-process-mode'] = 'strict'
+  // v6.0.9-flclash.2: 顶层 ipv6 与 dns.ipv6 是两套开关；移动端只关 DNS AAAA 仍可能让内核接收 IPv6 流量。
+  config.ipv6 = false
   config['keep-alive-idle'] = 30
   config['keep-alive-interval'] = 15
   // FlClash: 端口/TUN/GeoX 由 App UI 管理，脚本不覆写。

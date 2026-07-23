@@ -5,7 +5,7 @@
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
-> 当前版本：**v6.0.9-flclash.1**（22 url-test 区域组 + 33 业务策略组 + 127 融合 rule-providers / 146 rules；Mihomo 规则缓存按发布版本隔离；变更历史见 `FlClash/CHANGELOG.md`）
+> 当前版本：**v6.0.9-flclash.2**（22 url-test 区域组 + 33 业务策略组 + 127 融合 rule-providers / 146 rules；Mihomo 规则缓存按发布版本隔离；变更历史见 `FlClash/CHANGELOG.md`）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -71,7 +71,22 @@
 
 ## 必改配置（手动设置）
 
-导入脚本后，以下两项需要在 FlClash UI 手动设置：
+导入脚本后，外部资源和 DNS 需要在 FlClash UI 手动设置；Android 的 VPN/系统代理属于应用层开关，脚本无法替代。
+
+### Android 全流量网络设置
+
+你提供的截图是 Android。若目标是让手机上的应用都经过 FlClash，建议按下面设置：
+
+- 「网络 → VPN」：开启。
+- 「仅系统代理」：关闭。它只覆盖遵守系统代理的应用，不能代替 Android VPN。
+- 「允许应用绕过 VPN」：关闭，除非你明确需要某些应用直连。
+- 「IPv6」：关闭；脚本也会在最终 Mihomo 配置中强制写入顶层 `ipv6: false`。
+- 「DNS 劫持」：开启；「路由模式」选择「使用配置」。
+- 「DNS 覆写」：开启；「遵守规则」开启；「PreferH3」关闭；DNS 模式使用 `fake-ip`。
+
+如果只开启「系统代理」而没有开启 VPN，浏览器可能正常，但不使用系统代理的应用、游戏和部分 WebView 不会进入规则引擎。这不是规则集命中错误。
+
+重载订阅后，最终配置的生效判据是：顶层 `ipv6: false`、`dns.ipv6: false`、`dns.prefer-h3: false`。如果 FlClash UI 仍显示 IPv6 或 PreferH3 为开启，说明当前订阅没有关联 `v6.0.9-flclash.2` 覆写脚本，或应用层设置覆盖了订阅配置，应重新关联脚本并刷新配置。
 
 ### 外部资源（GeoX URL）
 工具 → 资源 ⋮ → 编辑 → 同步：

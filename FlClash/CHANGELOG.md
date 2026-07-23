@@ -5,6 +5,12 @@
 
 ---
 
+## v6.0.9-flclash.2 (2026-07-24)
+
+- FIX#FLCLASH-IPV6：覆写脚本新增顶层 `ipv6: false`。此前只关闭 `dns.ipv6`，无法阻止内核继续接受 IPv6 流量；现在与 DNS AAAA 禁用策略保持一致。
+- DOC#ANDROID-NETWORK：补充 Android VPN、系统代理、VPN 绕过、DNS 劫持和 PreferH3 的正确组合；明确脚本不能代替 FlClash 应用层 VPN 开关。
+- REGRESSION：`validate-js-overwrites.js --target flclash` 固定校验顶层 IPv6 必须关闭。
+
 ## v6.0.9-flclash.1 (2026-07-19)
 
 - 与 Clash Party Normal 同步：普通 `api.github.com` 先归工具组，仅指定 Code Helper 进程组合保留 AI 路由。

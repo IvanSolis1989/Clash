@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.9 平台修复 (2026-07-24)
+
+- FlClash v6.0.9-flclash.2：修复只关闭 `dns.ipv6`、却未关闭顶层 IPv6 的配置缺口；补充 Android VPN/系统代理设置说明和回归校验。规则源与其他客户端产物未改变。
+
 ## v6.0.9 (2026-07-19)
 
 - FIX#176 后续全量审计：上游 `szkane-ai` 的 `api.github.com` 规则覆盖浏览器普通 GitHub API 调用，现将通用域名放入 `scki-github-api-tools` 补充规则集，并在广义 AI 规则前融合到 `🔧 工具与服务`。

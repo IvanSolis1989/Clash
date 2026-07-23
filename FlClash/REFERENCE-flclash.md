@@ -47,6 +47,12 @@ FlClash 采用双配置系统：
 | `hosts` | Map\<String,String\> | 主机映射 |
 | `geox-url` | GeoXUrl | GeoIP/GeoSite/ASN 数据库 URL |
 
+### Android 应用层与内核层边界
+
+Android 的「VPN」「仅系统代理」「允许应用绕过 VPN」属于应用层设置，不会由 JS 覆写脚本自动开启。要让不遵守系统代理的应用也进入 Mihomo，必须开启 VPN；完整分流场景下应关闭「仅系统代理」和「允许应用绕过 VPN」。
+
+顶层 `ipv6` 与 `dns.ipv6` 不是同一个字段：前者控制内核是否接受 IPv6 流量，后者只控制 DNS 是否返回 AAAA。FlClash 覆写脚本会同时关闭两者，并关闭 `dns.prefer-h3`，因为 Mihomo 官方不建议在 `respect-rules: true` 时启用 PreferH3。
+
 ---
 
 ## 3. 覆写系统
