@@ -15,6 +15,8 @@ const V2RAYN_FILE = path.join(REPO_ROOT, 'v2rayN/v2rayN(xray).json');
 const PASSWALL_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall/shunt-rules');
 const PASSWALL2_SHUNT_DIR = path.join(REPO_ROOT, 'Passwall2/shunt-rules');
 
+const MAX_FILE_BYTES = 50 * 1024 * 1024; // 50 MB – guard against resource exhaustion
+
 const BUILD_DATE = '2026-07-19';
 const V2RAYN_VERSION = 'v6.0.9-v2n.1';
 const PASSWALL_VERSION = 'v6.0.9-pw.1';
@@ -86,6 +88,8 @@ function ensureRepoPath(file) {
 }
 
 function readJson(file) {
+  const { size } = fs.statSync(file);
+  if (size > MAX_FILE_BYTES) throw new Error(`File too large (${size} bytes): ${file}`);
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
@@ -128,6 +132,8 @@ function xrayProcessesFromSingBoxRule(rule) {
 }
 
 function parseMihomoFusedRules() {
+  const { size } = fs.statSync(CLASH_SMART_FILE);
+  if (size > MAX_FILE_BYTES) throw new Error(`File too large (${size} bytes): ${relPath(CLASH_SMART_FILE)}`);
   const source = fs.readFileSync(CLASH_SMART_FILE, 'utf8');
   const marker = 'const MIHOMO_FUSED_RULES = ';
   const start = source.indexOf(marker);
