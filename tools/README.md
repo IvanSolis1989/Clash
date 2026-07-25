@@ -74,7 +74,10 @@ Scope:
 - verifies subscription-native groups/rules/providers are removed;
 - checks rule-provider download proxy, rule-provider references, final `MATCH`,
   TikTok target isolation, DNS fallback, TLS fingerprint handling, and the
-  FlClash in-place mutation contract.
+  FlClash in-place mutation contract;
+- verifies the Node-DNS runtime Module embedded in all three JS adapters and
+  exercises exact node-policy projection, wildcard specificity, IPv6 bootstrap
+  hosts, scalar hosts redirects, capacity limits and idempotence.
 
 Useful options:
 
@@ -85,6 +88,54 @@ node tools/validate-js-overwrites.js --target flclash
 node tools/validate-js-overwrites.js --json
 node tools/validate-js-overwrites.js --verbose
 ```
+
+## Node-DNS runtime adapter
+
+The canonical runtime Modules are `tools/runtime/node-dns-hints.js` and
+`tools/runtime/node-dns-hints.rb`. They are embedded verbatim into three JS
+subscription adapters and two OpenClash Ruby adapters.
+
+The trusted local profile contract is
+`tools/runtime/subscription-adapter-profiles.json`; it owns only the depth of
+the Node-DNS projection (`off` / `policy` / `adaptive`) and cannot be selected
+by an airport subscription.
+
+```bash
+# Write synchronized runtime Modules into the five adapters (intentional write).
+node tools/sync-node-dns-hints-adapters.js
+
+# Read-only drift check for CI and review.
+node tools/sync-node-dns-hints-adapters.js --check
+
+# Execute the two real OpenClash Ruby heredocs with safe temporary fixtures.
+node tools/test-openclash-node-dns-hints.js
+```
+
+The contracts guarantee that subscription DNS is projected only to exact active
+node FQDN policies; it never replaces the repository global
+`proxy-server-nameserver`, `nameserver`, fallback or fake-ip baseline. They
+exercise all three profiles, profile-mismatch and missing-baseline zero-write
+behavior, scalar domain `hosts` redirects, IPv4/IPv6 bootstrap addresses,
+case-insensitive late exact keys, case-sensitive resolver paths, and atomic
+resolver-host capacity handling.
+
+## Cross-client capability matrix
+
+`docs/client-capability-matrix.json` is the evidence-backed source for the 14
+semantic products. It distinguishes repository-owned runtime hooks from client
+subscription import, documented manual overlays, and routing-only fallbacks.
+
+```bash
+# Regenerate the checked-in Markdown matrix after changing the source.
+node tools/generate-client-capability-matrix.js
+
+# Read-only CI/review checks.
+node tools/generate-client-capability-matrix.js --check
+node --test tools/tests/client-capability-matrix.test.js
+node --test tools/tests/subscription-adapter-profiles.test.js
+```
+
+The generated result is [docs/client-capability-matrix.md](../docs/client-capability-matrix.md).
 
 ## Cross-client artifact contract
 
@@ -113,6 +164,9 @@ Scope:
   Ruby/Psych to catch duplicate top-level `rule-providers` / `rules` keys;
 - checks Passwall / Passwall2 fused shunt-rule counts, generated `.srs` URLs,
   and rejects Clash-style rule prefixes inside `.list` files;
+- validates the subscription-adapter profile schema plus the 14-product,
+  four-column client capability matrix, including every evidence file/marker
+  and generated Markdown drift;
 - includes legacy reference `.conf` files in the sha256 manifest and warns when
   they drift from the authoritative `.sh` / shunt-rule artifacts;
 - can emit a sha256 manifest for release review without changing any published

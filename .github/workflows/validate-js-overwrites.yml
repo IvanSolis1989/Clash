@@ -5,6 +5,9 @@ on:
     paths:
       - 'Clash Party/**/*.js'
       - 'FlClash/**/*.js'
+      - 'tools/runtime/**'
+      - 'tools/lib/subscription-adapter-profiles.js'
+      - 'tools/sync-node-dns-hints-adapters.js'
       - 'tools/validate-js-overwrites.js'
       - '.github/workflows/validate-js-overwrites.yml'
   push:
@@ -12,6 +15,9 @@ on:
     paths:
       - 'Clash Party/**/*.js'
       - 'FlClash/**/*.js'
+      - 'tools/runtime/**'
+      - 'tools/lib/subscription-adapter-profiles.js'
+      - 'tools/sync-node-dns-hints-adapters.js'
       - 'tools/validate-js-overwrites.js'
       - '.github/workflows/validate-js-overwrites.yml'
   workflow_dispatch:
@@ -35,3 +41,6 @@ jobs:
 
       - name: Validate JS overwrite contracts
         run: node tools/validate-js-overwrites.js
+
+      - name: Check synchronized Node-DNS runtime adapters
+        run: node tools/sync-node-dns-hints-adapters.js --check

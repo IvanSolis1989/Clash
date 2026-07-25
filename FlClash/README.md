@@ -5,7 +5,7 @@
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
-> 当前版本：**v6.0.9-flclash.2**（22 url-test 区域组 + 33 业务策略组 + 127 融合 rule-providers / 146 rules；Mihomo 规则缓存按发布版本隔离；变更历史见 `FlClash/CHANGELOG.md`）
+> 当前版本：**v6.0.9-flclash.4**（22 url-test 区域组 + 33 业务策略组 + 127 融合 rule-providers / 146 rules；Mihomo 规则缓存按发布版本隔离；变更历史见 `FlClash/CHANGELOG.md`）
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -73,6 +73,8 @@
 
 导入脚本后，外部资源和 DNS 需要在 FlClash UI 手动设置；Android 的 VPN/系统代理属于应用层开关，脚本无法替代。
 
+订阅刷新时，脚本默认以 `adaptive` 模式投影活动节点 FQDN 所需的私有 resolver、精确 node policy 与 bootstrap hosts；`off / policy / adaptive` 只影响这层投影，不影响 55 组、规则或全局业务 DNS。若你粘贴下方 DNS YAML，请合并已有 `proxy-server-nameserver`、`proxy-server-nameserver-policy` 与 hosts，而不是覆盖订阅适配结果。完整边界见 [私有节点 DNS 指南](../docs/private-node-dns.md)。
+
 ### Android 全流量网络设置
 
 你提供的截图是 Android。若目标是让手机上的应用都经过 FlClash，建议按下面设置：
@@ -86,7 +88,7 @@
 
 如果只开启「系统代理」而没有开启 VPN，浏览器可能正常，但不使用系统代理的应用、游戏和部分 WebView 不会进入规则引擎。这不是规则集命中错误。
 
-重载订阅后，最终配置的生效判据是：顶层 `ipv6: false`、`dns.ipv6: false`、`dns.prefer-h3: false`。如果 FlClash UI 仍显示 IPv6 或 PreferH3 为开启，说明当前订阅没有关联 `v6.0.9-flclash.2` 覆写脚本，或应用层设置覆盖了订阅配置，应重新关联脚本并刷新配置。
+重载订阅后，最终配置的生效判据是：顶层 `ipv6: false`、`dns.ipv6: false`、`dns.prefer-h3: false`。如果 FlClash UI 仍显示 IPv6 或 PreferH3 为开启，说明当前订阅没有关联 `v6.0.9-flclash.4` 覆写脚本，或应用层设置覆盖了订阅配置，应重新关联脚本并刷新配置。
 
 ### 外部资源（GeoX URL）
 工具 → 资源 ⋮ → 编辑 → 同步：

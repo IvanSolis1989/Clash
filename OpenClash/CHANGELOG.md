@@ -7,6 +7,18 @@
 
 ---
 
+## v6.0.9-oc-normal.3 / v6.0.9-oc-smart.3 (2026-07-25)
+
+- PROFILE：shell 只从受信任本地环境读取并白名单化 `off / policy / adaptive`，再传入 Ruby Adapter；profile 从不读取机场 YAML，且不改变规则、策略组或路由器全局 DNS 基线。
+- ADAPTER-HARDENING：Ruby Module 改为 capture/apply seam，profile mismatch / 缺 PSS baseline 零写入；有界保留后置、大小写不同的活动节点精确 policy，resolver path/query 冲突 fail-closed，并保证接受 policy 所需 bootstrap hosts 一并保留。
+- VERIFY/DOCS：真实 heredoc 合同覆盖三档 profile、大小写精确 key、13 个独立 resolver bootstrap、profile-mismatch 与零写入；复核 OpenClash v0.47.133（2026-07-18），未见覆写入口或 UCI 键 breaking change。
+
+## v6.0.9-oc-normal.2 / v6.0.9-oc-smart.2 (2026-07-25)
+
+- NODE-DNS：两份 Ruby 覆写均在读取订阅、写入固定 DNS 基线后，仅投影活动节点 FQDN 的私有 resolver policy 与 bootstrap hosts；源 PSS 不再成为全局默认节点 DNS。
+- HARDENING：保留 Mihomo scalar hosts redirect，支持 IPv4 / IPv6 / IPv4-mapped IPv6，`*.` 优先于 `+.` / `.`，并在 64 条 hosts 上限前保留 resolver bootstrap。
+- VERIFY：新增真实 heredoc Ruby 合同，覆盖 policy 作用域、通配符、私有 resolver、输出上限、幂等性和日志脱敏。
+
 ## 文档维护 (2026-07-16)
 
 - MAINT#AGENTS-SINGLE-SOURCE：Normal / Smart 文件头统一指向根目录唯一维护契约 `AGENTS.md`，并明确源规则图优先；仅修改注释，不改变脚本运行时、规则内容或版本号。

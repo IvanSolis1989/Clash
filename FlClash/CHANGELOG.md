@@ -5,6 +5,17 @@
 
 ---
 
+## v6.0.9-flclash.4 (2026-07-25)
+
+- PROFILE：FlClash 覆写同步 `off / policy / adaptive` 的受信任 Node-DNS profile，默认 `adaptive`；三档不会改变 QuickJS/Dart bridge 的原地数组契约、55 组、规则或全局 DNS。
+- ADAPTER-HARDENING：使用同一 capture/apply Module seam，拒绝 profile-mismatch、无 PSS baseline、冲突 resolver path 及超限的半条 policy；后置、大小写不同的活动节点精确 policy 有界优先。
+- VERIFY/DOCS：共享 JS 合同新增 profile、bootstrap 原子容量与精确 key 回归；复核 FlClash v0.8.94（2026-07-11），未见覆写 API / DNS 对象 breaking change。
+
+## v6.0.9-flclash.3 (2026-07-25)
+
+- NODE-DNS：与 Clash Party Normal 同步受限私有节点 DNS Adapter。只为活动节点 FQDN 生成精确 node policy 与必要 hosts，不让订阅替换 FlClash 的全局 DNS 基线。
+- VERIFY：共享 JS 合同验证 scalar hosts、IPv4/IPv6 bootstrap、通配符优先级、容量限制和幂等性；FlClash QuickJS 原地更新约束保持不变。
+
 ## v6.0.9-flclash.2 (2026-07-24)
 
 - FIX#FLCLASH-IPV6：覆写脚本新增顶层 `ipv6: false`。此前只关闭 `dns.ipv6`，无法阻止内核继续接受 IPv6 流量；现在与 DNS AAAA 禁用策略保持一致。

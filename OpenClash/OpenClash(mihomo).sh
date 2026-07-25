@@ -2,10 +2,10 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v6.0.9-oc-normal.1 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
-# Build: 2026-07-19
+# Clash Smart v6.0.9-oc-normal.3 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Build: 2026-07-25
 # ============================================================================
-# v6.0.9: api.github.com 默认进入工具组；路由器内核无进程匹配能力，不保留桌面 Copilot 例外
+# v6.0.9-oc-normal.3: Node-DNS profile 仅控制受限投影深度；规则、组与全局 DNS 基线不变
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
@@ -29,9 +29,14 @@
 
 
 
-VERSION_TAG="v6.0.9-oc-normal.1"
+VERSION_TAG="v6.0.9-oc-normal.3"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
+SCKI_SUBSCRIPTION_ADAPTER_PROFILE="${SCKI_SUBSCRIPTION_ADAPTER_PROFILE:-adaptive}"
+case "$SCKI_SUBSCRIPTION_ADAPTER_PROFILE" in
+  off|policy|adaptive) ;;
+  *) SCKI_SUBSCRIPTION_ADAPTER_PROFILE="adaptive" ;;
+esac
 
 umask 077
 TMP_DIR="${TMPDIR:-/tmp}"
@@ -1698,7 +1703,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v6.0.9-oc-normal.1"
+VERSION = "v6.0.9-oc-normal.3"
 
 STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
@@ -1709,6 +1714,576 @@ override_path = ARGV[1]
 
 config   = YAML.load_file(config_path, permitted_classes: [Symbol], aliases: true)
 override = YAML.load_file(override_path, permitted_classes: [Symbol], aliases: true)
+
+# >>> SCKI NODE DNS HINTS: BEGIN — generated from tools/runtime/subscription-adapter-profiles.json + tools/runtime/node-dns-hints.rb; edit the runtime Module, then run this synchronizer.
+# Generated from tools/runtime/subscription-adapter-profiles.json; do not edit in adapters.
+module SckiSubscriptionAdapterProfiles
+  DEFAULT = "adaptive".freeze
+  MODES = {
+    "off" => { "id" => "off".freeze, "node_dns_projection" => "off".freeze }.freeze,
+    "policy" => { "id" => "policy".freeze, "node_dns_projection" => "policy".freeze }.freeze,
+    "adaptive" => { "id" => "adaptive".freeze, "node_dns_projection" => "adaptive".freeze }.freeze
+  }.freeze
+
+  module_function
+
+  def resolve(requested_profile)
+    requested = requested_profile.is_a?(String) ? requested_profile : ""
+    selected = MODES.fetch(requested, MODES.fetch(DEFAULT))
+    { "id" => selected.fetch("id"), "node_dns_projection" => selected.fetch("node_dns_projection") }.freeze
+  end
+end
+
+# Subscription Adapter Module — embedded verbatim into OpenClash Ruby adapters.
+#
+# Interface:
+#   SckiSubscriptionAdapter.capture_node_dns(source, active_servers, profile)
+#   SckiSubscriptionAdapter.apply_node_dns(repository, snapshot, profile)
+#
+# The generated profile fragment supplies SckiSubscriptionAdapterProfiles.
+
+module SckiSubscriptionAdapter
+  module_function
+
+  NODE_DNS_HINT_LIMITS = {
+    active_node_servers: 512,
+    domains: 128,
+    resolvers: 64,
+    policies: 64,
+    hosts: 64,
+    values: 8,
+    source_entries: 256,
+    source_exact_entries: 4096,
+    string_length: 512,
+  }.freeze
+
+  def plain_hash?(value)
+    value.is_a?(Hash)
+  end
+
+  def record_reject(snapshot, count = 1)
+    snapshot.fetch("stats")["rejected"] += count
+  end
+
+  def push_unique(list, value)
+    return false if list.any? { |entry| yield(entry) == yield(value) }
+
+    list << value
+    true
+  end
+
+  def ipv4?(value)
+    parts = value.to_s.split(".")
+    return false unless parts.length == 4
+
+    parts.all? { |part| part.match?(/\A\d{1,3}\z/) && part.to_i.between?(0, 255) }
+  end
+
+  def ipv6?(value)
+    text = value.to_s
+    match = text.match(/\A\[([0-9a-fA-F:.]+)\]\z/)
+    text = match[1] if match
+    return false if text.empty? || !text.match?(/\A[0-9a-fA-F:.]+\z/) || !text.include?(":") || text.include?(":::")
+
+    last_colon = text.rindex(":")
+    ipv4_tail = last_colon ? text[(last_colon + 1)..] : ""
+    if ipv4_tail.include?(".")
+      return false unless ipv4?(ipv4_tail)
+
+      text = "#{text[0..last_colon]}0:0"
+    end
+
+    compressed_at = text.index("::")
+    return false if compressed_at && text.index("::", compressed_at + 2)
+
+    groups = text.split(":").reject(&:empty?)
+    return false unless groups.all? { |group| group.match?(/\A[0-9a-fA-F]{1,4}\z/) }
+
+    compressed_at ? groups.length < 8 : groups.length == 8
+  end
+
+  def unbracket_ipv6(value)
+    text = value.to_s
+    text.start_with?("[") && text.end_with?("]") ? text[1..-2] : text
+  end
+
+  def normalize_domain(value)
+    return "" unless value.is_a?(String)
+    return "" if value.length > NODE_DNS_HINT_LIMITS[:string_length]
+
+    domain = value.strip.downcase.sub(/\.+\z/, "")
+    return "" if domain.empty? || domain.length > NODE_DNS_HINT_LIMITS[:string_length] || domain.length > 253 || domain.match?(/[\x00-\x20\\\/@:?#\[\]]/)
+    return "" if domain == "localhost" || domain.match?(/\A\d+(?:\.\d+){3}\z/)
+
+    labels = domain.split(".")
+    return "" unless labels.all? { |label| label.match?(/\A[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\z/) }
+
+    domain
+  end
+
+  def normalize_resolver(value)
+    return "" unless value.is_a?(String)
+    return "" if value.length > NODE_DNS_HINT_LIMITS[:string_length]
+
+    resolver = value.strip
+    return "" if resolver.empty? || resolver.length > NODE_DNS_HINT_LIMITS[:string_length] || resolver.match?(/[\x00-\x20]/)
+    return "" if resolver.include?("#") || resolver.match?(/\A(?:system|dhcp)\z/i) || resolver.match?(/\Arcode:/i)
+    return "" if resolver.match?(/[?&](?:skip-cert-verify|ecs|h3)=/i)
+    return resolver.downcase if ipv4?(resolver)
+    return unbracket_ipv6(resolver).downcase if ipv6?(resolver)
+
+    raw_domain = normalize_domain(resolver)
+    return raw_domain unless raw_domain.empty?
+
+    match = resolver.match(/\A(udp|tcp|tls|https|quic):\/\/(\[[0-9a-fA-F:.]+\]|[A-Za-z0-9.-]+)(?::(\d{1,5}))?(\/[^\s]*)?\z/i)
+    return "" unless match
+
+    port = match[3]&.to_i
+    return "" if port && !port.between?(1, 65_535)
+
+    host = match[2]
+    host = unbracket_ipv6(host).downcase if ipv6?(host)
+    unless ipv6?(host) || ipv4?(host)
+      host = normalize_domain(host)
+      return "" if host.empty?
+    end
+    "#{match[1].downcase}://#{host}#{match[3] ? ":#{match[3]}" : ""}#{match[4] || ""}"
+  end
+
+  def resolver_host(value)
+    resolver = value.to_s
+    return "" if ipv4?(resolver) || ipv6?(resolver)
+
+    raw_domain = normalize_domain(resolver)
+    return raw_domain unless raw_domain.empty?
+
+    match = resolver.match(/\A(?:udp|tcp|tls|https|quic):\/\/(\[[0-9a-fA-F:.]+\]|[A-Za-z0-9.-]+)(?::\d{1,5})?(?:\/[^\s]*)?\z/i)
+    return "" unless match
+    return "" if ipv4?(match[1]) || ipv6?(match[1])
+
+    normalize_domain(match[1])
+  end
+
+  def normalize_resolver_list(value, snapshot)
+    raw_values = value.is_a?(Array) ? value : (value.is_a?(String) ? [value] : [])
+    unless value.is_a?(Array) || value.is_a?(String)
+      record_reject(snapshot)
+      return []
+    end
+
+    output = []
+    raw_values.take(NODE_DNS_HINT_LIMITS[:values]).each do |entry|
+      resolver = normalize_resolver(entry)
+      if resolver.empty?
+        record_reject(snapshot)
+        next
+      end
+      # normalize_resolver lower-cases only scheme and hostname. Keep URL
+      # path/query exact because they can be case-sensitive.
+      push_unique(output, resolver) { |item| item }
+    end
+    record_reject(snapshot, raw_values.length - NODE_DNS_HINT_LIMITS[:values]) if raw_values.length > NODE_DNS_HINT_LIMITS[:values]
+    output
+  end
+
+  def normalize_host_values(value, snapshot)
+    raw_values = value.is_a?(Array) ? value : (value.is_a?(String) ? [value] : [])
+    unless value.is_a?(Array) || value.is_a?(String)
+      record_reject(snapshot)
+      return nil
+    end
+
+    ip_values = []
+    redirects = []
+    raw_values.take(NODE_DNS_HINT_LIMITS[:values]).each do |entry|
+      unless entry.is_a?(String)
+        record_reject(snapshot)
+        next
+      end
+      if entry.length > NODE_DNS_HINT_LIMITS[:string_length]
+        record_reject(snapshot)
+        next
+      end
+      host = entry.strip
+      ipv6_literal = ipv6?(host)
+      # IPv6 literals may be bracketed. Other URL/control syntax is rejected.
+      if host.empty? || host.length > NODE_DNS_HINT_LIMITS[:string_length] || (!ipv6_literal && host.match?(/[\x00-\x20\\\/@?#\[\]]/))
+        record_reject(snapshot)
+        next
+      end
+      if ipv6_literal
+        host = unbracket_ipv6(host).downcase
+        push_unique(ip_values, host) { |item| item.downcase }
+      elsif ipv4?(host)
+        push_unique(ip_values, host) { |item| item.downcase }
+      else
+        host = normalize_domain(host)
+        if host.empty?
+          record_reject(snapshot)
+          next
+        end
+        push_unique(redirects, host) { |item| item.downcase }
+      end
+    end
+    record_reject(snapshot, raw_values.length - NODE_DNS_HINT_LIMITS[:values]) if raw_values.length > NODE_DNS_HINT_LIMITS[:values]
+    if redirects.any?
+      return redirects.first if redirects.length == 1 && ip_values.empty?
+
+      record_reject(snapshot)
+      return nil
+    end
+    ip_values.any? ? ip_values : nil
+  end
+
+  def normalize_pattern(value)
+    return "" unless value.is_a?(String)
+    return "" if value.length > NODE_DNS_HINT_LIMITS[:string_length]
+
+    pattern = value.strip.downcase.sub(/\.+\z/, "")
+    return "" if pattern.empty? || pattern.length > 253 || pattern.match?(/[\x00-\x20\\\/@:?#\[\]]/) || pattern == "*"
+    return normalize_domain(pattern[2..]).empty? ? "" : pattern if pattern.start_with?("+.")
+    return normalize_domain(pattern[1..]).empty? ? "" : pattern if pattern.start_with?(".")
+
+    if pattern.include?("*")
+      labels = pattern.split(".")
+      return "" if labels.length < 2
+      return "" unless labels.all? { |label| label == "*" || label.match?(/\A[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\z/) }
+
+      return pattern
+    end
+    normalize_domain(pattern)
+  end
+
+  def pattern_matches?(pattern, domain)
+    if pattern.start_with?("+.")
+      base = pattern[2..]
+      return domain == base || domain.end_with?(".#{base}")
+    end
+    if pattern.start_with?(".")
+      base = pattern[1..]
+      return domain != base && domain.end_with?(".#{base}")
+    end
+    if pattern.include?("*")
+      pattern_labels = pattern.split(".")
+      domain_labels = domain.split(".")
+      return false unless pattern_labels.length == domain_labels.length
+
+      return pattern_labels.zip(domain_labels).all? { |expected, actual| expected == "*" || expected == actual }
+    end
+    pattern == domain
+  end
+
+  def pattern_score(pattern)
+    return 3_000 + (pattern.split(".").length * 10) + pattern.delete("*").length if pattern.include?("*")
+    return 2_000 + pattern.length if pattern.start_with?("+.") || pattern.start_with?(".")
+
+    10_000 + pattern.length
+  end
+
+  def same_values?(left, right)
+    if left.is_a?(Array) || right.is_a?(Array)
+      return false unless left.is_a?(Array) && right.is_a?(Array) && left.length == right.length
+
+      return left.zip(right).all? { |a, b| a.to_s == b.to_s }
+    end
+    left.is_a?(String) && right.is_a?(String) && left == right
+  end
+
+  def has_values?(value)
+    value.is_a?(Array) ? value.any? : (value.is_a?(String) && !value.empty?)
+  end
+
+  def copy_value(value)
+    value.is_a?(Array) ? value.dup : value
+  end
+
+  def exact_pattern?(pattern)
+    !pattern.include?("*") && !pattern.start_with?("+.") && !pattern.start_with?(".")
+  end
+
+  def build_source_view(source, active_domains, snapshot)
+    return {} unless plain_hash?(source)
+
+    view = {}
+    active = {}
+    active_domains.each do |domain|
+      active[domain] = true
+      view[domain] = source[domain] if source.key?(domain)
+      dotted = "#{domain}."
+      view[dotted] = source[dotted] if source.key?(dotted) && !view.key?(dotted)
+    end
+    # Avoid source.keys: it allocates the whole untrusted map before a cap can
+    # take effect. The wider bounded pass preserves case-insensitive exact
+    # active-node keys; wildcard matching remains on the tighter cap.
+    scanned_entries = 0
+    wildcard_entries = 0
+    source.each_pair do |raw_pattern, raw_value|
+      scanned_entries += 1
+      if scanned_entries > NODE_DNS_HINT_LIMITS[:source_exact_entries]
+        record_reject(snapshot)
+        break
+      end
+      pattern = normalize_pattern(raw_pattern)
+      if pattern.empty?
+        record_reject(snapshot)
+        next
+      end
+      if exact_pattern?(pattern)
+        view[raw_pattern] = raw_value if active[pattern]
+        next
+      end
+      if wildcard_entries >= NODE_DNS_HINT_LIMITS[:source_entries]
+        record_reject(snapshot)
+        next
+      end
+      wildcard_entries += 1
+
+      view[raw_pattern] = raw_value
+    end
+    view
+  end
+
+  def select_for_domain(source, domain, snapshot)
+    return { "matched" => false, "value" => nil } unless plain_hash?(source)
+
+    best = nil
+    best_score = -1
+    conflict = false
+    matched = false
+    source.each do |raw_pattern, raw_value|
+      pattern = normalize_pattern(raw_pattern)
+      next if pattern.empty? || !pattern_matches?(pattern, domain)
+
+      matched = true
+      values = yield(raw_value, snapshot)
+      next unless has_values?(values)
+
+      score = pattern_score(pattern)
+      if score > best_score
+        best = copy_value(values)
+        best_score = score
+        conflict = false
+      elsif score == best_score && !same_values?(best, values)
+        conflict = true
+      end
+    end
+    if conflict
+      record_reject(snapshot)
+      return { "matched" => true, "value" => nil }
+    end
+    { "matched" => matched, "value" => best }
+  end
+
+  def resolve_profile(runtime_profile)
+    requested = if runtime_profile.is_a?(String)
+                  runtime_profile
+                elsif plain_hash?(runtime_profile) && runtime_profile["id"].is_a?(String)
+                  runtime_profile["id"]
+                else
+                  ""
+                end
+    SckiSubscriptionAdapterProfiles.resolve(requested)
+  end
+
+  def create_snapshot(profile)
+    {
+      "profile" => profile.fetch("id"),
+      "domains" => [],
+      "resolvers" => [],
+      "policy" => {},
+      "hosts" => {},
+      "stats" => { "domains" => 0, "resolvers" => 0, "policies" => 0, "hosts" => 0, "rejected" => 0 },
+    }
+  end
+
+  def add_policy(snapshot, domain, values)
+    new_resolvers = []
+    values.each do |resolver|
+      known = snapshot.fetch("resolvers").any? { |entry| entry == resolver } || new_resolvers.any? { |entry| entry == resolver }
+      new_resolvers << resolver unless known
+    end
+    if snapshot.fetch("resolvers").length + new_resolvers.length > NODE_DNS_HINT_LIMITS[:resolvers]
+      record_reject(snapshot, values.length)
+      return false
+    end
+    snapshot.fetch("policy")[domain] = values.dup
+    snapshot.fetch("resolvers").concat(new_resolvers)
+    true
+  end
+
+  def capture_node_dns(source_config, active_node_servers, runtime_profile)
+    profile = resolve_profile(runtime_profile)
+    snapshot = create_snapshot(profile)
+    return snapshot if profile.fetch("node_dns_projection") == "off"
+    return snapshot unless source_config.is_a?(Hash) && active_node_servers.is_a?(Array)
+
+    servers = active_node_servers.take(NODE_DNS_HINT_LIMITS[:active_node_servers])
+    record_reject(snapshot, active_node_servers.length - NODE_DNS_HINT_LIMITS[:active_node_servers]) if active_node_servers.length > NODE_DNS_HINT_LIMITS[:active_node_servers]
+    servers.each do |server|
+      domain = normalize_domain(server)
+      next if domain.empty?
+      if snapshot.fetch("domains").length >= NODE_DNS_HINT_LIMITS[:domains]
+        record_reject(snapshot)
+        next
+      end
+      push_unique(snapshot.fetch("domains"), domain) { |item| item }
+    end
+    snapshot.fetch("stats")["domains"] = snapshot.fetch("domains").length
+    return snapshot if snapshot.fetch("domains").empty?
+
+    source_dns = plain_hash?(source_config["dns"]) ? source_config["dns"] : {}
+    source_proxy_resolvers = profile.fetch("node_dns_projection") == "adaptive" && source_dns.key?("proxy-server-nameserver") ? normalize_resolver_list(source_dns["proxy-server-nameserver"], snapshot) : []
+    source_node_policy = build_source_view(source_dns["proxy-server-nameserver-policy"], snapshot.fetch("domains"), snapshot)
+    source_global_policy = build_source_view(source_dns["nameserver-policy"], snapshot.fetch("domains"), snapshot)
+
+    snapshot.fetch("domains").each do |domain|
+      if snapshot.fetch("policy").length >= NODE_DNS_HINT_LIMITS[:policies]
+        record_reject(snapshot)
+        next
+      end
+      selection = select_for_domain(source_node_policy, domain, snapshot) { |value, state| normalize_resolver_list(value, state) }
+      selection = select_for_domain(source_global_policy, domain, snapshot) { |value, state| normalize_resolver_list(value, state) } unless selection.fetch("matched")
+      if !selection.fetch("matched") && profile.fetch("node_dns_projection") == "adaptive" && source_proxy_resolvers.any?
+        selection = { "matched" => true, "value" => source_proxy_resolvers.dup }
+      end
+      next unless has_values?(selection.fetch("value"))
+
+      add_policy(snapshot, domain, selection.fetch("value"))
+    end
+
+    host_targets = []
+    snapshot.fetch("resolvers").each do |resolver|
+      host = resolver_host(resolver)
+      push_unique(host_targets, host) { |item| item } unless host.empty?
+    end
+    snapshot.fetch("policy").keys.each { |domain| push_unique(host_targets, domain) { |item| item } }
+    source_hosts = build_source_view(source_config["hosts"], host_targets, snapshot)
+    host_targets.each do |domain|
+      if snapshot.fetch("hosts").length >= NODE_DNS_HINT_LIMITS[:hosts]
+        record_reject(snapshot)
+        next
+      end
+      selection = select_for_domain(source_hosts, domain, snapshot) { |value, state| normalize_host_values(value, state) }
+      snapshot.fetch("hosts")[domain] = copy_value(selection.fetch("value")) if has_values?(selection.fetch("value"))
+    end
+
+    snapshot.fetch("stats")["resolvers"] = snapshot.fetch("resolvers").length
+    snapshot.fetch("stats")["policies"] = snapshot.fetch("policy").length
+    snapshot.fetch("stats")["hosts"] = snapshot.fetch("hosts").length
+    snapshot
+  end
+
+  def repository_pss_baseline?(dns)
+    values = dns && dns["proxy-server-nameserver"]
+    return values.strip.length.positive? if values.is_a?(String)
+
+    values.is_a?(Array) && values.any? { |value| value.is_a?(String) && value.strip.length.positive? }
+  end
+
+  def build_report(profile, snapshot, applied, reason)
+    stats = snapshot.is_a?(Hash) && plain_hash?(snapshot["stats"]) ? snapshot["stats"] : {}
+    {
+      "profile" => profile.fetch("id"),
+      "mode" => profile.fetch("node_dns_projection"),
+      "applied" => !!applied,
+      "reason" => reason,
+      "domains" => stats.fetch("domains", 0).to_i,
+      "resolvers" => stats.fetch("resolvers", 0).to_i,
+      "policies" => stats.fetch("policies", 0).to_i,
+      "hosts" => stats.fetch("hosts", 0).to_i,
+      "rejected" => stats.fetch("rejected", 0).to_i,
+    }
+  end
+
+  # capture_node_dns produces an opaque snapshot, but apply_node_dns validates
+  # its declared active-node domain closure before mutating repository-owned
+  # DNS. This keeps the public seam fail-closed if a future Adapter passes a
+  # stale or hand-built Hash.
+  def canonical_resolver_values?(values)
+    return false unless values.is_a?(Array) && values.any? && values.length <= NODE_DNS_HINT_LIMITS[:values]
+
+    seen = {}
+    values.each do |value|
+      return false unless value.is_a?(String) && normalize_resolver(value) == value
+      return false if seen[value]
+
+      seen[value] = true
+    end
+    true
+  end
+
+  def canonical_host_value?(value)
+    scratch = { "stats" => { "rejected" => 0 } }
+    normalized = normalize_host_values(value, scratch)
+    scratch.fetch("stats").fetch("rejected").zero? && has_values?(normalized) && same_values?(normalized, value)
+  end
+
+  def validate_snapshot(snapshot, profile)
+    return { "ok" => false, "reason" => "invalid-snapshot" } unless plain_hash?(snapshot) && plain_hash?(snapshot["policy"]) && plain_hash?(snapshot["hosts"])
+    return { "ok" => false, "reason" => "profile-mismatch" } unless snapshot["profile"] == profile.fetch("id")
+    return { "ok" => false, "reason" => "invalid-snapshot" } unless snapshot["domains"].is_a?(Array) && snapshot.fetch("domains").length <= NODE_DNS_HINT_LIMITS[:domains]
+
+    active_domains = {}
+    snapshot.fetch("domains").each do |active_domain|
+      return { "ok" => false, "reason" => "invalid-snapshot" } unless active_domain.is_a?(String) && normalize_domain(active_domain) == active_domain && !active_domains[active_domain]
+
+      active_domains[active_domain] = true
+    end
+
+    policy_keys = []
+    allowed_host_domains = {}
+    snapshot.fetch("policy").each_pair do |domain, values|
+      return { "ok" => false, "reason" => "invalid-snapshot" } if policy_keys.length >= NODE_DNS_HINT_LIMITS[:policies] || !active_domains[domain] || normalize_domain(domain) != domain || !canonical_resolver_values?(values)
+
+      policy_keys << domain
+      allowed_host_domains[domain] = true
+      values.each do |resolver|
+        resolver_domain = resolver_host(resolver)
+        allowed_host_domains[resolver_domain] = true unless resolver_domain.empty?
+      end
+    end
+    host_keys = []
+    snapshot.fetch("hosts").each_pair do |domain, value|
+      return { "ok" => false, "reason" => "invalid-snapshot" } if host_keys.length >= NODE_DNS_HINT_LIMITS[:hosts] || !allowed_host_domains[domain] || normalize_domain(domain) != domain || !canonical_host_value?(value)
+
+      host_keys << domain
+    end
+    { "ok" => true, "policy_keys" => policy_keys, "host_keys" => host_keys }
+  end
+
+  def apply_node_dns(repository_config, snapshot, runtime_profile)
+    profile = resolve_profile(runtime_profile)
+    return build_report(profile, snapshot, false, "profile-off") if profile.fetch("node_dns_projection") == "off"
+    return build_report(profile, snapshot, false, "invalid-repository-config") unless plain_hash?(repository_config) && plain_hash?(repository_config["dns"])
+    return build_report(profile, snapshot, false, "missing-pss-baseline") unless repository_pss_baseline?(repository_config["dns"])
+    validation = validate_snapshot(snapshot, profile)
+    return build_report(profile, snapshot, false, validation.fetch("reason")) unless validation.fetch("ok")
+
+    policy_keys = validation.fetch("policy_keys")
+    host_keys = validation.fetch("host_keys")
+    return build_report(profile, snapshot, false, "no-hints") if policy_keys.empty? && host_keys.empty?
+
+    if policy_keys.any?
+      repository_config.fetch("dns")["proxy-server-nameserver-policy"] = {}
+      policy_keys.each { |domain| repository_config.fetch("dns")["proxy-server-nameserver-policy"][domain] = snapshot.fetch("policy").fetch(domain).dup }
+    else
+      repository_config.fetch("dns").delete("proxy-server-nameserver-policy")
+    end
+    repository_config["hosts"] = {} unless plain_hash?(repository_config["hosts"])
+    host_keys.each do |domain|
+      repository_config.fetch("hosts")[domain] = copy_value(snapshot.fetch("hosts").fetch(domain)) unless repository_config.fetch("hosts").key?(domain)
+    end
+    build_report(profile, snapshot, true, "applied")
+  end
+
+  private_class_method :plain_hash?, :record_reject, :push_unique, :ipv4?, :ipv6?, :unbracket_ipv6,
+                       :normalize_domain, :normalize_resolver, :resolver_host, :normalize_resolver_list,
+                       :normalize_host_values, :normalize_pattern, :pattern_matches?, :pattern_score,
+                       :same_values?, :has_values?, :copy_value, :exact_pattern?, :build_source_view,
+                       :select_for_domain, :create_snapshot, :add_policy, :repository_pss_baseline?, :build_report,
+                       :canonical_resolver_values?, :canonical_host_value?, :validate_snapshot
+end
+# <<< SCKI NODE DNS HINTS: END
 
 # ---------------------------------------------------------------
 # Phase 1a: 过滤节点（仅去信息节点；保留倍率节点）+ 家宽识别
@@ -1742,6 +2317,9 @@ filtered_proxies = raw_proxies.reject do |p|
 end
 is_residential = ->(name) { RESIDENTIAL_PATTERNS.any? { |pat| name.match?(pat) } }
 status "[filter] raw=#{raw_proxies.size} filtered=#{filtered_proxies.size} home=#{filtered_proxies.count { |p| is_residential.call(p['name'].to_s) }} removed=#{raw_proxies.size - filtered_proxies.size}"
+runtime_profile = SckiSubscriptionAdapterProfiles.resolve(ARGV[3])
+active_node_servers = filtered_proxies.map { |proxy| proxy["server"] }
+node_dns_hints = SckiSubscriptionAdapter.capture_node_dns(config, active_node_servers, runtime_profile)
 
 # ---------------------------------------------------------------
 # Phase 1b: 区域分类
@@ -1937,6 +2515,8 @@ config["proxies"] = filtered_proxies
    geox-url profile].each do |key|
   config[key] = override[key] if override.key?(key)
 end
+node_dns_report = SckiSubscriptionAdapter.apply_node_dns(config, node_dns_hints, runtime_profile)
+status "[node-dns] profile=#{node_dns_report['profile']} applied=#{node_dns_report['applied']} reason=#{node_dns_report['reason']} domains=#{node_dns_report['domains']} resolvers=#{node_dns_report['resolvers']} policies=#{node_dns_report['policies']} hosts=#{node_dns_report['hosts']} rejected=#{node_dns_report['rejected']}"
 
 # 清空并重建 proxy-groups：🌍 全球节点 → 业务组 → 其余区域组
 active_region_names = smart_groups.map { |g| g["name"] } + ["DIRECT", "REJECT"]
@@ -1974,7 +2554,7 @@ LOG_OUT "Info" "[Clash-Normal] Executing Ruby processor..."
 : > "$STATUS_LOG"
 
 # 执行 Ruby 处理脚本
-ruby "$RUBY_SCRIPT" "$CONFIG_FILE" "$OVERRIDE_YAML" "$STATUS_LOG" 2>> "$LOG_FILE"
+ruby "$RUBY_SCRIPT" "$CONFIG_FILE" "$OVERRIDE_YAML" "$STATUS_LOG" "$SCKI_SUBSCRIPTION_ADAPTER_PROFILE" 2>> "$LOG_FILE"
 RC=$?
 
 # 将 Ruby 的状态日志逐行回显到 OpenClash 日志

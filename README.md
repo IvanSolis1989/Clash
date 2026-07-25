@@ -8,6 +8,7 @@
 > - 🧭 **国内权威优先**：具名国内策略与 `.cn` 权威段先于共享边缘/CDN、`geolocation-!cn`、IP 与地域 fallback；解析到境外 IP 不会改变国内站点的目标策略。
 > - 🎯 **共享 API 精确分流**：`api.github.com` 默认归入 `🔧 工具与服务`；仅桌面 `Code Helper` / `Code Helper (Plugin)` 的同域访问保留 `🤖 AI 服务`，避免浏览器 GitHub API 请求被上游 AI 规则误收。
 > - 🔐 **发布资产隔离**：每次融合发布为自托管规则集附加版本缓存键；Mihomo 同时使用版本化本地 `path`，杜绝新配置与旧规则文件混用。
+> - 🔒 **私有节点 DNS 受限投影**：具备订阅覆写 hook 的 Mihomo 入口只导入活动节点 FQDN 所需的 DNS 提示，绝不让订阅接管全局业务 DNS；[实现边界与静态端手动配置见指南](./docs/private-node-dns.md)，[14 端适配能力见矩阵](./docs/client-capability-matrix.md)。
 > - 🧭 **Mihomo domain 语法正确归一化**：`DOMAIN` / `DOMAIN-SUFFIX` 会转换为 `behavior: domain` 的精确 / `+.` wildcard payload；`DOMAIN-KEYWORD` 与正则保留 classical residual，避免把 ChatGPT 等域名静默漏匹配或扩大匹配范围
 > - 🖥️ **桌面本地工具直连可验证**：`WorkPro.exe`、`WorkProWebProcess.exe` 等精确进程名沉淀在补充规则集，并由回归契约验证 Mihomo、sing-box 与 Xray fallback 始终输出 `DIRECT`
 > - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
@@ -34,6 +35,16 @@
 | v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 66 个非空 fused sing-box JSON 展平成 86 条 Xray RuleObject |
 | iOS / macOS 其他客户端 | `Egern/`、`Shadowrocket/`、`Surge/`、`Loon/`、`Quantumult X/` | 按各 APP 原生语法同步 |
 | OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 66 条非空 fused `.srs` shunt rule |
+
+---
+
+## 🔒 私有节点 DNS：自动适配的边界
+
+Clash Party Smart/Normal、FlClash 覆写和 OpenClash Normal/Smart 会在订阅导入时，仅投影**活动代理节点 FQDN**的 private resolver、精确 node policy 与必要 bootstrap hosts；默认 `adaptive`，也可在受信任本地选择 `off / policy / adaptive`，三档都不改变 55 组、规则或全局 DNS。固定的业务 DNS、fake-ip、`nameserver`/`fallback` 和仓库 hosts 仍由本仓库基线拥有。CMFA、Stash、Egern、Apple 私有配置、sing-box、v2rayN Xray、Passwall/Passwall2 都是静态或路由产物，不能宣称自动读取机场 DNS。
+
+私有 resolver、IPv6 bootstrap、通配符物化规则、静态端 Mixin 示例、验证方法与“不保证零泄漏”的边界，统一见 [私有节点 DNS 指南](./docs/private-node-dns.md)。
+
+选择入口前，可查阅[跨客户端能力矩阵](./docs/client-capability-matrix.md)：它把 `subscription_input`、`dynamic_grouping`、`node_dns_hint` 和可选 Node-DNS profile 分开列出，并用“内置自动 / 手工文档 / 无”避免能力误读。
 
 ---
 
@@ -184,7 +195,7 @@ flowchart TB
 
     L2["<b>② nameserver-policy / nameserver</b> &nbsp;·&nbsp; 国内域名主通道 &nbsp;·&nbsp; DoH<br/><br/><b>geosite:cn</b> &nbsp;→&nbsp; AliDNS / DNSPod<br/><b>AliDNS</b> &nbsp; https://dns.alidns.com/dns-query<br/><b>DNSPod</b> &nbsp; https://doh.pub/dns-query<br/>大陆站点 / 国内 CDN 固定走国内 DoH"]
 
-    L3["<b>③ proxy-server-nameserver</b> &nbsp;·&nbsp; 机场节点域名解析 &nbsp;·&nbsp; DoH<br/><br/><b>Cloudflare</b> &nbsp; https://cloudflare-dns.com/dns-query<br/><b>Google</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://dns.google/dns-query<br/><b>AliDNS</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://dns.alidns.com/dns-query<br/><b>DNSPod</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://doh.pub/dns-query<br/>解析 node.xxx-airport.com 走加密 DoH<br/>→&nbsp; 节点域名与 IP 都不暴露给 ISP，也不被 DNS 污染"]
+    L3["<b>③ proxy-server-nameserver</b> &nbsp;·&nbsp; 机场节点域名解析 &nbsp;·&nbsp; DoH<br/><br/><b>Cloudflare</b> &nbsp; https://cloudflare-dns.com/dns-query<br/><b>Google</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://dns.google/dns-query<br/><b>AliDNS</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://dns.alidns.com/dns-query<br/><b>DNSPod</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://doh.pub/dns-query<br/>解析 node.xxx-airport.com 走加密 DoH<br/>→&nbsp; ISP 可见性仍取决于 bootstrap、客户端与网络路径"]
 
     L4["<b>④ nameserver-policy / fallback</b> &nbsp;·&nbsp; 海外域名通道 &nbsp;·&nbsp; DoH + GeoIP 解毒<br/><br/><b>geosite:geolocation-!cn</b> &nbsp;→&nbsp; Cloudflare / Google<br/><b>Cloudflare</b> &nbsp; https://cloudflare-dns.com/dns-query<br/><b>Google</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://dns.google/dns-query<br/><b>fallback-filter.geoip-code: CN</b><br/>海外域名优先海外 DoH；污染结果再由 fallback-filter 兜底"]
 
@@ -204,7 +215,7 @@ flowchart TB
     style L4 fill:#F3F0FF,stroke:#8E44AD,stroke-width:2px,color:#000
 ```
 
-> 完整 YAML + 验证命令 + 各端 DNS 内置状态表，见 `Clash Party/README.md` 第四章。
+> 完整 YAML + 验证命令 + 各端 DNS 内置状态表，见 `Clash Party/README.md` 第四章；订阅私有节点 DNS 的受限投影和静态端边界见 [docs/private-node-dns.md](./docs/private-node-dns.md)。
 
 ---
 

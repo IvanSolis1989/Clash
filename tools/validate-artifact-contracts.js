@@ -17,6 +17,16 @@ const {
   repositoryAssetUrl,
 } = require('./lib/generated-asset-url');
 const {
+  formatIssues: formatCapabilityMatrixIssues,
+  readClientCapabilityMatrix,
+  renderClientCapabilityMatrix,
+  validateClientCapabilityMatrix,
+} = require('./lib/client-capability-matrix');
+const {
+  readProfileContract,
+  validateProfileContract,
+} = require('./lib/subscription-adapter-profiles');
+const {
   SOURCE_GRAPH_ID,
   DOMESTIC_AUTHORITY_ANCHOR_RULE,
   GENERIC_INTL_FALLBACK_RULES,
@@ -982,14 +992,17 @@ function validateJsProducts(record) {
   const smart = compileJs('Clash Party/ClashParty(mihomo-smart).js');
   const normal = compileJs('Clash Party/ClashParty(mihomo).js');
   const flclash = compileJs('FlClash/FlClash(mihomo).js');
-  const baselineVersion = extractJsVersion(smart);
-  const baselinePrefix = extractVersionPrefix(baselineVersion);
+  const runtimeVersion = extractJsVersion(smart);
+  // A runtime-only Adapter can receive a platform suffix without changing the
+  // source routing-graph revision consumed by static client artifacts.
+  const baselineVersion = extractVersionPrefix(runtimeVersion);
   const normalVersion = extractJsVersion(normal);
   const flclashVersion = extractJsVersion(flclash);
 
-  record.check('js.smart.version', /^v\d+\.\d+\.\d+$/.test(String(baselineVersion)), { value: baselineVersion, message: `got ${baselineVersion}` });
-  record.check('js.normal.version-prefix', Boolean(baselinePrefix && normalVersion && normalVersion.startsWith(`${baselinePrefix}-normal`)), { value: normalVersion });
-  record.check('js.flclash.version-prefix', Boolean(baselinePrefix && flclashVersion && flclashVersion.startsWith(`${baselinePrefix}-flclash`)), { value: flclashVersion });
+  record.check('js.smart.version', /^v\d+\.\d+\.\d+(?:-[a-z0-9]+(?:\.[a-z0-9]+)*)?$/.test(String(runtimeVersion)), { value: runtimeVersion, message: `got ${runtimeVersion}` });
+  record.check('js.smart.routing-baseline', Boolean(baselineVersion), { value: baselineVersion, message: `cannot extract routing baseline from ${runtimeVersion}` });
+  record.check('js.normal.version-prefix', Boolean(baselineVersion && normalVersion && normalVersion.startsWith(`${baselineVersion}-normal`)), { value: normalVersion });
+  record.check('js.flclash.version-prefix', Boolean(baselineVersion && flclashVersion && flclashVersion.startsWith(`${baselineVersion}-flclash`)), { value: flclashVersion });
   record.check('js.smart.region-interval-300', smart.includes(`interval: ${EXPECTED_REGION_TEST_INTERVAL_SECONDS}, tolerance: 30`), {
     message: 'Smart region groups must use 300s health-test interval',
   });
@@ -1002,7 +1015,7 @@ function validateJsProducts(record) {
   record.check('js.no-legacy-fast-region-interval', !/interval:\s*(120|180),\s*tolerance:/.test(`${smart}\n${normal}\n${flclash}`), {
     message: 'JS region interval must not regress to 120s/180s',
   });
-  return { baselineVersion, baselinePrefix };
+  return { baselineVersion, runtimeVersion };
 }
 
 function validateClashYaml(record, baselineVersion, options) {
@@ -2056,6 +2069,40 @@ function validateDomesticAuthorityPriorityAcrossArtifacts(record) {
   }
 }
 
+function validateSubscriptionAdapterProfileContract(record) {
+  try {
+    const errors = validateProfileContract(readProfileContract(REPO_ROOT));
+    record.check('subscription-adapter-profiles.schema', errors.length === 0, {
+      message: errors.join('; '),
+    });
+  } catch (error) {
+    record.check('subscription-adapter-profiles.schema', false, {
+      message: error && error.message ? error.message : String(error),
+    });
+  }
+}
+
+function validateClientCapabilityMatrixContract(record) {
+  try {
+    const matrix = readClientCapabilityMatrix(REPO_ROOT);
+    const validation = validateClientCapabilityMatrix(matrix, REPO_ROOT);
+    record.check('client-capability-matrix.schema-and-evidence', validation.ok, {
+      message: formatCapabilityMatrixIssues(validation.issues),
+    });
+    if (!validation.ok) return;
+
+    const expected = renderClientCapabilityMatrix(matrix);
+    const current = readText('docs/client-capability-matrix.md');
+    record.check('client-capability-matrix.generated-doc-current', current === expected, {
+      message: 'docs/client-capability-matrix.md is stale; run node tools/generate-client-capability-matrix.js',
+    });
+  } catch (error) {
+    record.check('client-capability-matrix.schema-and-evidence', false, {
+      message: error && error.message ? error.message : String(error),
+    });
+  }
+}
+
 function buildManifest(baselineVersion) {
   return {
     generatedAt: new Date().toISOString(),
@@ -2102,6 +2149,8 @@ function main() {
   validatePasswall(record, baselineVersion);
   validateGeneratedAssetRevision(record);
   validateDomesticAuthorityPriorityAcrossArtifacts(record);
+  validateSubscriptionAdapterProfileContract(record);
+  validateClientCapabilityMatrixContract(record);
   const remoteAssetValidation = validateGeneratedRemoteAssetSizes();
   record.check('generated-remote-assets.size-limit', remoteAssetValidation.failures.length === 0, {
     value: { referenced_assets: remoteAssetValidation.references.size, max_bytes: MAX_JSDELIVR_ASSET_BYTES },

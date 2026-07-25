@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "default": "adaptive",
+  "invariants": {
+    "routing_graph": "unchanged",
+    "proxy_groups": "fixed-55",
+    "global_dns": "repository-owned",
+    "subscription_may_select_profile": false
+  },
+  "profiles": {
+    "off": {
+      "node_dns_projection": "off",
+      "label": "关闭订阅 Node-DNS 投影"
+    },
+    "policy": {
+      "node_dns_projection": "policy",
+      "label": "仅投影命中活动节点的显式 DNS policy"
+    },
+    "adaptive": {
+      "node_dns_projection": "adaptive",
+      "label": "显式 policy 加受限代理节点 DNS 回退"
+    }
+  }
+}

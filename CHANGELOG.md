@@ -6,6 +6,21 @@
 
 ---
 
+## v6.0.9 订阅适配层、profile 与能力矩阵 (2026-07-25)
+
+- RUNTIME-ADAPTER：将五份订阅覆写的私有 Node-DNS 处理收敛为同构的 `captureNodeDns → snapshot → applyNodeDns` Module/Adapter seam；capture 与 apply 的 profile 必须匹配，缺少仓库 PSS 基线时零写入。
+- PROFILE：新增唯一受信任源 `tools/runtime/subscription-adapter-profiles.json`，提供 `off / policy / adaptive` 三档，默认 `adaptive`。三档不改变 `routing-graph.js`、55 组、规则、rule-provider 或全局 DNS；机场订阅不能选择 profile。
+- HARDENING：后置、大小写不同的活动节点精确 policy 可在有界扫描内优先命中；通配符扫描保持单独上限。resolver URL path/query 保持大小写，冲突 fail-closed；每条接受的 policy 与其 bootstrap resolver hosts 原子保留。
+- MATRIX：新增可验证的 14 产品 × 4 能力矩阵（订阅输入、动态分组、Node-DNS、可选 sidecar），由 JSON 单一源生成 Markdown，并在 CI/产物合同中校验证据与文档漂移。
+- DOCS/VERIFY：复核 Mihomo DNS、FlClash v0.8.94、OpenClash v0.47.133 官方资料；新增 JS/Ruby 三档、大小写精确 key、profile-mismatch、bootstrap 容量与矩阵回归。源规则图、MRS/fused/SRS 资产及静态路由语义不变。
+
+## v6.0.9 私有节点 DNS 适配 (2026-07-25)
+
+- RUNTIME-NODE-DNS：Clash Party Smart/Normal、FlClash 与 OpenClash Normal/Smart 新增同一受限 Node-DNS Adapter。它只为活动节点 FQDN 物化精确 `proxy-server-nameserver-policy` 和必要 bootstrap hosts；订阅不能替换全局业务 DNS、fake-ip 或固定 PSS 基线。
+- HARDENING：保留 Mihomo hosts 的标量域名重定向语义，支持 IPv4 / IPv6 / IPv4-mapped IPv6 bootstrap，`*.` 优先于更宽的 `+.` / `.`，resolver hosts 在容量上限前收集；输入与输出均有确定性上限。
+- CROSS-CLIENT-AUDIT：CMFA、Stash、Egern、Shadowrocket、Surge、Loon、Quantumult X、Sing-box、v2rayN Xray、Passwall / Passwall2 是静态或路由产物，没有订阅运行时 seam，明确不宣称自动接管私有节点 DNS；详见 [私有节点 DNS 指南](./docs/private-node-dns.md)。
+- VERIFY：新增同步漂移检查、JS 运行时回归与两份真实 OpenClash Ruby heredoc 合同；源规则图、MRS/fused/SRS 资产与静态产物版本不变。
+
 ## v6.0.9 平台修复 (2026-07-24)
 
 - FlClash v6.0.9-flclash.2：修复只关闭 `dns.ipv6`、却未关闭顶层 IPv6 的配置缺口；补充 Android VPN/系统代理设置说明和回归校验。规则源与其他客户端产物未改变。

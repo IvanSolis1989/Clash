@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'Clash Party/**/*.js'
+      - 'FlClash/**/*.js'
       - 'Clash Meta For Android/**/*.yaml'
       - 'Stash/**/*.yaml'
       - 'OpenClash/**/*.conf'
@@ -21,14 +22,26 @@ on:
       - 'Passwall2/**/*.conf'
       - 'Passwall2/shunt-rules/**/*.list'
       - 'tools/generate-stash-from-cmfa.js'
+      - 'tools/lib/client-capability-matrix.js'
+      - 'tools/lib/subscription-adapter-profiles.js'
+      - 'tools/generate-client-capability-matrix.js'
+      - 'tools/tests/client-capability-matrix.test.js'
+      - 'tools/tests/subscription-adapter-profiles.test.js'
       - 'tools/validate-artifact-contracts.js'
       - 'tools/validate-process-name-direct.js'
+      - 'tools/runtime/**'
+      - 'tools/sync-node-dns-hints-adapters.js'
+      - 'tools/test-openclash-node-dns-hints.js'
       - 'tools/fixtures/**'
+      - 'docs/client-capability-matrix.json'
+      - 'docs/client-capability-matrix.md'
+      - 'docs/private-node-dns.md'
       - '.github/workflows/validate-artifact-contracts.yml'
   push:
     branches: [main]
     paths:
       - 'Clash Party/**/*.js'
+      - 'FlClash/**/*.js'
       - 'Clash Meta For Android/**/*.yaml'
       - 'Stash/**/*.yaml'
       - 'OpenClash/**/*.conf'
@@ -46,9 +59,20 @@ on:
       - 'Passwall2/**/*.conf'
       - 'Passwall2/shunt-rules/**/*.list'
       - 'tools/generate-stash-from-cmfa.js'
+      - 'tools/lib/client-capability-matrix.js'
+      - 'tools/lib/subscription-adapter-profiles.js'
+      - 'tools/generate-client-capability-matrix.js'
+      - 'tools/tests/client-capability-matrix.test.js'
+      - 'tools/tests/subscription-adapter-profiles.test.js'
       - 'tools/validate-artifact-contracts.js'
       - 'tools/validate-process-name-direct.js'
+      - 'tools/runtime/**'
+      - 'tools/sync-node-dns-hints-adapters.js'
+      - 'tools/test-openclash-node-dns-hints.js'
       - 'tools/fixtures/**'
+      - 'docs/client-capability-matrix.json'
+      - 'docs/client-capability-matrix.md'
+      - 'docs/private-node-dns.md'
       - '.github/workflows/validate-artifact-contracts.yml'
   workflow_dispatch:
 
@@ -76,6 +100,18 @@ jobs:
 
       - name: Validate JS overwrite contracts
         run: node tools/validate-js-overwrites.js
+
+      - name: Check synchronized Node-DNS runtime adapters
+        run: node tools/sync-node-dns-hints-adapters.js --check
+
+      - name: Validate OpenClash Node-DNS hint contract
+        run: node tools/test-openclash-node-dns-hints.js
+
+      - name: Check client capability matrix
+        run: |
+          node tools/generate-client-capability-matrix.js --check
+          node --test tools/tests/client-capability-matrix.test.js
+          node --test tools/tests/subscription-adapter-profiles.test.js
 
       - name: Validate cross-client artifact contracts
         run: node tools/validate-artifact-contracts.js --strict-ruby

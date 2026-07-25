@@ -11,6 +11,16 @@ const EXPECTED_REGION_TEST_INTERVAL_SECONDS = 300;
 const FUSED_MANIFEST = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'rulesets/generated/fused/manifest.json'), 'utf8'));
 const EXPECTED_FUSED_PROVIDERS = FUSED_MANIFEST.fused_provider_count;
 const EXPECTED_FUSED_RULES = FUSED_MANIFEST.fused_rule_count;
+const subscriptionAdapterProfiles = require('./lib/subscription-adapter-profiles');
+const SUBSCRIPTION_ADAPTER_PROFILE_CONTRACT = subscriptionAdapterProfiles.assertValidProfileContract(
+  subscriptionAdapterProfiles.readProfileContract(REPO_ROOT),
+);
+const NODE_DNS_RUNTIME = [
+  subscriptionAdapterProfiles.renderJavaScriptProfileRuntime(SUBSCRIPTION_ADAPTER_PROFILE_CONTRACT),
+  fs.readFileSync(path.join(REPO_ROOT, 'tools/runtime/node-dns-hints.js'), 'utf8').trimEnd(),
+].join('\n\n').trimEnd().replace(/\r?\n/g, '\n');
+const NODE_DNS_BEGIN = '// >>> SCKI NODE DNS HINTS: BEGIN';
+const NODE_DNS_END = '// <<< SCKI NODE DNS HINTS: END';
 
 const TARGETS = [
   {
@@ -285,13 +295,66 @@ function makeFixtureConfig() {
   };
 }
 
+function makeNodeDnsHintFixture() {
+  const config = makeFixtureConfig();
+  config.proxies[0].server = 'hk.edge.private.test';
+  config.proxies[1].server = 'us.edge.private.test';
+  config.proxies[2].server = '198.51.100.8';
+  config.proxies[3].server = 'fallback.node.test';
+  config.proxies[4].server = 'region.global.private.test';
+  config.proxies[16].server = 'ignored.edge.private.test';
+  config.dns = {
+    'proxy-server-nameserver': [
+      'https://resolver.private.test/dns-query',
+      'https://dns.google/dns-query',
+      '[2001:db8::54]',
+      'system',
+      'https://blocked.private.test/dns-query#DIRECT',
+      'https://unsafe.private.test/dns-query?skip-cert-verify=true',
+    ],
+    'proxy-server-nameserver-policy': {
+      'hk.edge.private.test': ['https://policy.private.test/dns-query'],
+      '+.edge.private.test': ['tls://198.51.100.53'],
+      '*.edge.private.test': ['tls://198.51.100.54'],
+      'unrelated.private.test': ['https://unrelated.private.test/dns-query'],
+      'geosite:cn': ['https://should-not-appear.private.test/dns-query'],
+    },
+    'nameserver-policy': {
+      '+.global.private.test': ['https://global.private.test/dns-query'],
+      '*.edge.private.test': ['https://wildcard.private.test/dns-query'],
+      'rule-set:private': ['https://should-not-appear.private.test/dns-query'],
+    },
+  };
+  config.hosts = {
+    'hk.edge.private.test': ['198.51.100.11'],
+    '+.edge.private.test': ['198.51.100.10'],
+    '*.edge.private.test': 'alias.private.test',
+    'resolver.private.test': ['198.51.100.53', '2001:db8::53', '::ffff:192.0.2.53'],
+    'dns.google': ['203.0.113.11'],
+    'unrelated.private.test': ['203.0.113.12'],
+    'malformed.private.test': { malformed: true },
+  };
+  return config;
+}
+
 function deepClone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
-function loadOverwrite(target) {
+function loadOverwrite(target, profileOverride = null) {
   const filename = path.join(REPO_ROOT, target.file);
   const source = fs.readFileSync(filename, 'utf8');
+  let executableSource = source;
+  if (profileOverride !== null) {
+    const profileDeclaration = /^const SCKI_SUBSCRIPTION_ADAPTER_PROFILE = '(?:off|policy|adaptive)'$/m;
+    if (!profileDeclaration.test(source)) {
+      throw new Error(`${target.file}: missing trusted subscription adapter profile declaration`);
+    }
+    executableSource = source.replace(
+      profileDeclaration,
+      `const SCKI_SUBSCRIPTION_ADAPTER_PROFILE = '${profileOverride}'`,
+    );
+  }
   const logs = [];
   const sandbox = {
     console: {
@@ -301,9 +364,18 @@ function loadOverwrite(target) {
     },
   };
   vm.createContext(sandbox);
-  const trailer = '\n;globalThis.__smokeExports = { main, classifyNode, classifyAllNodes, VERSION };';
-  vm.runInContext(source + trailer, sandbox, { filename: target.file, timeout: 15000 });
+  const trailer = '\n;globalThis.__smokeExports = { main, classifyNode, classifyAllNodes, VERSION, SckiSubscriptionAdapter };';
+  vm.runInContext(executableSource + trailer, sandbox, { filename: target.file, timeout: 15000 });
   return { exports: sandbox.__smokeExports, logs, source };
+}
+
+function extractEmbeddedNodeDnsRuntime(source) {
+  const begin = source.indexOf(NODE_DNS_BEGIN);
+  const end = source.indexOf(NODE_DNS_END, begin);
+  if (begin === -1 || end === -1) return null;
+  const bodyStart = source.indexOf('\n', begin);
+  if (bodyStart === -1) return null;
+  return source.slice(bodyStart + 1, end).trimEnd().replace(/\r?\n/g, '\n');
 }
 
 function makeRecorder(target) {
@@ -613,6 +685,7 @@ function validateGeneral(output, record) {
   record.expectArrayEqual(output.dns.nameserver, ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query'], 'primary nameserver is domestic DoH');
   record.expectArrayEqual(output.dns['direct-nameserver'], ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query'], 'direct DNS is domestic DoH');
   record.expectArrayEqual(output.dns['proxy-server-nameserver'], ['https://cloudflare-dns.com/dns-query', 'https://dns.google/dns-query', 'https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query'], 'proxy server DNS is foreign DoH first with domestic DoH backup');
+  record.expect(!output.dns['proxy-server-nameserver-policy'], 'empty subscription does not create a proxy-server DNS policy');
   record.expectArrayEqual(output.dns.fallback, ['https://cloudflare-dns.com/dns-query', 'https://dns.google/dns-query'], 'fallback DNS is foreign DoH');
   const nameserverPolicy = output.dns['nameserver-policy'] && typeof output.dns['nameserver-policy'] === 'object' ? output.dns['nameserver-policy'] : {};
   record.expect(Object.keys(nameserverPolicy).length > 0, 'DNS nameserver-policy exists');
@@ -629,6 +702,247 @@ function validateGeneral(output, record) {
   const fpPreserved = proxies.get('JPN 01 Tokyo Home x1');
   record.expect(fpInjected && !!fpInjected['client-fingerprint'], 'TLS proxy without fingerprint receives a deterministic client-fingerprint');
   record.expect(fpPreserved && fpPreserved['client-fingerprint'] === 'safari', 'existing client-fingerprint is preserved');
+}
+
+function validateNodeDnsHints(api, output, logs, record) {
+  const nodePolicy = output.dns['proxy-server-nameserver-policy'] || {};
+  const globalPolicy = output.dns['nameserver-policy'] || {};
+  const hosts = output.hosts || {};
+  record.expectArrayEqual(output.dns['proxy-server-nameserver'], [
+    'https://cloudflare-dns.com/dns-query',
+    'https://dns.google/dns-query',
+    'https://dns.alidns.com/dns-query',
+    'https://doh.pub/dns-query',
+  ], 'subscription resolver hints never replace the fixed global proxy DNS baseline');
+  record.expectArrayEqual(nodePolicy['hk.edge.private.test'] || [], ['https://policy.private.test/dns-query'], 'exact node policy overrides a wider source wildcard');
+  record.expectArrayEqual(nodePolicy['us.edge.private.test'] || [], ['tls://198.51.100.54'], 'single-label wildcard outranks a broader + wildcard for an active node FQDN');
+  record.expectArrayEqual(nodePolicy['fallback.node.test'] || [], ['https://resolver.private.test/dns-query', 'https://dns.google/dns-query', '2001:db8::54'], 'source proxy DNS becomes an exact policy only for the active fallback node');
+  record.expectArrayEqual(nodePolicy['region.global.private.test'] || [], ['https://global.private.test/dns-query'], 'matching source global policy is materialized only for the active node FQDN');
+  record.expectEqual(Object.keys(nodePolicy).length, 4, 'node DNS policy contains only active FQDNs');
+  for (const blocked of ['unrelated.private.test', 'geosite:cn', 'rule-set:private', 'ignored.edge.private.test', '+.edge.private.test', '*.edge.private.test']) {
+    record.expect(!Object.prototype.hasOwnProperty.call(nodePolicy, blocked), `node DNS policy excludes ${blocked}`);
+  }
+  for (const blocked of ['+.global.private.test', '*.edge.private.test', 'unrelated.private.test', 'rule-set:private']) {
+    record.expect(!Object.prototype.hasOwnProperty.call(globalPolicy, blocked), `global DNS policy does not inherit ${blocked}`);
+  }
+  record.expectArrayEqual(globalPolicy['geosite:cn'] || [], ['https://dns.alidns.com/dns-query', 'https://doh.pub/dns-query'], 'source geosite policy cannot replace the repository global DNS baseline');
+  record.expectArrayEqual(hosts['hk.edge.private.test'] || [], ['198.51.100.11'], 'exact node hosts record wins over a wildcard source record');
+  record.expectEqual(hosts['us.edge.private.test'], 'alias.private.test', 'single-label hosts wildcard wins and preserves scalar domain redirection syntax');
+  record.expectArrayEqual(hosts['resolver.private.test'] || [], ['198.51.100.53', '2001:db8::53', '::ffff:192.0.2.53'], 'private resolver IPv4, IPv6 and IPv4-mapped IPv6 bootstrap hosts are retained');
+  record.expectArrayEqual(hosts['dns.google'] || [], ['8.8.8.8', '8.8.4.4'], 'repository bootstrap hosts override a subscription record for the same DNS host');
+  record.expect(!Object.prototype.hasOwnProperty.call(hosts, 'unrelated.private.test'), 'unrelated subscription hosts are isolated');
+  record.expect(!Object.prototype.hasOwnProperty.call(hosts, 'ignored.edge.private.test'), 'info-node host hints are ignored');
+  const logText = logs.join('\n');
+  record.expect(/Node-DNS profile=adaptive applied=true reason=applied domains=4 resolvers=6 policies=4 hosts=4 rejected=/.test(logText), 'node DNS adapter emits a count-only profile audit line');
+  for (const secretLikeValue of ['resolver.private.test', 'policy.private.test', '198.51.100.53']) {
+    record.expect(!logText.includes(secretLikeValue), `node DNS audit log does not disclose ${secretLikeValue}`);
+  }
+
+  const rerun = deepClone(output);
+  const rerunOutput = api.main(rerun);
+  record.expectEqual(JSON.stringify(rerunOutput), JSON.stringify(output), 'node DNS adapter is idempotent on an already-overwritten config');
+}
+
+function makeNodeDnsCapacityFixture() {
+  const config = makeFixtureConfig();
+  config.proxies = [];
+  config.hosts = {
+    'resolver.capacity.private.test': ['198.51.100.200'],
+  };
+  for (let index = 0; index < 70; index += 1) {
+    const domain = `node-${index}.capacity.private.test`;
+    config.proxies.push(makeProxy(`Capacity ${index}`, { server: domain }));
+    config.hosts[domain] = [`198.51.100.${(index % 200) + 1}`];
+  }
+  for (let index = 0; index < 300; index += 1) {
+    config.hosts[`unrelated-${index}.capacity.private.test`] = ['203.0.113.200'];
+  }
+  const latePolicy = {};
+  for (let index = 0; index < 300; index += 1) {
+    latePolicy[`unrelated-policy-${index}.capacity.private.test`] = ['https://late-policy.private.test/dns-query'];
+  }
+  latePolicy['NODE-0.CAPACITY.PRIVATE.TEST'] = ['https://late-policy.private.test/dns-query'];
+  config.dns = {
+    'proxy-server-nameserver': ['https://resolver.capacity.private.test/dns-query'],
+    'proxy-server-nameserver-policy': latePolicy,
+  };
+  return config;
+}
+
+function validateNodeDnsCapacity(api, record) {
+  const output = api.main(makeNodeDnsCapacityFixture());
+  const policy = output.dns['proxy-server-nameserver-policy'] || {};
+  const hosts = output.hosts || {};
+  record.expectArrayEqual(hosts['resolver.capacity.private.test'] || [], ['198.51.100.200'], 'resolver bootstrap hosts are captured before node hosts when the host cap is reached');
+  record.expectEqual(Object.keys(policy).length, 64, 'node DNS policy cap stays deterministic for oversized subscriptions');
+  record.expectArrayEqual(policy['node-0.capacity.private.test'] || [], ['https://late-policy.private.test/dns-query'], 'late exact active-node policy survives unrelated source-map entries');
+  record.expectArrayEqual(output.dns['proxy-server-nameserver'], [
+    'https://cloudflare-dns.com/dns-query',
+    'https://dns.google/dns-query',
+    'https://dns.alidns.com/dns-query',
+    'https://doh.pub/dns-query',
+  ], 'oversized subscription DNS remains scoped to exact node policies rather than global proxy DNS');
+}
+
+function makeNodeDnsResolverCapacityFixture() {
+  const config = makeFixtureConfig();
+  config.proxies = [];
+  config.hosts = {};
+  const policy = {};
+  for (let index = 0; index < 13; index += 1) {
+    const node = `resolver-node-${index}.private.test`;
+    const resolver = `resolver-${index}.private.test`;
+    config.proxies.push(makeProxy(`Resolver ${index}`, { server: node }));
+    policy[node] = [`https://${resolver}/dns-query`];
+    config.hosts[resolver] = [`198.51.100.${index + 30}`];
+  }
+  config.dns = {
+    'proxy-server-nameserver': ['https://resolver-baseline.private.test/dns-query'],
+    'proxy-server-nameserver-policy': policy,
+  };
+  return config;
+}
+
+function validateNodeDnsResolverCapacity(api, record) {
+  const output = api.main(makeNodeDnsResolverCapacityFixture());
+  const policy = output.dns['proxy-server-nameserver-policy'] || {};
+  const hosts = output.hosts || {};
+  record.expectEqual(Object.keys(policy).length, 13, 'all accepted node policies survive beyond the legacy resolver cap');
+  for (let index = 0; index < 13; index += 1) {
+    const node = `resolver-node-${index}.private.test`;
+    const resolver = `resolver-${index}.private.test`;
+    record.expectArrayEqual(policy[node] || [], [`https://${resolver}/dns-query`], `resolver policy ${index} is retained atomically`);
+    record.expectArrayEqual(hosts[resolver] || [], [`198.51.100.${index + 30}`], `resolver bootstrap host ${index} is retained with its policy`);
+  }
+}
+
+function pickRepositoryDnsBaseline(output) {
+  const dns = output.dns || {};
+  return JSON.stringify({
+    nameserver: dns.nameserver || [],
+    directNameserver: dns['direct-nameserver'] || [],
+    proxyServerNameserver: dns['proxy-server-nameserver'] || [],
+    fallback: dns.fallback || [],
+    nameserverPolicy: dns['nameserver-policy'] || {},
+    fakeIpFilter: dns['fake-ip-filter'] || [],
+  });
+}
+
+function pickRoutingTopology(output) {
+  return JSON.stringify({
+    proxies: output.proxies || [],
+    groups: output['proxy-groups'] || [],
+    rules: output.rules || [],
+    providers: output['rule-providers'] || {},
+  });
+}
+
+function validateNodeDnsProfiles(target, record) {
+  const profiles = {};
+  for (const profile of ['off', 'policy', 'adaptive']) {
+    const { exports: api, logs } = loadOverwrite(target, profile);
+    const output = api.main(makeNodeDnsHintFixture());
+    profiles[profile] = { api, logs, output };
+    record.expect(output && typeof output === 'object', `profile ${profile} returns a config object`);
+  }
+
+  const off = profiles.off.output;
+  const policy = profiles.policy.output;
+  const adaptive = profiles.adaptive.output;
+  record.expectEqual(pickRoutingTopology(off), pickRoutingTopology(policy), 'off and policy profiles preserve identical proxy/routing topology');
+  record.expectEqual(pickRoutingTopology(off), pickRoutingTopology(adaptive), 'off and adaptive profiles preserve identical proxy/routing topology');
+  record.expectEqual(pickRepositoryDnsBaseline(off), pickRepositoryDnsBaseline(policy), 'off and policy profiles preserve the repository DNS baseline');
+  record.expectEqual(pickRepositoryDnsBaseline(off), pickRepositoryDnsBaseline(adaptive), 'off and adaptive profiles preserve the repository DNS baseline');
+
+  const offPolicy = off.dns['proxy-server-nameserver-policy'] || {};
+  const policyOnly = policy.dns['proxy-server-nameserver-policy'] || {};
+  const adaptivePolicy = adaptive.dns['proxy-server-nameserver-policy'] || {};
+  record.expectEqual(Object.keys(offPolicy).length, 0, 'off profile imports no subscription node DNS policy');
+  record.expect(!Object.prototype.hasOwnProperty.call(off.hosts || {}, 'hk.edge.private.test'), 'off profile imports no subscription node host hint');
+  record.expectEqual(Object.keys(policyOnly).length, 3, 'policy profile materializes only matching explicit policies');
+  record.expect(!Object.prototype.hasOwnProperty.call(policyOnly, 'fallback.node.test'), 'policy profile does not use source proxy DNS as a fallback policy');
+  record.expectArrayEqual(policyOnly['hk.edge.private.test'] || [], ['https://policy.private.test/dns-query'], 'policy profile preserves exact matching node policy');
+  record.expectArrayEqual(policyOnly['region.global.private.test'] || [], ['https://global.private.test/dns-query'], 'policy profile projects matching global policy only to an active node');
+  record.expectEqual(Object.keys(adaptivePolicy).length, 4, 'adaptive profile adds only the active fallback-node policy');
+  record.expectArrayEqual(adaptivePolicy['fallback.node.test'] || [], ['https://resolver.private.test/dns-query', 'https://dns.google/dns-query', '2001:db8::54'], 'adaptive profile retains the scoped proxy DNS fallback');
+  record.expect(!Object.prototype.hasOwnProperty.call(adaptive.dns['nameserver-policy'] || {}, '+.global.private.test'), 'no profile imports source global DNS policy patterns');
+
+  for (const profile of ['off', 'policy', 'adaptive']) {
+    const logText = profiles[profile].logs.join('\n');
+    record.expect(new RegExp(`Node-DNS profile=${profile} `).test(logText), `${profile} profile emits a redacted audit line`);
+    for (const secretLikeValue of ['resolver.private.test', 'policy.private.test', '198.51.100.53']) {
+      record.expect(!logText.includes(secretLikeValue), `${profile} profile audit log remains redacted`);
+    }
+  }
+
+  const snapshot = profiles.adaptive.api.SckiSubscriptionAdapter.captureNodeDns(
+    makeNodeDnsHintFixture(),
+    ['hk.edge.private.test'],
+    'adaptive',
+  );
+  const missingBaseline = { dns: {}, hosts: { 'repository.example': ['192.0.2.1'] } };
+  const before = JSON.stringify(missingBaseline);
+  const report = profiles.adaptive.api.SckiSubscriptionAdapter.applyNodeDns(missingBaseline, snapshot, 'adaptive');
+  record.expectEqual(report.reason, 'missing-pss-baseline', 'adapter fails closed when the repository PSS baseline is missing');
+  record.expectEqual(JSON.stringify(missingBaseline), before, 'missing repository PSS baseline causes zero mutation');
+
+  const profileMismatchRepository = {
+    dns: { 'proxy-server-nameserver': ['https://repository-baseline.example/dns-query'] },
+    hosts: { 'repository.example': ['192.0.2.1'] },
+  };
+  const mismatchBefore = JSON.stringify(profileMismatchRepository);
+  const mismatchReport = profiles.adaptive.api.SckiSubscriptionAdapter.applyNodeDns(profileMismatchRepository, snapshot, 'policy');
+  record.expectEqual(mismatchReport.reason, 'profile-mismatch', 'adapter rejects an adaptive snapshot when the requested profile is policy');
+  record.expectEqual(JSON.stringify(profileMismatchRepository), mismatchBefore, 'profile mismatch causes zero mutation');
+
+  const escapedPolicySnapshotRepository = {
+    dns: { 'proxy-server-nameserver': ['https://repository-baseline.example/dns-query'] },
+    hosts: { 'repository.example': ['192.0.2.1'] },
+  };
+  const escapedPolicySnapshotBefore = JSON.stringify(escapedPolicySnapshotRepository);
+  const escapedPolicySnapshotReport = profiles.adaptive.api.SckiSubscriptionAdapter.applyNodeDns(escapedPolicySnapshotRepository, {
+    profile: 'adaptive',
+    domains: ['allowed.private.test'],
+    policy: { 'unrelated.private.test': ['https://resolver.private.test/dns-query'] },
+    hosts: {},
+    stats: {},
+  }, 'adaptive');
+  record.expectEqual(escapedPolicySnapshotReport.reason, 'invalid-snapshot', 'adapter rejects a hand-built snapshot whose policy FQDN is not an active node domain');
+  record.expectEqual(JSON.stringify(escapedPolicySnapshotRepository), escapedPolicySnapshotBefore, 'out-of-bound policy snapshot causes zero mutation');
+
+  const escapedHostSnapshotRepository = {
+    dns: { 'proxy-server-nameserver': ['https://repository-baseline.example/dns-query'] },
+    hosts: { 'repository.example': ['192.0.2.1'] },
+  };
+  const escapedHostSnapshotBefore = JSON.stringify(escapedHostSnapshotRepository);
+  const escapedHostSnapshotReport = profiles.adaptive.api.SckiSubscriptionAdapter.applyNodeDns(escapedHostSnapshotRepository, {
+    profile: 'adaptive',
+    domains: ['allowed.private.test'],
+    policy: { 'allowed.private.test': ['https://resolver.private.test/dns-query'] },
+    hosts: { 'unrelated.private.test': ['192.0.2.2'] },
+    stats: {},
+  }, 'adaptive');
+  record.expectEqual(escapedHostSnapshotReport.reason, 'invalid-snapshot', 'adapter rejects a hand-built snapshot whose host FQDN is outside the policy resolver closure');
+  record.expectEqual(JSON.stringify(escapedHostSnapshotRepository), escapedHostSnapshotBefore, 'out-of-bound host snapshot causes zero mutation');
+
+  const canonicalizedProfileSnapshot = profiles.adaptive.api.SckiSubscriptionAdapter.captureNodeDns(
+    makeNodeDnsHintFixture(),
+    ['hk.edge.private.test', 'us.edge.private.test', 'fallback.node.test', 'region.global.private.test'],
+    { id: 'policy', nodeDnsProjection: 'adaptive' },
+  );
+  record.expectEqual(canonicalizedProfileSnapshot.profile, 'policy', 'adapter canonicalizes object profiles through the registered enum');
+  record.expectEqual(Object.keys(canonicalizedProfileSnapshot.policy).length, 3, 'object profile projection cannot escalate policy into adaptive fallback');
+
+  const pathCaseSnapshot = profiles.adaptive.api.SckiSubscriptionAdapter.captureNodeDns({
+    dns: {
+      'proxy-server-nameserver-policy': {
+        'path-case.private.test': ['https://resolver.private.test/DNS'],
+        'PATH-CASE.PRIVATE.TEST': ['https://resolver.private.test/dns'],
+      },
+    },
+  }, ['path-case.private.test'], 'adaptive');
+  record.expect(!Object.prototype.hasOwnProperty.call(pathCaseSnapshot.policy, 'path-case.private.test'), 'case-sensitive resolver paths conflict rather than silently deduplicating');
+  record.expect(pathCaseSnapshot.stats.rejected > 0, 'case-sensitive resolver path conflict is recorded as a rejection');
 }
 
 function validateFlClashRefs(target, config, refs, record) {
@@ -648,6 +962,8 @@ function runTarget(target, options) {
   const fixture = makeFixtureConfig();
 
   record.expect(api && typeof api.main === 'function', 'main(config) is exported by the VM harness');
+  record.expect(extractEmbeddedNodeDnsRuntime(source) === NODE_DNS_RUNTIME, 'embedded Node-DNS hint Module matches its canonical runtime source');
+  record.expect(source.includes(`const SCKI_SUBSCRIPTION_ADAPTER_PROFILE = '${SUBSCRIPTION_ADAPTER_PROFILE_CONTRACT.default}'`), 'adapter selects the profile-contract default locally');
   const fusedApplyCalls = (source.match(/^\s*applyMihomoFusedRuleSets\(config\)\s*$/gm) || []).length;
   record.expectEqual(fusedApplyCalls, 1, 'contains exactly one fused rule injection call');
   validateClassification(target, api, fixture, record);
@@ -668,6 +984,14 @@ function runTarget(target, options) {
     validateRulesAndProviders(output, record, target);
     validateGeneral(output, record);
     if (target.id === 'flclash') validateFlClashGeneral(output, record);
+
+    const nodeDnsFixture = makeNodeDnsHintFixture();
+    const nodeDnsOutput = api.main(nodeDnsFixture);
+    record.expect(nodeDnsOutput === nodeDnsFixture, 'node DNS fixture returns the original config object');
+    validateNodeDnsHints(api, nodeDnsOutput, logs, record);
+    validateNodeDnsCapacity(api, record);
+    validateNodeDnsResolverCapacity(api, record);
+    validateNodeDnsProfiles(target, record);
   }
 
   const summary = output ? {

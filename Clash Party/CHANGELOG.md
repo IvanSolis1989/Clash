@@ -7,6 +7,19 @@
 
 ---
 
+## v6.0.9-dns.2 / v6.0.9-normal.3 (2026-07-25)
+
+- ADAPTER：Node-DNS 从脚本内隐式 helper 收敛为 `SckiSubscriptionAdapter.captureNodeDns()` / `applyNodeDns()`；Adapter 自己提供活动节点 server 列表和日志，runtime Module 不再依赖节点分类器、`VERSION` 或 UI 日志函数。
+- PROFILE：同步 `off / policy / adaptive` 受信任 profile，默认 `adaptive`；profile 只决定私有节点 DNS 投影深度，绝不改变 55 组、规则、provider 或仓库全局 DNS。snapshot 与 apply profile 不匹配、缺少 PSS baseline 时均零写入。
+- HARDENING：有界地保留后置/大小写不同的活动节点精确 policy；wildcard 仍受独立上限。resolver URL path/query 按大小写区分，冲突 fail-closed，policy 与 resolver bootstrap hosts 原子接受。
+- VERIFY/DOCS：三份 JS 合同覆盖三档 profile、路径大小写冲突、后置精确 key、profile-mismatch、64+ resolver/hosts 容量及同步漂移；复核 Mihomo DNS 官方页面（2026-07-18 更新），字段兼容无变化。
+
+## v6.0.9-dns.1 / v6.0.9-normal.2 (2026-07-25)
+
+- NODE-DNS：订阅中的私有 resolver 不再加入全局 `proxy-server-nameserver`。仅为活动代理节点 FQDN 物化精确 node policy；订阅 PSS 只作为无更具体 policy 时的节点级回退。
+- HARDENING：保留 `hosts` 的标量域名重定向，支持 IPv4 / IPv6 / IPv4-mapped IPv6 bootstrap；`*.` 先于 `+.` / `.`，resolver hosts 优先于节点 hosts，所有不受信输入和容量都有上限。
+- VERIFY：三份 JS 覆写共享 `tools/runtime/node-dns-hints.js`，合同覆盖 wildcard、私有 resolver 作用域、IP bootstrap、64 条容量边界和重复覆写幂等性。
+
 ## v6.0.9 / v6.0.9-normal.1 (2026-07-19)
 
 - FIX#176 后续审计：通用 `api.github.com` 融合进 `🔧 工具与服务` 并置于上游广义 AI 规则之前；仅 `Code Helper` / `Code Helper (Plugin)` 的进程加域名组合继续命中 `🤖 AI 服务`。
