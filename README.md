@@ -1,23 +1,14 @@
 # 🚀 Smart-Config-Kit v6.0.9
 
-> 一套以 `rulesets/source/routing-graph.js` 为唯一规则事实源、同步产出 14 种客户端等价配置的智能分流体系。同一套策略覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt，避免“设备 A 可用、设备 B 抽风”。
+> 一套以 `rulesets/source/routing-graph.js` 为唯一规则源、同步产出 14 种客户端配置的跨端智能分流体系，覆盖 Windows / macOS / Linux / Android / iOS / OpenWrt。
 >
-> 源规则图记录上游 provider、最终分流目标和大融合产物的对应关系；Clash Party、CMFA、Stash、Egern、SingBox、OpenClash、v2rayN Xray、Passwall/Passwall2 和移动端配置只消费生成后的融合规则集或各自原生 fallback 映射。融合编译器先规范化，再在同策略、同顺序段内删除精确重复和可证明被覆盖的域名/CIDR；GEOIP 国家码保留给支持原生数据库查询的平台，只有不支持该能力的目标才展开。
+> - 🧭 同一 source graph 经 `MRS -> fused -> 原生产物` 生成各端配置，统一规则顺序与分流目标。
+> - 🎯 国内策略优先，关键域名、API 和本地工具按明确策略分流；各内核使用适合自身能力的规则格式。
+> - 🧩 22 个区域组 + 33 个业务组，提供 Smart / Normal 两种内核。
+> - 🛡️ 分层 DoH 负责业务 DNS；支持订阅覆写的 Mihomo 入口只投影活动节点所需的 DNS 提示，静态端边界见 [DNS 指南](./docs/private-node-dns.md)。
+> - 🔄 GitHub Actions 自动重建、校验和发布产物，减少跨端配置漂移。
 >
-> - 🧠 **融合规则集语义保真**：源图当前 514 个 provider / 973 条规则按原始首匹配顺序编译为 69 个语义段、127 个 Mihomo provider / 146 条主规则；移动端只消费 66 个非空文本资产，sing-box / Passwall 系消费 66 个非空 `.srs`
-> - 🧭 **国内权威优先**：具名国内策略与 `.cn` 权威段先于共享边缘/CDN、`geolocation-!cn`、IP 与地域 fallback；解析到境外 IP 不会改变国内站点的目标策略。
-> - 🎯 **共享 API 精确分流**：`api.github.com` 默认归入 `🔧 工具与服务`；仅桌面 `Code Helper` / `Code Helper (Plugin)` 的同域访问保留 `🤖 AI 服务`，避免浏览器 GitHub API 请求被上游 AI 规则误收。
-> - 🔐 **发布资产隔离**：每次融合发布为自托管规则集附加版本缓存键；Mihomo 同时使用版本化本地 `path`，杜绝新配置与旧规则文件混用。
-> - 🔒 **私有节点 DNS 受限投影**：具备订阅覆写 hook 的 Mihomo 入口只导入活动节点 FQDN 所需的 DNS 提示，绝不让订阅接管全局业务 DNS；[实现边界与静态端手动配置见指南](./docs/private-node-dns.md)，[14 端适配能力见矩阵](./docs/client-capability-matrix.md)。
-> - 🧭 **Mihomo domain 语法正确归一化**：`DOMAIN` / `DOMAIN-SUFFIX` 会转换为 `behavior: domain` 的精确 / `+.` wildcard payload；`DOMAIN-KEYWORD` 与正则保留 classical residual，避免把 ChatGPT 等域名静默漏匹配或扩大匹配范围
-> - 🖥️ **桌面本地工具直连可验证**：`WorkPro.exe`、`WorkProWebProcess.exe` 等精确进程名沉淀在补充规则集，并由回归契约验证 Mihomo、sing-box 与 Xray fallback 始终输出 `DIRECT`
-> - 🧩 **22 区域组 + 33 业务组**：AI / 流媒体 / 社交 / 游戏 / 金融 / 广告拦截等场景保持语义一致
-> - ⚙️ **按内核选择最优格式**：Mihomo 优先 `.mrs`，sing-box 使用 `.srs`，Egern 使用原生规则集，v2rayN Xray 展平成 RuleObject，Passwall 系使用 `rule-set:remote` `.srs`
-> - 🧯 **双层体积门禁**：每个 jsDelivr 资产不超过 18 MiB；iOS Network Extension 类客户端还必须满足 32 MiB / 100 万文本规则的聚合预算，禁止靠分片绕过总量约束
-> - 🔄 **定时全量发布闭环**：GitHub Actions 每周或手动触发后按 `source graph -> MRS -> fused -> 原生派生` 重建并验证；Egern 用确定性生成清单校验内容与引用关系，不因上游正常去重导致的数量变化误阻断发布
-> - ⚡ **Smart / Normal 双内核**：同规则量，按客户端能力选择 `smart`（LightGBM ML 择路）或经典 `url-test`
-> - 🤖 **AI 全仓维护**：代码 / 规则 / 文档均由 AI 编写迭代；[Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues/new/choose) 触发 AI 自动回答，[Telegram 群](https://t.me/Olympus_Habitue) 可讨论
-> - ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
+> ⚠️ Mihomo 内核由本人实测，其他内核请自行验证后使用
 
 <sub>💖 [支持本项目](./docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -35,16 +26,6 @@
 | v2rayN Xray | `v2rayN/v2rayN(xray).json` | 从 66 个非空 fused sing-box JSON 展平成 86 条 Xray RuleObject |
 | iOS / macOS 其他客户端 | `Egern/`、`Shadowrocket/`、`Surge/`、`Loon/`、`Quantumult X/` | 按各 APP 原生语法同步 |
 | OpenWrt | 优先 `OpenClash/`，Passwall / Passwall2 作为降级参考 | Passwall 系使用 66 条非空 fused `.srs` shunt rule |
-
----
-
-## 🔒 私有节点 DNS：自动适配的边界
-
-Clash Party Smart/Normal、FlClash 覆写和 OpenClash Normal/Smart 会在订阅导入时，仅投影**活动代理节点 FQDN**的 private resolver、精确 node policy 与必要 bootstrap hosts；默认 `adaptive`，也可在受信任本地选择 `off / policy / adaptive`，三档都不改变 55 组、规则或全局 DNS。固定的业务 DNS、fake-ip、`nameserver`/`fallback` 和仓库 hosts 仍由本仓库基线拥有。CMFA、Stash、Egern、Apple 私有配置、sing-box、v2rayN Xray、Passwall/Passwall2 都是静态或路由产物，不能宣称自动读取机场 DNS。
-
-私有 resolver、IPv6 bootstrap、通配符物化规则、静态端 Mixin 示例、验证方法与“不保证零泄漏”的边界，统一见 [私有节点 DNS 指南](./docs/private-node-dns.md)。
-
-选择入口前，可查阅[跨客户端能力矩阵](./docs/client-capability-matrix.md)：它把 `subscription_input`、`dynamic_grouping`、`node_dns_hint` 和可选 Node-DNS profile 分开列出，并用“内置自动 / 手工文档 / 无”避免能力误读。
 
 ---
 
@@ -171,7 +152,13 @@ flowchart LR
 
 ## 🛡️ DNS 净化
 
-> 分流规则配得再好，DNS 漏了照样白搭。GFW 污染 / ISP 劫持 / 运营商审计 / 节点 IP 暴露——**全从 DNS 层下手**。加密 DoH 不是可选项，是必选项。
+> 分流规则配得再好，DNS 漏了照样白搭。仓库用分层 DNS 管理 bootstrap、国内域名、机场节点和海外域名查询，业务请求优先走加密 DoH。
+
+### 私有节点 DNS：受限适配边界
+
+Clash Party Smart/Normal、FlClash 覆写和 OpenClash Normal/Smart 在订阅导入时，只投影**活动代理节点 FQDN**所需的 private resolver、精确 node policy 与 bootstrap hosts；默认 `adaptive`，受信任本地可选 `off / policy / adaptive`。三档都不改变 55 组、规则或全局业务 DNS，`fake-ip`、`nameserver` / `fallback` 和仓库 hosts 仍由本仓库基线管理。
+
+CMFA、Stash、Egern、Apple 配置、sing-box、v2rayN Xray、Passwall / Passwall2 是静态或路由产物，不自动读取机场 DNS。IPv6 bootstrap、通配符物化、静态端 Mixin、验证方法和“不保证零泄漏”的边界见 [私有节点 DNS 指南](./docs/private-node-dns.md)；各端能力见[跨客户端能力矩阵](./docs/client-capability-matrix.md)。
 
 ### 本仓库的 DNS 四层分工
 
