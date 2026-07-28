@@ -28,6 +28,7 @@ FlClash 的覆写运行在当前选中的单份配置上：它会处理这份配
 - 优先使用你信任的本地或自托管 Sub-Store；不要把公网可访问的后端裸露出来。
 - 官方 Sub-Store 已说明 `sub.store` 相关模块域名并非其持有的公共域名，错误路由可能造成数据暴露。使用模块方案前先读官方安全公告；本教程的 Docker 方案默认仅监听本机。
 - `sub-store.json` / `root.json` 是个人配置备份，不应提交到本仓库。
+- Cloudflare Worker 域名本身是公开入口；管理 Token 只能用于管理页面/API，客户端订阅必须使用单独的 download Token。不要把管理 URL、Token、D1 导出或配置截图公开。
 
 ## 方式一：使用客户端内置 Sub-Store（最省事）
 
@@ -113,6 +114,82 @@ docker compose stop
 ```
 
 `./data` 中会保存个人配置和订阅数据。升级前把它备份到私有、加密的位置；不要把该目录提交到 Git、同步到公共网盘或贴进排障截图。若确需跨设备使用，不要简单把 `127.0.0.1` 改成 `0.0.0.0`：请使用自己的 HTTPS 反向代理，并加认证或 VPN；官方文档特别提示后端主机设置不应直接暴露，随机路径不能替代访问控制。
+
+## 方式三：Cloudflare Workers（无服务器兼容版）
+
+这里介绍的是社区项目 [Sub-Store Cloudflare](https://github.com/realchendahuang/sub-store-cloudflare)：它把 Source、Collection 和最终下载链接部署到你自己的 Cloudflare Worker，数据保存在 D1。它适合“多个机场 → 一条 `mihomo` URL → FlClash / Clash Party 单一 Profile”的轻量需求，但**不是**官方 Docker / Node 版 Sub-Store 的等价替代；默认仍优先方式一或方式二。
+
+| 选择 | 脚本能力 | 适合场景 |
+|---|---|---|
+| 方式一 / 方式二（内置或 Docker 原版） | 可按原版能力使用本仓库 Raw 脚本 | 需要完整 Script Operator、`$substore` / `flowUtils`、流量头合并、Gist / Artifact 或 Node 本地能力 |
+| 本节 `realchendahuang/sub-store-cloudflare` | 仅受信任的**构建期静态** Filter / Operator | 不想维护 VPS，只要多机场聚合、常规清理、重命名、去重、排序和单一订阅 URL |
+| [`Yu9191/sub-store-workers`](https://github.com/Yu9191/sub-store-workers) | 当前通过 QuickJS WASM 提供 Script Operator 兼容层 | 愿意本地构建、理解 Workers 平台边界，并能逐个脚本实测的进阶用户 |
+
+### 先理解“不能运行脚本”的准确含义
+
+你记得的限制对应本节的 Cloudflare-native 兼容版：它支持多 Source / Collection、区域或正则过滤、重命名、删除、端点去重、排序、旗帜、域名解析及多客户端输出，但不从网页、D1 或远程 URL 动态执行任意 JavaScript。运行时脚本、远程脚本和脚本市场均不支持；个人 Filter / Operator 必须作为受信任代码在本地打包并重新部署后才可用。[上游兼容矩阵](https://github.com/realchendahuang/sub-store-cloudflare/blob/main/docs/upstream-compatibility.md)
+
+原因不是 Worker 没有 `fetch` 或缓存能力，而是 Cloudflare Workers 在请求期禁止 `eval()` / `new Function()`；原版 Sub-Store 的动态脚本还会注入 `$substore`、`flowUtils`、`$httpClient`、`produceArtifact`、`require` 等宿主能力。[Cloudflare 运行时约束](https://developers.cloudflare.com/workers/runtime-apis/web-standards/) · [原版动态脚本宿主](https://github.com/sub-store-org/Sub-Store/blob/30b9113d3e1d82b7af70cf8f66c79a08b54377bd/backend/src/core/proxy-utils/processors/index.js#L1748-L1832)
+
+所以本仓库的 `flag-airport-rename.js`、`drop-invalid-nodes.js`、`merge-subscription-userinfo.js` 等 **Raw 脚本不能直接填入本节项目**。在它的管理界面中改用内置的“清理信息节点、正则重命名、端点去重、名称排序”等操作；若必须运行这些 Raw 脚本，使用方式一/二。
+
+> 不要把“所有 Worker 版都无法运行脚本”写成绝对结论。当前 [`Yu9191/sub-store-workers`](https://github.com/Yu9191/sub-store-workers) 已用 QuickJS WASM 兼容部分 Script Operator / Filter，但仍不是完整 Node 版；本地 MMDB、文件系统、`child_process` / shoutrrr、自定义 HTTP/SOCKS 出站代理等仍受限，且应以其 `worker-status` 能力输出与实际脚本结果为准。
+
+### 部署与首次多机场聚合
+
+#### 1. 准备两个不同的 Token
+
+使用密码管理器生成两个不同的随机值，分别作为 `SUB_STORE_ADMIN_TOKEN` 与 `SUB_STORE_PUBLIC_DOWNLOAD_TOKEN`。也可以在可信本机运行：
+
+```bash
+node -e "const{randomBytes:r}=require('node:crypto');console.log(r(32).toString('base64url'));console.log(r(32).toString('base64url'))"
+```
+
+第一行只用于管理端，第二行只用于客户端下载。两者不能相同，也不能写进本仓库、截图、Issue 或聊天记录。
+
+#### 2. 部署到自己的 Cloudflare 账号
+
+打开 [项目主页](https://github.com/realchendahuang/sub-store-cloudflare)，点击其 **Deploy to Cloudflare**。部署向导中：
+
+1. 导入到自己的 GitHub / GitLab 账号，不要使用来历不明的第三方部署地址。
+2. 为新部署创建 D1 数据库；只有升级既有实例时才选择旧数据库。
+3. 分别填入上一步生成的 `SUB_STORE_ADMIN_TOKEN` 与 `SUB_STORE_PUBLIC_DOWNLOAD_TOKEN` Secret。
+4. 确认构建命令为 `pnpm run build`、部署命令为 `pnpm run deploy`，然后完成部署。
+
+此项目按 Workers 免费版边界设计，但实际额度、可用性与账单始终以你自己的 Cloudflare 控制台为准。需要终端部署时，按其 [五分钟快速开始](https://github.com/realchendahuang/sub-store-cloudflare/blob/main/docs/quick-start.md) 的 Node.js 22+ / Corepack 流程执行；不要把 Token 写进 Git 配置或 `.env` 后提交。
+
+#### 3. 只用管理 Token 打开后台
+
+Worker 部署成功后，首次访问管理界面：
+
+```text
+https://<你的-worker>/?token=<SUB_STORE_ADMIN_TOKEN>
+```
+
+管理 Token 只用于这一步和管理 API。前端会保存当前浏览器的管理状态；若无法加载数据，核对输入的是 admin Token，而不是 download Token。
+
+#### 4. 建立多机场 Source 与 Collection
+
+1. 每个机场分别建立一个远程 Source，使用不含敏感信息的来源 ID，例如 `airport-a`、`airport-b`。
+2. 第一次仅启用“清理信息节点”；需要标记来源时，使用该项目内置的正则重命名，不要粘贴本仓库 Raw JS。
+3. 编辑预置的 `Daily` Collection：先启用端点去重和名称排序，并在预览中确认所有机场节点都在。
+4. 第一次不要启用地区 include 过滤，避免把其它地区节点提前删掉。
+5. 选择输出目标 **`mihomo`**，从 Collection 复制下载链接。
+
+#### 5. 导入客户端并验收
+
+1. 给 FlClash / Clash Party 新建**一条**远程 Profile，填上 `mihomo` 下载链接。
+2. 链接必须使用 `SUB_STORE_PUBLIC_DOWNLOAD_TOKEN`，**绝不能**含管理 Token。
+3. 在 FlClash 关联本仓库 `FlClash(mihomo).js`，刷新这一个 Profile。
+4. 核对所有机场节点都出现在同一节点池，再检查区域组与业务组；来源前缀、无效节点过滤和脚本式流量头合并不适用时，应回到方式一/二处理。
+5. 在 Cloudflare 管理界面导出一次配置备份；Deploy Button 创建的仓库副本不会自动合并上游更新，升级请遵循该项目的 [升级指南](https://github.com/realchendahuang/sub-store-cloudflare/blob/main/docs/upgrading.md)。
+
+### 需要脚本时的选择
+
+- 需要本仓库现成 Raw 脚本、`flowDedup`、`merge-subscription-userinfo.js` 或原版的动态宿主 API：选择方式一或 Docker 原版。
+- 想试验上游后端的 Workers / Pages 适配：可研究 [`Yu9191/sub-store-workers`](https://github.com/Yu9191/sub-store-workers)。它需要把原版 `Sub-Store` 与适配仓库克隆到同一父目录、本地构建并绑定 KV；部署后先访问 `<worker>/<路径密码>/api/utils/worker-status`，确认鉴权、KV 与脚本能力，再导入生产订阅。其详细限制与部署步骤以该项目 README 为准。
+
+继续使用下方的 Raw 脚本链前，请确认你的部署是方式一、方式二，或已实测支持相同脚本宿主能力的 Worker 适配；Cloudflare-native 兼容版应使用其内置节点操作。
 
 ## 聚合步骤：从多条机场订阅到一条 Mihomo URL
 
