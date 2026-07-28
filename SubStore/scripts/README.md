@@ -10,7 +10,9 @@
 2. 组合订阅：`drop-invalid-nodes.js`
 3. 组合订阅：`cleanup-vless-vmess-fields.js`
 4. 组合订阅：`../common/drop-info-nodes.js`
-5. 组合订阅最后：`merge-subscription-userinfo.js`
+5. 组合订阅（可选）：`../common/normalize-node-names.js`
+6. 组合订阅（名称仍有重复时）：`../common/dedupe-node-names.js`
+7. 组合订阅最后（可选）：`merge-subscription-userinfo.js`
 
 `merge-subscription-userinfo.js` 会正常累加独立机场的流量；镜像订阅可在订阅 URL 中用相同的 `#flowDedup=...` 键归组，具体示例和自动去重边界见 [上级 README](../README.md#镜像订阅流量去重)。
 

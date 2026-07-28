@@ -29,6 +29,24 @@
 
 ---
 
+## 📦 多机场合并为一个订阅（Sub-Store）
+
+Sub-Store 是客户端导入前的订阅聚合层，**不是第 15 个正式客户端产物**。如果目标是把多个机场的节点放进**同一个**区域组和业务组，而不是在客户端之间切换多份 Profile，先在 Sub-Store 聚合，再把生成的一条订阅交给本仓库的覆写或配置：
+
+```text
+机场 A / B / C 原生订阅 → Sub-Store 清洗、命名、去重 → 一条 Clash.Meta(mihomo) URL
+→ FlClash / Clash Party 的单一 Profile → Smart-Config-Kit 统一节点分类与分流
+```
+
+- FlClash 的多 Profile 适合切换，不能把它们自动合成同一个活动节点池；覆写脚本只处理当前 Profile 已加载的配置。
+- 聚合层只处理节点与订阅元数据，不修改 `rulesets/source/routing-graph.js`、55 个策略组或仓库 DNS 基线。
+- 每个机场应保留独立来源标识；组合后执行去重，镜像订阅才按需合并流量头。
+- 不要把订阅 URL、token、UUID、密码或完整节点列表提交到仓库、Issue 或覆写脚本。
+
+部署、脚本顺序、生成单一 URL、FlClash 导入和排障见 [Sub-Store 多机场聚合与部署教程](./SubStore/README.md)；脚本清单见 [SubStore/scripts](./SubStore/scripts/README.md)，FlClash 导入见 [FlClash 教程](./FlClash/README.md)。
+
+---
+
 ## 🧭 分流策略设计框架（重点）
 
 ```mermaid
