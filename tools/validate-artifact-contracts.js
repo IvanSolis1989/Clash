@@ -196,6 +196,48 @@ const SINGBOX_BUSINESS_ORDER = [
   '🛑 广告拦截',
 ];
 
+// 用户报告的真实节点名：小写 ISO alpha-2 紧接数字编号必须进入主区域及其大区。
+// 这组用例同时约束 JS、Mihomo YAML、OpenClash Ruby 和 Apple 文本产物。
+const LOWERCASE_NUMBERED_REGION_CASES = [
+  { name: 'yun hk01', region: 'HK', primary: '🇭🇰 香港节点', aggregate: '🌏 亚太节点', home: '🏡 香港家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'HK_Filter' },
+  { name: 'yun hk02', region: 'HK', primary: '🇭🇰 香港节点', aggregate: '🌏 亚太节点', home: '🏡 香港家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'HK_Filter' },
+  { name: 'yun hk03', region: 'HK', primary: '🇭🇰 香港节点', aggregate: '🌏 亚太节点', home: '🏡 香港家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'HK_Filter' },
+  { name: 'yun hk04', region: 'HK', primary: '🇭🇰 香港节点', aggregate: '🌏 亚太节点', home: '🏡 香港家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'HK_Filter' },
+  { name: 'yun us01', region: 'US', primary: '🇺🇸 美国节点', aggregate: '🌎 美洲节点', home: '🏡 美国家宽', aggregateHome: '🏡 美洲家宽', loonFilter: 'US_Filter' },
+  { name: 'yun us02', region: 'US', primary: '🇺🇸 美国节点', aggregate: '🌎 美洲节点', home: '🏡 美国家宽', aggregateHome: '🏡 美洲家宽', loonFilter: 'US_Filter' },
+  { name: 'yun us03', region: 'US', primary: '🇺🇸 美国节点', aggregate: '🌎 美洲节点', home: '🏡 美国家宽', aggregateHome: '🏡 美洲家宽', loonFilter: 'US_Filter' },
+  { name: 'yun us04', region: 'US', primary: '🇺🇸 美国节点', aggregate: '🌎 美洲节点', home: '🏡 美国家宽', aggregateHome: '🏡 美洲家宽', loonFilter: 'US_Filter' },
+  { name: 'yun jp01', region: 'JP', primary: '🇯🇵 日韩节点', aggregate: '🌏 亚太节点', home: '🏡 日韩家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'JPKR_Filter' },
+  { name: 'yun sg01', region: 'SG', primary: '🇸🇬 狮城节点', aggregate: '🌏 亚太节点', home: '🏡 狮城家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'SG_Filter' },
+  { name: 'yun us05', region: 'US', primary: '🇺🇸 美国节点', aggregate: '🌎 美洲节点', home: '🏡 美国家宽', aggregateHome: '🏡 美洲家宽', loonFilter: 'US_Filter' },
+  { name: 'yun tw01', region: 'TW', primary: '🇹🇼 台湾节点', aggregate: '🌏 亚太节点', home: '🏡 台湾家宽', aggregateHome: '🏡 亚太家宽', loonFilter: 'TW_Filter' },
+];
+// Apple 文本产物仅应为小写短码紧接编号的写法新增匹配，不能吸收普通英文短词。
+const LOWERCASE_UNNUMBERED_ISO_GUARDS = [
+  { name: 'plain hk label', group: '🇭🇰 香港节点' },
+  { name: 'plain us label', group: '🇺🇸 美国节点' },
+  { name: 'plain jp label', group: '🇯🇵 日韩节点' },
+  { name: 'plain sg label', group: '🇸🇬 狮城节点' },
+  { name: 'plain tw label', group: '🇹🇼 台湾节点' },
+  { name: 'plain in label', group: '🌏 亚太节点' },
+];
+const LOON_REGION_GROUP_TO_FILTER = {
+  '🇭🇰 香港节点': 'HK_Filter',
+  '🏡 香港家宽': 'HK_HOME_Filter',
+  '🇹🇼 台湾节点': 'TW_Filter',
+  '🏡 台湾家宽': 'TW_HOME_Filter',
+  '🇯🇵 日韩节点': 'JPKR_Filter',
+  '🏡 日韩家宽': 'JPKR_HOME_Filter',
+  '🇸🇬 狮城节点': 'SG_Filter',
+  '🏡 狮城家宽': 'SG_HOME_Filter',
+  '🌏 亚太节点': 'APAC_Filter',
+  '🏡 亚太家宽': 'APAC_HOME_Filter',
+  '🇺🇸 美国节点': 'US_Filter',
+  '🏡 美国家宽': 'US_HOME_Filter',
+  '🌎 美洲节点': 'AM_Filter',
+  '🏡 美洲家宽': 'AM_HOME_Filter',
+};
+
 const ARTIFACT_FILES = [
   'Clash Party/ClashParty(mihomo-smart).js',
   'Clash Party/ClashParty(mihomo).js',
@@ -871,6 +913,126 @@ function extractConfSection(source, sectionName) {
   return output.join('\n');
 }
 
+function unquoteConfigValue(value) {
+  const trimmed = String(value || '').trim();
+  if (
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+    || (trimmed.startsWith('"') && trimmed.endsWith('"'))
+  ) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+function compileNodeNameFilter(pattern) {
+  let source = String(pattern || '');
+  let flags = '';
+  if (source.startsWith('(?i)')) {
+    source = source.slice(4);
+    flags = 'i';
+  }
+  return new RegExp(source, flags);
+}
+
+function extractYamlGroupFilters(source) {
+  const filters = new Map();
+  let currentName = null;
+  for (const line of source.split(/\r?\n/)) {
+    const nameMatch = line.match(/^\s*name:\s*(.+?)\s*$/);
+    if (nameMatch) {
+      currentName = unquoteConfigValue(nameMatch[1]);
+      continue;
+    }
+    const filterMatch = line.match(/^\s*filter:\s*(.+?)\s*$/);
+    if (filterMatch && currentName) filters.set(currentName, unquoteConfigValue(filterMatch[1]));
+  }
+  return filters;
+}
+
+function extractConfGroupFilter(source, groupName, key) {
+  for (const line of source.split(/\r?\n/)) {
+    if (line.startsWith('#') || !line.includes(key + '=')) continue;
+    const expectedPrefix = key === 'server-tag-regex'
+      ? 'url-latency-benchmark=' + groupName + ','
+      : groupName + ' =';
+    if (!line.startsWith(expectedPrefix)) continue;
+    const start = line.indexOf(key + '=') + key.length + 1;
+    const end = key === 'server-tag-regex' ? line.indexOf(', check-interval=', start) : line.length;
+    if (end === -1) return null;
+    return line.slice(start, end).trim();
+  }
+  return null;
+}
+
+function extractLoonFilter(source, filterName) {
+  for (const line of source.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith(filterName) || !trimmed.includes('NameRegex')) continue;
+    const marker = 'FilterKey = ';
+    const index = trimmed.indexOf(marker);
+    if (index === -1) return null;
+    return unquoteConfigValue(trimmed.slice(index + marker.length));
+  }
+  return null;
+}
+
+function validateNumberedLowercaseRegionFilters(record, productId, lookup) {
+  for (const sample of LOWERCASE_NUMBERED_REGION_CASES) {
+    const checks = [
+      { target: sample.primary, name: sample.name },
+      { target: sample.aggregate, name: sample.name },
+      { target: sample.home, name: sample.name + ' IEPL' },
+      { target: sample.aggregateHome, name: sample.name + ' IEPL' },
+    ];
+    for (const check of checks) {
+      const pattern = lookup(check.target);
+      let ok = false;
+      let message;
+      if (!pattern) {
+        message = 'missing node filter for ' + check.target;
+      } else {
+        try {
+          ok = compileNodeNameFilter(pattern).test(check.name);
+        } catch (error) {
+          message = 'invalid node filter for ' + check.target + ': ' + error.message;
+        }
+      }
+      record.check(
+        productId + '.lowercase-numbered.' + sample.name + '.' + check.target,
+        ok,
+        {
+          message: message || ('expected ' + check.target + ' filter to match ' + check.name),
+        },
+      );
+    }
+  }
+}
+
+function validateUnnumberedLowercaseIsoGuards(record, productId, lookup) {
+  for (const sample of LOWERCASE_UNNUMBERED_ISO_GUARDS) {
+    const pattern = lookup(sample.group);
+    let matches = false;
+    let message;
+    if (!pattern) {
+      message = 'missing node filter for ' + sample.group;
+    } else {
+      try {
+        matches = compileNodeNameFilter(pattern).test(sample.name);
+      } catch (error) {
+        message = 'invalid node filter for ' + sample.group + ': ' + error.message;
+      }
+    }
+    const ok = !matches;
+    record.check(
+      productId + '.lowercase-unnumbered-guard.' + sample.name,
+      ok,
+      {
+        message: message || ('expected ' + sample.group + ' filter not to match ' + sample.name),
+      },
+    );
+  }
+}
+
 function checkExactList(record, id, actual, expected) {
   const ok = JSON.stringify(actual) === JSON.stringify(expected);
   record.check(id, ok, failureMessage(ok, `expected ${JSON.stringify(expected)} got ${JSON.stringify(actual)}`));
@@ -940,6 +1102,27 @@ function rubyOpenClashProbe(yamlText, rubyPath) {
   fs.rmSync(tempDir, { recursive: true, force: true });
   if (result.status !== 0) {
     throw new Error((result.stderr || result.stdout || 'Ruby YAML probe failed').trim());
+  }
+  return JSON.parse(result.stdout);
+}
+
+function rubyOpenClashRegionClassificationProbe(source, rubyPath) {
+  const start = source.indexOf('REGIONS = {');
+  const end = source.indexOf('\nbuckets =', start);
+  if (start === -1 || end === -1) {
+    throw new Error('OpenClash Ruby region-classification block not found');
+  }
+  const rubyScript = [
+    'require "json"',
+    source.slice(start, end),
+    'nodes = ' + JSON.stringify(LOWERCASE_NUMBERED_REGION_CASES.map((sample) => sample.name)),
+    'results = {}',
+    'nodes.each { |name| results[name] = classify.call(name) }',
+    'puts JSON.generate(results)',
+  ].join('\n');
+  const result = childProcess.spawnSync(rubyPath, ['-e', rubyScript], { encoding: 'utf8' });
+  if (result.status !== 0) {
+    throw new Error((result.stderr || result.stdout || 'OpenClash Ruby region probe failed').trim());
   }
   return JSON.parse(result.stdout);
 }
@@ -1309,6 +1492,13 @@ function validateOpenClash(record, baselineVersion, options) {
     record.check(`openclash.${spec.id}.no-legacy-fast-region-interval`, !/"interval"\s*=>\s*(120|180)\b/.test(source), {
       message: 'OpenClash interval must not regress to 120s/180s',
     });
+    const hasNumberedIsoNormalization = source.includes('normalize_region_name')
+      && source.includes('(?<=[A-Za-z])(?=\\d)');
+    record.check(
+      'openclash.' + spec.id + '.lowercase-numbered-normalizer',
+      hasNumberedIsoNormalization,
+      failureMessage(hasNumberedIsoNormalization, 'missing ASCII letter-to-digit region-name normalization'),
+    );
     record.check(`openclash.${spec.id}.rule-provider-singleton`, topProviders === 1, { value: topProviders });
     record.check(`openclash.${spec.id}.rules-singleton`, topRules === 1, { value: topRules });
     record.check(`openclash.${spec.id}.no-direct-provider-downloads`, !/proxy:\s*['"]?DIRECT['"]?/.test(source));
@@ -1365,6 +1555,20 @@ function validateOpenClash(record, baselineVersion, options) {
         record.check(`openclash.${spec.id}.ruby-business-group-count`, parsed.groups === EXPECTED_BUSINESS_GROUPS, { value: parsed.groups });
       } catch (error) {
         record.check(`openclash.${spec.id}.ruby-parse`, false, { message: error.message });
+      }
+      try {
+        const classifications = rubyOpenClashRegionClassificationProbe(source, rubyPath);
+        for (const sample of LOWERCASE_NUMBERED_REGION_CASES) {
+          const actual = classifications[sample.name];
+          const ok = actual === sample.region;
+          record.check(
+            'openclash.' + spec.id + '.lowercase-numbered.' + sample.name,
+            ok,
+            failureMessage(ok, 'expected ' + sample.name + ' to classify as ' + sample.region + ', got ' + actual),
+          );
+        }
+      } catch (error) {
+        record.check('openclash.' + spec.id + '.lowercase-numbered-ruby-probe', false, { message: error.message });
       }
     }
   }
@@ -1473,6 +1677,42 @@ function validateConfProducts(record, baselineVersion) {
     !qxLocalRuleInRemote,
     failureMessage(!qxLocalRuleInRemote, 'QX local filter rules must live in [filter_local], not [filter_remote]'),
   );
+}
+
+function validateRuntimeNodeNameProducts(record) {
+  for (const spec of [
+    { id: 'cmfa', file: 'Clash Meta For Android/CMFA(mihomo).yaml' },
+    { id: 'stash', file: 'Stash/Stash.yaml' },
+    { id: 'egern', file: 'Egern/Egern.yaml' },
+  ]) {
+    const filters = extractYamlGroupFilters(readText(spec.file));
+    validateNumberedLowercaseRegionFilters(record, spec.id, (groupName) => filters.get(groupName));
+  }
+
+  const loon = readText('Loon/Loon.conf');
+  validateNumberedLowercaseRegionFilters(
+    record,
+    'loon',
+    (groupName) => extractLoonFilter(loon, LOON_REGION_GROUP_TO_FILTER[groupName]),
+  );
+
+  for (const spec of [
+    { id: 'shadowrocket', file: 'Shadowrocket/Shadowrocket.conf', key: 'policy-regex-filter' },
+    { id: 'surge', file: 'Surge/Surge.conf', key: 'policy-regex-filter' },
+    { id: 'qx', file: 'Quantumult X/QuantumultX.conf', key: 'server-tag-regex' },
+  ]) {
+    const source = readText(spec.file);
+    validateNumberedLowercaseRegionFilters(
+      record,
+      spec.id,
+      (groupName) => extractConfGroupFilter(source, groupName, spec.key),
+    );
+    validateUnnumberedLowercaseIsoGuards(
+      record,
+      spec.id,
+      (groupName) => extractConfGroupFilter(source, groupName, spec.key),
+    );
+  }
 }
 
 function validateJsonProducts(record, baselineVersion) {
@@ -2144,6 +2384,7 @@ function main() {
   validateStashYaml(record, baselineVersion, options);
   validateOpenClash(record, baselineVersion, options);
   validateConfProducts(record, baselineVersion);
+  validateRuntimeNodeNameProducts(record);
   validateJsonProducts(record, baselineVersion);
   validateEgern(record, baselineVersion, options);
   validatePasswall(record, baselineVersion);

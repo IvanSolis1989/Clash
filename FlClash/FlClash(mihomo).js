@@ -1,8 +1,8 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v6.0.9-flclash.4 (2026-07-25)
+// 版本：v6.0.9-flclash.5 (2026-08-02)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 127 融合 rule-providers / 146 rules
 // 规则源：rulesets/source/routing-graph.js v6.0.9（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
-// v6.0.9-flclash.4：Node-DNS profile 仅控制受限投影深度；55 组、规则与全局 DNS 基线不变
+// v6.0.9-flclash.5：小写 ISO 两位码 + 数字后缀（如 yun hk01）稳定进入对应区域组；自由文本仍保留严格防误匹配边界
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -36,7 +36,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.9-flclash.4'
+const VERSION = 'v6.0.9-flclash.5'
 
 // 受信任的本地订阅适配模式：off | policy | adaptive。
 // 不从机场订阅读取；三档均不会改变 55 组、规则或仓库 DNS 基线。
@@ -110,12 +110,24 @@ function _getWordBoundaryRegex(keyword, caseSensitive) {
   _regexCache.set(key, re)
   return re
 }
+// ISO alpha-2 在机场节点中常被写成 hk01 / us-05。不能直接让全部 ISO
+// 忽略大小写：US、IN 等会误命中普通英文词。仅在紧随编号时放开大小写，
+// 并继续沿用“非英文字母”为边界的跨平台约定。
+function _getNumberedIsoRegex(keyword) {
+  const key = 'N:' + keyword
+  if (_regexCache.has(key)) return _regexCache.get(key)
+  const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const re = new RegExp('(^|[^a-zA-Z])' + escaped + '(?=[^a-zA-Z]*[0-9])', 'i')
+  _regexCache.set(key, re)
+  return re
+}
 function _isChinese(str) { return /[\u4e00-\u9fa5]/.test(str) }
 
 const _compiledRegions = REGION_DB.map(function(region) {
   var matchers = []
   for (var i = 0; i < region.iso.length; i++) {
     matchers.push({ type: 'iso', regex: _getWordBoundaryRegex(region.iso[i], true) })
+    matchers.push({ type: 'iso-numbered', regex: _getNumberedIsoRegex(region.iso[i]) })
   }
   for (var j = 0; j < region.kw.length; j++) {
     var kw = region.kw[j]

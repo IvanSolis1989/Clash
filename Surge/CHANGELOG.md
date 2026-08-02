@@ -4,6 +4,11 @@
 
 ---
 
+## v6.0.9-Surge.2 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：11 个地区及家宽 policy-regex-filter 在原有大写匹配旁新增“小写 ISO 两位码紧接编号”分支；带编号的 yun hk01、yun us01、yun jp01、yun sg01、yun tw01 现会归入相应地区策略组。
+- GUARD/VERIFY：普通小写短词不扩宽为地区码；跨客户端合同固定执行 12 个真实命名样例，覆盖主组、聚合组、家宽筛选及无编号短词保护。
+
 ## v6.0.9-Surge.1 (2026-07-19)
 
 - 新增通用 GitHub API 工具组融合段，位于上游广义 AI 规则之前；macOS/iOS 无 Windows 进程规则时使用通用回退。

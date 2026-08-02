@@ -3,9 +3,10 @@
 > 目录简介：这里维护 Surge iOS/macOS 配置和导入教程，按 Surge 语法对齐 Clash Party 分流策略。
 >
 > 配置文件：`Surge/Surge.conf`
-> 版本：**v6.0.9-Surge.1**（Build 2026-07-19，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v6.0.9 基线；69 个源语义段对应 66 个非空远程 RULE-SET）
+> 版本：**v6.0.9-Surge.2**（Build 2026-08-02，详见 `Surge/CHANGELOG.md`；跟随 Clash Party v6.0.9 基线；69 个源语义段对应 66 个非空远程 RULE-SET）
 > 目标：**Surge 5 / Surge Mac**（付费正版；iOS + macOS 通用）
 > 架构：22 区域 url-test 组（11 全部 + 11 家宽，include-all-proxies + policy-regex-filter 自动按地区聚合）+ 33 业务策略组 + 66 个非空融合 RULE-SET（受聚合预算门禁）
+> 节点命名兼容：policy-regex-filter 已兼容 yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01 这类小写地区码加编号的名称。
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 

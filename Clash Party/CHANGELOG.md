@@ -7,6 +7,12 @@
 
 ---
 
+## v6.0.9-dns.3 / v6.0.9-normal.4 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：classifyAllNodes 新增“ISO 两位码 + 编号”专用、大小写无关匹配；yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01 会分别进入对应地区主组与聚合组。
+- GUARD：原有严格的 ISO word-boundary 匹配保持不变；不会把任意自然语言小写 us / in 扩大为国家码命中，只有后续存在编号时才启用兼容分支。
+- VERIFY：覆写合同固定回归用户提供的 12 个节点名，并验证分类桶、区域主组和聚合组成员关系。
+
 ## v6.0.9-dns.2 / v6.0.9-normal.3 (2026-07-25)
 
 - ADAPTER：Node-DNS 从脚本内隐式 helper 收敛为 `SckiSubscriptionAdapter.captureNodeDns()` / `applyNodeDns()`；Adapter 自己提供活动节点 server 列表和日志，runtime Module 不再依赖节点分类器、`VERSION` 或 UI 日志函数。

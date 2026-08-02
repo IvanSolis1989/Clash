@@ -2,10 +2,10 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v6.0.9-oc-normal.3 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
-# Build: 2026-07-25
+# Clash Smart v6.0.9-oc-normal.4 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Build: 2026-08-02
 # ============================================================================
-# v6.0.9-oc-normal.3: Node-DNS profile 仅控制受限投影深度；规则、组与全局 DNS 基线不变
+# v6.0.9-oc-normal.4: 小写 ISO 两位码加数字后缀可稳定进入对应区域组；规则、组与全局 DNS 基线不变
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
@@ -29,7 +29,7 @@
 
 
 
-VERSION_TAG="v6.0.9-oc-normal.3"
+VERSION_TAG="v6.0.9-oc-normal.4"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 SCKI_SUBSCRIPTION_ADAPTER_PROFILE="${SCKI_SUBSCRIPTION_ADAPTER_PROFILE:-adaptive}"
@@ -1703,7 +1703,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v6.0.9-oc-normal.3"
+VERSION = "v6.0.9-oc-normal.4"
 
 STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }
@@ -2421,8 +2421,16 @@ HOME_GROUP_NAMES = {
   "OTHER" => "🏡 其他家宽",
 }
 
+# Ruby 的 \b 把数字视为单词字符，故 hk01 不会命中 \bHK\b。只在
+# 字母与数字的交界插入分类边界，使小写 ISO 两位码 + 编号与 HK 01
+# 等传统写法等价，同时保持原有国家正则和抗误匹配规则。
+normalize_region_name = ->(name) {
+  name.to_s.gsub(/(?<=[A-Za-z])(?=\d)/, " ")
+}
+
 classify = ->(name) {
-  REGIONS.each { |code, re| return code if name.match?(re) }
+  normalized_name = normalize_region_name.call(name)
+  REGIONS.each { |code, re| return code if normalized_name.match?(re) }
   "OTHER"
 }
 

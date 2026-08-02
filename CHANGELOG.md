@@ -6,6 +6,13 @@
 
 ---
 
+## v6.0.9 节点命名归类兼容 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：修复含编号的小写 ISO 两位地区码无法进入区域策略组的问题；yun hk01、yun us01、yun jp01、yun sg01、yun tw01 等命名现与原有大写形式等价。
+- CROSS-CLIENT-AUDIT：Clash Party Smart/Normal、FlClash、OpenClash Normal/Smart、Shadowrocket、Surge、Quantumult X 同步收敛；CMFA、Stash、Egern、Loon 已有不区分大小写的筛选器，经同一组样例验证无需改动。
+- GUARD：JS 与 Apple 文本产物仅为“ISO 两位码后接编号”的形式启用小写兼容，避免把自然语言中的普通小写词（如 us、in）误归类；OpenClash 仅在字母与数字交界处规范化，保留原区域正则。
+- PLATFORM-BOUNDARY：sing-box Full、v2rayN Xray、Passwall / Passwall2 只消费静态出站或分流规则，不从订阅节点名动态建立地区组，因此不适用此运行时分类修复。源规则图、MRS/fused/SRS 资产与路由语义不变。
+
 ## v6.0.9 订阅适配层、profile 与能力矩阵 (2026-07-25)
 
 - RUNTIME-ADAPTER：将五份订阅覆写的私有 Node-DNS 处理收敛为同构的 `captureNodeDns → snapshot → applyNodeDns` Module/Adapter seam；capture 与 apply 的 profile 必须匹配，缺少仓库 PSS 基线时零写入。

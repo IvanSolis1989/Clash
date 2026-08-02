@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.9-flclash.5 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：与 Clash Party Normal 同构升级，支持 yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01 等小写 ISO 两位码加编号的订阅节点。
+- GUARD/VERIFY：仅对带编号的两位 ISO 码做不区分大小写匹配；共享 JS 合同验证 12 个原始样例的分类桶、区域主组和聚合组。
+
 ## v6.0.9-flclash.4 (2026-07-25)
 
 - PROFILE：FlClash 覆写同步 `off / policy / adaptive` 的受信任 Node-DNS profile，默认 `adaptive`；三档不会改变 QuickJS/Dart bridge 的原地数组契约、55 组、规则或全局 DNS。

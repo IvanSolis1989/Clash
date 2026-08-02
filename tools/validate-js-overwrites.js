@@ -152,7 +152,35 @@ const INTL_GAME_WIDE_RULES = [
   'RULE-SET,hoyoverse,🎮 国外游戏',
 ];
 
+// 机场常见的“前缀 + 小写 ISO 两位码 + 连续编号”命名回归。
+// 必须逐字保留用户报告的样本；HK/TW/JP/SG 同时归入亚太，US 同时归入美洲。
+const LOWERCASE_NUMBERED_ISO_CASES = [
+  { name: 'yun hk01', region: 'HK', primaryGroup: '🇭🇰 香港节点', aggregateGroup: '🌏 亚太节点' },
+  { name: 'yun hk02', region: 'HK', primaryGroup: '🇭🇰 香港节点', aggregateGroup: '🌏 亚太节点' },
+  { name: 'yun hk03', region: 'HK', primaryGroup: '🇭🇰 香港节点', aggregateGroup: '🌏 亚太节点' },
+  { name: 'yun hk04', region: 'HK', primaryGroup: '🇭🇰 香港节点', aggregateGroup: '🌏 亚太节点' },
+  { name: 'yun us01', region: 'US', primaryGroup: '🇺🇸 美国节点', aggregateGroup: '🌎 美洲节点' },
+  { name: 'yun us02', region: 'US', primaryGroup: '🇺🇸 美国节点', aggregateGroup: '🌎 美洲节点' },
+  { name: 'yun us03', region: 'US', primaryGroup: '🇺🇸 美国节点', aggregateGroup: '🌎 美洲节点' },
+  { name: 'yun us04', region: 'US', primaryGroup: '🇺🇸 美国节点', aggregateGroup: '🌎 美洲节点' },
+  { name: 'yun jp01', region: 'JP', primaryGroup: '🇯🇵 日韩节点', aggregateGroup: '🌏 亚太节点' },
+  { name: 'yun sg01', region: 'SG', primaryGroup: '🇸🇬 狮城节点', aggregateGroup: '🌏 亚太节点' },
+  { name: 'yun us05', region: 'US', primaryGroup: '🇺🇸 美国节点', aggregateGroup: '🌎 美洲节点' },
+  { name: 'yun tw01', region: 'TW', primaryGroup: '🇹🇼 台湾节点', aggregateGroup: '🌏 亚太节点' },
+];
+// 不能因为修复小写国家码 + 编号，把普通英文中的孤立小写短词误作地区。
+const LOWERCASE_UNNUMBERED_ISO_GUARDS = [
+  ['plain hk label', 'OTHER'],
+  ['plain us label', 'OTHER'],
+  ['plain jp label', 'OTHER'],
+  ['plain sg label', 'OTHER'],
+  ['plain tw label', 'OTHER'],
+  ['plain in label', 'OTHER'],
+];
+
 const CLASSIFICATION_CASES = [
+  ...LOWERCASE_NUMBERED_ISO_CASES.map(({ name, region }) => [name, region]),
+  ...LOWERCASE_UNNUMBERED_ISO_GUARDS,
   ['HKG 01 IEPL x1', 'HK'],
   ['深港 IEPL 02 x1', 'HK'],
   ['Signal 香港 IEPL x1', 'HK'],
@@ -257,6 +285,7 @@ function makeFixtureConfig() {
       makeProxy('EG Cairo Home x1'),
       makeProxy('Mystery Home IP x1'),
       makeProxy('CHN Beijing Home x1'),
+      ...LOWERCASE_NUMBERED_ISO_CASES.map(({ name }) => makeProxy(name)),
       makeProxy('剩余流量 10G'),
       makeProxy('官网 example.com'),
       makeProxy('USE 100GB'),
@@ -302,7 +331,8 @@ function makeNodeDnsHintFixture() {
   config.proxies[2].server = '198.51.100.8';
   config.proxies[3].server = 'fallback.node.test';
   config.proxies[4].server = 'region.global.private.test';
-  config.proxies[16].server = 'ignored.edge.private.test';
+  const ignoredInfoNode = config.proxies.find((proxy) => proxy.name === '剩余流量 10G');
+  if (ignoredInfoNode) ignoredInfoNode.server = 'ignored.edge.private.test';
   config.dns = {
     'proxy-server-nameserver': [
       'https://resolver.private.test/dns-query',
@@ -499,6 +529,9 @@ function validateClassification(target, api, fixture, record) {
   record.expect((classified.JP || []).includes('JPN 01 Tokyo Home x1'), 'alpha-3 JPN reaches Japan bucket');
   record.expect((classified.JP || []).includes('JP 02 0.2x Saver Home x0.2'), 'low-multiplier JP node reaches Japan bucket');
   record.expect((classified.KR || []).includes('KOR 01 Seoul Home x1'), 'alpha-3 KOR reaches Korea bucket');
+  for (const sample of LOWERCASE_NUMBERED_ISO_CASES) {
+    record.expect((classified[sample.region] || []).includes(sample.name), 'numbered lowercase ISO node reaches ' + sample.region + ': ' + sample.name);
+  }
 }
 
 function validateGroups(target, output, record) {
@@ -536,6 +569,14 @@ function validateGroups(target, output, record) {
     }
     for (const name of scenario.exclude) {
       record.expect(!members.has(name), `${scenario.group} excludes ${name}`);
+    }
+  }
+
+  for (const sample of LOWERCASE_NUMBERED_ISO_CASES) {
+    for (const groupName of [sample.primaryGroup, sample.aggregateGroup]) {
+      const group = groupsByName.get(groupName);
+      record.expect(!!group, 'lowercase ISO target group exists: ' + groupName);
+      if (group) record.expect((group.proxies || []).includes(sample.name), groupName + ' includes lowercase numbered ISO node ' + sample.name);
     }
   }
 

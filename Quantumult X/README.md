@@ -3,9 +3,10 @@
 > 目录简介：这里维护 Quantumult X iOS 配置和导入教程，按 QX 的 policy/filter 语法对齐 Clash Party 基线。
 >
 > 配置文件：`Quantumult X/QuantumultX.conf`
-> 版本：**v6.0.9-QX.1**（Build 2026-07-19，详见 `Quantumult X/CHANGELOG.md`；跟随 Clash Party v6.0.9 基线；69 个源语义段对应 66 个非空 remote filter）
+> 版本：**v6.0.9-QX.2**（Build 2026-08-02，详见 `Quantumult X/CHANGELOG.md`；跟随 Clash Party v6.0.9 基线；69 个源语义段对应 66 个非空 remote filter）
 > 目标：**Quantumult X iOS（App Store 付费正版）**
 > 架构：22 区域 `url-latency-benchmark` 组（11 全部 + 11 家宽）+ 33 业务 `static` 组 + 64 个 `filter_remote` + 12 条必要 `filter_local`
+> 节点命名兼容：当订阅解析器把名称写入节点 tag 时，server-tag-regex 已兼容 yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01。
 
 <sub>💖 [支持本项目](../docs/donate.md) · ⭐ [Star](https://github.com/ivansolis1989/Smart-Config-Kit) · 🐛 [Issue](https://github.com/ivansolis1989/Smart-Config-Kit/issues)</sub>
 
@@ -50,7 +51,7 @@
 - 额外检查：按根 README 的 [导入后 60 秒验证清单](../README.md#-导入后-60-秒验证清单) 确认规则下载、GEOSITE 命中与 anti-ad 误伤白名单。
 
 ### 最常见踩坑
-- ❌ **加了节点但不被 11 区域组识别**：QX 用节点的 **tag 字段**做正则匹配（不是 name！）。确认订阅返回的节点 tag 含 `HK` / `JP` / `US` 等地区关键字。机场的订阅链接加 `&flag=quanx` 后缀通常能让 tag 含地区标识。
+- ❌ **加了节点但不被 11 区域组识别**：QX 用节点的 **tag 字段**做正则匹配（不是 name！）。确认订阅返回的节点 tag 含 HK / JP / US 等地区关键字；hk01 / jp01 / us01 这种小写地区码加编号也支持。机场的订阅链接加 &flag=quanx 后缀通常能让 tag 含地区标识。
 - ❌ **filter_remote 下载一半 404**：先开代理再下配置。
 - ❌ **想导入非标准订阅（vless:// 分享链接列表等）**：`resource_parser_url` 已在 `[general]` 预置 KOP-XIAO 的解析脚本，能吃 vmess/vless/trojan/ss/hysteria base64 订阅。
 - ❌ **想用 MITM 签到脚本**：本配置默认 `[mitm]` 留空。启用步骤：QX → 证书 → 生成 → 信任 → 在 `[rewrite_remote]` 加社区插件（例如 BoxJs），hostname 自动追加到 `[mitm]`。
@@ -139,7 +140,7 @@ trojan=example.com:443, password=xxx, over-tls=true, tls-host=example.com, tag=H
 ss=example.com:443, method=aes-256-gcm, password=xxx, tag=JP-01
 ```
 
-tag 里最好含地区标识（`HK` / `JP` / `US` 等），让正则能自动归类。
+tag 里最好含地区标识（HK / JP / US 等；也支持 hk01 / jp01 / us01），让正则能自动归类。
 
 ### 方式 C：QX UI 扫码导入
 QX 首页 → ➕ → 扫描 QR / 手动添加。这种方式节点单独管理，不在配置文件里，重装 QX 会丢。
@@ -253,7 +254,7 @@ QX 的真正优势是 **`resource_parser_url`（通用资源解析器）+ `rewri
 - 若仍失败，**设置 → 配置 → 一键更新** 强制重新拉取。
 
 ### Q2：节点没被自动聚合到 11 区域组？
-- QX 用 `server-tag-regex` 匹配节点的 tag 字段（不是 name）。确认你订阅返回的节点 tag 里含 `HK` / `JP` / `US` 等地区关键字 + 中文国名。
+- QX 用 server-tag-regex 匹配节点的 tag 字段（不是 name）。确认你订阅返回的节点 tag 里含 HK / JP / US 等地区关键字 + 中文国名；小写地区码加编号（如 hk01）也兼容。
 - 本仓库的 regex 兼容「中文国名 / ISO 国家代码 / IATA 机场代码 / emoji 旗帜」多种标识，覆盖率 > 95%。
 
 ### Q3：想用 QX 的 resource_parser_url 解析非标准订阅？

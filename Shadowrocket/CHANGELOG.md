@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.9-SR.2 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：11 个地区及家宽 policy-regex-filter 在原有大写匹配旁新增“小写 ISO 两位码紧接编号”分支；yun hk01、yun us01、yun jp01、yun sg01、yun tw01 及其家宽变体可进入对应组。
+- GUARD/VERIFY：普通小写短词不扩宽为地区码；跨客户端合同逐一验证 12 个命名样例的主组、聚合组、家宽组及无编号短词保护。
+
 ## v6.0.9-SR.1 (2026-07-19)
 
 - 新增通用 GitHub API 工具组融合段，位于上游广义 AI 规则之前；iOS 无 Windows 进程匹配，使用通用回退。

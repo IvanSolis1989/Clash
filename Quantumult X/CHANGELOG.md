@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.9-QX.2 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：server-tag-regex 在原有大写匹配旁新增“小写 ISO 两位码紧接编号”分支；当订阅解析器把节点名写入 tag 时，yun hk01、yun us01、yun jp01、yun sg01、yun tw01 会进入预期区域。
+- GUARD/VERIFY：普通小写短词不扩宽为地区码；跨客户端合同回归 12 个原始 tag 样例，并确认主组、聚合组、家宽组及无编号短词保护。
+
 ## v6.0.9-QX.1 (2026-07-19)
 
 - `filter_remote` 加入并前置通用 GitHub API 工具组融合资产；iOS 无桌面进程识别时使用此通用回退。

@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.9-oc-normal.4 / v6.0.9-oc-smart.4 (2026-08-02)
+
+- FIX-NODE-ISO-LOWERCASE：Ruby 分类器在字母与数字交界处做受限规范化，解决 Ruby 单词边界把数字视为单词字符、导致 hk01 不命中的问题；用户提供的 12 个小写 ISO 编号节点均进入预期区域。
+- GUARD/VERIFY：保留原 REGIONS 国家正则及其大小写无关语义；合同从两份真实 heredoc 提取分类器，以 Ruby 执行样例回归。
+
 ## v6.0.9-oc-normal.3 / v6.0.9-oc-smart.3 (2026-07-25)
 
 - PROFILE：shell 只从受信任本地环境读取并白名单化 `off / policy / adaptive`，再传入 Ruby Adapter；profile 从不读取机场 YAML，且不改变规则、策略组或路由器全局 DNS 基线。
