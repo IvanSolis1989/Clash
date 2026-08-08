@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.9-cmfa.2 (2026-08-08)
+
+- FIX-APAC-HOME-REGEX：`🏡 亚太家宽` 的 `filter` 末尾多余一个右括号，导致 Mihomo 无法编译该策略组正则；现已修复，CN / 港台日韩新马与其它亚太家宽节点恢复可筛选。
+- GUARD：合同验证会逐一编译所有 CMFA 策略组 `filter`，并拒绝 Go RE2 不支持的 lookaround / backreference，而非仅覆盖固定地区样例。
+
 ## v6.0.9-cmfa.1 (2026-07-19)
 
 - 同步 `api.github.com` 的通用工具组融合段并置于广义 AI 规则前；桌面进程例外保留在 Mihomo 规则顺序中。

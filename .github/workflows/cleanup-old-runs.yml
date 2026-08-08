@@ -1,7 +1,7 @@
 name: Cleanup Old Workflow Runs
 
 # ═══════════════════════════════════════════════════════════════════════════
-# 定期清理 Actions 历史 run（默认：保留 1 天内的）
+# 定期清理 Actions 历史 run（默认：保留 30 天内的）
 # ───────────────────────────────────────────────────────────────────────────
 # 触发方式：
 #   1. schedule 每天 02:30 UTC（北京时间 10:30）自动跑
@@ -9,7 +9,7 @@ name: Cleanup Old Workflow Runs
 #
 # 工作原理：
 #   - 列出全仓所有 workflow run（github.paginate 处理翻页）
-#   - 过滤：创建时间早于 cutoff（默认 now - 1 天）
+#   - 过滤：创建时间早于 cutoff（默认 now - 30 天）
 #   - 跳过：in_progress / queued / waiting 等活跃 run（API 也不允许删）
 #   - 逐个调用 DELETE /repos/{owner}/{repo}/actions/runs/{run_id}
 #
@@ -18,7 +18,7 @@ name: Cleanup Old Workflow Runs
 # 安全提示：
 #   - 被删除的 run log 无法恢复；如果要留证据做长期审计，
 #     调大 RETAIN_DAYS 或整个删掉本 workflow
-#   - 本 workflow 自己的 run 也会在第二天被下一次运行清掉，这是预期行为
+#   - 默认保留 30 天，避免定时同步失败的证据在下一次排障前消失
 # ═══════════════════════════════════════════════════════════════════════════
 
 on:
@@ -32,11 +32,16 @@ on:
         description: '保留天数（删除创建时间超过这个天数的 run）。手动调试时可填 0 = 全删'
         type: string
         required: false
-        default: '1'
+        default: '30'
 
 permissions:
   actions: write       # 删 run 必须
   contents: read       # 读 repo 元信息（default）
+
+concurrency:
+  # 删除动作可重试，串行运行避免两个清理任务竞争同一批历史 run。
+  group: scki-actions-run-cleanup
+  cancel-in-progress: false
 
 jobs:
   cleanup:
@@ -45,13 +50,23 @@ jobs:
 
     steps:
       - name: Delete runs older than RETAIN_DAYS
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
-          # schedule 触发时 github.event.inputs 为空，用 '1' 兜底
-          RETAIN_DAYS: ${{ github.event.inputs.retain_days || '1' }}
+          # schedule 触发时 github.event.inputs 为空，用 '30' 兜底
+          RETAIN_DAYS: ${{ github.event.inputs.retain_days || '30' }}
         with:
+          retries: 3
           script: |
-            const retainDays = Number(process.env.RETAIN_DAYS) || 1;
+            const rawRetainDays = String(process.env.RETAIN_DAYS || '').trim();
+            if (!/^\d+$/.test(rawRetainDays)) {
+              core.setFailed('RETAIN_DAYS must be a non-negative integer; received ' + JSON.stringify(rawRetainDays));
+              return;
+            }
+            const retainDays = Number(rawRetainDays);
+            if (!Number.isSafeInteger(retainDays)) {
+              core.setFailed('RETAIN_DAYS is outside JavaScript safe-integer range: ' + rawRetainDays);
+              return;
+            }
             const cutoff = new Date(Date.now() - retainDays * 86_400_000);
             console.log(`🗓️  Cutoff: ${cutoff.toISOString()}  (retain_days=${retainDays})`);
             console.log(`🎯  Will delete runs created BEFORE the cutoff above`);
@@ -109,3 +124,7 @@ jobs:
                 ['Failed',            String(failed)],
               ])
               .write();
+
+            if (failed > 0) {
+              core.setFailed('Failed to delete ' + failed + ' workflow run(s); see logs above.');
+            }

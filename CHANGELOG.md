@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.9 Actions 与 CMFA/Stash 正则修复 (2026-08-08)
+
+- FIX-CMFA-APAC-HOME-REGEX：修复 `🏡 亚太家宽` 的末尾多余右括号；此前会让 CMFA 载入该策略组筛选正则时失败，并由 Stash 生成链路同步带入。
+- GUARD：产物合同验证现逐一编译 CMFA 与 Stash 的全部策略组 `filter`，拒绝 Go RE2 不支持的 lookaround / backreference，不再只依赖地区样例命中来间接发现语法错误。
+- ACTIONS：同步任务的 cron 重新登记为每周一 05:23 JST；历史 run 默认保留从 1 天调整为 30 天，清理器升级到 Node 24 运行时、保留 `0` 的全删语义、拒绝非法输入，并将删除失败作为失败状态上报。
+
 ## v6.0.9 节点命名归类兼容 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：修复含编号的小写 ISO 两位地区码无法进入区域策略组的问题；yun hk01、yun us01、yun jp01、yun sg01、yun tw01 等命名现与原有大写形式等价。

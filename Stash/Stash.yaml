@@ -1,8 +1,8 @@
 # ================================================================
-# Stash Smart v6.0.9-stash.1 - Stash (Clash Premium) 配置
-# Build: 2026-07-19
+# Stash Smart v6.0.9-stash.2 - Stash (Clash Premium) 配置
+# Build: 2026-08-08
 # 架构：由 CMFA 自动裁剪生成；22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 127 融合 rule-providers / 0 rules（源 514/973）
-# 规则源：rulesets/source/routing-graph.js v6.0.9 / 派生：CMFA v6.0.9-cmfa.1
+# 规则源：rulesets/source/routing-graph.js v6.0.9 / 派生：CMFA v6.0.9-cmfa.2
 # 生成：node tools/generate-stash-from-cmfa.js（禁止手工修改 Stash/Stash.yaml）
 # 变更历史：见 `Stash/CHANGELOG.md`
 # 注意：Stash 不支持 Mihomo Smart + LightGBM；本产物使用 url-test 区域组
@@ -620,7 +620,7 @@ proxy-groups:
   use:
   - Subscribe
   # v5.4.26 FIX#CN-APAC: 🏡 亚太家宽 同步加入 CN 关键词（对齐 Clash Party JS 基线 homeApacNodes = c.HOME_HK.concat(c.HOME_TW, c.HOME_CN, ...)）
-  filter: '(?i)((香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|中国|大陆|国内|回国|China|mainland|CHN|(^|[^a-zA-Z])CN([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺).*(iplc|iepl|专线|resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|home|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带)|(iplc|iepl|专线|resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|home|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带).*(香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|中国|大陆|国内|回国|China|mainland|CHN|(^|[^a-zA-Z])CN([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺)))'
+  filter: '(?i)((香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|中国|大陆|国内|回国|China|mainland|CHN|(^|[^a-zA-Z])CN([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺).*(iplc|iepl|专线|resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|home|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带)|(iplc|iepl|专线|resi(dential)?|home[-_ ]?ip|home[-_ ]?broadband|home|broadband|isp|家宽|家庭宽带|家庭住宅|住宅宽带|住宅|宽带).*(香港|HongKong|Hong\s*Kong|HKG|🇭🇰|(^|[^a-zA-Z])HK([^a-zA-Z]|$)|台湾|台灣|Taiwan|Taipei|TPE|TWN|🇹🇼|(^|[^a-zA-Z])TW([^a-zA-Z]|$)|中国|大陆|国内|回国|China|mainland|CHN|(^|[^a-zA-Z])CN([^a-zA-Z]|$)|日本|东京|大阪|Japan|Tokyo|Osaka|NRT|KIX|JPN|🇯🇵|韩国|首尔|Korea|Seoul|ICN|KOR|🇰🇷|(^|[^a-zA-Z])JP([^a-zA-Z]|$)|(^|[^a-zA-Z])KR([^a-zA-Z]|$)|新加坡|Singapore|SGP|🇸🇬|(^|[^a-zA-Z])SG([^a-zA-Z]|$)|马来西亚|Malaysia|印度尼西亚|印尼|Indonesia|泰国|Thailand|越南|Vietnam|菲律宾|Philippines|印度|India|澳大利亚|Australia|新西兰|New\s*Zealand|土耳其|Turkey|以色列|Israel|阿联酋|UAE|迪拜|Dubai|🇲🇾|🇮🇩|🇹🇭|🇻🇳|🇵🇭|🇮🇳|🇦🇺))'
 - type: url-test
   url: 'https://www.gstatic.com/generate_204'
   interval: 300

@@ -4,6 +4,11 @@
 
 ---
 
+## v6.0.9-stash.2 (2026-08-08)
+
+- FIX-APAC-HOME-REGEX：由 CMFA v6.0.9-cmfa.2 重新生成；`🏡 亚太家宽` 的筛选正则现可正常编译。
+- GUARD：CMFA/Stash 全部策略组 `filter` 均纳入合同验证的语法编译检查。
+
 ## v6.0.9-stash.1 (2026-07-19)
 
 - 由 CMFA v6.0.9-cmfa.1 重新生成；`api.github.com` 通用请求在广义 AI 规则前进入工具组，进程例外取决于运行平台能力。

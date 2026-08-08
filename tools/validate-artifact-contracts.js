@@ -949,6 +949,25 @@ function extractYamlGroupFilters(source) {
   return filters;
 }
 
+function validateYamlGroupFilterSyntax(record, productId, filters) {
+  for (const [groupName, pattern] of filters) {
+    let valid = true;
+    let message;
+    if (/(?:\(\?(?:[=!]|<[=!])|\\[1-9])/.test(pattern)) {
+      valid = false;
+      message = 'node filter for ' + groupName + ' uses lookaround or backreference unsupported by Go RE2';
+    } else {
+      try {
+        compileNodeNameFilter(pattern);
+      } catch (error) {
+        valid = false;
+        message = 'invalid node filter for ' + groupName + ': ' + error.message;
+      }
+    }
+    record.check(productId + '.filter-syntax.' + groupName, valid, { message });
+  }
+}
+
 function extractConfGroupFilter(source, groupName, key) {
   for (const line of source.split(/\r?\n/)) {
     if (line.startsWith('#') || !line.includes(key + '=')) continue;
@@ -1120,7 +1139,17 @@ function rubyOpenClashRegionClassificationProbe(source, rubyPath) {
     'nodes.each { |name| results[name] = classify.call(name) }',
     'puts JSON.generate(results)',
   ].join('\n');
-  const result = childProcess.spawnSync(rubyPath, ['-e', rubyScript], { encoding: 'utf8' });
+  // Windows Ruby can decode non-ASCII source passed through the -e argument
+  // with the active console code page. Persist this Unicode-heavy probe as UTF-8.
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scki-openclash-region-'));
+  const scriptPath = path.join(tempDir, 'region-probe.rb');
+  fs.writeFileSync(scriptPath, '# encoding: UTF-8\n' + rubyScript, 'utf8');
+  let result;
+  try {
+    result = childProcess.spawnSync(rubyPath, [scriptPath], { encoding: 'utf8' });
+  } finally {
+    fs.rmSync(tempDir, { recursive: true, force: true });
+  }
   if (result.status !== 0) {
     throw new Error((result.stderr || result.stdout || 'OpenClash Ruby region probe failed').trim());
   }
@@ -1204,6 +1233,7 @@ function validateJsProducts(record) {
 function validateClashYaml(record, baselineVersion, options) {
   const file = 'Clash Meta For Android/CMFA(mihomo).yaml';
   const source = readText(file);
+  validateYamlGroupFilterSyntax(record, 'cmfa', extractYamlGroupFilters(source));
   const providersBlock = extractYamlBlock(source, 'rule-providers');
   const rulesBlock = extractYamlBlock(source, 'rules');
   const groupCount = countMatches(source, /^- name: |^  name: /gm);
@@ -1302,6 +1332,7 @@ function validateClashYaml(record, baselineVersion, options) {
 function validateStashYaml(record, baselineVersion, options) {
   const file = 'Stash/Stash.yaml';
   const source = readText(file);
+  validateYamlGroupFilterSyntax(record, 'stash', extractYamlGroupFilters(source));
   const generator = readText('tools/generate-stash-from-cmfa.js');
   const providersBlock = extractYamlBlock(source, 'rule-providers');
   const rulesBlock = extractYamlBlock(source, 'rules');

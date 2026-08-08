@@ -5,6 +5,7 @@
 > 更新于 2026-05-30：批 A #5 落地——WebFetch `wiki/config/dns` + WebSearch 确认 `direct-nameserver-follow-policy` 语义：默认 `false`（忽略 nameserver-policy），`true` 时 direct 出口域名解析也遵守 nameserver-policy，仅当 direct-nameserver 非空时生效；官方 use case 即「direct 用国内 DoH + policy 指定域名走指定 DNS」。与 `direct-nameserver` 同字段族（耦合添加），本仓库已使用 direct-nameserver，故置 true 不抬高最低内核要求。
 > 更新于 2026-05-30：default-nameserver 由"必须为 IP，不能为域名"修正为"必须为 IP，**可为加密 DNS**"——host 须为 IP，但 scheme 可为 tls://IP / https://IP/dns-query（官方原文"必须为 IP, 可为加密 DNS"）。
 > 更新于 2026-07-14：复核官方“路由规则”页面（页面更新时间 2026-07-08）。`PROCESS-NAME,<进程名>,<策略>` 仍为正式规则类型，支持精确进程名匹配；本仓库使用的 `WorkPro.exe` / `WorkProWebProcess.exe` 写法无字段或语义变更。
+> 更新于 2026-08-08：复核官方“代理组配置”（页面更新 2026-07-18）。`filter` 仍是作用于 `use` / `include-all-proxies` 的正则筛选字段，多个模式以 `|` 分隔；本次仅补充配置输入语法校验，不引入字段变更。
 > 本文件为本地参考，用于审核本仓库各配置文件与官方文档的兼容性。
 
 ---
@@ -32,8 +33,8 @@
 | `include-all` | bool | 否 | 包含所有出站代理和代理集合（不含其他组） |
 | `include-all-proxies` | bool | 否 | 包含所有出站代理（不含其他组） |
 | `include-all-providers` | bool | 否 | 包含所有代理集合（会使 `use` 失效） |
-| `filter` | string | 否 | 正则包含筛选；可用 `` ` `` 分隔多个；仅对 `use` 和 `include-all-*` 生效 |
-| `exclude-filter` | string | 否 | 正则排除筛选；可用 `` ` `` 分隔多个 |
+| `filter` | string | 否 | 正则包含筛选；可用 `|` 分隔多个；仅对 `use` 和 `include-all-*` 生效 |
+| `exclude-filter` | string | 否 | 正则排除筛选；可用 `|` 分隔多个 |
 | `exclude-type` | string | 否 | 按类型排除（`|` 分隔）；不支持正则 |
 | `expected-status` | string | 否 | 期望 HTTP 状态码；`/` 匹配多个，`-` 匹配范围 |
 | `hidden` | bool | 否 | 在 API 中隐藏 |
@@ -63,7 +64,7 @@
 ### `filter` 字段语法
 
 - 使用 Go RE2 正则语法
-- 多个正则用反引号 `` ` `` 分隔
+- 多个正则用 `|` 分隔
 - 是**子串匹配**（非 word boundary）
 - 例：`TW` 会匹配 `TWN`、`TW01` 等
 - 例：`(?i)港|hk|hongkong|hong kong`
@@ -312,5 +313,5 @@ sniffer:
 
 ---
 
-*最后更新: 2026-04-26*
+*最后更新: 2026-08-08*
 *源文档: https://wiki.metacubex.one/config/*
