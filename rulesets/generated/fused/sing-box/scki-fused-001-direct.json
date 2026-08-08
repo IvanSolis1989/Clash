@@ -2,17 +2,9 @@
   "version": 3,
   "rules": [
     {
-      "domain_suffix": [
-        "account.xiaomi.com",
-        "passport.xiaomi.com",
-        "micloud.xiaomi.com",
-        "jpush.cn",
-        "jpush.io",
-        "getui.com",
-        "getui.net",
-        "gepush.com"
-      ],
       "domain": [
+        "drpf-g10.proxima.nie.netease.com",
+        "sigma-performance-g10.proxima.nie.netease.com",
         "i.mi.com",
         "auth.be.sec.miui.com",
         "idm.api.io.mi.com",
@@ -22,6 +14,16 @@
         "ccc.sys.miui.com",
         "register.xmpush.xiaomi.com",
         "msg.umeng.com"
+      ],
+      "domain_suffix": [
+        "account.xiaomi.com",
+        "passport.xiaomi.com",
+        "micloud.xiaomi.com",
+        "jpush.cn",
+        "jpush.io",
+        "getui.com",
+        "getui.net",
+        "gepush.com"
       ]
     }
   ]

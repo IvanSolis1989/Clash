@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.10-stash.3 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：由 CMFA v6.0.10-cmfa.3 重新生成；两个网易游戏服务主机随首段融合直连资产优先于 anti-AD 与国内游戏规则。
+
 ## v6.0.9-stash.2 (2026-08-08)
 
 - FIX-APAC-HOME-REGEX：由 CMFA v6.0.9-cmfa.2 重新生成；`🏡 亚太家宽` 的筛选正则现可正常编译。

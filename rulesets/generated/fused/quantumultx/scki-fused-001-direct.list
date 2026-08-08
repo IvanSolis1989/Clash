@@ -1,3 +1,5 @@
+host, drpf-g10.proxima.nie.netease.com
+host, sigma-performance-g10.proxima.nie.netease.com
 host-suffix, account.xiaomi.com
 host-suffix, passport.xiaomi.com
 host-suffix, micloud.xiaomi.com

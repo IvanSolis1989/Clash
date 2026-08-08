@@ -8,6 +8,7 @@ const test = require('node:test');
 const {
   DOMESTIC_AUTHORITY_ANCHOR_RULE,
   GENERIC_INTL_FALLBACK_RULES,
+  SOURCE_GRAPH_VERSION,
   getRawRoutingGraph,
 } = require('../../rulesets/source/routing-graph');
 
@@ -15,6 +16,11 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const FUSED_ROOT = path.join(REPO_ROOT, 'rulesets/generated/fused');
 const CN_SITE = '🏠 国内网站';
 const CN_MEDIA = '📺 国内流媒体';
+const DIRECT = 'DIRECT';
+const NETEASE_GAME_DIRECT_HOSTS = [
+  'drpf-g10.proxima.nie.netease.com',
+  'sigma-performance-g10.proxima.nie.netease.com',
+];
 
 function readText(relativePath) {
   return fs.readFileSync(path.join(REPO_ROOT, relativePath), 'utf8');
@@ -110,5 +116,32 @@ test('reported domestic services and representative shared-CDN hosts keep their 
     const route = firstDomainRoute(host);
     assert.ok(route, `${host} must match a fused domain rule set`);
     assert.equal(route.policy, policy, `${host} first matched ${route.provider}`);
+  }
+});
+
+test('reported NetEase game endpoints use the early direct guard before generic game routing', () => {
+  const graph = getRawRoutingGraph();
+  const directGuardIndex = graph.rules.indexOf('RULE-SET,scki-adfp-direct,DIRECT');
+  const antiAdIndex = graph.rules.indexOf('RULE-SET,anti-ad,🛑 广告拦截');
+  const domesticGameIndex = graph.rules.indexOf('DOMAIN-SUFFIX,netease.com,🕹️ 国内游戏');
+
+  assert.ok(directGuardIndex >= 0, 'the early direct guard must exist');
+  assert.ok(antiAdIndex >= 0, 'the upstream anti-AD segment must exist');
+  assert.ok(domesticGameIndex >= 0, 'the generic NetEase domestic-game rule must exist');
+  assert.ok(directGuardIndex < antiAdIndex, 'the direct guard must precede anti-AD');
+  assert.ok(directGuardIndex < domesticGameIndex, 'the direct guard must precede domestic games');
+
+  const directGuard = readText('rulesets/supplemental/clash/adfp-direct.list');
+  const shadowrocket = readText('Shadowrocket/Shadowrocket.conf');
+  const shadowrocketDirectRule = `scki-fused-001-direct.list?scki=${SOURCE_GRAPH_VERSION},DIRECT`;
+  const shadowrocketGameRule = `scki-fused-057-game-cn.list?scki=${SOURCE_GRAPH_VERSION},🕹️ 国内游戏`;
+  assert.ok(shadowrocket.indexOf(shadowrocketDirectRule) < shadowrocket.indexOf(shadowrocketGameRule), 'Shadowrocket must reference the direct guard before domestic games');
+
+  for (const host of NETEASE_GAME_DIRECT_HOSTS) {
+    assert.match(directGuard, new RegExp(`^DOMAIN,${host}$`, 'm'));
+    assert.deepEqual(firstDomainRoute(host), {
+      provider: 'scki-fused-001-direct-domain',
+      policy: DIRECT,
+    });
   }
 });

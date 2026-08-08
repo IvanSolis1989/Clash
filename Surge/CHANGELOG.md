@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.10-Surge.3 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：同步首段精确直连融合规则；两个网易游戏服务主机在 anti-AD 和国内游戏宽规则之前命中 `DIRECT`。
+
 ## v6.0.9-Surge.2 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：11 个地区及家宽 policy-regex-filter 在原有大写匹配旁新增“小写 ISO 两位码紧接编号”分支；带编号的 yun hk01、yun us01、yun jp01、yun sg01、yun tw01 现会归入相应地区策略组。

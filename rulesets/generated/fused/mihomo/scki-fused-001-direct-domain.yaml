@@ -1,4 +1,6 @@
 payload:
+  - "drpf-g10.proxima.nie.netease.com"
+  - "sigma-performance-g10.proxima.nie.netease.com"
   - "+.account.xiaomi.com"
   - "+.passport.xiaomi.com"
   - "+.micloud.xiaomi.com"

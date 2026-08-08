@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.10-egern.2 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：由 CMFA v6.0.10-cmfa.3 重新生成首段原生 YAML rule_set；两个网易游戏服务主机优先于 anti-AD 与国内游戏宽规则。
+
 ## v6.0.9-egern.1 (2026-07-19)
 
 - 正式 Profile 由 CMFA v6.0.9-cmfa.1 重生成；通用 `api.github.com` 原生规则集前置到工具组，两个 Windows 进程逻辑规则明确跳过而不伪造兼容性。

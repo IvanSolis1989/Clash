@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.10-oc-normal.5 / v6.0.10-oc-smart.5 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：Normal 与 Smart 同步首段融合直连资产；两个网易游戏服务主机在 anti-AD 和 `netease.com` 国内游戏宽规则之前固定直连。
+
 ## v6.0.9-oc-normal.4 / v6.0.9-oc-smart.4 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：Ruby 分类器在字母与数字交界处做受限规范化，解决 Ruby 单词边界把数字视为单词字符、导致 hk01 不命中的问题；用户提供的 12 个小写 ISO 编号节点均进入预期区域。

@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.10-sing.2 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：Full JSON 与首段 fused SRS 重新生成；两个网易游戏服务主机固定走 `DIRECT`，不继承国内游戏出站选择。
+
 ## v6.0.9-sing.1 (2026-07-19)
 
 - Full JSON 重新生成：`api.github.com` 默认进入工具组，原生 `process_name + domain` 规则仅为 `Code Helper` / `Code Helper (Plugin)` 保留 AI 路由。

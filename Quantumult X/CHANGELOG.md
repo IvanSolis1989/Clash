@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.10-QX.3 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：同步首段精确直连融合 URL；两个网易游戏服务主机在 anti-AD 和国内游戏宽规则之前命中 `direct`。
+
 ## v6.0.9-QX.2 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：server-tag-regex 在原有大写匹配旁新增“小写 ISO 两位码紧接编号”分支；当订阅解析器把节点名写入 tag 时，yun hk01、yun us01、yun jp01、yun sg01、yun tw01 会进入预期区域。

@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.10-Loon.2 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：同步首段精确直连融合规则；两个网易游戏服务主机在 anti-AD 和国内游戏宽规则之前命中 `DIRECT`。
+
 ## v6.0.9-Loon.1 (2026-07-19)
 
 - Remote Rule 顺序加入通用 GitHub API 工具组段，避免普通请求被广义 AI 规则提前匹配。

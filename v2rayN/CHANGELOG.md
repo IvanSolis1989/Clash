@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.10-v2n.2 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：Xray fallback 从首段 fused sing-box JSON 重建；两个网易游戏服务主机在国内游戏段之前以 `direct` 出站匹配。
+
 ## v6.0.9-v2n.1 (2026-07-19)
 
 - Xray fallback 增加两条可表达的 `process + domain` RuleObject：仅 `Code Helper` / `Code Helper (Plugin)` 访问 `api.github.com` 时保持 proxy AI 语义；通用 GitHub API 段先于上游广义 AI 段。

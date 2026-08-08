@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.10-pw2.2 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：重建首段 fused SRS shunt rule；两个网易游戏服务主机在国内游戏 shunt rule 前固定由 `direct` 处理。
+
 ## v6.0.9-pw2.1 (2026-07-19)
 
 - 重建 66 条 fused shunt rule；与 Passwall 一致以通用 GitHub API 工具组段处理无进程身份的路由器请求。

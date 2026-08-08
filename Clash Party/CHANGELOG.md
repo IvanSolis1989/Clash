@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.10-dns.4 / v6.0.10-normal.5 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：两个网易游戏服务主机加入首段 `scki-adfp-direct` 融合规则集，精确 `DIRECT` 优先于 anti-AD 与 `netease.com` 国内游戏宽规则。
+- GUARD：只加入报告中的两条 `DOMAIN`，不对 `proxima.nie.netease.com` 父域做宽泛白名单；回归固定验证两个主机的首命中均为 `scki-fused-001-direct-domain`。
+
 ## v6.0.9-dns.3 / v6.0.9-normal.4 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：classifyAllNodes 新增“ISO 两位码 + 编号”专用、大小写无关匹配；yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01 会分别进入对应地区主组与聚合组。

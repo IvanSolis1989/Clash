@@ -2,15 +2,15 @@
 . /usr/share/openclash/log.sh
 
 # ============================================================================
-# Clash Smart v6.0.9-oc-normal.4 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
-# Build: 2026-08-02
+# Clash Smart v6.0.10-oc-normal.5 — OpenClash 覆写脚本（非 Smart 内核 / url-test 区域组）
+# Build: 2026-08-08
 # ============================================================================
-# v6.0.9-oc-normal.4: 小写 ISO 两位码加数字后缀可稳定进入对应区域组；规则、组与全局 DNS 基线不变
+# v6.0.10-oc-normal.5: FIX#179 两个网易游戏服务主机首段精确直连，避免继承国内游戏组的手动代理选择
 # v5.4.33: FEAT#169-AI-CODING 接入 VPSDance AI coding 规则补齐 AI 编程工具
 # v5.4.32: FIX#168-CN-GAME 国内游戏前置到国外游戏宽规则之前，避免 HoYoverse / Game / category-games 抢先代理
 # 定位：与同目录 OpenClash(mihomo-smart).sh 规则 100% 等价的「非 Smart 内核」版本。
 #       两者唯一区别：22 个区域组（11 全部 + 11 家宽）从 type: smart（uselightgbm）换成 type: url-test。
-#       对齐 Clash Party v6.0.9 JS 基线。
+#       对齐 Clash Party v6.0.10 JS 基线。
 #       适用场景：
 #         - OpenClash 内核选的是 Meta(mihomo 稳定版) 而非 Meta Alpha，不支持 smart + LightGBM
 #         - 或者明确想关闭 LightGBM ML 评估、只靠经典 url-test 延迟选路
@@ -29,7 +29,7 @@
 
 
 
-VERSION_TAG="v6.0.9-oc-normal.4"
+VERSION_TAG="v6.0.10-oc-normal.5"
 CONFIG_FILE="$1"
 LOG_FILE="/tmp/openclash.log"
 SCKI_SUBSCRIPTION_ADAPTER_PROFILE="${SCKI_SUBSCRIPTION_ADAPTER_PROFILE:-adaptive}"
@@ -530,1016 +530,1016 @@ rule-providers:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-001-direct-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-001-direct-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-001-direct-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-001-direct-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-002-intl-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-002-intl-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-002-intl-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-002-intl-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-002-intl-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-003-payments-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-003-payments-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-003-payments-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-003-payments-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-003-payments-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-004-ai-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-004-ai-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-004-ai-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-004-ai-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-004-ai-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-005-cnmedia-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-005-cnmedia-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-005-cnmedia-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-005-cnmedia-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-005-cnmedia-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-006-ad-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-006-ad-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-006-ad-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-006-ad-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-006-ad-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-006-ad-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-006-ad-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-006-ad-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-006-ad-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-006-ad-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-006-ad-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-006-ad-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-006-ad-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-006-ad-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-006-ad-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-007-cn-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-007-cn-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-007-cn-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-007-cn-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-007-cn-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-008-direct-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-008-direct-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-008-direct-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-008-direct-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-008-direct-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-008-direct-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-008-direct-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-008-direct-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-008-direct-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-008-direct-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-008-direct-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-008-direct-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-008-direct-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-008-direct-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-008-direct-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-009-work-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-009-work-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-009-work-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-009-work-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-009-work-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-010-crypto-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-010-crypto-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-010-crypto-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-010-crypto-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-010-crypto-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-011-gfw-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-011-gfw-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-011-gfw-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-011-gfw-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-011-gfw-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-012-youtube-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-012-youtube-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-012-youtube-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-012-youtube-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-012-youtube-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-013-cn-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-013-cn-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-013-cn-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-013-cn-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-013-cn-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-014-ai-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-014-ai-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-014-ai-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-014-ai-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-014-ai-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-014-ai-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-014-ai-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-014-ai-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-014-ai-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-014-ai-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-015-work-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-015-work-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-015-work-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-015-work-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-015-work-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-016-ai-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-016-ai-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-016-ai-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-016-ai-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-016-ai-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-016-ai-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-016-ai-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-016-ai-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-016-ai-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-016-ai-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-016-ai-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-016-ai-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-016-ai-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-016-ai-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-016-ai-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-017-intl-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-017-intl-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-017-intl-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-017-intl-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-017-intl-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-018-im-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-018-im-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-018-im-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-018-im-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-018-im-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-019-work-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-019-work-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-019-work-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-019-work-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-019-work-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-020-download-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-020-download-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-020-download-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-020-download-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-020-download-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-020-download-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-020-download-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-020-download-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-020-download-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-020-download-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-021-google-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-google-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-021-google-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-google-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-021-google-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-021-google-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-google-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-021-google-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-021-google-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-021-google-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-022-tools-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-022-tools-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-022-tools-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-022-tools-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-022-tools-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-023-ai-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-023-ai-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-023-ai-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-023-ai-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-023-ai-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-023-ai-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-023-ai-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-023-ai-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-023-ai-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-023-ai-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-023-ai-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-023-ai-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-023-ai-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-023-ai-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-023-ai-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-024-crypto-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-024-crypto-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-024-crypto-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-024-crypto-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-024-crypto-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-024-crypto-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-024-crypto-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-024-crypto-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-024-crypto-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-024-crypto-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-025-payments-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-025-payments-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-025-payments-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-025-payments-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-025-payments-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-025-payments-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-025-payments-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-025-payments-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-025-payments-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-025-payments-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-026-microsoft-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-026-microsoft-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-026-microsoft-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-026-microsoft-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-026-microsoft-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-027-intl-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-027-intl-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-027-intl-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-027-intl-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-027-intl-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-028-direct-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-028-direct-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-028-direct-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-028-direct-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-028-direct-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-029-im-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-029-im-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-029-im-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-029-im-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-029-im-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-029-im-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-029-im-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-029-im-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-029-im-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-029-im-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-029-im-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-029-im-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-029-im-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-030-social-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-030-social-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-030-social-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-030-social-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-030-social-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-030-social-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-030-social-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-030-social-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-030-social-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-030-social-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-030-social-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-030-social-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-030-social-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-031-cn-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-031-cn-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-031-cn-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-031-cn-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-031-cn-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-032-social-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-032-social-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-032-social-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-032-social-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-032-social-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-033-work-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-033-work-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-033-work-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-033-work-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-033-work-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-033-work-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-033-work-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-033-work-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-033-work-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-033-work-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-033-work-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-033-work-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-033-work-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-033-work-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-033-work-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-034-direct-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-034-direct-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-034-direct-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-034-direct-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-034-direct-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-035-cnmedia-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-035-cnmedia-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-035-cnmedia-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-035-cnmedia-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-035-cnmedia-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-036-tiktok-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-036-tiktok-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-036-tiktok-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-036-tiktok-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-036-tiktok-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-037-youtube-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-037-youtube-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-037-youtube-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-037-youtube-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-037-youtube-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-038-netflix-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-038-netflix-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-038-netflix-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-038-netflix-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-038-netflix-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-038-netflix-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-038-netflix-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-038-netflix-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-038-netflix-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-038-netflix-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-039-disney-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-039-disney-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-039-disney-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-039-disney-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-039-disney-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-039-disney-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-039-disney-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-039-disney-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-039-disney-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-039-disney-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-040-hbo-max-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-040-hbo-max-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-040-hbo-max-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-040-hbo-max-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-040-hbo-max-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-040-hbo-max-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-040-hbo-max-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-040-hbo-max-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-040-hbo-max-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-040-hbo-max-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-041-hulu-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-041-hulu-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-041-hulu-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-041-hulu-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-041-hulu-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-041-hulu-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-041-hulu-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-041-hulu-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-041-hulu-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-041-hulu-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-042-prime-video-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-prime-video-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-042-prime-video-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-prime-video-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-042-prime-video-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-042-prime-video-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-prime-video-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-042-prime-video-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-prime-video-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-042-prime-video-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-042-prime-video-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-prime-video-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-042-prime-video-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-042-prime-video-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-042-prime-video-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-043-music-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-043-music-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-043-music-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-043-music-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-043-music-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-043-music-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-043-music-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-043-music-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-043-music-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-043-music-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-044-stream-hk-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-044-stream-hk-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-044-stream-hk-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-044-stream-hk-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-044-stream-hk-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-044-stream-hk-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-044-stream-hk-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-044-stream-hk-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-044-stream-hk-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-044-stream-hk-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-044-stream-hk-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-044-stream-hk-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-044-stream-hk-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-044-stream-hk-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-044-stream-hk-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-045-stream-tw-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-045-stream-tw-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-045-stream-tw-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-045-stream-tw-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-045-stream-tw-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-045-stream-tw-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-045-stream-tw-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-045-stream-tw-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-045-stream-tw-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-045-stream-tw-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-046-stream-jpkr-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-046-stream-jpkr-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-046-stream-jpkr-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-046-stream-jpkr-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-046-stream-jpkr-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-046-stream-jpkr-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-046-stream-jpkr-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-046-stream-jpkr-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-046-stream-jpkr-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-046-stream-jpkr-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-046-stream-jpkr-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-046-stream-jpkr-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-046-stream-jpkr-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-046-stream-jpkr-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-046-stream-jpkr-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-047-stream-eu-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-047-stream-eu-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-047-stream-eu-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-047-stream-eu-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-047-stream-eu-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-047-stream-eu-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-047-stream-eu-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-047-stream-eu-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-047-stream-eu-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-047-stream-eu-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-048-stream-other-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-048-stream-other-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-048-stream-other-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-048-stream-other-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-048-stream-other-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-048-stream-other-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-048-stream-other-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-048-stream-other-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-048-stream-other-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-048-stream-other-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-048-stream-other-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-048-stream-other-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-048-stream-other-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-048-stream-other-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-048-stream-other-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-049-tools-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-049-tools-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-049-tools-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-049-tools-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-049-tools-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-050-google-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-050-google-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-050-google-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-050-google-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-050-google-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-051-tools-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-051-tools-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-051-tools-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-051-tools-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-051-tools-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-051-tools-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-051-tools-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-051-tools-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-051-tools-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-051-tools-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-051-tools-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-051-tools-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-051-tools-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-051-tools-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-051-tools-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-052-microsoft-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-052-microsoft-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-052-microsoft-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-052-microsoft-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-052-microsoft-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-052-microsoft-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-052-microsoft-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-052-microsoft-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-052-microsoft-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-052-microsoft-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-053-apple-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-053-apple-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-053-apple-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-053-apple-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-053-apple-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-053-apple-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-053-apple-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-053-apple-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-053-apple-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-053-apple-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-053-apple-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-053-apple-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-053-apple-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-053-apple-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-053-apple-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-054-download-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-download-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-054-download-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-download-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-054-download-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-054-download-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-download-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-054-download-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-download-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-054-download-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-054-download-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-download-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-054-download-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-054-download-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-054-download-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-055-tracker-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-055-tracker-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-055-tracker-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-055-tracker-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-055-tracker-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-055-tracker-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-055-tracker-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-055-tracker-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-055-tracker-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-055-tracker-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-055-tracker-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-055-tracker-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-055-tracker-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-055-tracker-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-055-tracker-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-056-gfw-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-056-gfw-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-056-gfw-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-056-gfw-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-056-gfw-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-056-gfw-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-056-gfw-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-056-gfw-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-056-gfw-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-056-gfw-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-056-gfw-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-056-gfw-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-056-gfw-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-056-gfw-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-056-gfw-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-057-game-cn-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-057-game-cn-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-057-game-cn-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-057-game-cn-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-057-game-cn-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-058-game-intl-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-game-intl-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-058-game-intl-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-game-intl-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-058-game-intl-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-058-game-intl-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-game-intl-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-058-game-intl-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-game-intl-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-058-game-intl-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-058-game-intl-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-game-intl-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-058-game-intl-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-058-game-intl-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-058-game-intl-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-059-intl-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-059-intl-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-059-intl-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-059-intl-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-059-intl-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-059-intl-site-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-059-intl-site-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-059-intl-site-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-059-intl-site-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-059-intl-site-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-059-intl-site-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-059-intl-site-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-059-intl-site-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-059-intl-site-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-059-intl-site-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-060-payments-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-060-payments-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-060-payments-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-060-payments-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-060-payments-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-061-cnmedia-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cnmedia-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-061-cnmedia-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cnmedia-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-061-cnmedia-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-061-cnmedia-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cnmedia-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-061-cnmedia-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cnmedia-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-061-cnmedia-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-061-cnmedia-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cnmedia-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-061-cnmedia-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-061-cnmedia-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-061-cnmedia-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-062-cn-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-062-cn-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-062-cn-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-062-cn-site-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-062-cn-site-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-062-cn-site-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-062-cn-site-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-063-direct-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-direct-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-063-direct-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-063-direct-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-063-direct-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-064-cn-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-cn-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-064-cn-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-cn-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-064-cn-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-064-cn-site-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-cn-site-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-064-cn-site-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-064-cn-site-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-064-cn-site-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-065-intl-site-domain:
     type: http
     behavior: domain
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-domain.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-065-intl-site-domain.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-domain.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-065-intl-site-domain.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-065-intl-site-ipcidr:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-ipcidr.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-065-intl-site-ipcidr.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-ipcidr.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-065-intl-site-ipcidr.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-065-intl-site-ipcidr-no-resolve:
     type: http
     behavior: ipcidr
     format: mrs
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-ipcidr-no-resolve.mrs?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-065-intl-site-ipcidr-no-resolve.mrs"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-ipcidr-no-resolve.mrs?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-065-intl-site-ipcidr-no-resolve.mrs"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-065-intl-site-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-065-intl-site-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-065-intl-site-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-065-intl-site-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-066-im-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-066-im-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-066-im-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-066-im-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-066-im-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-067-netflix-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-067-netflix-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-067-netflix-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-067-netflix-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-067-netflix-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-068-social-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-068-social-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-068-social-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-068-social-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-068-social-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
   scki-fused-069-google-residual:
     type: http
     behavior: classical
     format: yaml
-    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-069-google-residual.yaml?scki=v6.0.9"
-    path: "./ruleset/v6.0.9/scki-fused-069-google-residual.yaml"
+    url: "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-069-google-residual.yaml?scki=v6.0.10"
+    path: "./ruleset/v6.0.10/scki-fused-069-google-residual.yaml"
     interval: 86400
     proxy: "🚫 受限网站"
 rules:
@@ -1703,7 +1703,7 @@ cat > "$RUBY_SCRIPT" << 'RUBY_EOF'
 require 'yaml'
 require 'digest'
 
-VERSION = "v6.0.9-oc-normal.4"
+VERSION = "v6.0.10-oc-normal.5"
 
 STATUS_LOG = ARGV[2]
 File.open(STATUS_LOG, 'w') { |f| f.puts "[#{VERSION}] start" }

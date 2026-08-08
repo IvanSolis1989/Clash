@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.10-flclash.6 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：与 Clash Party Normal 同步首段精确直连融合规则；两个网易游戏服务主机优先于 anti-AD 与国内游戏宽规则。
+
 ## v6.0.9-flclash.5 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：与 Clash Party Normal 同构升级，支持 yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01 等小写 ISO 两位码加编号的订阅节点。

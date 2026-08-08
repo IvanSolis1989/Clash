@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.10-SR.3 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：`drpf-g10.proxima.nie.netease.com` 与 `sigma-performance-g10.proxima.nie.netease.com` 位于第一个融合 `DIRECT` RULE-SET，不再落入用户可改为代理的“国内游戏”策略组。
+- GUARD：仅精确主机直连，保留 `proxima.nie.netease.com` 父域既有的 anti-AD 处理。
+
 ## v6.0.9-SR.2 (2026-08-02)
 
 - FIX-NODE-ISO-LOWERCASE：11 个地区及家宽 policy-regex-filter 在原有大写匹配旁新增“小写 ISO 两位码紧接编号”分支；yun hk01、yun us01、yun jp01、yun sg01、yun tw01 及其家宽变体可进入对应组。

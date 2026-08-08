@@ -6,6 +6,13 @@
 
 ---
 
+## v6.0.10 网易游戏精确直连修复 (2026-08-08)
+
+- FIX#179-NETEASE-GAME-DIRECT：`drpf-g10.proxima.nie.netease.com` 与 `sigma-performance-g10.proxima.nie.netease.com` 加入仓库自有的首段精确直连规则集。
+  - 此前两个主机会落入 `DOMAIN-SUFFIX,netease.com` 的“国内游戏”宽规则；现在在规则开头命中 `DIRECT`，不再继承该策略组的手动代理选择。
+  - 只豁免报告中的两个精确主机名；`proxima.nie.netease.com` 父域的广告/隐私规则不被整体放宽。
+- VERIFY：重建 MRS、融合文本/MRS/SRS、CMFA、Stash、Egern、SingBox、Xray 与 Passwall / Passwall2 派生产物，并新增首命中回归。
+
 ## v6.0.9 Actions 与 CMFA/Stash 正则修复 (2026-08-08)
 
 - FIX-CMFA-APAC-HOME-REGEX：修复 `🏡 亚太家宽` 的末尾多余右括号；此前会让 CMFA 载入该策略组筛选正则时失败，并由 Stash 生成链路同步带入。

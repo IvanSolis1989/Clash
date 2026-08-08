@@ -5,7 +5,7 @@
 > 覆写脚本：`FlClash(mihomo).js`
 > 适用客户端：**FlClash**（Android / Windows / macOS / Linux）
 > 内核要求：FlClash >= **v0.8.85**
-> 当前版本：**v6.0.9-flclash.5**（22 url-test 区域组 + 33 业务策略组 + 127 融合 rule-providers / 146 rules；Mihomo 规则缓存按发布版本隔离；变更历史见 `FlClash/CHANGELOG.md`）
+> 当前版本：**v6.0.10-flclash.6**（22 url-test 区域组 + 33 业务策略组 + 127 融合 rule-providers / 146 rules；Mihomo 规则缓存按发布版本隔离；变更历史见 `FlClash/CHANGELOG.md`）
 >
 > 节点命名兼容：yun hk01 / yun us01 / yun jp01 / yun sg01 / yun tw01 等小写 ISO 两位码加编号会自动进入区域组；不对普通小写词做宽泛国家码匹配。
 
@@ -90,7 +90,7 @@
 
 如果只开启「系统代理」而没有开启 VPN，浏览器可能正常，但不使用系统代理的应用、游戏和部分 WebView 不会进入规则引擎。这不是规则集命中错误。
 
-重载订阅后，最终配置的生效判据是：顶层 `ipv6: false`、`dns.ipv6: false`、`dns.prefer-h3: false`。如果 FlClash UI 仍显示 IPv6 或 PreferH3 为开启，说明当前订阅没有关联 `v6.0.9-flclash.4` 覆写脚本，或应用层设置覆盖了订阅配置，应重新关联脚本并刷新配置。
+重载订阅后，最终配置的生效判据是：顶层 `ipv6: false`、`dns.ipv6: false`、`dns.prefer-h3: false`。如果 FlClash UI 仍显示 IPv6 或 PreferH3 为开启，说明当前订阅没有关联 `v6.0.10-flclash.6` 覆写脚本，或应用层设置覆盖了订阅配置，应重新关联脚本并刷新配置。
 
 ### 外部资源（GeoX URL）
 工具 → 资源 ⋮ → 编辑 → 同步：
