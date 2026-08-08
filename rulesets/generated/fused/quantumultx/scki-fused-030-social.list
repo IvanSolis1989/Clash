@@ -1,15 +1,15 @@
 host-suffix, twitter.jp
-host-suffix, x.com
-host-suffix, cms-twdigitalassets.com
+host-suffix, twitter.biz
+host-suffix, pscp.tv
 host-suffix, t.co
 host-suffix, tweetdeck.com
 host-suffix, twimg.com
-host-suffix, twitpic.com
-host-suffix, twitter.biz
 host-suffix, twittercommunity.com
-host-suffix, pscp.tv
-host-suffix, periscope.tv
+host-suffix, x.com
 host-suffix, twitter.com
+host-suffix, periscope.tv
+host-suffix, cms-twdigitalassets.com
+host-suffix, twitpic.com
 host-suffix, twitterflightschool.com
 host-suffix, twitterinc.com
 host-suffix, twitteroauth.com
@@ -453,7 +453,6 @@ ip-cidr, 8.25.194.0/23, no-resolve
 ip-cidr, 8.25.196.0/23, no-resolve
 ip-cidr, 64.63.0.0/18, no-resolve
 ip-cidr, 69.12.56.0/21, no-resolve
-ip-cidr, 69.195.160.0/19, no-resolve
 ip-cidr, 103.252.112.0/22, no-resolve
 ip-cidr, 104.244.41.0/24, no-resolve
 ip-cidr, 104.244.42.0/24, no-resolve
@@ -497,7 +496,6 @@ ip-cidr, 102.132.116.0/23, no-resolve
 ip-cidr, 102.132.119.0/24, no-resolve
 ip-cidr, 102.132.120.0/23, no-resolve
 ip-cidr, 102.132.123.0/24, no-resolve
-ip-cidr, 102.132.125.0/24, no-resolve
 ip-cidr, 102.132.126.0/24, no-resolve
 ip-cidr, 102.221.188.0/22, no-resolve
 ip-cidr, 103.4.96.0/22, no-resolve
@@ -518,7 +516,7 @@ ip-cidr, 129.134.164.0/23, no-resolve
 ip-cidr, 129.134.168.0/21, no-resolve
 ip-cidr, 129.134.176.0/20, no-resolve
 ip-cidr, 129.134.194.0/23, no-resolve
-ip-cidr, 129.134.196.0/23, no-resolve
+ip-cidr, 129.134.197.0/24, no-resolve
 ip-cidr, 157.240.0.0/17, no-resolve
 ip-cidr, 157.240.128.0/23, no-resolve
 ip-cidr, 157.240.131.0/24, no-resolve
@@ -569,7 +567,7 @@ ip6-cidr, 2a03:2887:ff30::/48, no-resolve
 ip6-cidr, 2a03:2887:ff33::/48, no-resolve
 ip6-cidr, 2a03:2887:ff37::/48, no-resolve
 ip6-cidr, 2a03:2887:ff38::/46, no-resolve
-ip6-cidr, 2a03:2887:ff3f::/48, no-resolve
+ip6-cidr, 2a03:2887:ff3e::/47, no-resolve
 ip6-cidr, 2a03:2887:ff40::/46, no-resolve
 ip6-cidr, 2a03:2887:ff44::/47, no-resolve
 ip6-cidr, 2a03:2887:ff48::/46, no-resolve
@@ -584,7 +582,8 @@ ip6-cidr, 2a03:2887:ff62::/47, no-resolve
 ip6-cidr, 2a03:2887:ff64::/46, no-resolve
 ip6-cidr, 2a03:2887:ff68::/46, no-resolve
 ip6-cidr, 2a03:2887:ff6f::/48, no-resolve
-ip6-cidr, 2a03:2887:ff70::/46, no-resolve
+ip6-cidr, 2a03:2887:ff70::/47, no-resolve
+ip6-cidr, 2a03:2887:ff72::/48, no-resolve
 ip6-cidr, 2c0f:ef78:3::/48, no-resolve
 ip6-cidr, 2c0f:ef78:5::/48, no-resolve
 ip6-cidr, 2c0f:ef78:9::/48, no-resolve

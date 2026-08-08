@@ -13,9 +13,9 @@
     "rule_count": 132,
     "rule_set_ref_count": 115,
     "native_rule_set_count": 120,
-    "source_entry_count": 594065,
-    "dedup_removed": 124175,
-    "global_exact_duplicates_removed": 123630,
+    "source_entry_count": 609760,
+    "dedup_removed": 123801,
+    "global_exact_duplicates_removed": 123251,
     "empty_asset_count": 12
   },
   "assets": {
@@ -27,18 +27,18 @@
       },
       {
         "file": "geosite-cn.yaml",
-        "bytes": 2090072,
-        "sha256": "05135e40fde92c82306bf6ac75f4310555ed517715a101dfb505f409b92c53f6"
+        "bytes": 2076146,
+        "sha256": "3d83e35a9b951cd8d6b956dbf6fa297be5f61c9a28290af3cb302f7e5cb02638"
       },
       {
         "file": "geosite-google.yaml",
-        "bytes": 12190,
-        "sha256": "ede9f39c218262e0a80f4e06cb5ba2690fd1966e7c1ebbd48d010a82da04e5a7"
+        "bytes": 12234,
+        "sha256": "0f0c06ff1cb7154056a4dfa2c8e6d7a127afc8a6fc55b32772179fe3bf9e6fbe"
       },
       {
         "file": "geosite-microsoft.yaml",
-        "bytes": 14391,
-        "sha256": "d4077eda6cbded22ddf28f79cab2e1e9e44d3e2a8bc4c6e61fe16ca0b298faf4"
+        "bytes": 14456,
+        "sha256": "5841ba91fc1cfd0818823868f4e5015d4e050b8e42cc1707fc066e3a185d7e0e"
       },
       {
         "file": "geosite-youtube.yaml",
@@ -72,8 +72,8 @@
       },
       {
         "file": "provider-scki-fused-006-ad-domain.yaml",
-        "bytes": 10860634,
-        "sha256": "9c9367a7671df61737d7073d994309f88b9166476ee2fd83a4e10a9dabba31e6"
+        "bytes": 11409997,
+        "sha256": "d0ba0f813b7e288d7a68d20e01d0efaf62236ebda099afcedc842bb2b573364f"
       },
       {
         "file": "provider-scki-fused-006-ad-ipcidr.yaml",
@@ -87,8 +87,8 @@
       },
       {
         "file": "provider-scki-fused-007-cn-site-domain.yaml",
-        "bytes": 438,
-        "sha256": "3f1ecadf2e1133219cb00ef1bbb13c3ed603367aafe7348bfbb43f6f35523789"
+        "bytes": 453,
+        "sha256": "f755a2f488941617ad336273e4b9ddb03078db5b83b05852ef2130c100726b51"
       },
       {
         "file": "provider-scki-fused-008-direct-domain.yaml",
@@ -122,8 +122,8 @@
       },
       {
         "file": "provider-scki-fused-014-ai-domain.yaml",
-        "bytes": 1126,
-        "sha256": "8fe5a05e3adbc4bf72d686ecb42e344571d9b1f9d74509d738e6b604b3c16bfe"
+        "bytes": 1145,
+        "sha256": "6c71baee28a41332121b43353cda5f87dad315c9bec772f3cf43332650be6dde"
       },
       {
         "file": "provider-scki-fused-014-ai-residual.yaml",
@@ -177,8 +177,8 @@
       },
       {
         "file": "provider-scki-fused-021-google-ipcidr-no-resolve.yaml",
-        "bytes": 199557,
-        "sha256": "df1ec4ebc0e4a07646d435e5e7be2a3c324e832bf1dfc646ae80cced55e184ac"
+        "bytes": 211788,
+        "sha256": "9dee42525350aa8706cb8ff3a68c54421be5037ff50aaad852d2e80d6653b195"
       },
       {
         "file": "provider-scki-fused-022-tools-domain.yaml",
@@ -187,8 +187,8 @@
       },
       {
         "file": "provider-scki-fused-023-ai-domain.yaml",
-        "bytes": 6327,
-        "sha256": "6d0deef9e1904963445c041866cb58551dd08a1ff0cfee1ca4635fd0fcf5adf0"
+        "bytes": 6371,
+        "sha256": "a35e85a036668801e23f302664c845d5a83941df6d233d05af6ce8baea6427df"
       },
       {
         "file": "provider-scki-fused-023-ai-ipcidr-no-resolve.yaml",
@@ -202,8 +202,8 @@
       },
       {
         "file": "provider-scki-fused-024-crypto-domain.yaml",
-        "bytes": 5514,
-        "sha256": "12563ab38f77077042f81383b29953930e0d9acd5ea2ed5bb9edd0d53ce7a417"
+        "bytes": 5532,
+        "sha256": "48fc65269bbb1c45c972a46e9f5cfe623529d1861a89595381db6dae12e993f3"
       },
       {
         "file": "provider-scki-fused-024-crypto-residual.yaml",
@@ -262,8 +262,8 @@
       },
       {
         "file": "provider-scki-fused-030-social-ipcidr-no-resolve.yaml",
-        "bytes": 5534,
-        "sha256": "2e03be79f6a8a9645086df7c1910eb28d5956fb6d9e0babbfc5273e747da6112"
+        "bytes": 5515,
+        "sha256": "8fab7a5309c4615031f4c2e3d3d9569f036e447dfc4b9a15f00aae86636a4bde"
       },
       {
         "file": "provider-scki-fused-030-social-ipcidr.yaml",
@@ -302,8 +302,8 @@
       },
       {
         "file": "provider-scki-fused-035-cnmedia-domain.yaml",
-        "bytes": 573,
-        "sha256": "6b18d6831e82a2382a99235f0a74e58ccee304e1fbeb4af8f49b39ac887fe776"
+        "bytes": 590,
+        "sha256": "adb31dccbc239305575231b43dd11b5cae55dc8f181df1f3854e2c39dedac0b0"
       },
       {
         "file": "provider-scki-fused-036-tiktok-domain.yaml",
@@ -317,8 +317,8 @@
       },
       {
         "file": "provider-scki-fused-038-netflix-ipcidr-no-resolve.yaml",
-        "bytes": 20861,
-        "sha256": "a49db2c40afd9515231c64f4e657e0af70556bd573d1c72afa89aa28528891e5"
+        "bytes": 21339,
+        "sha256": "41f5c5caf5adc06cbaf75f0f84fbaa02139f93578115c89d1d5850afbdbfe90c"
       },
       {
         "file": "provider-scki-fused-039-disney-domain.yaml",
@@ -412,8 +412,8 @@
       },
       {
         "file": "provider-scki-fused-048-stream-other-domain.yaml",
-        "bytes": 11465,
-        "sha256": "936152d6545957b078d65990e7d9669c65a8cf4ed8821508804d42143be69e9c"
+        "bytes": 11425,
+        "sha256": "71b8554d3440e51ea92eed84f6c5f34bfea020f09ebf1e56c8d341dea9aa86c2"
       },
       {
         "file": "provider-scki-fused-048-stream-other-ipcidr.yaml",
@@ -437,8 +437,8 @@
       },
       {
         "file": "provider-scki-fused-051-tools-domain.yaml",
-        "bytes": 14452,
-        "sha256": "6101eaf470490c4b1883796c2d9b7eeb6d2820354ca9571be51ca9acaab9bfc2"
+        "bytes": 14640,
+        "sha256": "cf3c97a934c48be0b93378c69975d41dfe023bde17c45983aca195c02d9b0b3a"
       },
       {
         "file": "provider-scki-fused-051-tools-ipcidr.yaml",
@@ -487,8 +487,8 @@
       },
       {
         "file": "provider-scki-fused-055-tracker-domain.yaml",
-        "bytes": 5025,
-        "sha256": "59a965b752e69c32cf0d6b971a989116a14696134f28b00a23e571d4494994d8"
+        "bytes": 5005,
+        "sha256": "9d47a3a3877ea7eb2273075e544ef8b6cd524dec58456567188af27ee5dd140c"
       },
       {
         "file": "provider-scki-fused-055-tracker-ipcidr.yaml",
@@ -502,8 +502,8 @@
       },
       {
         "file": "provider-scki-fused-056-gfw-domain.yaml",
-        "bytes": 111637,
-        "sha256": "2f26c7d7f298c2c38d64b17864318d044def51dd177b0289abb9338639d8e0a7"
+        "bytes": 111788,
+        "sha256": "bfdc8eb7fbb22ae4ab73caa16d1e485b9929f2577cc0816b736e077cd70003b2"
       },
       {
         "file": "provider-scki-fused-056-gfw-ipcidr-no-resolve.yaml",
@@ -522,8 +522,8 @@
       },
       {
         "file": "provider-scki-fused-058-game-intl-domain.yaml",
-        "bytes": 21141,
-        "sha256": "cc7221a66a4786a5b0bcb3643ec84e8c1270e6560109387b66eaade7293a18a6"
+        "bytes": 21145,
+        "sha256": "9e77d0b29fa74abf395b5d5cab10301421571ec9ee306468f02776a458af7dfd"
       },
       {
         "file": "provider-scki-fused-058-game-intl-ipcidr.yaml",
@@ -557,8 +557,8 @@
       },
       {
         "file": "provider-scki-fused-061-cnmedia-domain.yaml",
-        "bytes": 33055,
-        "sha256": "a03ff4bcf79403ba18d6038393ca6865336dae1ec4b08ef03ba300a328ca50a6"
+        "bytes": 33059,
+        "sha256": "de5c61bc07d5d53d45b7a5a926f18265a9355944e4aa7be18a4855b297d0119f"
       },
       {
         "file": "provider-scki-fused-061-cnmedia-ipcidr.yaml",
@@ -572,13 +572,13 @@
       },
       {
         "file": "provider-scki-fused-062-cn-site-domain.yaml",
-        "bytes": 93732,
-        "sha256": "0b3c40e55140921c96c72b2db3b43bf04dc1a65674f4908b58371769a892f791"
+        "bytes": 107199,
+        "sha256": "b4970f652103f798c4e4d90e223e3145b7b5f0c725c0253c683faeb2d27df374"
       },
       {
         "file": "provider-scki-fused-062-cn-site-ipcidr-no-resolve.yaml",
-        "bytes": 128034,
-        "sha256": "5b622fd510429836c870b42927a0aad7eeee037a9e1203f1b8dd1e4372103012"
+        "bytes": 129667,
+        "sha256": "3b4584ae7ac0f6c26660c66b9a5ce060afebd7618b5263f10beae7d25c8c84f7"
       },
       {
         "file": "provider-scki-fused-063-direct-domain.yaml",
@@ -597,13 +597,13 @@
       },
       {
         "file": "provider-scki-fused-065-intl-site-domain.yaml",
-        "bytes": 237776,
-        "sha256": "1b8cdbf40f1cd3691112fc2247c4f8089aa603fd9f3a9db395e254bc290d2f94"
+        "bytes": 239558,
+        "sha256": "4bdd80b7474f92fa85e91ce9e2060848284ae251e1791f0ea3c6fa34378789ab"
       },
       {
         "file": "provider-scki-fused-065-intl-site-ipcidr-no-resolve.yaml",
-        "bytes": 22403,
-        "sha256": "6fd2cc1c9583399fb56cc2f527f6bb871258c4beee4e96fb68c70ccea1dd786a"
+        "bytes": 21127,
+        "sha256": "a1078961e34c16326b48438929598626239f2dc0e4c1cfab6047da6fb8b52b68"
       },
       {
         "file": "provider-scki-fused-065-intl-site-ipcidr.yaml",
@@ -617,8 +617,8 @@
       },
       {
         "file": "provider-scki-fused-067-netflix-residual.yaml",
-        "bytes": 520,
-        "sha256": "318f540caeb4aef9985071a225373d185d05530196a843c073c5c9bee68e46d9"
+        "bytes": 762,
+        "sha256": "019758b8ede135ebadef48009c51d366ef87ccd7a0c0cc0a26e2c418fc208138"
       }
     ],
     "referenced_files": [

@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-19T00:34:14.853Z",
+  "generated_at": "2026-08-08T05:22:09.432Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
-  "mihomo_bin": "mihomo-v1.19.29.exe",
+  "mihomo_bin": "mihomo-v1.19.29",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
     {
@@ -3178,13 +3178,13 @@
       "source_format": "text",
       "source_url": "https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt",
       "type_counts": {
-        "domain": 136488
+        "domain": 145277
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "sukka-phishing.mrs",
-          "entries": 136488
+          "entries": 145277
         }
       ]
     },
@@ -5958,7 +5958,8 @@
       "source_format": "yaml",
       "source_url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml",
       "type_counts": {
-        "domain": 204,
+        "domain": 205,
+        "PROCESS-NAME": 23,
         "ipcidr": 6,
         "IP-ASN": 3
       },
@@ -5966,7 +5967,7 @@
         {
           "behavior": "domain",
           "file": "vpsdance-ai-coding-domain.mrs",
-          "entries": 198
+          "entries": 199
         },
         {
           "behavior": "ipcidr",
@@ -5977,7 +5978,7 @@
       "residual": {
         "behavior": "classical",
         "file": "vpsdance-ai-coding-classical.yaml",
-        "entries": 9
+        "entries": 32
       }
     },
     {
@@ -6007,7 +6008,7 @@
       "source_format": "yaml",
       "source_url": "https://fastly.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/WeTV/WeTV.yaml",
       "type_counts": {
-        "domain": 8,
+        "domain": 6,
         "ipcidr": 1,
         "PROCESS-NAME": 2
       },
@@ -6015,7 +6016,7 @@
         {
           "behavior": "domain",
           "file": "wetv-domain.mrs",
-          "entries": 8
+          "entries": 6
         },
         {
           "behavior": "ipcidr",
