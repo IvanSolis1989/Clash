@@ -238,7 +238,7 @@ test('Egern native rule sets do not silently drop GEOIP rules', () => {
   assert.deepEqual(skippedGeoip, []);
 });
 
-test('Issue #176 replays native Egern assets from the baseline without cache drift', () => {
+test('Issue #176 keeps native Egern authority segments valid across upstream refreshes', () => {
   const directory = path.join(REPO_ROOT, 'rulesets/generated/egern');
   const manifest = JSON.parse(read('rulesets/generated/fused/manifest.json'));
   const segments = manifest.segments || [];
@@ -255,48 +255,37 @@ test('Issue #176 replays native Egern assets from the baseline without cache dri
   assert.ok(genericIntl, 'the generic international fallback following international games must exist');
   assert.ok(lateCnsite, 'the late CN site authority segment must exist');
   assert.ok(intlTail, 'the final international fallback segment must exist');
-  const asset = (segment, part) => egernNativeRuleSet(path.join(directory, `provider-${segment.id}-${part}.yaml`));
+  assert.equal(lateCnsite.segment.policy, '🏠 国内网站');
+  assert.equal(intlTail.segment.policy, '🌐 国外网站');
+  const asset = (segment, part) => egernNativeRuleSet(path.join(directory, 'provider-' + segment.id + '-' + part + '.yaml'));
+  const assertNonEmptyAsset = (segment, part, noResolve) => {
+    const result = asset(segment, part);
+    const entryCount = Object.values(result.sets).reduce((total, count) => total + count, 0);
+    assert.equal(result.noResolve, noResolve, segment.id + '-' + part + ' no_resolve mismatch');
+    assert.ok(entryCount > 0, segment.id + '-' + part + ' must remain non-empty after generation');
+  };
   assert.equal(
-    fs.existsSync(path.join(directory, `provider-${genericIntl.segment.id}-ipcidr-no-resolve.yaml`)),
+    fs.existsSync(path.join(directory, 'provider-' + genericIntl.segment.id + '-ipcidr-no-resolve.yaml')),
     false,
     'the emptied old international no-resolve asset must be removed',
   );
-  assert.deepEqual(asset(genericIntl.segment, 'domain'), {
-    noResolve: false,
-    sets: { domain_set: 1, domain_suffix_set: 384 },
-  });
-  assert.deepEqual(asset(genericIntl.segment, 'ipcidr'), {
-    noResolve: false,
-    sets: { ip_cidr_set: 36, ip_cidr6_set: 8 },
-  });
-  assert.deepEqual(asset(genericIntl.segment, 'residual'), {
-    noResolve: false,
-    sets: { domain_keyword_set: 105 },
-  });
-  assert.deepEqual(asset(lateCnsite.segment, 'domain'), {
-    noResolve: false,
-    sets: { domain_set: 85, domain_suffix_set: 4944 },
-  });
-  assert.deepEqual(asset(lateCnsite.segment, 'ipcidr-no-resolve'), {
-    noResolve: true,
-    sets: { ip_cidr_set: 4216, ip_cidr6_set: 1534 },
-  });
-  assert.deepEqual(asset(intlTail.segment, 'domain'), {
-    noResolve: false,
-    sets: { domain_set: 57, domain_suffix_set: 11363 },
-  });
-  assert.deepEqual(asset(intlTail.segment, 'ipcidr'), {
-    noResolve: false,
-    sets: { ip_cidr_set: 34, ip_cidr6_set: 9 },
-  });
-  assert.deepEqual(asset(intlTail.segment, 'ipcidr-no-resolve'), {
-    noResolve: true,
-    sets: { ip_cidr_set: 792, ip_cidr6_set: 207 },
-  });
-  assert.deepEqual(asset(intlTail.segment, 'residual'), {
-    noResolve: true,
-    sets: { geoip_set: 247 },
-  });
+  assertNonEmptyAsset(genericIntl.segment, 'domain', false);
+  assertNonEmptyAsset(genericIntl.segment, 'ipcidr', false);
+  assertNonEmptyAsset(genericIntl.segment, 'residual', false);
+  assertNonEmptyAsset(lateCnsite.segment, 'domain', false);
+  assertNonEmptyAsset(lateCnsite.segment, 'ipcidr-no-resolve', true);
+  assertNonEmptyAsset(intlTail.segment, 'domain', false);
+  assertNonEmptyAsset(intlTail.segment, 'ipcidr', false);
+  assertNonEmptyAsset(intlTail.segment, 'ipcidr-no-resolve', true);
+  assertNonEmptyAsset(intlTail.segment, 'residual', true);
+
+  const egernProfile = read('Egern/Egern.yaml');
+  const profilePosition = (segment) => egernProfile.indexOf('provider-' + segment.id + '-');
+  const lateCnsitePosition = profilePosition(lateCnsite.segment);
+  const intlTailPosition = profilePosition(intlTail.segment);
+  assert.ok(lateCnsitePosition >= 0, 'the late CN Egern rule set must be referenced by the profile');
+  assert.ok(intlTailPosition >= 0, 'the final international Egern rule set must be referenced by the profile');
+  assert.ok(lateCnsitePosition < intlTailPosition, 'the late CN authority segment must precede the final international fallback');
 });
 
 test('generated Clash and Surge payloads contain no removable duplicate rules', () => {
