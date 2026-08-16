@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-08T11:24:16.581Z",
+  "generated_at": "2026-08-16T20:44:14.924Z",
   "authority": "rulesets/source/routing-graph.js after Mihomo MRS normalization",
   "baseline_version": "v6.0.10",
   "asset_revision": "v6.0.10",
@@ -11,17 +11,17 @@
   "segment_count": 69,
   "generated_mrs_files": 92,
   "generated_srs_files": 66,
-  "sing_box_binary": "sing-box.exe",
+  "sing_box_binary": "sing-box",
   "remote_asset_max_bytes": 18874368,
   "optimization": {
-    "input": 809674,
-    "output": 609909,
-    "exactDuplicates": 102884,
-    "domainSubsumed": 84277,
-    "cidrSubsumed": 44,
+    "input": 800639,
+    "output": 602512,
+    "exactDuplicates": 102888,
+    "domainSubsumed": 82579,
+    "cidrSubsumed": 45,
     "normalized": 0,
-    "globalExactDuplicates": 12560,
-    "removed": 199765
+    "globalExactDuplicates": 12615,
+    "removed": 198127
   },
   "pruned_empty_segments": [
     "scki-fused-070-cn-site"
@@ -697,25 +697,25 @@
         }
       },
       "counts": {
-        "domain": 445748,
+        "domain": 438615,
         "ipcidr": 539,
         "ipcidr_no_resolve": 0,
         "residual": 307
       },
       "optimization": {
-        "input": 523340,
-        "output": 446594,
+        "input": 514506,
+        "output": 439461,
         "exactDuplicates": 1109,
-        "domainSubsumed": 75623,
+        "domainSubsumed": 73922,
         "cidrSubsumed": 4,
         "normalized": 0,
-        "removed": 76746,
+        "removed": 75045,
         "buckets": {
           "domain": {
-            "input": 522374,
-            "output": 445748,
+            "input": 513540,
+            "output": 438615,
             "exactDuplicates": 993,
-            "domainSubsumed": 75623,
+            "domainSubsumed": 73922,
             "cidrSubsumed": 0,
             "normalized": 0,
             "globalExactDuplicates": 10
@@ -748,8 +748,8 @@
         "globalExactDuplicates": 10
       },
       "target_counts": {
-        "mobile": 430850,
-        "sing_box": 430850
+        "mobile": 423492,
+        "sing_box": 423492
       },
       "target_ip_counts": {
         "mobile": 539,
@@ -757,19 +757,19 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 446594,
-          "output": 430850,
+          "input": 439461,
+          "output": 423492,
           "exactDuplicates": 0,
-          "domainSubsumed": 15744,
+          "domainSubsumed": 15969,
           "cidrSubsumed": 0,
           "normalized": 0,
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 446594,
-          "output": 430850,
+          "input": 439461,
+          "output": 423492,
           "exactDuplicates": 0,
-          "domainSubsumed": 15744,
+          "domainSubsumed": 15969,
           "cidrSubsumed": 0,
           "normalized": 0,
           "globalExactDuplicates": 0
@@ -1999,11 +1999,11 @@
       },
       "target_counts": {
         "mobile": 62,
-        "sing_box": 3576
+        "sing_box": 4011
       },
       "target_ip_counts": {
         "mobile": 4,
-        "sing_box": 3518
+        "sing_box": 3953
       },
       "target_optimization": {
         "mobile": {
@@ -2016,11 +2016,11 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 3624,
-          "output": 3576,
+          "input": 4064,
+          "output": 4011,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
-          "cidrSubsumed": 48,
+          "cidrSubsumed": 53,
           "normalized": 0,
           "globalExactDuplicates": 0
         }
@@ -2574,12 +2574,12 @@
       "counts": {
         "domain": 786,
         "ipcidr": 0,
-        "ipcidr_no_resolve": 7809,
+        "ipcidr_no_resolve": 7902,
         "residual": 0
       },
       "optimization": {
-        "input": 8880,
-        "output": 8595,
+        "input": 8973,
+        "output": 8688,
         "exactDuplicates": 0,
         "domainSubsumed": 225,
         "cidrSubsumed": 0,
@@ -2604,8 +2604,8 @@
             "normalized": 0
           },
           "ipcidrNoResolve": {
-            "input": 7809,
-            "output": 7809,
+            "input": 7902,
+            "output": 7902,
             "exactDuplicates": 0,
             "domainSubsumed": 0,
             "cidrSubsumed": 0,
@@ -2623,17 +2623,17 @@
         "globalExactDuplicates": 60
       },
       "target_counts": {
-        "mobile": 8595,
-        "sing_box": 8595
+        "mobile": 8688,
+        "sing_box": 8688
       },
       "target_ip_counts": {
-        "mobile": 7809,
-        "sing_box": 7809
+        "mobile": 7902,
+        "sing_box": 7902
       },
       "target_optimization": {
         "mobile": {
-          "input": 8595,
-          "output": 8595,
+          "input": 8688,
+          "output": 8688,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -2641,8 +2641,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 8595,
-          "output": 8595,
+          "input": 8688,
+          "output": 8688,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -3087,14 +3087,14 @@
         }
       },
       "counts": {
-        "domain": 530,
+        "domain": 541,
         "ipcidr": 0,
         "ipcidr_no_resolve": 0,
         "residual": 8
       },
       "optimization": {
-        "input": 555,
-        "output": 538,
+        "input": 566,
+        "output": 549,
         "exactDuplicates": 15,
         "domainSubsumed": 1,
         "cidrSubsumed": 0,
@@ -3102,8 +3102,8 @@
         "removed": 17,
         "buckets": {
           "domain": {
-            "input": 540,
-            "output": 530,
+            "input": 551,
+            "output": 541,
             "exactDuplicates": 8,
             "domainSubsumed": 1,
             "cidrSubsumed": 0,
@@ -3138,8 +3138,8 @@
         "globalExactDuplicates": 1
       },
       "target_counts": {
-        "mobile": 365,
-        "sing_box": 365
+        "mobile": 376,
+        "sing_box": 376
       },
       "target_ip_counts": {
         "mobile": 0,
@@ -3147,8 +3147,8 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 538,
-          "output": 365,
+          "input": 549,
+          "output": 376,
           "exactDuplicates": 0,
           "domainSubsumed": 173,
           "cidrSubsumed": 0,
@@ -3156,8 +3156,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 538,
-          "output": 365,
+          "input": 549,
+          "output": 376,
           "exactDuplicates": 0,
           "domainSubsumed": 173,
           "cidrSubsumed": 0,
@@ -3738,28 +3738,28 @@
         }
       },
       "counts": {
-        "domain": 644,
+        "domain": 645,
         "ipcidr": 22,
-        "ipcidr_no_resolve": 224,
+        "ipcidr_no_resolve": 226,
         "residual": 4
       },
       "optimization": {
-        "input": 913,
-        "output": 894,
+        "input": 917,
+        "output": 897,
         "exactDuplicates": 6,
         "domainSubsumed": 0,
         "cidrSubsumed": 0,
         "normalized": 0,
-        "removed": 19,
+        "removed": 20,
         "buckets": {
           "domain": {
-            "input": 659,
-            "output": 644,
+            "input": 661,
+            "output": 645,
             "exactDuplicates": 3,
             "domainSubsumed": 0,
             "cidrSubsumed": 0,
             "normalized": 0,
-            "globalExactDuplicates": 12
+            "globalExactDuplicates": 13
           },
           "ipcidr": {
             "input": 23,
@@ -3771,8 +3771,8 @@
             "globalExactDuplicates": 1
           },
           "ipcidrNoResolve": {
-            "input": 224,
-            "output": 224,
+            "input": 226,
+            "output": 226,
             "exactDuplicates": 0,
             "domainSubsumed": 0,
             "cidrSubsumed": 0,
@@ -3787,20 +3787,20 @@
             "normalized": 0
           }
         },
-        "globalExactDuplicates": 13
+        "globalExactDuplicates": 14
       },
       "target_counts": {
-        "mobile": 679,
-        "sing_box": 674
+        "mobile": 682,
+        "sing_box": 677
       },
       "target_ip_counts": {
-        "mobile": 247,
-        "sing_box": 242
+        "mobile": 249,
+        "sing_box": 244
       },
       "target_optimization": {
         "mobile": {
-          "input": 894,
-          "output": 679,
+          "input": 897,
+          "output": 682,
           "exactDuplicates": 0,
           "domainSubsumed": 215,
           "cidrSubsumed": 0,
@@ -3808,11 +3808,11 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 1461,
-          "output": 674,
+          "input": 1465,
+          "output": 677,
           "exactDuplicates": 34,
           "domainSubsumed": 215,
-          "cidrSubsumed": 538,
+          "cidrSubsumed": 539,
           "normalized": 0,
           "globalExactDuplicates": 0
         }
@@ -4742,17 +4742,17 @@
       "counts": {
         "domain": 24,
         "ipcidr": 0,
-        "ipcidr_no_resolve": 943,
+        "ipcidr_no_resolve": 944,
         "residual": 0
       },
       "optimization": {
-        "input": 999,
-        "output": 967,
+        "input": 1001,
+        "output": 968,
         "exactDuplicates": 10,
         "domainSubsumed": 0,
-        "cidrSubsumed": 22,
+        "cidrSubsumed": 23,
         "normalized": 0,
-        "removed": 32,
+        "removed": 33,
         "buckets": {
           "domain": {
             "input": 24,
@@ -4771,11 +4771,11 @@
             "normalized": 0
           },
           "ipcidrNoResolve": {
-            "input": 975,
-            "output": 943,
+            "input": 977,
+            "output": 944,
             "exactDuplicates": 10,
             "domainSubsumed": 0,
-            "cidrSubsumed": 22,
+            "cidrSubsumed": 23,
             "normalized": 0
           },
           "residual": {
@@ -4790,17 +4790,17 @@
         "globalExactDuplicates": 0
       },
       "target_counts": {
-        "mobile": 967,
-        "sing_box": 967
+        "mobile": 968,
+        "sing_box": 968
       },
       "target_ip_counts": {
-        "mobile": 943,
-        "sing_box": 943
+        "mobile": 944,
+        "sing_box": 944
       },
       "target_optimization": {
         "mobile": {
-          "input": 967,
-          "output": 967,
+          "input": 968,
+          "output": 968,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -4808,8 +4808,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 967,
-          "output": 967,
+          "input": 968,
+          "output": 968,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -6428,25 +6428,25 @@
         }
       },
       "counts": {
-        "domain": 784,
+        "domain": 794,
         "ipcidr": 18,
         "ipcidr_no_resolve": 0,
         "residual": 5
       },
       "optimization": {
-        "input": 1133,
-        "output": 807,
+        "input": 1144,
+        "output": 817,
         "exactDuplicates": 186,
-        "domainSubsumed": 37,
+        "domainSubsumed": 38,
         "cidrSubsumed": 0,
         "normalized": 0,
-        "removed": 326,
+        "removed": 327,
         "buckets": {
           "domain": {
-            "input": 1108,
-            "output": 784,
+            "input": 1119,
+            "output": 794,
             "exactDuplicates": 184,
-            "domainSubsumed": 37,
+            "domainSubsumed": 38,
             "cidrSubsumed": 0,
             "normalized": 0,
             "globalExactDuplicates": 103
@@ -6479,8 +6479,8 @@
         "globalExactDuplicates": 103
       },
       "target_counts": {
-        "mobile": 807,
-        "sing_box": 807
+        "mobile": 817,
+        "sing_box": 817
       },
       "target_ip_counts": {
         "mobile": 18,
@@ -6488,8 +6488,8 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 807,
-          "output": 807,
+          "input": 817,
+          "output": 817,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -6497,8 +6497,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 807,
-          "output": 807,
+          "input": 817,
+          "output": 817,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -7096,28 +7096,28 @@
         }
       },
       "counts": {
-        "domain": 5758,
+        "domain": 5761,
         "ipcidr": 0,
         "ipcidr_no_resolve": 43,
         "residual": 16
       },
       "optimization": {
-        "input": 15237,
-        "output": 5817,
-        "exactDuplicates": 7800,
+        "input": 15247,
+        "output": 5820,
+        "exactDuplicates": 7805,
         "domainSubsumed": 810,
         "cidrSubsumed": 1,
         "normalized": 0,
-        "removed": 9420,
+        "removed": 9427,
         "buckets": {
           "domain": {
-            "input": 15133,
-            "output": 5758,
-            "exactDuplicates": 7775,
+            "input": 15143,
+            "output": 5761,
+            "exactDuplicates": 7780,
             "domainSubsumed": 810,
             "cidrSubsumed": 0,
             "normalized": 0,
-            "globalExactDuplicates": 790
+            "globalExactDuplicates": 792
           },
           "ipcidr": {
             "input": 0,
@@ -7146,11 +7146,11 @@
             "globalExactDuplicates": 6
           }
         },
-        "globalExactDuplicates": 809
+        "globalExactDuplicates": 811
       },
       "target_counts": {
-        "mobile": 5736,
-        "sing_box": 5699
+        "mobile": 5739,
+        "sing_box": 5702
       },
       "target_ip_counts": {
         "mobile": 43,
@@ -7158,8 +7158,8 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 5817,
-          "output": 5736,
+          "input": 5820,
+          "output": 5739,
           "exactDuplicates": 0,
           "domainSubsumed": 81,
           "cidrSubsumed": 0,
@@ -7167,8 +7167,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 5817,
-          "output": 5699,
+          "input": 5820,
+          "output": 5702,
           "exactDuplicates": 0,
           "domainSubsumed": 81,
           "cidrSubsumed": 0,
@@ -7356,14 +7356,14 @@
         }
       },
       "counts": {
-        "domain": 1137,
+        "domain": 1167,
         "ipcidr": 46,
         "ipcidr_no_resolve": 0,
         "residual": 3
       },
       "optimization": {
-        "input": 1800,
-        "output": 1186,
+        "input": 1830,
+        "output": 1216,
         "exactDuplicates": 471,
         "domainSubsumed": 48,
         "cidrSubsumed": 0,
@@ -7371,8 +7371,8 @@
         "removed": 614,
         "buckets": {
           "domain": {
-            "input": 1748,
-            "output": 1137,
+            "input": 1778,
+            "output": 1167,
             "exactDuplicates": 468,
             "domainSubsumed": 48,
             "cidrSubsumed": 0,
@@ -7407,8 +7407,8 @@
         "globalExactDuplicates": 95
       },
       "target_counts": {
-        "mobile": 1183,
-        "sing_box": 1183
+        "mobile": 1213,
+        "sing_box": 1213
       },
       "target_ip_counts": {
         "mobile": 46,
@@ -7416,8 +7416,8 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 1186,
-          "output": 1183,
+          "input": 1216,
+          "output": 1213,
           "exactDuplicates": 0,
           "domainSubsumed": 3,
           "cidrSubsumed": 0,
@@ -7425,8 +7425,8 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 1186,
-          "output": 1183,
+          "input": 1216,
+          "output": 1213,
           "exactDuplicates": 0,
           "domainSubsumed": 3,
           "cidrSubsumed": 0,
@@ -7882,28 +7882,28 @@
         }
       },
       "counts": {
-        "domain": 115328,
+        "domain": 115333,
         "ipcidr": 0,
-        "ipcidr_no_resolve": 5812,
+        "ipcidr_no_resolve": 5378,
         "residual": 0
       },
       "optimization": {
-        "input": 215103,
-        "output": 121140,
-        "exactDuplicates": 92137,
+        "input": 214680,
+        "output": 120711,
+        "exactDuplicates": 92136,
         "domainSubsumed": 5,
         "cidrSubsumed": 0,
         "normalized": 0,
-        "removed": 93963,
+        "removed": 93969,
         "buckets": {
           "domain": {
-            "input": 209289,
-            "output": 115328,
-            "exactDuplicates": 92137,
+            "input": 209300,
+            "output": 115333,
+            "exactDuplicates": 92136,
             "domainSubsumed": 5,
             "cidrSubsumed": 0,
             "normalized": 0,
-            "globalExactDuplicates": 1819
+            "globalExactDuplicates": 1826
           },
           "ipcidr": {
             "input": 0,
@@ -7914,8 +7914,8 @@
             "normalized": 0
           },
           "ipcidrNoResolve": {
-            "input": 5814,
-            "output": 5812,
+            "input": 5380,
+            "output": 5378,
             "exactDuplicates": 0,
             "domainSubsumed": 0,
             "cidrSubsumed": 0,
@@ -7931,20 +7931,20 @@
             "normalized": 0
           }
         },
-        "globalExactDuplicates": 1821
+        "globalExactDuplicates": 1828
       },
       "target_counts": {
-        "mobile": 121140,
-        "sing_box": 121133
+        "mobile": 120711,
+        "sing_box": 120705
       },
       "target_ip_counts": {
-        "mobile": 5812,
-        "sing_box": 5805
+        "mobile": 5378,
+        "sing_box": 5372
       },
       "target_optimization": {
         "mobile": {
-          "input": 121140,
-          "output": 121140,
+          "input": 120711,
+          "output": 120711,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
@@ -7952,13 +7952,13 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 121140,
-          "output": 121133,
+          "input": 120711,
+          "output": 120705,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 7
+          "globalExactDuplicates": 6
         }
       }
     },
@@ -8202,13 +8202,13 @@
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 5821,
+          "input": 5387,
           "output": 7,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 5814
+          "globalExactDuplicates": 5380
         }
       }
     },
@@ -8275,28 +8275,28 @@
         }
       },
       "counts": {
-        "domain": 11513,
+        "domain": 11514,
         "ipcidr": 43,
-        "ipcidr_no_resolve": 943,
+        "ipcidr_no_resolve": 956,
         "residual": 248
       },
       "optimization": {
-        "input": 28590,
-        "output": 12747,
+        "input": 28651,
+        "output": 12761,
         "exactDuplicates": 110,
-        "domainSubsumed": 6853,
+        "domainSubsumed": 6855,
         "cidrSubsumed": 0,
         "normalized": 0,
-        "removed": 15843,
+        "removed": 15890,
         "buckets": {
           "domain": {
-            "input": 27304,
-            "output": 11513,
+            "input": 27352,
+            "output": 11514,
             "exactDuplicates": 107,
-            "domainSubsumed": 6853,
+            "domainSubsumed": 6855,
             "cidrSubsumed": 0,
             "normalized": 0,
-            "globalExactDuplicates": 8831
+            "globalExactDuplicates": 8876
           },
           "ipcidr": {
             "input": 43,
@@ -8307,8 +8307,8 @@
             "normalized": 0
           },
           "ipcidrNoResolve": {
-            "input": 992,
-            "output": 943,
+            "input": 1005,
+            "output": 956,
             "exactDuplicates": 0,
             "domainSubsumed": 0,
             "cidrSubsumed": 0,
@@ -8324,34 +8324,34 @@
             "normalized": 0
           }
         },
-        "globalExactDuplicates": 8880
+        "globalExactDuplicates": 8925
       },
       "target_counts": {
-        "mobile": 12746,
-        "sing_box": 999140
+        "mobile": 12760,
+        "sing_box": 995190
       },
       "target_ip_counts": {
-        "mobile": 1233,
-        "sing_box": 987627
+        "mobile": 1246,
+        "sing_box": 983676
       },
       "target_optimization": {
         "mobile": {
-          "input": 13433,
-          "output": 12746,
-          "exactDuplicates": 687,
+          "input": 13460,
+          "output": 12760,
+          "exactDuplicates": 700,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
           "globalExactDuplicates": 0
         },
         "sing_box": {
-          "input": 1095541,
-          "output": 999140,
-          "exactDuplicates": 1033,
+          "input": 1091094,
+          "output": 995190,
+          "exactDuplicates": 1053,
           "domainSubsumed": 0,
-          "cidrSubsumed": 93751,
+          "cidrSubsumed": 93306,
           "normalized": 0,
-          "globalExactDuplicates": 1617
+          "globalExactDuplicates": 1545
         }
       }
     },
@@ -8538,31 +8538,31 @@
         "globalExactDuplicates": 0
       },
       "target_counts": {
-        "mobile": 22,
-        "sing_box": 16
+        "mobile": 23,
+        "sing_box": 17
       },
       "target_ip_counts": {
-        "mobile": 22,
-        "sing_box": 16
+        "mobile": 23,
+        "sing_box": 17
       },
       "target_optimization": {
         "mobile": {
-          "input": 112,
-          "output": 22,
+          "input": 114,
+          "output": 23,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 90
+          "globalExactDuplicates": 91
         },
         "sing_box": {
-          "input": 112,
-          "output": 16,
+          "input": 114,
+          "output": 17,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 96
+          "globalExactDuplicates": 97
         }
       }
     },
@@ -8637,22 +8637,22 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 140,
+          "input": 142,
           "output": 0,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 140
+          "globalExactDuplicates": 142
         },
         "sing_box": {
-          "input": 140,
+          "input": 142,
           "output": 0,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 140
+          "globalExactDuplicates": 142
         }
       }
     },
@@ -8727,22 +8727,22 @@
       },
       "target_optimization": {
         "mobile": {
-          "input": 7809,
+          "input": 7902,
           "output": 0,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 7809
+          "globalExactDuplicates": 7902
         },
         "sing_box": {
-          "input": 7809,
+          "input": 7902,
           "output": 0,
           "exactDuplicates": 0,
           "domainSubsumed": 0,
           "cidrSubsumed": 0,
           "normalized": 0,
-          "globalExactDuplicates": 7809
+          "globalExactDuplicates": 7902
         }
       }
     }

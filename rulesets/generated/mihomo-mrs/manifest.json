@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-08-08T05:22:09.432Z",
+  "generated_at": "2026-08-16T20:42:33.968Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
-  "mihomo_bin": "mihomo-v1.19.29",
+  "mihomo_bin": "mihomo-v1.19.30",
   "output_dir": "rulesets/generated/mihomo-mrs",
   "converted": [
     {
@@ -2794,13 +2794,13 @@
       "source_format": "text",
       "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-direct.list",
       "type_counts": {
-        "domain": 17
+        "domain": 19
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "scki-adfp-direct.mrs",
-          "entries": 17
+          "entries": 19
         }
       ]
     },
@@ -3178,13 +3178,13 @@
       "source_format": "text",
       "source_url": "https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt",
       "type_counts": {
-        "domain": 145277
+        "domain": 146444
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "sukka-phishing.mrs",
-          "entries": 145277
+          "entries": 146444
         }
       ]
     },
@@ -3370,13 +3370,13 @@
       "source_format": "yaml",
       "source_url": "https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TigerFintech/TigerFintech.yaml",
       "type_counts": {
-        "domain": 8
+        "domain": 19
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "tigerfintech.mrs",
-          "entries": 8
+          "entries": 19
         }
       ]
     },

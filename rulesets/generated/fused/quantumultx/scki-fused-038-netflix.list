@@ -36,7 +36,8 @@ ip-cidr, 208.75.76.0/22, no-resolve
 ip6-cidr, 2607:fb10::/32, no-resolve
 ip6-cidr, 2620:10c:7000::/44, no-resolve
 ip6-cidr, 2a00:86c0::/38, no-resolve
-ip6-cidr, 2a00:86c0:404::/46, no-resolve
+ip6-cidr, 2a00:86c0:405::/48, no-resolve
+ip6-cidr, 2a00:86c0:406::/47, no-resolve
 ip6-cidr, 2a00:86c0:408::/45, no-resolve
 ip6-cidr, 2a00:86c0:410::/44, no-resolve
 ip6-cidr, 2a00:86c0:422::/47, no-resolve

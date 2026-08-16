@@ -36,7 +36,8 @@ IP-CIDR,208.75.76.0/22,no-resolve
 IP-CIDR6,2607:fb10::/32,no-resolve
 IP-CIDR6,2620:10c:7000::/44,no-resolve
 IP-CIDR6,2a00:86c0::/38,no-resolve
-IP-CIDR6,2a00:86c0:404::/46,no-resolve
+IP-CIDR6,2a00:86c0:405::/48,no-resolve
+IP-CIDR6,2a00:86c0:406::/47,no-resolve
 IP-CIDR6,2a00:86c0:408::/45,no-resolve
 IP-CIDR6,2a00:86c0:410::/44,no-resolve
 IP-CIDR6,2a00:86c0:422::/47,no-resolve
