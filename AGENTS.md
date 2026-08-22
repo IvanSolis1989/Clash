@@ -144,7 +144,7 @@ node tools/generate-egern-from-cmfa.js
 2. **融合规则集编译链路**：面向所有支持远程规则集或原生规则集的产物。
    - 权威输入：`rulesets/source/routing-graph.js` 的 Mihomo-normalized graph，因此读取的是已经过 `.mrs` 归一化但尚未融合的规则顺序。
    - 编译脚本：`node tools/build-fused-rule-sets.js`。
-   - 输出目录：`rulesets/generated/fused/`；当前验收统计为源 `474 providers / 931 rules` → `67` 个非空策略顺序段 → `113` 个 Mihomo 融合 provider / `130` 条主规则 / `17` 条必要内联规则，移动端 `63` 个文本规则集，sing-box / Passwall `64` 个 SRS，`unresolved=0`。
+   - 输出目录：`rulesets/generated/fused/`；当前验收统计为源 `514 providers / 973 rules` → `72` 个策略顺序段（其中 `69` 个非空原生资产）→ `132` 个 Mihomo 融合 provider / `151` 条主规则 / `19` 条必要内联规则，移动端 `69` 个文本规则集，sing-box / Passwall `69` 个 SRS，`unresolved=0`。
    - 支持 `.mrs` 的 Mihomo 产物优先引用 `*-domain.mrs`、`*-ipcidr.mrs`、`*-ipcidr-no-resolve.mrs`；确实不能转 `.mrs` 的端口、进程、逻辑组合、GEOIP 等写入 `*-residual.yaml`。
    - 不支持 `.mrs` 的产物使用各自性能最好的原生格式：Shadowrocket / Surge / Loon / Quantumult X 使用平台文本规则集，Egern 使用原生 YAML rule_set，SingBox 使用 `.srs`，v2rayN Xray 展平成 RuleObject，Passwall / Passwall2 使用 `rule-set:remote` 引用 fused `.srs`。
 3. **派生产物生成链路**：
@@ -786,19 +786,19 @@ PR 提交后会自动运行两个验证工作流：
 
 ### 9.2 AI Issue 自动回复
 
-仓库配置了 DeepSeek AI 自动回复器（`.github/workflows/ai-responder.yml`）：
+仓库配置了 Xiaomi MiMo AI 自动回复器（`.github/workflows/ai-responder.yml`）：
 
 - **触发方式**：
   - Issue 打上 `question`/`bug`/`enhancement`/`documentation` 标签时自动触发
-  - 评论区输入 `/ai-help` 可升级为深度分析（v4-pro 模型）
+  - 评论区输入 `/ai-help` 可升级为深度分析（`mimo-v2.5-pro` 模型）
 - **分层调用策略**：
 
 | Issue 类别 | 首次触发 | /ai-help 追问 | 代码修改权限 |
 | --- | --- | --- | --- |
-| question/faq/help wanted | v4-flash 思考 | v4-pro 思考 | ❌ |
-| bug | v4-flash 思考 | v4-pro 思考 | ✅ |
-| enhancement | v4-flash 思考 | v4-pro 思考 | ✅ |
-| documentation | v4-flash 思考 | v4-flash 思考 | ✅ (文档) |
+| question/faq/help wanted | `mimo-v2.5` 思考 | `mimo-v2.5-pro` 思考 | ❌ |
+| bug | `mimo-v2.5` 思考 | `mimo-v2.5-pro` 思考 | ✅ |
+| enhancement | `mimo-v2.5` 思考 | `mimo-v2.5-pro` 思考 | ✅ |
+| documentation | `mimo-v2.5` 思考 | `mimo-v2.5-pro` 思考 | ✅ (文档) |
 
 - **代码修改模式**：AI 输出结构化响应（`<!-- AI_REPLY -->` + `<!-- AI_PATCH -->` + `<!-- AI_PR -->`），workflow 自动提取补丁、创建分支、提交并开 PR
-- **所需 Secrets**：`DEEPSEEK_API_KEY`（必填）、`TAVILY_API_KEY`（可选，联网搜索）
+- **所需 Secrets / Variables**：`MIMO_API_KEY`（必填）、`TAVILY_API_KEY`（可选，联网搜索）；可选 Actions Variable `MIMO_BASE_URL` 覆盖标准端点 `https://api.xiaomimimo.com/v1`。Token Plan 的 key 不能与标准套餐混用，`MIMO_BASE_URL` 应填写控制台提供的完整 base URL。

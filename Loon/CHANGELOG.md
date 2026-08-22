@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.11-Loon.2 (2026-08-22)
+
+- ROUTING：同步 69 个融合 Remote Rule；Gemini 与 Accademia Gemini 改走 `🔍 Google 服务`，szkane AI 段保持原位。
+
 ## v6.0.10-Loon.2 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：同步首段精确直连融合规则；两个网易游戏服务主机在 anti-AD 和国内游戏宽规则之前命中 `DIRECT`。

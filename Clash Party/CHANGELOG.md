@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.11-dns.4 / v6.0.11-normal.5 (2026-08-22)
+
+- ROUTING：仅 `gemini` 与 `acc-gemini` 融合段改为 `🔍 Google 服务`；`szkane-ai` 仍为 `🤖 AI 服务`，且保持原有相对顺序。
+- VERIFY：Gemini、Generative Language、Google APIs 与 DeepMind 首命中固定为 Google；`cerebras.ai` 保持 AI，`static.doubleclick.net` 保持广告优先。
+
 ## v6.0.10-dns.4 / v6.0.10-normal.5 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：两个网易游戏服务主机加入首段 `scki-adfp-direct` 融合规则集，精确 `DIRECT` 优先于 anti-AD 与 `netease.com` 国内游戏宽规则。

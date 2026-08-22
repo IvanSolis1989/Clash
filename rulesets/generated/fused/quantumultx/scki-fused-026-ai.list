@@ -1,0 +1,84 @@
+host-suffix, ecs.office.com
+host-suffix, designer.microsoft.com
+host-suffix, designerapp.osi.office.net
+host-suffix, prod.do.dsp.mp.microsoft.com
+host, browser.pipe.aria.microsoft.com
+host, aws-language-servers.us-east-1.amazonaws.com
+host, aws-toolkit-language-servers.amazonaws.com
+host, codewhisperer.us-east-1.amazonaws.com
+host, cognito-identity.us-east-1.amazonaws.com
+host, idetoolkits-hostedfiles.amazonaws.com
+host, idetoolkits.amazonwebservices.com
+host, q-developer-integration.us-east-1.api.aws
+host-suffix, aws.dev
+host-suffix, awsapps.com
+host-suffix, awsstatic.com
+host-suffix, console.aws.a2z.com
+host-suffix, q.eu-central-1.amazonaws.com
+host-suffix, q.us-east-1.amazonaws.com
+host-suffix, sso.amazonaws.com
+host-suffix, antspace.dev
+host-suffix, clau.de
+host-suffix, modelcontextprotocol.com
+host-suffix, modelcontextprotocol.io
+host-suffix, modelcontextprotocol.net
+host-suffix, modelcontextprotocol.org
+host, cdn.growthbook.io
+host-suffix, interface.feedback
+host-suffix, lcicat.org
+host-suffix, lcicollections.org
+host-suffix, mcpservertest.online
+host-suffix, muthos.com
+host-suffix, sillylittleguy.org
+host-suffix, augmentcode.com
+host-suffix, bolt.new
+host-suffix, bytegate-sg.byteintlapi.com
+host-suffix, coze.com
+host-suffix, tron-sg.bytelemon.com
+host-suffix, coderabbit.ai
+host-suffix, continue.dev
+host-suffix, crewai.com
+host-suffix, cursor-cdn.com
+host-suffix, cursorapi.com
+host-suffix, devin.ai
+host-suffix, dify.ai
+host-suffix, factory.ai
+host-suffix, grazie.ai
+host-suffix, grazie.aws.intellij.net
+host-suffix, jetbrains.ai
+host-suffix, kiro.dev
+host-suffix, langchain.com
+host-suffix, lovable.dev
+host-suffix, manus.im
+host-suffix, manuscdn.com
+host-suffix, ai.com
+host-suffix, api.statsig.com
+host-suffix, repl.co
+host-suffix, repl.it
+host-suffix, replit.app
+host-suffix, replit.com
+host-suffix, replit.dev
+host-suffix, ampcode.com
+host-suffix, ampworkers.com
+host-suffix, cody.dev
+host-suffix, sourcegraph.com
+host-suffix, tabnine.com
+host-suffix, v0.app
+host-suffix, codeium.com
+host-suffix, codeiumdata.com
+host-suffix, windsurf.build
+host-suffix, windsurf.com
+host-suffix, zed.dev
+ip-cidr, 160.79.104.0/21, no-resolve
+ip6-cidr, 2607:6bc0::/32, no-resolve
+ip-cidr, 199.47.142.0/23, no-resolve
+ip-cidr, 24.199.123.28/32, no-resolve
+ip-cidr, 64.23.132.171/32, no-resolve
+ip6-cidr, 2604:f20::/32, no-resolve
+host-keyword, datadog
+host-keyword, sentry
+host-keyword, sift
+host-keyword, chatgpt-async-webps-prod
+ip-asn, 399358, no-resolve
+ip-asn, 14061, no-resolve
+ip-asn, 401518, no-resolve

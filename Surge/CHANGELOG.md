@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.11-Surge.3 (2026-08-22)
+
+- ROUTING：同步 69 个融合远程 RULE-SET；Gemini 与 Accademia Gemini 首命中改走 `🔍 Google 服务`，其余 AI 策略不变。
+
 ## v6.0.10-Surge.3 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：同步首段精确直连融合规则；两个网易游戏服务主机在 anti-AD 和国内游戏宽规则之前命中 `DIRECT`。

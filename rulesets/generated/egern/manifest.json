@@ -1,18 +1,18 @@
 {
   "schema_version": 1,
   "generator": "tools/generate-egern-from-cmfa.js",
-  "asset_revision": "v6.0.10",
+  "asset_revision": "v6.0.11",
   "source": {
-    "cmfa_sha256": "7102c8e84ee391c67fd2c004566061f581a155636fae230e371ea40024b093e8",
-    "routing_graph_sha256": "f173c093b0ab1129d025a9bd77fdba47118c0aed3e993f762721b60d09f7944e",
-    "cmfa_provider_count": 127,
-    "cmfa_rule_count": 146
+    "cmfa_sha256": "aaad4fe6dbafb047b2ccc621d6c6e2cf8c94fec65bafe991482f98f0a4442bb2",
+    "routing_graph_sha256": "c8c6fdaa532b2282fd0a326d4faa3e41a4b90a9e93f4f842f0529ea3c9b853b8",
+    "cmfa_provider_count": 132,
+    "cmfa_rule_count": 151
   },
   "rendered": {
-    "profile_sha256": "6e1993f536d5703c0576dd8729afc01f15d7ebab515cd3d9268aad58cb81b3e0",
-    "rule_count": 132,
-    "rule_set_ref_count": 115,
-    "native_rule_set_count": 120,
+    "profile_sha256": "e07fe53155fc461cef589e176b8f4d43e494a6eb316dc4a8d777c9c55b22ed14",
+    "rule_count": 137,
+    "rule_set_ref_count": 120,
+    "native_rule_set_count": 125,
     "source_entry_count": 602366,
     "dedup_removed": 123921,
     "global_exact_duplicates_removed": 123371,
@@ -122,503 +122,528 @@
       },
       {
         "file": "provider-scki-fused-014-ai-domain.yaml",
-        "bytes": 1145,
-        "sha256": "6c71baee28a41332121b43353cda5f87dad315c9bec772f3cf43332650be6dde"
+        "bytes": 894,
+        "sha256": "7c6329ffe9b1487699fbc9b9408f319fd8dc25deeec92e755d1c7fd1d5d669e8"
       },
       {
-        "file": "provider-scki-fused-014-ai-residual.yaml",
-        "bytes": 324,
-        "sha256": "6bd8d1f77d606655c33370c213269b742b5bf0213d37adbb2c8be223322ccb4e"
+        "file": "provider-scki-fused-015-google-domain.yaml",
+        "bytes": 529,
+        "sha256": "89eaaeb2c59087617e0be04a852e95a223007279796fc66d4d91f30e9501e213"
       },
       {
-        "file": "provider-scki-fused-015-work-domain.yaml",
+        "file": "provider-scki-fused-015-google-residual.yaml",
+        "bytes": 332,
+        "sha256": "168a1db96e2179c86cb3121f74786acc8dec3eb62aaa6907dbe7324630780d04"
+      },
+      {
+        "file": "provider-scki-fused-016-work-domain.yaml",
         "bytes": 281,
-        "sha256": "c409ffc69c0bd7e31831a97b234032f87969adc990827be2f0dd0db267313405"
+        "sha256": "b265a78dd25f54843beda63cc8a85af9339a79f8c2dfe73bffffaa8dfa069b40"
       },
       {
-        "file": "provider-scki-fused-016-ai-domain.yaml",
+        "file": "provider-scki-fused-017-ai-domain.yaml",
         "bytes": 1520,
-        "sha256": "c767a093904d8684caf8b446105959e0a4410b7037e81016eeaf1dd57532d3c6"
+        "sha256": "c9da024e185f95ca0b071e439cb9891f24e5dcf27ac2a8ead1797176c3ed465a"
       },
       {
-        "file": "provider-scki-fused-016-ai-ipcidr.yaml",
+        "file": "provider-scki-fused-017-ai-ipcidr.yaml",
         "bytes": 298,
-        "sha256": "5ead29109cb2d840861cd915568748da689b6b9869637e97b4c53b54e302fffa"
+        "sha256": "2f65850e068b10c8dd5488f84cc0bee2efdf884b98ebf691d7fc8dc4d22441ee"
       },
       {
-        "file": "provider-scki-fused-016-ai-residual.yaml",
+        "file": "provider-scki-fused-017-ai-residual.yaml",
         "bytes": 316,
-        "sha256": "27002767b2b2d86531e8f4f8c04f6c36ab63177b5f605e054d3f56ee65f372ac"
+        "sha256": "b96f3f7817bac1dcc09d89f57f5b681152b69a0ff3999e5bf069cf7385f4dee3"
       },
       {
-        "file": "provider-scki-fused-017-intl-site-domain.yaml",
+        "file": "provider-scki-fused-018-intl-site-domain.yaml",
         "bytes": 310,
-        "sha256": "0b3bbfd678daf41751062b6d1db51c1f2ba5272bb0183f9791a3b1d7d47b8804"
+        "sha256": "1b6e9b635424dbd46c4190af2f8409ef563083164b432ee59356261de88b36bd"
       },
       {
-        "file": "provider-scki-fused-018-im-domain.yaml",
+        "file": "provider-scki-fused-019-im-domain.yaml",
         "bytes": 275,
-        "sha256": "85e893cd00ace6aed4905f3b345c4c57f33d61502dd0f2a53c1c1ef790f7bbfd"
+        "sha256": "b1da87d6e033658c019ad3ed2915bf6ff188c4ccb1d8cf055fb9d8131b9fc1dc"
       },
       {
-        "file": "provider-scki-fused-019-work-domain.yaml",
+        "file": "provider-scki-fused-020-work-domain.yaml",
         "bytes": 322,
-        "sha256": "1edfd1e92f2b941f6fdb4b396a1b09a74c994a308f5e98c6eae90dd1c9e03fae"
+        "sha256": "92f32bcd91d2dc19bb78e47e79767f88d6a40a4dddd311b493ab18d939e11ee1"
       },
       {
-        "file": "provider-scki-fused-020-download-domain.yaml",
+        "file": "provider-scki-fused-021-download-domain.yaml",
         "bytes": 834,
-        "sha256": "2300f9cc934fda280b539bbe5f3ae6695c4972ec9e68995bc7542fe2153d3c02"
+        "sha256": "05d3a7323a9e55c74e13cccae8d8bd1992ea56e52bf554a3b7f8a31ba62f002b"
       },
       {
-        "file": "provider-scki-fused-020-download-ipcidr.yaml",
+        "file": "provider-scki-fused-021-download-ipcidr.yaml",
         "bytes": 891,
-        "sha256": "7f50ba89d184bef450d0e3296c1aee53c91735ee30594780ba20333f69a6e470"
+        "sha256": "469447ee6f706eec358903b13c875b8ddf94b8426ddf736010dd80f60f7829f9"
       },
       {
-        "file": "provider-scki-fused-021-google-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-022-google-ipcidr-no-resolve.yaml",
         "bytes": 214429,
-        "sha256": "ad078e8d27b4c024072eab8a6bad3bcfb773e39d21f3b9dde4b8b91a7df6d918"
+        "sha256": "099fb3b7da317b6b65b884e84778fa4c9bd0f7db4ef7076d88594cf147bf641f"
       },
       {
-        "file": "provider-scki-fused-022-tools-domain.yaml",
+        "file": "provider-scki-fused-023-tools-domain.yaml",
         "bytes": 278,
-        "sha256": "3bcb1925b3beea1f93d442af82c805165b1e4312b8d8263e7e7ebe8928ae23d7"
+        "sha256": "f0d1037da501791e94404c83ca48dcd6f57bd1a2e9e95abc968c28fc381e5dd9"
       },
       {
-        "file": "provider-scki-fused-023-ai-domain.yaml",
-        "bytes": 6371,
-        "sha256": "a35e85a036668801e23f302664c845d5a83941df6d233d05af6ce8baea6427df"
+        "file": "provider-scki-fused-024-ai-domain.yaml",
+        "bytes": 3727,
+        "sha256": "ef35b3da69fdb629790b6f444914be52d31b557084d32a1e66371774f853072a"
       },
       {
-        "file": "provider-scki-fused-023-ai-ipcidr-no-resolve.yaml",
-        "bytes": 843,
-        "sha256": "14d6f1de6560769ab86a432d73bff1feea4844f5c742e191b0921a5943f65123"
+        "file": "provider-scki-fused-024-ai-ipcidr-no-resolve.yaml",
+        "bytes": 698,
+        "sha256": "1ccc9cd74fa6559aaab6aa8891807f70b104c296e709fea524ee2de1e8b5dea7"
       },
       {
-        "file": "provider-scki-fused-023-ai-residual.yaml",
-        "bytes": 902,
-        "sha256": "d134a800bfed8ca9a05f7acd1031dd1a9335b8d916d84867dd1e6d7c34035e35"
+        "file": "provider-scki-fused-024-ai-residual.yaml",
+        "bytes": 573,
+        "sha256": "611de1423418911edcd74f92e142f5b84f54872f03709a3ca8c39ceb196f8250"
       },
       {
-        "file": "provider-scki-fused-024-crypto-domain.yaml",
+        "file": "provider-scki-fused-025-google-domain.yaml",
+        "bytes": 564,
+        "sha256": "24513d2644e66d850bb0a28b0fa2b0d442e6b18c7fb0b519148821eaba3153d4"
+      },
+      {
+        "file": "provider-scki-fused-026-ai-domain.yaml",
+        "bytes": 2616,
+        "sha256": "9058ef3ed411dc3f508e134f10e6591a8c8f1b0f12b964ea45da1c8e7a321fb7"
+      },
+      {
+        "file": "provider-scki-fused-026-ai-ipcidr-no-resolve.yaml",
+        "bytes": 436,
+        "sha256": "08dd9fffe405adbf14b36afcb7cb166c74484b2055ed7507eb98e1e120ef0b1d"
+      },
+      {
+        "file": "provider-scki-fused-026-ai-residual.yaml",
+        "bytes": 646,
+        "sha256": "8296e2bfad25c898c486f0bbc2917ee14bad3487cc5469e88928dc67d2c983d4"
+      },
+      {
+        "file": "provider-scki-fused-027-crypto-domain.yaml",
         "bytes": 5532,
-        "sha256": "48fc65269bbb1c45c972a46e9f5cfe623529d1861a89595381db6dae12e993f3"
+        "sha256": "89b1a957531b60eece06baaae221b5f6c6e4e4213ce800619529790627955da7"
       },
       {
-        "file": "provider-scki-fused-024-crypto-residual.yaml",
+        "file": "provider-scki-fused-027-crypto-residual.yaml",
         "bytes": 403,
-        "sha256": "68547d2fb43f0c309e57dc2900469a130c872c0c8d23ffb69f7a98145d2d2995"
+        "sha256": "e514d0428aeb7ad456026690a38b43c161108d42c7251945ed056be139ff4060"
       },
       {
-        "file": "provider-scki-fused-025-payments-domain.yaml",
+        "file": "provider-scki-fused-028-payments-domain.yaml",
         "bytes": 11178,
-        "sha256": "644a4c9327f52fe6934bd2d459015f5fdface29509af66aa7e03c74fbb6ec8cc"
+        "sha256": "a146d1b34a18f11a38cb4d086cc5caafb3aa2db7131137e21bae1e369406bbb9"
       },
       {
-        "file": "provider-scki-fused-025-payments-residual.yaml",
+        "file": "provider-scki-fused-028-payments-residual.yaml",
         "bytes": 393,
-        "sha256": "f21dc47583763c22df5242bee0a0d911c507a181da8f950f98ddebbf01b75072"
+        "sha256": "1727b5a59f4d695c8230eaf14065422337bb2e0aab70a60fa007271b7db3de4b"
       },
       {
-        "file": "provider-scki-fused-026-microsoft-domain.yaml",
+        "file": "provider-scki-fused-029-microsoft-domain.yaml",
         "bytes": 348,
-        "sha256": "3af77f8fc95dbfea0b3fbcf236cfcb74de71a1b44ba8775b610b74b7c9397e52"
+        "sha256": "1d5c5350fdadc9dd41172de4f445def49a41e0c7e6bb6f9935b46d0e2ccd622e"
       },
       {
-        "file": "provider-scki-fused-027-intl-site-domain.yaml",
+        "file": "provider-scki-fused-030-intl-site-domain.yaml",
         "bytes": 1003,
-        "sha256": "04b569894a1ac052509ee63af87eb6984344dda169447c945769d86303d2ffc3"
+        "sha256": "47f2643998f78969b81e37ca96c9b553c7237618394d3e8238b8e9f8d0a34718"
       },
       {
-        "file": "provider-scki-fused-028-direct-domain.yaml",
+        "file": "provider-scki-fused-031-direct-domain.yaml",
         "bytes": 367,
-        "sha256": "5021c046aab8401b8206449bf23f664e4a1c41fff40ccc1323a0d1ba08aba7d4"
+        "sha256": "17f5f2cf151c2c5cb3b8b95a1b847e897766da207cb7bfce0f87ff6b02b54f10"
       },
       {
-        "file": "provider-scki-fused-029-im-domain.yaml",
+        "file": "provider-scki-fused-032-im-domain.yaml",
         "bytes": 2063,
-        "sha256": "9b97d5667bd70f2319ed691e278731adf2b33d07bfb7972a124b9a8e86dec451"
+        "sha256": "8f443530a906bb1cace230fe48c198133a663de93254a199b83d23d9916ef8de"
       },
       {
-        "file": "provider-scki-fused-029-im-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-032-im-ipcidr-no-resolve.yaml",
         "bytes": 570,
-        "sha256": "96c098e443e4a3cf0353416e260a2958bee20f89c16cd5fdc10df85493383b6f"
+        "sha256": "be4a489481b3cf4dca45bcf60a44b2e2d1311db923304d847287d5ecdecd74f4"
       },
       {
-        "file": "provider-scki-fused-029-im-ipcidr.yaml",
+        "file": "provider-scki-fused-032-im-ipcidr.yaml",
         "bytes": 988,
-        "sha256": "a6627dd19e064786983290b21b3f55022e337fbf8605d11ac97ad5fedb354576"
+        "sha256": "2e776289c4bbea53a7204cbaa733cd74baa7cd51fb598c2c922e8ffefb1abb0b"
       },
       {
-        "file": "provider-scki-fused-029-im-residual.yaml",
+        "file": "provider-scki-fused-032-im-residual.yaml",
         "bytes": 332,
-        "sha256": "0fecd4b42941e7610d4c492afdcb6c614de834a3b262a9f2776a263b2224c3f6"
+        "sha256": "18b73750e8bf8468b01ac4105500baa65f7f841b4726b3054537ca4867d798a9"
       },
       {
-        "file": "provider-scki-fused-030-social-domain.yaml",
+        "file": "provider-scki-fused-033-social-domain.yaml",
         "bytes": 14265,
-        "sha256": "217abb6eb5d6a87a37bbd7ddba5e1455f894444df019efed52006d17f8c7fcc0"
+        "sha256": "ab82cd80fb1a74d41e3a816dded42921ce65add6125ba1591b748b6e5be7ec3b"
       },
       {
-        "file": "provider-scki-fused-030-social-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-033-social-ipcidr-no-resolve.yaml",
         "bytes": 5561,
-        "sha256": "9fa66795ac478c77c47313b2d1782420ef7f867d31f1ca1459541cf1a83ec570"
+        "sha256": "f320a093f1933b17b919a2d70c27451faa8e493b8b3be36f2ce09816b05dcd78"
       },
       {
-        "file": "provider-scki-fused-030-social-ipcidr.yaml",
+        "file": "provider-scki-fused-033-social-ipcidr.yaml",
         "bytes": 764,
-        "sha256": "3526dcd2ee164ed3c0fef3d3d269dc824f1cea5ba6f4fba9474597d05f3d8189"
+        "sha256": "14c7f3cd47a25ba5218e6b0cd1c5108a85c7c861c391827586fa63cc0a650963"
       },
       {
-        "file": "provider-scki-fused-030-social-residual.yaml",
+        "file": "provider-scki-fused-033-social-residual.yaml",
         "bytes": 335,
-        "sha256": "544a70e728732b90d73a07bb0fceb63a64c38f3c2894f105d4ca363a5b16961c"
+        "sha256": "f6b238468ca147bacc12751b69c50c970db2244675ec8607f6ea8e6d370338c9"
       },
       {
-        "file": "provider-scki-fused-031-cn-site-domain.yaml",
+        "file": "provider-scki-fused-034-cn-site-domain.yaml",
         "bytes": 520,
-        "sha256": "81964a3f3939bf37ec945273ceba97b05e4bbf8a12533b0ba532235bbe2c3183"
+        "sha256": "df6c4f0f303d9580d2db36558e56f283d648292296acb4f2bb037ce12cc0acf3"
       },
       {
-        "file": "provider-scki-fused-032-social-domain.yaml",
+        "file": "provider-scki-fused-035-social-domain.yaml",
         "bytes": 499,
-        "sha256": "07cfcbe28c3c254636e03023501baedbba558b566a51aa2506e5669ac6ce5f9a"
+        "sha256": "ecdb88ddd1d4e0a3fae1779895525cdb56c8d5f332f4ee899e929a9f9c54d9ec"
       },
       {
-        "file": "provider-scki-fused-033-work-domain.yaml",
+        "file": "provider-scki-fused-036-work-domain.yaml",
         "bytes": 1931,
-        "sha256": "be8682a93ce6602d30e2606c45319359fcb630c955d2aa6353486d7f31fb22fd"
+        "sha256": "9efbded4f889ec0354d95648593629e6a1b27ce798df6be7905f7f3060b5dc88"
       },
       {
-        "file": "provider-scki-fused-033-work-ipcidr.yaml",
+        "file": "provider-scki-fused-036-work-ipcidr.yaml",
         "bytes": 426,
-        "sha256": "80d3cbaaba88406d381779fa788c06884df01190c146ff54bbb2a23bf9f8e028"
+        "sha256": "4fc68a44a326697fabf76aa361f46a59637d87eef7f30e034127c7c78c5aa462"
       },
       {
-        "file": "provider-scki-fused-034-direct-domain.yaml",
+        "file": "provider-scki-fused-037-direct-domain.yaml",
         "bytes": 311,
-        "sha256": "dfb55eee729c20f5e63ef42dd15f6aef3c082ffa9c9beb54d348eee2c150a1a9"
+        "sha256": "b0ebb9c7f822f72c789851097dc996a55136a59b4514fc8675528b6740e709ae"
       },
       {
-        "file": "provider-scki-fused-035-cnmedia-domain.yaml",
+        "file": "provider-scki-fused-038-cnmedia-domain.yaml",
         "bytes": 590,
-        "sha256": "adb31dccbc239305575231b43dd11b5cae55dc8f181df1f3854e2c39dedac0b0"
+        "sha256": "b3bbbf058d2ba17aa3d895dfb44b38362df73ef01b45e2c2aacee51350b0bac8"
       },
       {
-        "file": "provider-scki-fused-036-tiktok-domain.yaml",
+        "file": "provider-scki-fused-039-tiktok-domain.yaml",
         "bytes": 940,
-        "sha256": "da176fd35758e8c2e34a143c681d8c3ec5d3bd05a673a24689cf3c2e2700bac8"
+        "sha256": "bf18a59fa021b41667f0b7e4bd6acb4e261c55ceeff9a95ae0a37be6f0712a42"
       },
       {
-        "file": "provider-scki-fused-038-netflix-domain.yaml",
+        "file": "provider-scki-fused-041-netflix-domain.yaml",
         "bytes": 831,
-        "sha256": "f97641a052e0399076fda06fec1f50dd51ba55ab9f965232df632bfa1c0e4e45"
+        "sha256": "4183482e4930b13f7f9c0dfce2eeeff8ee4bb45e2a67f88459e8743eba1fb3f7"
       },
       {
-        "file": "provider-scki-fused-038-netflix-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-041-netflix-ipcidr-no-resolve.yaml",
         "bytes": 21364,
-        "sha256": "02d3519447339d1c668e643bf83f9636e321c4b656cb2a4779dcf5ff8c8345ca"
+        "sha256": "46e9e059b347ea3b6c0addb1216e446ee6c5ac237bae0181753af8caeffc8c46"
       },
       {
-        "file": "provider-scki-fused-039-disney-domain.yaml",
+        "file": "provider-scki-fused-042-disney-domain.yaml",
         "bytes": 4244,
-        "sha256": "63e3c9daff8ff4b607e91e2b6818a194b7a4f8bc27f34539fd02f75bda9b1d75"
+        "sha256": "3c51db28d153cdd90afe4a7e913a800c3749850ff5a22357ec1a1e2fc3c6b98b"
       },
       {
-        "file": "provider-scki-fused-040-hbo-max-domain.yaml",
+        "file": "provider-scki-fused-043-hbo-max-domain.yaml",
         "bytes": 1354,
-        "sha256": "b4fa67b16f149efbd4d27f18fa951642318491c456f7a93e9056b05186e3d0c2"
+        "sha256": "b3475a975e2356c1e53addc3a11a4b9b61b61de3a58f43207ce3ae65127c8add"
       },
       {
-        "file": "provider-scki-fused-041-hulu-domain.yaml",
+        "file": "provider-scki-fused-044-hulu-domain.yaml",
         "bytes": 1474,
-        "sha256": "01076f9e1155c4b2d16ff2976ca0da1a318ba8310eca2a199dbe3adbc2f28fa5"
+        "sha256": "23aacba93e27cd866448b50152d8c57a5e04efc1065fd2004c685c4e69fd65bc"
       },
       {
-        "file": "provider-scki-fused-042-prime-video-domain.yaml",
+        "file": "provider-scki-fused-045-prime-video-domain.yaml",
         "bytes": 4240,
-        "sha256": "071f6033887b12171e16ed991e697646e2fe01d9427360c176f14f90762bbd3a"
+        "sha256": "87d92d95cc5bed42139afa588b853a6d5de580738b40128e0141a237f4686284"
       },
       {
-        "file": "provider-scki-fused-042-prime-video-ipcidr.yaml",
+        "file": "provider-scki-fused-045-prime-video-ipcidr.yaml",
         "bytes": 545,
-        "sha256": "d7aa2aab0f3f91cdd7966af0a0142ef9160192ceb9876bd30edcdfd4db342511"
+        "sha256": "bb0f0950c97cecfe671585e379d738bb37e758d1720edd7311ec209080863ea2"
       },
       {
-        "file": "provider-scki-fused-042-prime-video-residual.yaml",
+        "file": "provider-scki-fused-045-prime-video-residual.yaml",
         "bytes": 351,
-        "sha256": "666d1fb6bde8e334ffbcbd49c9df93f56a69ed5cc6b0e6e858075b21175fd729"
+        "sha256": "345c8b1f995820b6944ab6993247c179d4e78972af80217129e53aee11f68be8"
       },
       {
-        "file": "provider-scki-fused-043-music-domain.yaml",
+        "file": "provider-scki-fused-046-music-domain.yaml",
         "bytes": 2238,
-        "sha256": "e72e375dbc46fb8d89bd321de86985557c44434838c6b935b80ef6eb8c521944"
+        "sha256": "1c77838de03bd99220734c1a3a9fca617b9c161524506e4768700e11f14658c9"
       },
       {
-        "file": "provider-scki-fused-043-music-ipcidr.yaml",
+        "file": "provider-scki-fused-046-music-ipcidr.yaml",
         "bytes": 301,
-        "sha256": "328e3edc2393150bddacf046b6cfdd7533351a77632499c0156fe4ede893d4b8"
+        "sha256": "d24ced0c71e6d5a6094c15be72e2db42d883b726e3ff71db7fb35a276a89a145"
       },
       {
-        "file": "provider-scki-fused-044-stream-hk-domain.yaml",
+        "file": "provider-scki-fused-047-stream-hk-domain.yaml",
         "bytes": 1584,
-        "sha256": "8eb77587844c85e7bd06d9874f2a144e8b913e5de5177158bddbc5e3170e7bfc"
+        "sha256": "870e2b7eda282ff849d3c832c0b867aa6a06e5d17e10ed439c675b3d2b513410"
       },
       {
-        "file": "provider-scki-fused-044-stream-hk-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-047-stream-hk-ipcidr-no-resolve.yaml",
         "bytes": 596,
-        "sha256": "0eaf288fae45bd17b9a167b5a8618d20d8809f24a84452b9e117629dd53ab3e3"
+        "sha256": "7318458debcd737c2889aac686d91fc367cb5f91331f9139b05dfebcc30d272e"
       },
       {
-        "file": "provider-scki-fused-044-stream-hk-residual.yaml",
+        "file": "provider-scki-fused-047-stream-hk-residual.yaml",
         "bytes": 307,
-        "sha256": "bfd19d62d13793c7f2b0c86e08ef5b7e8f87d11e74946dd0b7d7ef2ac95ed520"
+        "sha256": "cf29079c75993c9126f7c27808d9199bcb5ca480cc0e9f6ce657df6c1e960162"
       },
       {
-        "file": "provider-scki-fused-045-stream-tw-domain.yaml",
+        "file": "provider-scki-fused-048-stream-tw-domain.yaml",
         "bytes": 845,
-        "sha256": "e0d9f0fc307f5961795aa4d254d1afcad2dffbe2ac57520f8a64ecf8f7c842f8"
+        "sha256": "97684a3693b363750da38ae0601963b21a158faeb2779ae4c51e35c7d1285cfb"
       },
       {
-        "file": "provider-scki-fused-045-stream-tw-residual.yaml",
+        "file": "provider-scki-fused-048-stream-tw-residual.yaml",
         "bytes": 361,
-        "sha256": "b506f6d420b4a2a7606f7250a8e329f2efeaed4d001ffbbdf25dc9b46b358adb"
+        "sha256": "7fd87bc81eca860ce8e8fc90759ef263076447f28bc308daa8fce1eb9fdb713e"
       },
       {
-        "file": "provider-scki-fused-046-stream-jpkr-domain.yaml",
+        "file": "provider-scki-fused-049-stream-jpkr-domain.yaml",
         "bytes": 2736,
-        "sha256": "5bea7d728f412cb5fb579520eaa25a49ba78c300eb03105dbeea696cc2de2b6c"
+        "sha256": "ca52f4e5949cac435153a17252857f008e3cb0d60c0778c331b22d363ce607bc"
       },
       {
-        "file": "provider-scki-fused-046-stream-jpkr-ipcidr.yaml",
+        "file": "provider-scki-fused-049-stream-jpkr-ipcidr.yaml",
         "bytes": 314,
-        "sha256": "ebc688bc8e86614620bbc6a95768d3e82732c758b365f7558c95a92ef6851043"
+        "sha256": "38994c5b4e1a6ae7cbe438216d67364f7539c8f563c38515701fad4ea0a8bcb1"
       },
       {
-        "file": "provider-scki-fused-046-stream-jpkr-residual.yaml",
+        "file": "provider-scki-fused-049-stream-jpkr-residual.yaml",
         "bytes": 322,
-        "sha256": "82927978f75cd90f9ffd814baf9895cb9da549a6aa45c321c6c5685ff6e5cd9b"
+        "sha256": "5aa025fb41938d934601b0297af92fee669af4f03cb68e29dd020e5b48d13c30"
       },
       {
-        "file": "provider-scki-fused-047-stream-eu-domain.yaml",
+        "file": "provider-scki-fused-050-stream-eu-domain.yaml",
         "bytes": 2125,
-        "sha256": "a6e8ff3228c142e4b84c8cb3126f661570b0c154062d630004a667660781a9df"
+        "sha256": "8e277b029b8e8b0a70c881683f91f77c9e85e38fa7feecadb254362ee6ac90c3"
       },
       {
-        "file": "provider-scki-fused-047-stream-eu-residual.yaml",
+        "file": "provider-scki-fused-050-stream-eu-residual.yaml",
         "bytes": 344,
-        "sha256": "7045e6a639d136b3cf7e146012dfa2ea97ad922446918d3b16110cd87d8605b2"
+        "sha256": "de7ff98ae7f22e6a84348e8782a58b9a52d82fb44781972e5e42aa8ebce58367"
       },
       {
-        "file": "provider-scki-fused-048-stream-other-domain.yaml",
+        "file": "provider-scki-fused-051-stream-other-domain.yaml",
         "bytes": 11425,
-        "sha256": "71b8554d3440e51ea92eed84f6c5f34bfea020f09ebf1e56c8d341dea9aa86c2"
+        "sha256": "45ebbc26c090fc9c1b0a4f7d8a797950faba39ed589db7b4fafa64cec8b8ec96"
       },
       {
-        "file": "provider-scki-fused-048-stream-other-ipcidr.yaml",
+        "file": "provider-scki-fused-051-stream-other-ipcidr.yaml",
         "bytes": 1024,
-        "sha256": "bc1f2d6246c46a1a35bddda6d1c6e6cb08761e7798cab9648e9b9067a26a58ec"
+        "sha256": "fd8ba695f281241ba221b0d346e9daf736e0d02398f5ec495860c477c99e4fcc"
       },
       {
-        "file": "provider-scki-fused-048-stream-other-residual.yaml",
+        "file": "provider-scki-fused-051-stream-other-residual.yaml",
         "bytes": 463,
-        "sha256": "e86a74dac88e2b09ba5c9072bb3860c42056be884bb35abdf7aa82895503d3cc"
+        "sha256": "59f1f17ba50102febbf97cee14d33b712b840264506809d4a3f6872824344e90"
       },
       {
-        "file": "provider-scki-fused-049-tools-domain.yaml",
+        "file": "provider-scki-fused-052-tools-domain.yaml",
         "bytes": 425,
-        "sha256": "49f6d989fecc6ed31db49fe38c182c72a349eddc4888d8ed4d264726b7b36b98"
+        "sha256": "32d2d8740941a4535ea963fd12eda5aec0729bae333d4c5d7e5cc7497486a645"
       },
       {
-        "file": "provider-scki-fused-050-google-domain.yaml",
+        "file": "provider-scki-fused-053-google-domain.yaml",
         "bytes": 3778,
-        "sha256": "40a5d1d463ab6cc71c8c4d26d4e63cd9fb56747454644ac5497b3671af6de0ff"
+        "sha256": "70e876efd0947720c95f04724d55e8e19e9bcf435af61bc23d6c6dcfde215d3d"
       },
       {
-        "file": "provider-scki-fused-051-tools-domain.yaml",
+        "file": "provider-scki-fused-054-tools-domain.yaml",
         "bytes": 14826,
-        "sha256": "3e3d4928be7e72d0c3a632fee7f1dbb60cf26f3cb56f0c3c6705b083bc230b16"
+        "sha256": "4e0f14688cff56223a130aa9d5760325fe38abfeb7f6a4858ddb72a707ffabf5"
       },
       {
-        "file": "provider-scki-fused-051-tools-ipcidr.yaml",
+        "file": "provider-scki-fused-054-tools-ipcidr.yaml",
         "bytes": 660,
-        "sha256": "6daca151e8e52b41f8a9c8062fc960e90b19fef508b5797674f61229ab3ef442"
+        "sha256": "d1fd268a1525aab12110f8f74a238641333179a01ab5ee6f7f0c2af89b7d57e4"
       },
       {
-        "file": "provider-scki-fused-051-tools-residual.yaml",
+        "file": "provider-scki-fused-054-tools-residual.yaml",
         "bytes": 356,
-        "sha256": "dac9902e12a62480b16ec8b6c02580439347aab94e8d332fb53251ed5a1e54b7"
+        "sha256": "9aac5d9514cff75f2553619d77758f5157d603d2ac72cc28b14c725af5817b84"
       },
       {
-        "file": "provider-scki-fused-052-microsoft-residual.yaml",
+        "file": "provider-scki-fused-055-microsoft-residual.yaml",
         "bytes": 1492,
-        "sha256": "0d7e00710577b7d36e7356f52c875146e4a3dad850675303ab80ad4e3ca07e88"
+        "sha256": "c11367c5786bf28aba55f4f3ed57cdd4075f44b55240bf6223428460a0389d96"
       },
       {
-        "file": "provider-scki-fused-053-apple-domain.yaml",
+        "file": "provider-scki-fused-056-apple-domain.yaml",
         "bytes": 330,
-        "sha256": "95e691ab312f38ba7fde3d225917d9be36de3827d324e008d90afecefd4390c4"
+        "sha256": "065e3bc99d0afd074cfa535a400de81b68cf186d08cea4e558b42f0a90035722"
       },
       {
-        "file": "provider-scki-fused-053-apple-ipcidr.yaml",
+        "file": "provider-scki-fused-056-apple-ipcidr.yaml",
         "bytes": 275,
-        "sha256": "f5235a808559f7f620388acfb175bd07427b396d23e9c49a263974a92d97a80f"
+        "sha256": "f4af8458b2042f0d8899560dbdb4adb9b1e38e854e148b8765893020d6c7260e"
       },
       {
-        "file": "provider-scki-fused-053-apple-residual.yaml",
+        "file": "provider-scki-fused-056-apple-residual.yaml",
         "bytes": 699,
-        "sha256": "3c254ce08938ab01f14112f6635eccfd69eb2bf25109c2ba0f2c2e161ca25121"
+        "sha256": "a554467788054a51b69bb2095bcce452bca692fd68072cd1470f6dbda2005a2f"
       },
       {
-        "file": "provider-scki-fused-054-download-domain.yaml",
+        "file": "provider-scki-fused-057-download-domain.yaml",
         "bytes": 24585,
-        "sha256": "9739bf0a09f32d8211332389eaaf828d88d4862758bb38c366f0c8587a397bee"
+        "sha256": "90eff536f8da002ba5d04615bb941e8ef09caddc21c8a59c58e787c099bd9edb"
       },
       {
-        "file": "provider-scki-fused-054-download-ipcidr.yaml",
+        "file": "provider-scki-fused-057-download-ipcidr.yaml",
         "bytes": 918,
-        "sha256": "3914f84bdd97da211d54fb649e2be99bea5514f9afb71f19d0dd6e64da848cbf"
+        "sha256": "498e1ce8366efa0264a9ba8ff6d7b3e8383d9a3ba34155f07377a6538ab68fc1"
       },
       {
-        "file": "provider-scki-fused-054-download-residual.yaml",
+        "file": "provider-scki-fused-057-download-residual.yaml",
         "bytes": 396,
-        "sha256": "ebf0e7918e0022224a5aaf9bafbe31a34f450762c30c952203f2f3c684808760"
+        "sha256": "b3b62a25c05a838843c170c6996565ecd6bdbadbba05140fa71a0038b243f00c"
       },
       {
-        "file": "provider-scki-fused-055-tracker-domain.yaml",
+        "file": "provider-scki-fused-058-tracker-domain.yaml",
         "bytes": 5005,
-        "sha256": "9d47a3a3877ea7eb2273075e544ef8b6cd524dec58456567188af27ee5dd140c"
+        "sha256": "05e4d84a8506dc6554f21b905a6045b96bf0d1c21174d21515c28550b9a79a6e"
       },
       {
-        "file": "provider-scki-fused-055-tracker-ipcidr.yaml",
+        "file": "provider-scki-fused-058-tracker-ipcidr.yaml",
         "bytes": 1601,
-        "sha256": "2a62fc3c4d5b365d5d6862cb577215b42b54b767273bdf2d5fe98af5b2f8e397"
+        "sha256": "5e3e7975b0ad85efdea3bdce154e01369f859c5df43a1b9cba54c004134dcfba"
       },
       {
-        "file": "provider-scki-fused-055-tracker-residual.yaml",
+        "file": "provider-scki-fused-058-tracker-residual.yaml",
         "bytes": 329,
-        "sha256": "7c5b74f6694dc04679cd4fcc9924ea3eeada08cb5c4eae515c71c0fa5ebd3d90"
+        "sha256": "a49827085d0ad1f5f00d9a8375c51b424ad22443002500d3c6835039c971340d"
       },
       {
-        "file": "provider-scki-fused-056-gfw-domain.yaml",
+        "file": "provider-scki-fused-059-gfw-domain.yaml",
         "bytes": 111857,
-        "sha256": "58596de4825f73c95fa1995d16b74b2f78a9978abab19f173a830e53fbe01160"
+        "sha256": "577f9d62fad84a8fc9b71eed4b3fe93068efca4cdbe77451900a1f62b1d5e1b9"
       },
       {
-        "file": "provider-scki-fused-056-gfw-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-059-gfw-ipcidr-no-resolve.yaml",
         "bytes": 1201,
-        "sha256": "247357eeb95b4773b6f48f5f9071a1f0d20a3f6c66cf5558ce3dc5c2fd846d01"
+        "sha256": "3fe4ed166ef85f27c3a12fbdaa8921a594748b95eb1f62110eff2110f0bed200"
       },
       {
-        "file": "provider-scki-fused-056-gfw-residual.yaml",
+        "file": "provider-scki-fused-059-gfw-residual.yaml",
         "bytes": 483,
-        "sha256": "33d7a4f632cb57b567108d739e2b011b2359aae7b1c7fcbcc495f1db2c7b6f99"
+        "sha256": "ffb81aa4b6d58be9943155f9a26098c90497848c6b0fdd2ca3c2820a2c101229"
       },
       {
-        "file": "provider-scki-fused-057-game-cn-domain.yaml",
+        "file": "provider-scki-fused-060-game-cn-domain.yaml",
         "bytes": 1518,
-        "sha256": "709c8465369158a42bcc3e14477605926d0cab032001f1b838d96dbb760e4b17"
+        "sha256": "fa97173711f9372ff55e5cdf957dc9ce639c6f999a4e3d582ccf25dfe15b8032"
       },
       {
-        "file": "provider-scki-fused-058-game-intl-domain.yaml",
+        "file": "provider-scki-fused-061-game-intl-domain.yaml",
         "bytes": 21866,
-        "sha256": "e039821cca2cf5a85941c648e99941429cc79bbe6047336adef7c8629b748fe8"
+        "sha256": "6b431720316cc3966b984e3444149c572e19883f3acd7c911268175e15f1c667"
       },
       {
-        "file": "provider-scki-fused-058-game-intl-ipcidr.yaml",
+        "file": "provider-scki-fused-061-game-intl-ipcidr.yaml",
         "bytes": 1306,
-        "sha256": "9ce05e4b46ec53d79ce13c7b95cae482d50cb9c9ea1bb94c22f13402f53bc0ea"
+        "sha256": "eb71a822581fd6bdc70c7ec3818e089aa969777249747c497c9b5ae347fe6043"
       },
       {
-        "file": "provider-scki-fused-058-game-intl-residual.yaml",
+        "file": "provider-scki-fused-061-game-intl-residual.yaml",
         "bytes": 337,
-        "sha256": "aa3c684bfb412c0e6f78f9cf87b1248a3a59cd65ac1a38f1e2727b4b75e2f39c"
+        "sha256": "6557d4a7834d171b1e287ca36f2e3518852e763eb5108490c0bfaea650b7cfdc"
       },
       {
-        "file": "provider-scki-fused-059-intl-site-domain.yaml",
+        "file": "provider-scki-fused-062-intl-site-domain.yaml",
         "bytes": 8453,
-        "sha256": "75d05ce2cfd6b3c912a897c61d232c0f2e8d1bf59237c1a51b1409a44ce202c6"
+        "sha256": "0401d381cf9546b31552171829cb525cf6843a0136ff946c00e5ff22b37b4f59"
       },
       {
-        "file": "provider-scki-fused-059-intl-site-ipcidr.yaml",
+        "file": "provider-scki-fused-062-intl-site-ipcidr.yaml",
         "bytes": 1253,
-        "sha256": "81dd583cc3077d73ab9cfddd0df5bf973f8005d9269c93c7b685caf0bd2dcd80"
+        "sha256": "94eae0db77a82e58c3e9e2c48c88f7bbab34315057b5b6e56e53594937279abf"
       },
       {
-        "file": "provider-scki-fused-059-intl-site-residual.yaml",
+        "file": "provider-scki-fused-062-intl-site-residual.yaml",
         "bytes": 2457,
-        "sha256": "cbed3034e051832d7bf4faee064beaeed99379bad258f2409a794965a3f4712c"
+        "sha256": "0e63e64e359758bddff13942004284da8dec8fd07c67aaeaeb182fe57628a803"
       },
       {
-        "file": "provider-scki-fused-060-payments-domain.yaml",
+        "file": "provider-scki-fused-063-payments-domain.yaml",
         "bytes": 515,
-        "sha256": "1415625a8e50f7780f73fca8b24eb9de0d3b5a04d6af052d4de2f2d01f1f2724"
+        "sha256": "19db5b1061f5dcfd40aaa035def6a12259286caf67f281d98698d73a54179ab8"
       },
       {
-        "file": "provider-scki-fused-061-cnmedia-domain.yaml",
+        "file": "provider-scki-fused-064-cnmedia-domain.yaml",
         "bytes": 33059,
-        "sha256": "de5c61bc07d5d53d45b7a5a926f18265a9355944e4aa7be18a4855b297d0119f"
+        "sha256": "85374f2294f2fdcb08096d37f29828d54d33a0e6c4782e158089a394298bc27a"
       },
       {
-        "file": "provider-scki-fused-061-cnmedia-ipcidr.yaml",
+        "file": "provider-scki-fused-064-cnmedia-ipcidr.yaml",
         "bytes": 16706,
-        "sha256": "722b9695cbf62c7c10b6c01bf88c7b32e97b714b798cb108520ef3a2299e7116"
+        "sha256": "f4e2856eec8bd1f0185d9e8cfa9d2d5803b8869aba13a8d5468262d192c479fe"
       },
       {
-        "file": "provider-scki-fused-061-cnmedia-residual.yaml",
+        "file": "provider-scki-fused-064-cnmedia-residual.yaml",
         "bytes": 484,
-        "sha256": "d6212baf9ed079ed92ba65350c9f72990e6e77bb4c630fc530b772563570658e"
+        "sha256": "a641a954da9a0a00aeed7a76274ec1e2a860a0384c3b5783a059b6e468155d15"
       },
       {
-        "file": "provider-scki-fused-062-cn-site-domain.yaml",
+        "file": "provider-scki-fused-065-cn-site-domain.yaml",
         "bytes": 107218,
-        "sha256": "59df829c08d5d83f6b5d6d61cbbece66cda325d9eba2f5f1b40ef7535bb9585e"
+        "sha256": "e19ddadee20ec9e78fe746a074a0d97c87a7539e00bf5058c0cc518f4a43b0b9"
       },
       {
-        "file": "provider-scki-fused-062-cn-site-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-065-cn-site-ipcidr-no-resolve.yaml",
         "bytes": 118924,
-        "sha256": "589c57358b58911ce9e946594fa7a6a99ea4de9384d6ac3a74cf6df1c55d951a"
+        "sha256": "51f28f302777884871f66937dd0055abf9a2e6732280e3737badabceb9a38c6e"
       },
       {
-        "file": "provider-scki-fused-063-direct-domain.yaml",
+        "file": "provider-scki-fused-066-direct-domain.yaml",
         "bytes": 281,
-        "sha256": "38aee2228263c9cc2a309be0c94404288d355ff86cb243f3e9a79b03a840343c"
+        "sha256": "faecb5e9c24c69058454b8b42c0368f04f97a4ecf3de1349cf393e856f13e588"
       },
       {
-        "file": "provider-scki-fused-064-cn-site-domain.yaml",
+        "file": "provider-scki-fused-067-cn-site-domain.yaml",
         "bytes": 421,
-        "sha256": "4b95824a6ffebdec8aecc954b8c01432b947eb4c1b38b2b820b7449a3a35b05c"
+        "sha256": "511317f8f9c6b937875841011bf32e7d7dc60902f97f045ed3e0aee0e044d707"
       },
       {
-        "file": "provider-scki-fused-064-cn-site-residual.yaml",
+        "file": "provider-scki-fused-067-cn-site-residual.yaml",
         "bytes": 332,
-        "sha256": "1ac8e4038ed67220a23ba1887b012623bea3daf2bf9493bcc5eaadeb6f8a27e3"
+        "sha256": "6ee5fa4ebc1be82c52ba4e671888ed8824cacb5a36994365351d665fba153427"
       },
       {
-        "file": "provider-scki-fused-065-intl-site-domain.yaml",
+        "file": "provider-scki-fused-068-intl-site-domain.yaml",
         "bytes": 239579,
-        "sha256": "c028b93862471ef55a70468d6f84e43a239be42bca139affd9b4b9d1be974c95"
+        "sha256": "25eea8f25e653d662c2d4ae08962ae796a834fbfac31436ee2633b15dea32e8e"
       },
       {
-        "file": "provider-scki-fused-065-intl-site-ipcidr-no-resolve.yaml",
+        "file": "provider-scki-fused-068-intl-site-ipcidr-no-resolve.yaml",
         "bytes": 21415,
-        "sha256": "5665a5e1ee952f19c8d824ec5cdc886f6daaca32bfd93aff47d02b882a465893"
+        "sha256": "ce8ee109a3e2e6b6b3646b776a6b401ff25edf9217b75658880aa8d264c924c2"
       },
       {
-        "file": "provider-scki-fused-065-intl-site-ipcidr.yaml",
+        "file": "provider-scki-fused-068-intl-site-ipcidr.yaml",
         "bytes": 1200,
-        "sha256": "91332601bb0f08669da28acd4c352e2ca4644ab13f7b6a2c2e93893f516325ad"
+        "sha256": "7d9c0a9a0978b3ab0d33ce7643cf4e8d5cace439a9dae97a41194961ffafb689"
       },
       {
-        "file": "provider-scki-fused-065-intl-site-residual.yaml",
+        "file": "provider-scki-fused-068-intl-site-residual.yaml",
         "bytes": 2508,
-        "sha256": "c6ad310824c7bbf7d7913ed8bfdfd72e0701a6bdddf165c70cd1342bd53902a4"
+        "sha256": "8af093e587631a6d545e2487e34f33e340b19f540d1de693d6c424bb2532d98f"
       },
       {
-        "file": "provider-scki-fused-067-netflix-residual.yaml",
+        "file": "provider-scki-fused-070-netflix-residual.yaml",
         "bytes": 784,
-        "sha256": "50c3027581c34bdbb7964951a96e3d0ec9b5c2ef35aa064f84c792decc47dcc0"
+        "sha256": "dba58decbd207166827a11e07032865d4ff3f3e2a957f9da337f9df76ecd876b"
       }
     ],
     "referenced_files": [
@@ -643,105 +668,110 @@
       "provider-scki-fused-011-gfw-domain.yaml",
       "provider-scki-fused-013-cn-site-domain.yaml",
       "provider-scki-fused-014-ai-domain.yaml",
-      "provider-scki-fused-014-ai-residual.yaml",
-      "provider-scki-fused-015-work-domain.yaml",
-      "provider-scki-fused-016-ai-domain.yaml",
-      "provider-scki-fused-016-ai-ipcidr.yaml",
-      "provider-scki-fused-016-ai-residual.yaml",
-      "provider-scki-fused-017-intl-site-domain.yaml",
-      "provider-scki-fused-018-im-domain.yaml",
-      "provider-scki-fused-019-work-domain.yaml",
-      "provider-scki-fused-020-download-domain.yaml",
-      "provider-scki-fused-020-download-ipcidr.yaml",
-      "provider-scki-fused-021-google-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-022-tools-domain.yaml",
-      "provider-scki-fused-023-ai-domain.yaml",
-      "provider-scki-fused-023-ai-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-023-ai-residual.yaml",
-      "provider-scki-fused-024-crypto-domain.yaml",
-      "provider-scki-fused-024-crypto-residual.yaml",
-      "provider-scki-fused-025-payments-domain.yaml",
-      "provider-scki-fused-025-payments-residual.yaml",
-      "provider-scki-fused-026-microsoft-domain.yaml",
-      "provider-scki-fused-027-intl-site-domain.yaml",
-      "provider-scki-fused-028-direct-domain.yaml",
-      "provider-scki-fused-029-im-domain.yaml",
-      "provider-scki-fused-029-im-ipcidr.yaml",
-      "provider-scki-fused-029-im-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-029-im-residual.yaml",
-      "provider-scki-fused-030-social-domain.yaml",
-      "provider-scki-fused-030-social-ipcidr.yaml",
-      "provider-scki-fused-030-social-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-030-social-residual.yaml",
-      "provider-scki-fused-031-cn-site-domain.yaml",
-      "provider-scki-fused-032-social-domain.yaml",
-      "provider-scki-fused-033-work-domain.yaml",
-      "provider-scki-fused-033-work-ipcidr.yaml",
-      "provider-scki-fused-034-direct-domain.yaml",
-      "provider-scki-fused-035-cnmedia-domain.yaml",
-      "provider-scki-fused-036-tiktok-domain.yaml",
-      "provider-scki-fused-038-netflix-domain.yaml",
-      "provider-scki-fused-038-netflix-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-039-disney-domain.yaml",
-      "provider-scki-fused-040-hbo-max-domain.yaml",
-      "provider-scki-fused-041-hulu-domain.yaml",
-      "provider-scki-fused-042-prime-video-domain.yaml",
-      "provider-scki-fused-042-prime-video-ipcidr.yaml",
-      "provider-scki-fused-042-prime-video-residual.yaml",
-      "provider-scki-fused-043-music-domain.yaml",
-      "provider-scki-fused-043-music-ipcidr.yaml",
-      "provider-scki-fused-044-stream-hk-domain.yaml",
-      "provider-scki-fused-044-stream-hk-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-044-stream-hk-residual.yaml",
-      "provider-scki-fused-045-stream-tw-domain.yaml",
-      "provider-scki-fused-045-stream-tw-residual.yaml",
-      "provider-scki-fused-046-stream-jpkr-domain.yaml",
-      "provider-scki-fused-046-stream-jpkr-ipcidr.yaml",
-      "provider-scki-fused-046-stream-jpkr-residual.yaml",
-      "provider-scki-fused-047-stream-eu-domain.yaml",
-      "provider-scki-fused-047-stream-eu-residual.yaml",
-      "provider-scki-fused-048-stream-other-domain.yaml",
-      "provider-scki-fused-048-stream-other-ipcidr.yaml",
-      "provider-scki-fused-048-stream-other-residual.yaml",
-      "provider-scki-fused-049-tools-domain.yaml",
-      "provider-scki-fused-050-google-domain.yaml",
-      "provider-scki-fused-051-tools-domain.yaml",
-      "provider-scki-fused-051-tools-ipcidr.yaml",
-      "provider-scki-fused-051-tools-residual.yaml",
-      "provider-scki-fused-052-microsoft-residual.yaml",
-      "provider-scki-fused-053-apple-domain.yaml",
-      "provider-scki-fused-053-apple-ipcidr.yaml",
-      "provider-scki-fused-053-apple-residual.yaml",
-      "provider-scki-fused-054-download-domain.yaml",
-      "provider-scki-fused-054-download-ipcidr.yaml",
-      "provider-scki-fused-054-download-residual.yaml",
-      "provider-scki-fused-055-tracker-domain.yaml",
-      "provider-scki-fused-055-tracker-ipcidr.yaml",
-      "provider-scki-fused-055-tracker-residual.yaml",
-      "provider-scki-fused-056-gfw-domain.yaml",
-      "provider-scki-fused-056-gfw-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-056-gfw-residual.yaml",
-      "provider-scki-fused-057-game-cn-domain.yaml",
-      "provider-scki-fused-058-game-intl-domain.yaml",
-      "provider-scki-fused-058-game-intl-ipcidr.yaml",
-      "provider-scki-fused-058-game-intl-residual.yaml",
-      "provider-scki-fused-059-intl-site-domain.yaml",
-      "provider-scki-fused-059-intl-site-ipcidr.yaml",
-      "provider-scki-fused-059-intl-site-residual.yaml",
-      "provider-scki-fused-060-payments-domain.yaml",
-      "provider-scki-fused-061-cnmedia-domain.yaml",
-      "provider-scki-fused-061-cnmedia-ipcidr.yaml",
-      "provider-scki-fused-061-cnmedia-residual.yaml",
-      "provider-scki-fused-062-cn-site-domain.yaml",
-      "provider-scki-fused-062-cn-site-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-063-direct-domain.yaml",
-      "provider-scki-fused-064-cn-site-domain.yaml",
-      "provider-scki-fused-064-cn-site-residual.yaml",
-      "provider-scki-fused-065-intl-site-domain.yaml",
-      "provider-scki-fused-065-intl-site-ipcidr.yaml",
-      "provider-scki-fused-065-intl-site-ipcidr-no-resolve.yaml",
-      "provider-scki-fused-065-intl-site-residual.yaml",
-      "provider-scki-fused-067-netflix-residual.yaml"
+      "provider-scki-fused-015-google-domain.yaml",
+      "provider-scki-fused-015-google-residual.yaml",
+      "provider-scki-fused-016-work-domain.yaml",
+      "provider-scki-fused-017-ai-domain.yaml",
+      "provider-scki-fused-017-ai-ipcidr.yaml",
+      "provider-scki-fused-017-ai-residual.yaml",
+      "provider-scki-fused-018-intl-site-domain.yaml",
+      "provider-scki-fused-019-im-domain.yaml",
+      "provider-scki-fused-020-work-domain.yaml",
+      "provider-scki-fused-021-download-domain.yaml",
+      "provider-scki-fused-021-download-ipcidr.yaml",
+      "provider-scki-fused-022-google-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-023-tools-domain.yaml",
+      "provider-scki-fused-024-ai-domain.yaml",
+      "provider-scki-fused-024-ai-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-024-ai-residual.yaml",
+      "provider-scki-fused-025-google-domain.yaml",
+      "provider-scki-fused-026-ai-domain.yaml",
+      "provider-scki-fused-026-ai-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-026-ai-residual.yaml",
+      "provider-scki-fused-027-crypto-domain.yaml",
+      "provider-scki-fused-027-crypto-residual.yaml",
+      "provider-scki-fused-028-payments-domain.yaml",
+      "provider-scki-fused-028-payments-residual.yaml",
+      "provider-scki-fused-029-microsoft-domain.yaml",
+      "provider-scki-fused-030-intl-site-domain.yaml",
+      "provider-scki-fused-031-direct-domain.yaml",
+      "provider-scki-fused-032-im-domain.yaml",
+      "provider-scki-fused-032-im-ipcidr.yaml",
+      "provider-scki-fused-032-im-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-032-im-residual.yaml",
+      "provider-scki-fused-033-social-domain.yaml",
+      "provider-scki-fused-033-social-ipcidr.yaml",
+      "provider-scki-fused-033-social-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-033-social-residual.yaml",
+      "provider-scki-fused-034-cn-site-domain.yaml",
+      "provider-scki-fused-035-social-domain.yaml",
+      "provider-scki-fused-036-work-domain.yaml",
+      "provider-scki-fused-036-work-ipcidr.yaml",
+      "provider-scki-fused-037-direct-domain.yaml",
+      "provider-scki-fused-038-cnmedia-domain.yaml",
+      "provider-scki-fused-039-tiktok-domain.yaml",
+      "provider-scki-fused-041-netflix-domain.yaml",
+      "provider-scki-fused-041-netflix-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-042-disney-domain.yaml",
+      "provider-scki-fused-043-hbo-max-domain.yaml",
+      "provider-scki-fused-044-hulu-domain.yaml",
+      "provider-scki-fused-045-prime-video-domain.yaml",
+      "provider-scki-fused-045-prime-video-ipcidr.yaml",
+      "provider-scki-fused-045-prime-video-residual.yaml",
+      "provider-scki-fused-046-music-domain.yaml",
+      "provider-scki-fused-046-music-ipcidr.yaml",
+      "provider-scki-fused-047-stream-hk-domain.yaml",
+      "provider-scki-fused-047-stream-hk-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-047-stream-hk-residual.yaml",
+      "provider-scki-fused-048-stream-tw-domain.yaml",
+      "provider-scki-fused-048-stream-tw-residual.yaml",
+      "provider-scki-fused-049-stream-jpkr-domain.yaml",
+      "provider-scki-fused-049-stream-jpkr-ipcidr.yaml",
+      "provider-scki-fused-049-stream-jpkr-residual.yaml",
+      "provider-scki-fused-050-stream-eu-domain.yaml",
+      "provider-scki-fused-050-stream-eu-residual.yaml",
+      "provider-scki-fused-051-stream-other-domain.yaml",
+      "provider-scki-fused-051-stream-other-ipcidr.yaml",
+      "provider-scki-fused-051-stream-other-residual.yaml",
+      "provider-scki-fused-052-tools-domain.yaml",
+      "provider-scki-fused-053-google-domain.yaml",
+      "provider-scki-fused-054-tools-domain.yaml",
+      "provider-scki-fused-054-tools-ipcidr.yaml",
+      "provider-scki-fused-054-tools-residual.yaml",
+      "provider-scki-fused-055-microsoft-residual.yaml",
+      "provider-scki-fused-056-apple-domain.yaml",
+      "provider-scki-fused-056-apple-ipcidr.yaml",
+      "provider-scki-fused-056-apple-residual.yaml",
+      "provider-scki-fused-057-download-domain.yaml",
+      "provider-scki-fused-057-download-ipcidr.yaml",
+      "provider-scki-fused-057-download-residual.yaml",
+      "provider-scki-fused-058-tracker-domain.yaml",
+      "provider-scki-fused-058-tracker-ipcidr.yaml",
+      "provider-scki-fused-058-tracker-residual.yaml",
+      "provider-scki-fused-059-gfw-domain.yaml",
+      "provider-scki-fused-059-gfw-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-059-gfw-residual.yaml",
+      "provider-scki-fused-060-game-cn-domain.yaml",
+      "provider-scki-fused-061-game-intl-domain.yaml",
+      "provider-scki-fused-061-game-intl-ipcidr.yaml",
+      "provider-scki-fused-061-game-intl-residual.yaml",
+      "provider-scki-fused-062-intl-site-domain.yaml",
+      "provider-scki-fused-062-intl-site-ipcidr.yaml",
+      "provider-scki-fused-062-intl-site-residual.yaml",
+      "provider-scki-fused-063-payments-domain.yaml",
+      "provider-scki-fused-064-cnmedia-domain.yaml",
+      "provider-scki-fused-064-cnmedia-ipcidr.yaml",
+      "provider-scki-fused-064-cnmedia-residual.yaml",
+      "provider-scki-fused-065-cn-site-domain.yaml",
+      "provider-scki-fused-065-cn-site-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-066-direct-domain.yaml",
+      "provider-scki-fused-067-cn-site-domain.yaml",
+      "provider-scki-fused-067-cn-site-residual.yaml",
+      "provider-scki-fused-068-intl-site-domain.yaml",
+      "provider-scki-fused-068-intl-site-ipcidr.yaml",
+      "provider-scki-fused-068-intl-site-ipcidr-no-resolve.yaml",
+      "provider-scki-fused-068-intl-site-residual.yaml",
+      "provider-scki-fused-070-netflix-residual.yaml"
     ]
   }
 }

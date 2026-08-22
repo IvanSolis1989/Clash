@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.11-oc-normal.5 / v6.0.11-oc-smart.5 (2026-08-22)
+
+- ROUTING：Normal 与 Smart 同步 Gemini / Accademia Gemini 的 Google 融合段；`szkane-ai` 仍按原顺序走 AI。
+- SYNC：升级为 132 个融合 provider / 151 条规则，发布缓存键为 `v6.0.11`。
+
 ## v6.0.10-oc-normal.5 / v6.0.10-oc-smart.5 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：Normal 与 Smart 同步首段融合直连资产；两个网易游戏服务主机在 anti-AD 和 `netease.com` 国内游戏宽规则之前固定直连。

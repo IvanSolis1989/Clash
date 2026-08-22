@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.11-sing.2 (2026-08-22)
+
+- Full JSON 由最终 fused SRS 重生成：Gemini 与 Accademia Gemini 的首命中由 AI 改为 Google，其他 AI 规则保持原有策略和顺序。
+
 ## v6.0.10-sing.2 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：Full JSON 与首段 fused SRS 重新生成；两个网易游戏服务主机固定走 `DIRECT`，不继承国内游戏出站选择。

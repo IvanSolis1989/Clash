@@ -6,6 +6,15 @@
 
 ---
 
+## v6.0.11 Gemini / Accademia Gemini Google 路由 (2026-08-22)
+
+- ROUTING：仅将 `RULE-SET,gemini` 与 `RULE-SET,acc-gemini` 的目标从 `🤖 AI 服务` 调整为 `🔍 Google 服务`；`szkane-ai` 的顺序与 AI 目标保持不变。
+- SYNC：以 `HEAD` 固定载荷受控重放并重建 72 个策略段（69 个非空原生资产）及全部客户端派生产物；未引入上游规则刷新。
+
+## 2026-08-22 仓库自动化修复
+
+- AUTOMATION：Issue 自动回复切换至 Xiaomi MiMo，统一首轮 / 追问模型与可选 Token Plan 端点配置；本次不修改规则源或客户端产物版本。
+
 ## v6.0.10 网易游戏精确直连修复 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：`drpf-g10.proxima.nie.netease.com` 与 `sigma-performance-g10.proxima.nie.netease.com` 加入仓库自有的首段精确直连规则集。

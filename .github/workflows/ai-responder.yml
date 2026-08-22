@@ -1,4 +1,4 @@
-name: AI Issue Auto-Responder (DeepSeek)
+name: AI Issue Auto-Responder (Xiaomi MiMo)
 
 # ═══════════════════════════════════════════════════════════════════════════
 # Smart-Config-Kit — AI Issue 自动回复器
@@ -9,21 +9,21 @@ name: AI Issue Auto-Responder (DeepSeek)
 #      —— 对应 .github/ISSUE_TEMPLATE 里 4 个模板各自的 labels 字段
 #   2. 任何人在 issue 评论区写 "/ai-help"
 #
-# 分层调用策略（v4 — DeepSeek V4 双模型 + 代码修改权限）：
+# 分层调用策略（Xiaomi MiMo 双模型 + 代码修改权限）：
 #   ┌──────────────────────┬───────────────┬──────────┬──────────┬──────────┐
 #   │ Issue 类别            │ 触发场景       │ 模型     │ Thinking │ 代码修改 │
 #   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
-#   │ question/faq/        │ 首次（labeled）│ v4-flash │ enabled  │ ❌       │
-#   │   help wanted        │ 第1次+ /ai-help│ v4-pro   │ enabled  │ ❌       │
+#   │ question/faq/        │ 首次（labeled）│ mimo-v2.5 │ enabled  │ ❌       │
+#   │   help wanted        │ 第1次+ /ai-help│ mimo-v2.5-pro │ enabled  │ ❌       │
 #   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
-#   │ bug                  │ 首次（labeled）│ v4-flash │ enabled  │ ✅       │
-#   │                      │ /ai-help 追问  │ v4-pro   │ enabled  │ ✅       │
+#   │ bug                  │ 首次（labeled）│ mimo-v2.5 │ enabled  │ ✅       │
+#   │                      │ /ai-help 追问  │ mimo-v2.5-pro │ enabled  │ ✅       │
 #   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
-#   │ enhancement          │ 首次（labeled）│ v4-flash │ enabled  │ ✅       │
-#   │                      │ /ai-help 追问  │ v4-pro   │ enabled  │ ✅       │
+#   │ enhancement          │ 首次（labeled）│ mimo-v2.5 │ enabled  │ ✅       │
+#   │                      │ /ai-help 追问  │ mimo-v2.5-pro │ enabled  │ ✅       │
 #   ├──────────────────────┼───────────────┼──────────┼──────────┼──────────┤
-#   │ documentation        │ 首次（labeled）│ v4-flash │ enabled  │ ✅ (文档) │
-#   │                      │ /ai-help 追问  │ v4-flash │ enabled  │ ✅ (文档) │
+#   │ documentation        │ 首次（labeled）│ mimo-v2.5 │ enabled  │ ✅ (文档) │
+#   │                      │ /ai-help 追问  │ mimo-v2.5-pro │ enabled  │ ✅ (文档) │
 #   └──────────────────────┴───────────────┴──────────┴──────────┴──────────┘
 #
 #   代码修改模式：AI 输出结构化响应（<!-- AI_REPLY --> + <!-- AI_PATCH --> +
@@ -36,11 +36,12 @@ name: AI Issue Auto-Responder (DeepSeek)
 #   • 不改代码的模式下仍禁止 diff/patch
 #   • timeout 15 分钟硬上限
 #
-# 需要配置的 secret（两个）：
-#   Settings → Secrets and variables → Actions → New repository secret
-#     Name:  DEEPSEEK_API_KEY
-#     Value: https://platform.deepseek.com/api_keys 生成
-#     Name:  TAVILY_API_KEY
+# 需要配置的 secret / variable：
+#   Settings → Secrets and variables → Actions
+#     Secret:   MIMO_API_KEY
+#     Value:    Xiaomi MiMo 控制台生成的 API key（标准或 Token Plan，不能混用）
+#     Variable: MIMO_BASE_URL（可选；Token Plan 填控制台提供的完整 base URL）
+#     Secret:   TAVILY_API_KEY
 #     Value: https://app.tavily.com/home 生成（免费 1000 次/月；可选，不配则跳过联网搜索）
 # ═══════════════════════════════════════════════════════════════════════════
 
@@ -199,53 +200,54 @@ jobs:
           case "$CATEGORY" in
             question)
               if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
-                MODEL="deepseek-v4-pro"
+                MODEL="mimo-v2.5-pro"
                 TIER_MARK="FOLLOWUP"
-                TIER_LABEL="问题追问（v4-pro 思考 · 只分析）"
+                TIER_LABEL="问题追问（mimo-v2.5-pro 思考 · 只分析）"
               else
-                MODEL="deepseek-v4-flash"
+                MODEL="mimo-v2.5"
                 TIER_MARK="FIRST"
-                TIER_LABEL="问题/求助（首轮 · v4-flash 思考 · 只分析）"
+                TIER_LABEL="问题/求助（首轮 · mimo-v2.5 思考 · 只分析）"
               fi
               THINKING_TYPE="enabled"
               CODE_MOD="false"
               ;;
             bug)
               if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
-                MODEL="deepseek-v4-pro"
+                MODEL="mimo-v2.5-pro"
                 TIER_MARK="FOLLOWUP"
-                TIER_LABEL="Bug 追问（v4-pro 思考 · 可改代码）"
+                TIER_LABEL="Bug 追问（mimo-v2.5-pro 思考 · 可改代码）"
               else
-                MODEL="deepseek-v4-flash"
+                MODEL="mimo-v2.5"
                 TIER_MARK="FIRST"
-                TIER_LABEL="Bug 分析（首轮 · v4-flash 思考 · 可改代码）"
+                TIER_LABEL="Bug 分析（首轮 · mimo-v2.5 思考 · 可改代码）"
               fi
               THINKING_TYPE="enabled"
               CODE_MOD="true"
               ;;
             enhancement)
               if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
-                MODEL="deepseek-v4-pro"
+                MODEL="mimo-v2.5-pro"
                 TIER_MARK="FOLLOWUP"
-                TIER_LABEL="功能建议追问（v4-pro 思考 · 可改代码）"
+                TIER_LABEL="功能建议追问（mimo-v2.5-pro 思考 · 可改代码）"
               else
-                MODEL="deepseek-v4-flash"
+                MODEL="mimo-v2.5"
                 TIER_MARK="FIRST"
-                TIER_LABEL="功能建议（首轮 · v4-flash 思考 · 可改代码）"
+                TIER_LABEL="功能建议（首轮 · mimo-v2.5 思考 · 可改代码）"
               fi
               THINKING_TYPE="enabled"
               CODE_MOD="true"
               ;;
             documentation)
-              MODEL="deepseek-v4-flash"
               THINKING_TYPE="enabled"
               CODE_MOD="true"
               if [ "$GITHUB_EVENT_NAME" = "issue_comment" ]; then
+                MODEL="mimo-v2.5-pro"
                 TIER_MARK="FOLLOWUP"
-                TIER_LABEL="文档追问（v4-flash 思考 · 可改文档）"
+                TIER_LABEL="文档追问（mimo-v2.5-pro 思考 · 可改文档）"
               else
+                MODEL="mimo-v2.5"
                 TIER_MARK="FIRST"
-                TIER_LABEL="文档反馈（首轮 · v4-flash 思考 · 可改文档）"
+                TIER_LABEL="文档反馈（首轮 · mimo-v2.5 思考 · 可改文档）"
               fi
               ;;
           esac
@@ -316,11 +318,12 @@ jobs:
           echo "✅ Tavily done: ${RESULTS_COUNT} results"
           echo "tavily_results=${RESULTS_COUNT}" >> "$GITHUB_OUTPUT"
 
-      # ── 步骤 2：调用 DeepSeek API ────────────────────────────
-      - name: Call DeepSeek API
+      # ── 步骤 2：调用 Xiaomi MiMo API ─────────────────────────
+      - name: Call Xiaomi MiMo API
         id: llm
         env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          MIMO_API_KEY: ${{ secrets.MIMO_API_KEY }}
+          MIMO_BASE_URL: ${{ vars.MIMO_BASE_URL }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
@@ -333,11 +336,15 @@ jobs:
           CATEGORY: ${{ steps.tier.outputs.category }}
           AI_HELP_COUNT: ${{ steps.tier.outputs.ai_help_count }}
         run: |
-          if [ -z "${DEEPSEEK_API_KEY}" ]; then
-            echo "⚠️  DEEPSEEK_API_KEY secret 未配置，跳过 AI 调用" >&2
+          if [ -z "${MIMO_API_KEY}" ]; then
+            echo "⚠️  MIMO_API_KEY secret 未配置，跳过 MiMo AI 调用" >&2
             echo "skipped=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
+          BASE_URL="${MIMO_BASE_URL:-https://api.xiaomimimo.com/v1}"
+          BASE_URL="${BASE_URL%/}"
+          API_ENDPOINT="${BASE_URL}/chat/completions"
 
           echo "🎯 Model: ${MODEL} / Thinking: ${THINKING} / CodeMod: ${CODE_MOD} / Timeout: ${CURL_TIMEOUT}s"
 
@@ -505,19 +512,19 @@ jobs:
                 ) }
               ],
               thinking: { type: $thinking },
-              max_tokens: (if $thinking == "enabled" then 4096 else 1500 end),
+              max_completion_tokens: (if $thinking == "enabled" then 4096 else 1500 end),
               stream: false
             }' > /tmp/req_body.json
 
-          RESPONSE=$(curl -s --max-time "$CURL_TIMEOUT" https://api.deepseek.com/chat/completions \
-            -H "Authorization: Bearer $DEEPSEEK_API_KEY" \
+          RESPONSE=$(curl -s --max-time "$CURL_TIMEOUT" "$API_ENDPOINT" \
+            -H "api-key: $MIMO_API_KEY" \
             -H "Content-Type: application/json" \
             -d @/tmp/req_body.json)
 
           RAW_REPLY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content // empty')
           if [ -z "$RAW_REPLY" ]; then
             ERR=$(echo "$RESPONSE" | jq -r '.error.message // "未知错误"')
-            RAW_REPLY="⚠️ AI 调用失败：${ERR}（请等维护者人工回复）"
+            RAW_REPLY="⚠️ MiMo AI 调用失败：${ERR}（请等维护者人工回复）"
             echo "has_patch=false" >> "$GITHUB_OUTPUT"
           fi
 
@@ -725,7 +732,7 @@ jobs:
         with:
           script: |
             const aiReply = process.env.AI_REPLY || '(AI 回复为空，请等维护者人工回复)';
-            const model   = process.env.AI_MODEL || 'deepseek-v4-flash';
+            const model   = process.env.AI_MODEL || 'mimo-v2.5';
             const tier    = process.env.AI_TIER  || 'AI 自动回复';
             const codeMod = process.env.CODE_MOD || 'false';
             const prUrl   = process.env.PR_URL   || '';
@@ -770,7 +777,7 @@ jobs:
             const commentBody = [
               '> ⚠️ AI 助手未就绪',
               '',
-              '仓库维护者需要先在 Settings → Secrets and variables → Actions 里配置 `DEEPSEEK_API_KEY`，此 issue 将等人工回复。',
+              '仓库维护者需要先在 Settings → Secrets and variables → Actions 里配置 `MIMO_API_KEY`（可选变量 `MIMO_BASE_URL`；Token Plan 请填控制台提供的完整 base URL），此 issue 将等人工回复。',
               '',
               '<sub>Workflow: `.github/workflows/ai-responder.yml`</sub>'
             ].join('\n');

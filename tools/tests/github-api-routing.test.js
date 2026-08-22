@@ -84,6 +84,34 @@ test('api.github.com keeps a process-scoped AI exception before its generic Tool
   }
 });
 
+test('Gemini-specific rules reach Google before broad szkane AI matching', () => {
+  const graph = getRawRoutingGraph();
+  const geminiRule = `RULE-SET,gemini,${BIZ.GOOGLE}`;
+  const accGeminiRule = `RULE-SET,acc-gemini,${BIZ.GOOGLE}`;
+  const szkaneAiRule = `RULE-SET,szkane-ai,${BIZ.AI}`;
+  const geminiIndex = graph.rules.indexOf(geminiRule);
+  const szkaneAiIndex = graph.rules.indexOf(szkaneAiRule);
+  const accGeminiIndex = graph.rules.indexOf(accGeminiRule);
+
+  assert.ok(geminiIndex >= 0, 'gemini must target Google in the source graph');
+  assert.ok(accGeminiIndex >= 0, 'acc-gemini must target Google in the source graph');
+  assert.ok(szkaneAiIndex >= 0, 'szkane-ai must remain in the source graph');
+  assert.ok(geminiIndex < szkaneAiIndex, 'gemini must remain before broad szkane AI matching');
+  assert.ok(szkaneAiIndex < accGeminiIndex, 'szkane-ai must retain its relative source order');
+
+  for (const host of [
+    'gemini.google.com',
+    'generativelanguage.googleapis.com',
+    'apis.google.com',
+    'ai.google',
+    'deepmind.com',
+  ]) {
+    assert.equal(firstDomainRoute(host).policy, BIZ.GOOGLE, `${host} must first-match Google`);
+  }
+  assert.equal(firstDomainRoute('cerebras.ai').policy, BIZ.AI, 'non-Gemini szkane AI traffic must stay AI routed');
+  assert.equal(firstDomainRoute('static.doubleclick.net').policy, BIZ.AD, 'advertising must retain priority over Google');
+});
+
 test('generated clients route generic GitHub API traffic to Tools while retaining supported process precision', () => {
   const genericRoute = firstDomainRoute('api.github.com');
   assert.ok(genericRoute, 'api.github.com must match a fused domain rule set');

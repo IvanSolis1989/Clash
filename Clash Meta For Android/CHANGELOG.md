@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.11-cmfa.3 (2026-08-22)
+
+- ROUTING：同步 Gemini 与 Accademia Gemini 的融合引用至 `🔍 Google 服务`；不移动或改写 `szkane-ai`。
+- SYNC：规则缓存路径升级至 `v6.0.11`，对应 132 个融合 provider / 151 条主规则。
+
 ## v6.0.10-cmfa.3 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：同步首段融合直连资产；两个报告的网易游戏服务主机在 anti-AD 与国内游戏宽规则之前命中 `DIRECT`。

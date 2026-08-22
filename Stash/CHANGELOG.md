@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.11-stash.3 (2026-08-22)
+
+- 由 CMFA v6.0.11-cmfa.3 重新生成；Gemini 与 Accademia Gemini 首命中进入 `🔍 Google 服务`，宽泛 szkane AI 规则不变。
+
 ## v6.0.10-stash.3 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：由 CMFA v6.0.10-cmfa.3 重新生成；两个网易游戏服务主机随首段融合直连资产优先于 anti-AD 与国内游戏规则。

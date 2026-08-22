@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.11-SR.3 (2026-08-22)
+
+- ROUTING：69 个远程融合 RULE-SET 重放后，Gemini 与 Accademia Gemini 进入 `🔍 Google 服务`；其余 AI 段及 szkane 顺序不变。
+
 ## v6.0.10-SR.3 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：`drpf-g10.proxima.nie.netease.com` 与 `sigma-performance-g10.proxima.nie.netease.com` 位于第一个融合 `DIRECT` RULE-SET，不再落入用户可改为代理的“国内游戏”策略组。

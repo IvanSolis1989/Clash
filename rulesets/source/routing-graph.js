@@ -5,7 +5,7 @@
 // upstream provider/rule relationship used by MRS and fused-rule compilers.
 
 const SOURCE_GRAPH_ID = 'rulesets/source/routing-graph.js';
-const SOURCE_GRAPH_VERSION = 'v6.0.10';
+const SOURCE_GRAPH_VERSION = 'v6.0.11';
 const VERSION = SOURCE_GRAPH_VERSION;
 
 let SCKI_DISABLE_MIHOMO_MRS_OVERRIDES = false;
@@ -1157,7 +1157,7 @@ function injectRules(config) {
     `RULE-SET,${SCKI.CNSITE_GUARD},${BIZ.CN_SITE}`,
     `RULE-SET,openai,${BIZ.AI}`,
     `RULE-SET,claude,${BIZ.AI}`,
-    `RULE-SET,gemini,${BIZ.AI}`,
+    `RULE-SET,gemini,${BIZ.GOOGLE}`,
     // v5.4.10 FIX#RD-COPILOT: RustDesk relay/API before broad Copilot ASN rules.
     `RULE-SET,${SCKI.WORK_GUARD},${BIZ.WORK}`,
     `RULE-SET,copilot,${BIZ.AI}`,
@@ -1193,7 +1193,7 @@ function injectRules(config) {
     `RULE-SET,szkane-ciciai,${BIZ.AI}`,
     `RULE-SET,acc-appleai,${BIZ.AI}`,
     `RULE-SET,acc-grok,${BIZ.AI}`,
-    `RULE-SET,acc-gemini,${BIZ.AI}`,
+    `RULE-SET,acc-gemini,${BIZ.GOOGLE}`,
     `RULE-SET,acc-copilot,${BIZ.AI}`,
     `RULE-SET,vpsdance-ai-coding,${BIZ.AI}`,
     `DOMAIN-SUFFIX,tradingview.com,${BIZ.CRYPTO}`,

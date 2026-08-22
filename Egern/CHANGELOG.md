@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.11-egern.2 (2026-08-22)
+
+- Profile 与原生 rule_set 由 CMFA v6.0.11-cmfa.3 重生成；Gemini 与 Accademia Gemini 首命中为 `🔍 Google 服务`，不改 szkane AI 规则。
+
 ## v6.0.10-egern.2 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：由 CMFA v6.0.10-cmfa.3 重新生成首段原生 YAML rule_set；两个网易游戏服务主机优先于 anti-AD 与国内游戏宽规则。

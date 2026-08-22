@@ -2,10 +2,14 @@
 
 > `Passwall/` 目录的变更日志（Passwall 全功能版专属参考；四列表 + shunt_rules + ACL 三层架构）。
 > 与 `Passwall2/` 目录（精简分流版参考）内容互通——两者共用 `shunt_rules.lua` 解析器，同一份 `.list` 互通。
-> 本目录提供从 `rulesets/generated/fused/sing-box/*.srs` 生成的 64 条非空原生 fused shunt rule 降级参考。
+> 本目录提供从 `rulesets/generated/fused/sing-box/*.srs` 生成的 69 条非空原生 fused shunt rule 降级参考。
 > 主版本号跟随 Clash Party 主线；尾段 `-pw.N` 独立递增。
 
 ---
+
+## v6.0.11-pw.2 (2026-08-22)
+
+- 69 条 fused SRS shunt rule 从最终 manifest 重建；Gemini 与 Accademia Gemini 段改走 Google 语义，szkane AI 段及顺序保持不变。
 
 ## v6.0.10-pw.2 (2026-08-08)
 

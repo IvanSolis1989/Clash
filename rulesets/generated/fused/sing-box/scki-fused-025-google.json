@@ -1,0 +1,11 @@
+{
+  "version": 3,
+  "rules": [
+    {
+      "domain_suffix": [
+        "static.doubleclick.net",
+        "td.doubleclick.net"
+      ]
+    }
+  ]
+}

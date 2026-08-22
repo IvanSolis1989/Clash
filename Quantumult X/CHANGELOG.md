@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.11-QX.3 (2026-08-22)
+
+- ROUTING：69 个 remote URL filter 按融合顺序更新；Gemini 与 Accademia Gemini 改走 `🔍 Google 服务`，广告规则仍优先。
+
 ## v6.0.10-QX.3 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：同步首段精确直连融合 URL；两个网易游戏服务主机在 anti-AD 和国内游戏宽规则之前命中 `direct`。

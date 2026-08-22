@@ -7,6 +7,10 @@
 
 ---
 
+## v6.0.11-v2n.2 (2026-08-22)
+
+- Xray fallback 从最终 69 个 fused sing-box 段展平为 89 条 RuleObject；Gemini 与 Accademia Gemini 段改为 proxy Google 语义，未移动 szkane AI 段。
+
 ## v6.0.10-v2n.2 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：Xray fallback 从首段 fused sing-box JSON 重建；两个网易游戏服务主机在国内游戏段之前以 `direct` 出站匹配。

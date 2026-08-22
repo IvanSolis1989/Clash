@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.11-flclash.6 (2026-08-22)
+
+- ROUTING：与 Clash Party Normal 同步 132 个融合 provider / 151 条规则；Gemini 与 Accademia Gemini 改走 `🔍 Google 服务`，szkane AI 规则保持原位。
+
 ## v6.0.10-flclash.6 (2026-08-08)
 
 - FIX#179-NETEASE-GAME-DIRECT：与 Clash Party Normal 同步首段精确直连融合规则；两个网易游戏服务主机优先于 anti-AD 与国内游戏宽规则。
