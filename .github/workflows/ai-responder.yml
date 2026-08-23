@@ -323,7 +323,8 @@ jobs:
         id: llm
         env:
           MIMO_API_KEY: ${{ secrets.MIMO_API_KEY }}
-          MIMO_BASE_URL: ${{ vars.MIMO_BASE_URL }}
+          # 优先使用配置项；兼容误建为 Secret 的 Base URL，最终回退到 Token Plan 中国端点。
+          MIMO_BASE_URL: ${{ vars.MIMO_BASE_URL || secrets.MIMO_BASE_URL || 'https://token-plan-cn.xiaomimimo.com/v1' }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_URL: ${{ github.event.issue.html_url }}
@@ -342,7 +343,7 @@ jobs:
             exit 0
           fi
 
-          BASE_URL="${MIMO_BASE_URL:-https://api.xiaomimimo.com/v1}"
+          BASE_URL="${MIMO_BASE_URL:-https://token-plan-cn.xiaomimimo.com/v1}"
           BASE_URL="${BASE_URL%/}"
           API_ENDPOINT="${BASE_URL}/chat/completions"
 
