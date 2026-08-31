@@ -5,6 +5,14 @@
 
 ---
 
+## v6.0.11-flclash.7 (2026-08-31)
+
+- FIX#181-DOC：关联脚本后关闭应用层「DNS 覆写」及独立的「追加系统 DNS」，移除要求重复粘贴 UI DNS YAML 的教程与脚本头部错误提示；说明 UI 整体替换 DNS、丢失未知字段、最终配置验证和 IPv6 的应用层边界。
+- ANDROID：校正 VPN「系统代理」的 UI 名称，说明它附加 HTTP 代理但不关闭 TUN，以及与应用访问控制/分流 VPN 混用的风险；提供保留国内 APP 排除名单的排障步骤。
+- DNS/GEOX：区分国内 DoH、随机未分类 DNS 查询、节点 bootstrap 与真实泄漏；GeoX 默认 URL 优先，不再承诺 CDN 国内更快或要求强制替换。
+- REFERENCE：按 FlClash v0.8.96 官方源码、Mihomo DNS 文档和 Android VpnService API 校正参考说明。
+- SCOPE：本次只修正 FlClash 使用契约与版本元信息；DNS 算法、源规则图、55 组定义、132 个 provider、151 条规则及其他客户端配置均不改，不刷新上游规则资产。
+
 ## v6.0.11-flclash.6 (2026-08-22)
 
 - ROUTING：与 Clash Party Normal 同步 132 个融合 provider / 151 条规则；Gemini 与 Accademia Gemini 改走 `🔍 Google 服务`，szkane AI 规则保持原位。

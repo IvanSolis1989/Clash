@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.11-flclash.7 应用层配置修正 (2026-08-31)
+
+- FIX#181：纠正 FlClash DNS 二次覆盖、Android VPN HTTP 代理与应用排除的使用说明；保留规则与 DNS 运行时基线。详见 [FlClash 变更日志](./FlClash/CHANGELOG.md)。
+
 ## v6.0.11 Gemini / Accademia Gemini Google 路由 (2026-08-22)
 
 - ROUTING：仅将 `RULE-SET,gemini` 与 `RULE-SET,acc-gemini` 的目标从 `🤖 AI 服务` 调整为 `🔍 Google 服务`；`szkane-ai` 的顺序与 AI 目标保持不变。

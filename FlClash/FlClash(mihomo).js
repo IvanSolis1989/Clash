@@ -1,8 +1,7 @@
 // FlClash 覆写脚本 — 标准 Mihomo 内核动态分流版
-// 版本：v6.0.11-flclash.6 (2026-08-22)
+// 版本：v6.0.11-flclash.7 (2026-08-31)
 // 架构：22 url-test 区域组（11 全部 + 11 家宽）+ 33 业务策略组 + 132 融合 rule-providers / 151 rules
 // 规则源：rulesets/source/routing-graph.js v6.0.11（规则 100% 等价；区域组为 url-test — FlClash 内核为标准 Mihomo，不支持 smart + LightGBM）
-// v6.0.11-flclash.6：Gemini 与 Accademia Gemini 规则集改走 Google 服务；szkane-ai 顺序和 AI 目标保持不变
 // 适用：FlClash >= v0.8.85（覆盖脚本功能自该版本引入）；其他使用标准 Mihomo 内核的客户端
 // 变更历史：见 `FlClash/CHANGELOG.md`
 //
@@ -22,11 +21,11 @@
 //
 // ⚠️ GitHub 被墙时先确保代理已通，或用 jsdelivr CDN / 手动粘贴。
 //
-// === 脚本导入后必做的手动配置（FlClash UI 内操作） ===
-// 以下两项由 FlClash App UI 托管，覆写脚本无法注入，必须手动配置：
-//   1. 外部资源（GeoX URL）：编辑订阅 →「外部资源」标签 → 粘贴 geox-url YAML
-//   2. 进阶配置（DNS）：编辑订阅 →「进阶配置」标签 → 粘贴 dns YAML
-//   完整 YAML 见：FlClash/README.md → 第 4 步 必改配置
+// === 脚本导入后的应用层设置（FlClash UI 内操作） ===
+//   1. 关闭「DNS 覆写」和「追加系统 DNS」，保留本脚本 DNS；不要另粘贴 UI DNS。
+//   2. Android 开启 VPN、关闭 VPN「系统代理」；应用访问控制与 HTTP 代理不要混用。
+//   3. IPv6 需在 App UI 同时关闭；GeoX 可保留客户端默认，不强制改 CDN。
+//   原因、最终配置检查和分应用排障见 FlClash/README.md。
 //
 // === 与 CMFA YAML 的选择 ===
 // - 本 JS 脚本：动态节点分类（word-boundary 正则，精确度高于 YAML filter:）、
@@ -36,7 +35,7 @@
 //  版本常量
 // ================================================================
 
-const VERSION = 'v6.0.11-flclash.6'
+const VERSION = 'v6.0.11-flclash.7'
 
 // 受信任的本地订阅适配模式：off | policy | adaptive。
 // 不从机场订阅读取；三档均不会改变 55 组、规则或仓库 DNS 基线。
@@ -1002,7 +1001,8 @@ function overwriteGeneral(config, nodeDnsHints) {
   config['keep-alive-idle'] = 30
   config['keep-alive-interval'] = 15
   // FlClash: 端口/TUN/GeoX 由 App UI 管理，脚本不覆写。
-  //   - 外部资源（GeoX URL）：见 FlClash/README.md §必改配置
+  //   - 外部资源（GeoX URL）：可保留 App 默认，见 FlClash/README.md
+  //   - 必须关闭 App「DNS 覆写」，否则后续合并会覆盖下面的 DNS。
   //   - DNS：default-nameserver 纯 IP 自举，其它 resolver 固定 DoH
   if (!config.dns || typeof config.dns !== 'object' || Array.isArray(config.dns)) config.dns = {}
   config.dns.enable = true

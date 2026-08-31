@@ -7,6 +7,10 @@
 
 ---
 
+## 2026-08-31 FlClash 平台说明联动
+
+- FIX#181：FlClash 子版本 `v6.0.11-flclash.7` 修正其应用层 DNS 覆盖与 Android VPN HTTP 代理说明。Clash Party 没有 FlClash 的后置 `overrideDns` 开关；本次不改 Clash Party 产物、规则源或 DNS 算法。详见 [FlClash 变更日志](../FlClash/CHANGELOG.md)。
+
 ## v6.0.11-dns.4 / v6.0.11-normal.5 (2026-08-22)
 
 - ROUTING：仅 `gemini` 与 `acc-gemini` 融合段改为 `🔍 Google 服务`；`szkane-ai` 仍为 `🤖 AI 服务`，且保持原有相对顺序。

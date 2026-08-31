@@ -65,7 +65,7 @@ profile 的唯一源是 `tools/runtime/subscription-adapter-profiles.json`，发
 |---|---|---|
 | Clash Party Smart | 自动 | JS 覆写有订阅配置输入。 |
 | Clash Party Normal | 自动 | 同上。 |
-| FlClash 覆写脚本 | 自动 | JS 覆写有订阅配置输入。 |
+| FlClash 覆写脚本 | 自动，有应用层前提 | 关联 JS 后关闭「DNS 覆写」，避免 UI 二次覆盖节点 DNS 投影；核对最终配置，见 [FlClash 教程](../FlClash/README.md)。 |
 | OpenClash Normal / Smart | 自动 | 覆写 Ruby 在写入本地配置前可读取原订阅。 |
 | CMFA / Stash / Egern | 本地 overlay | 静态 YAML（Stash/Egern 还是生成物，禁止手改生成文件），没有订阅运行时变换 seam。 |
 | Shadowrocket / Surge / Loon / Quantumult X | 本地配置 | 仓库交付的是静态私有配置，不能读取机场源 YAML。 |
