@@ -1,19 +1,19 @@
 {
   "schema_version": 1,
   "generator": "tools/generate-egern-from-cmfa.js",
-  "asset_revision": "v6.0.11",
+  "asset_revision": "v6.0.12",
   "source": {
-    "cmfa_sha256": "aaad4fe6dbafb047b2ccc621d6c6e2cf8c94fec65bafe991482f98f0a4442bb2",
-    "routing_graph_sha256": "c8c6fdaa532b2282fd0a326d4faa3e41a4b90a9e93f4f842f0529ea3c9b853b8",
+    "cmfa_sha256": "ba4f6dbe52a975d4053820cb94c24c5cb8e41d2404fb40d1937d0d6e8fedfb08",
+    "routing_graph_sha256": "34f40b42a156bd6ca428e08b1b73ca0b7524c5596338a21a28b67eb096a1a4ab",
     "cmfa_provider_count": 132,
     "cmfa_rule_count": 151
   },
   "rendered": {
-    "profile_sha256": "e07fe53155fc461cef589e176b8f4d43e494a6eb316dc4a8d777c9c55b22ed14",
+    "profile_sha256": "84f19cb20225fa8e2c43102573de00dd7ff117ebd1fbf22b1b5e2b3d37acfe5a",
     "rule_count": 137,
     "rule_set_ref_count": 120,
     "native_rule_set_count": 125,
-    "source_entry_count": 602366,
+    "source_entry_count": 602367,
     "dedup_removed": 123921,
     "global_exact_duplicates_removed": 123371,
     "empty_asset_count": 12
@@ -47,8 +47,8 @@
       },
       {
         "file": "provider-scki-fused-001-direct-domain.yaml",
-        "bytes": 746,
-        "sha256": "28119475852be63cf08fc5eac9fa092994168a734850cb5e465b7a4010d48fa6"
+        "bytes": 768,
+        "sha256": "c9620ea1ef58c8897a437b13560df9cdd17693b5d06584abf14382b3c87f8bce"
       },
       {
         "file": "provider-scki-fused-002-intl-site-domain.yaml",

@@ -5,6 +5,10 @@
 
 ---
 
+## v6.0.12-SR.4 (2026-09-01)
+
+- FIX#181-PC：第一个融合 `DIRECT` RULE-SET 增加 `login.nvidia.cn` 精确主机，先于 NVIDIA 下载规则生效；其余 NVIDIA 域名保持原策略。
+
 ## v6.0.11-SR.3 (2026-08-22)
 
 - ROUTING：69 个远程融合 RULE-SET 重放后，Gemini 与 Accademia Gemini 进入 `🔍 Google 服务`；其余 AI 段及 szkane 顺序不变。

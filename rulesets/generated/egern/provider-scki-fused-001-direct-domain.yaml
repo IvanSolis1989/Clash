@@ -9,6 +9,7 @@ domain_set:
   - "flash.sec.miui.com"
   - "i.mi.com"
   - "idm.api.io.mi.com"
+  - "login.nvidia.cn"
   - "mazu.sec.miui.com"
   - "msg.umeng.com"
   - "register.xmpush.xiaomi.com"

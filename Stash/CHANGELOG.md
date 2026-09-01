@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.12-stash.4 (2026-09-01)
+
+- 由 CMFA v6.0.12-cmfa.4 受控重建；`login.nvidia.cn` 通过首段融合资产精确直连，其余 NVIDIA 域名继续走下载组。
+
 ## v6.0.11-stash.3 (2026-08-22)
 
 - 由 CMFA v6.0.11-cmfa.3 重新生成；Gemini 与 Accademia Gemini 首命中进入 `🔍 Google 服务`，宽泛 szkane AI 规则不变。

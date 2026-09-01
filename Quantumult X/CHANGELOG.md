@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.12-QX.4 (2026-09-01)
+
+- FIX#181-PC：第一个 remote URL filter 增加 `host, login.nvidia.cn` 并绑定 `direct`，其余 NVIDIA 域名继续使用下载组 filter。
+
 ## v6.0.11-QX.3 (2026-08-22)
 
 - ROUTING：69 个 remote URL filter 按融合顺序更新；Gemini 与 Accademia Gemini 改走 `🔍 Google 服务`，广告规则仍优先。

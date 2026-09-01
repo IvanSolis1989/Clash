@@ -1,3 +1,5 @@
+## NVIDIA China account sign-in: exact DIRECT before generic NVIDIA download routing.
+DOMAIN,login.nvidia.cn
 ## NetEase game-service endpoints: exact DIRECT before generic NetEase game routing.
 DOMAIN,drpf-g10.proxima.nie.netease.com
 DOMAIN,sigma-performance-g10.proxima.nie.netease.com

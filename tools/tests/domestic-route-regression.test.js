@@ -17,6 +17,7 @@ const FUSED_ROOT = path.join(REPO_ROOT, 'rulesets/generated/fused');
 const CN_SITE = '🏠 国内网站';
 const CN_MEDIA = '📺 国内流媒体';
 const DIRECT = 'DIRECT';
+const NVIDIA_CHINA_LOGIN_HOST = 'login.nvidia.cn';
 const NETEASE_GAME_DIRECT_HOSTS = [
   'drpf-g10.proxima.nie.netease.com',
   'sigma-performance-g10.proxima.nie.netease.com',
@@ -134,7 +135,7 @@ test('reported NetEase game endpoints use the early direct guard before generic 
   const directGuard = readText('rulesets/supplemental/clash/adfp-direct.list');
   const shadowrocket = readText('Shadowrocket/Shadowrocket.conf');
   const shadowrocketDirectRule = `scki-fused-001-direct.list?scki=${SOURCE_GRAPH_VERSION},DIRECT`;
-  const shadowrocketGameRule = `scki-fused-057-game-cn.list?scki=${SOURCE_GRAPH_VERSION},🕹️ 国内游戏`;
+  const shadowrocketGameRule = `scki-fused-060-game-cn.list?scki=${SOURCE_GRAPH_VERSION},🕹️ 国内游戏`;
   assert.ok(shadowrocket.indexOf(shadowrocketDirectRule) < shadowrocket.indexOf(shadowrocketGameRule), 'Shadowrocket must reference the direct guard before domestic games');
 
   for (const host of NETEASE_GAME_DIRECT_HOSTS) {
@@ -143,5 +144,26 @@ test('reported NetEase game endpoints use the early direct guard before generic 
       provider: 'scki-fused-001-direct-domain',
       policy: DIRECT,
     });
+  }
+});
+
+test('NVIDIA China login uses the early exact direct guard before generic NVIDIA download routing', () => {
+  const graph = getRawRoutingGraph();
+  const directGuardIndex = graph.rules.indexOf('RULE-SET,scki-adfp-direct,DIRECT');
+  const nvidiaDownloadIndex = graph.rules.indexOf('RULE-SET,nvidia,📥 下载更新');
+
+  assert.ok(directGuardIndex >= 0, 'the early direct guard must exist');
+  assert.ok(nvidiaDownloadIndex >= 0, 'the generic NVIDIA download rule must exist');
+  assert.ok(directGuardIndex < nvidiaDownloadIndex, 'the exact direct guard must precede generic NVIDIA downloads');
+
+  const directGuard = readText('rulesets/supplemental/clash/adfp-direct.list');
+  assert.match(directGuard, new RegExp(`^DOMAIN,${NVIDIA_CHINA_LOGIN_HOST}$`, 'm'));
+  assert.deepEqual(firstDomainRoute(NVIDIA_CHINA_LOGIN_HOST), {
+    provider: 'scki-fused-001-direct-domain',
+    policy: DIRECT,
+  });
+
+  for (const host of ['download.nvidia.com', 'developer.nvidia.com']) {
+    assert.equal(firstDomainRoute(host)?.policy, '📥 下载更新', `${host} must keep the generic NVIDIA download policy`);
   }
 });

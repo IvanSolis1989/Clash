@@ -3,6 +3,7 @@
   "rules": [
     {
       "domain": [
+        "login.nvidia.cn",
         "drpf-g10.proxima.nie.netease.com",
         "sigma-performance-g10.proxima.nie.netease.com",
         "i.mi.com",

@@ -1,5 +1,9 @@
 # Egern — 变更日志
 
+## v6.0.12-egern.3 (2026-09-01)
+
+- FIX#181-PC：以 `HEAD` 固定载荷重放原生 rule_set，仅在首段 DIRECT provider 增加 `login.nvidia.cn`；保持 125 个原生资产、137 条规则与 120 个 rule_set 引用。
+
 ## v6.0.11-egern.2 (2026-08-22)
 
 - Profile 与原生 rule_set 由 CMFA v6.0.11-cmfa.3 重生成；Gemini 与 Accademia Gemini 首命中为 `🔍 Google 服务`，不改 szkane AI 规则。

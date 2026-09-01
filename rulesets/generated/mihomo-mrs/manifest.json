@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-16T20:42:33.968Z",
+  "generated_at": "2026-09-01T07:06:50.971Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
   "mihomo_bin": "mihomo-v1.19.30",
   "output_dir": "rulesets/generated/mihomo-mrs",
@@ -2794,13 +2794,13 @@
       "source_format": "text",
       "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/adfp-direct.list",
       "type_counts": {
-        "domain": 19
+        "domain": 20
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "scki-adfp-direct.mrs",
-          "entries": 19
+          "entries": 20
         }
       ]
     },

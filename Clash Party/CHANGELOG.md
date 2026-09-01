@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.12-dns.5 / v6.0.12-normal.6 (2026-09-01)
+
+- FIX#181-PC：`login.nvidia.cn` 进入首段 `scki-adfp-direct`，在 NVIDIA 下载宽规则之前精确命中 `DIRECT`。
+- SCOPE：不把海外代理整体判为故障；仅绕开 Smart 对目标站点 TLS 兼容性不可见的择路盲点，其余 NVIDIA 域名仍走 `📥 下载更新`。
+
 ## 2026-08-31 FlClash 平台说明联动
 
 - FIX#181：FlClash 子版本 `v6.0.11-flclash.7` 修正其应用层 DNS 覆盖与 Android VPN HTTP 代理说明。Clash Party 没有 FlClash 的后置 `overrideDns` 开关；本次不改 Clash Party 产物、规则源或 DNS 算法。详见 [FlClash 变更日志](../FlClash/CHANGELOG.md)。

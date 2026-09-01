@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.12 NVIDIA 中国账号登录精确直连 (2026-09-01)
+
+- FIX#181-PC：`login.nvidia.cn` 加入最前置的精确 `DIRECT` 融合资产，避开 Smart 通用健康检查无法识别的目标站点 TLS 失败。
+- SCOPE：仅处理 NVIDIA 中国账号登录主机；`download.nvidia.com`、`developer.nvidia.com` 与其余 NVIDIA 域名继续由下载组接管。
+- SYNC：以 `HEAD` 固定载荷受控重放 132 个融合 provider / 151 条主规则并同步全部客户端；未发布缓存中的无关上游规则漂移。
+
 ## v6.0.11-flclash.7 应用层配置修正 (2026-08-31)
 
 - FIX#181：纠正 FlClash DNS 二次覆盖、Android VPN HTTP 代理与应用排除的使用说明；保留规则与 DNS 运行时基线。详见 [FlClash 变更日志](./FlClash/CHANGELOG.md)。

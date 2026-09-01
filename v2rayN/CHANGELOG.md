@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.12-v2n.3 (2026-09-01)
+
+- FIX#181-PC：Xray fallback 从首段 fused JSON 重建，`login.nvidia.cn` 在 NVIDIA 下载段之前命中 `direct`。
+- SYNC：当前产物为 69 个非空融合段 + 19 条可表达内联规则 + 1 条元数据，共 89 条 RuleObject。
+
 ## v6.0.11-v2n.2 (2026-08-22)
 
 - Xray fallback 从最终 69 个 fused sing-box 段展平为 89 条 RuleObject；Gemini 与 Accademia Gemini 段改为 proxy Google 语义，未移动 szkane AI 段。

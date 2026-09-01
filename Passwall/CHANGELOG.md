@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.12-pw.3 (2026-09-01)
+
+- FIX#181-PC：重建首段 fused SRS shunt rule，`login.nvidia.cn` 由 `direct` 优先处理；其余 NVIDIA 域名保持下载组语义。
+- SYNC：继续发布 69 条非空 shunt rule，发布缓存键升级为 `v6.0.12`。
+
 ## v6.0.11-pw.2 (2026-08-22)
 
 - 69 条 fused SRS shunt rule 从最终 manifest 重建；Gemini 与 Accademia Gemini 段改走 Google 语义，szkane AI 段及顺序保持不变。

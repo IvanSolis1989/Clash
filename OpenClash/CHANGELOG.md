@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.12-oc-normal.6 / v6.0.12-oc-smart.6 (2026-09-01)
+
+- FIX#181-PC：Normal 与 Smart 同步 `login.nvidia.cn` 的首段精确直连资产，优先于 NVIDIA 下载宽规则。
+- SCOPE：只处理中国账号登录主机，不改变其他 NVIDIA 域名的下载组策略。
+
 ## v6.0.11-oc-normal.5 / v6.0.11-oc-smart.5 (2026-08-22)
 
 - ROUTING：Normal 与 Smart 同步 Gemini / Accademia Gemini 的 Google 融合段；`szkane-ai` 仍按原顺序走 AI。

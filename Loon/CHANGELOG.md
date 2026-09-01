@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.12-Loon.3 (2026-09-01)
+
+- FIX#181-PC：首个融合 Remote Rule 增加 `login.nvidia.cn` 精确直连，优先于 NVIDIA 下载宽规则；其他 NVIDIA 域名不变。
+
 ## v6.0.11-Loon.2 (2026-08-22)
 
 - ROUTING：同步 69 个融合 Remote Rule；Gemini 与 Accademia Gemini 改走 `🔍 Google 服务`，szkane AI 段保持原位。

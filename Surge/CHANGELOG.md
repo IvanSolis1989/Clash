@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.12-Surge.4 (2026-09-01)
+
+- FIX#181-PC：首个融合远程 RULE-SET 增加 `login.nvidia.cn` 精确直连，优先于 NVIDIA 下载宽规则；其他 NVIDIA 域名不变。
+
 ## v6.0.11-Surge.3 (2026-08-22)
 
 - ROUTING：同步 69 个融合远程 RULE-SET；Gemini 与 Accademia Gemini 首命中改走 `🔍 Google 服务`，其余 AI 策略不变。

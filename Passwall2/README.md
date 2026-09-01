@@ -1,8 +1,8 @@
-# Passwall2 使用教程（对齐 Clash Party v6.0.10）
+# Passwall2 使用教程（对齐 Clash Party v6.0.12）
 
 > 目录简介：这里提供 Passwall2 精简分流版的 fused shunt rule fallback、UCI 批量脚本和 OpenWrt 导入说明。
 >
-> 版本：**v6.0.10-pw2.2**（Build 2026-08-08；基线：Clash Party v6.0.10；生成 `.srs` 资产使用发布版本缓存键；变更历史见 `Passwall2/CHANGELOG.md`）。
+> 版本：**v6.0.12-pw2.3**（Build 2026-09-01；基线：Clash Party v6.0.12；生成 `.srs` 资产使用发布版本缓存键；变更历史见 `Passwall2/CHANGELOG.md`）。
 
 ---
 
@@ -10,7 +10,7 @@
 
 Passwall2 是 OpenWrt 上的精简分流插件。它和 Passwall 由同一组织并行维护，规则语法同源，但 Passwall2 去掉了四列表和 ACL，主要保留 shunt rules。
 
-本目录只提供 fallback：从最终 fused 规则集生成 66 条非空 Passwall2 原生 shunt rule。每条 rule 只引用一个远程 `.srs`：
+本目录只提供 fallback：从最终 fused 规则集生成 69 条非空 Passwall2 原生 shunt rule。每条 rule 只引用一个远程 `.srs`：
 
 ```text
 rule-set:remote:https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/sing-box/<segment>.srs
@@ -72,7 +72,7 @@ Passwall / Passwall2 的 `shunt_rules.lua` 支持 `rule-set:remote:` / `rule-set
 
 | 能力 | Passwall2 fallback | OpenClash / Clash Party |
 | --- | --- | --- |
-| fused 规则顺序 | 66 条非空 shunt rule | 146 条 Mihomo 主规则 |
+| fused 规则顺序 | 69 条非空 shunt rule | 151 条 Mihomo 主规则 |
 | 远程规则集 | sing-box `.srs` | Mihomo `.mrs` / residual YAML |
 | 策略组嵌套 | 不支持 | 支持 |
 | 自动测速 | 由你配置节点或负载均衡 | 支持区域组 url-test / Smart |

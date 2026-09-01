@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.12-flclash.8 (2026-09-01)
+
+- FIX#181-PC：与 Clash Party Normal 同步首段精确直连资产；`login.nvidia.cn` 优先于 NVIDIA 下载宽规则，其余 NVIDIA 域名不变。
+- SCOPE：保留 v6.0.11-flclash.7 的应用层 DNS / Android VPN 修正，不重新引入 UI DNS 覆盖或系统代理要求。
+
 ## v6.0.11-flclash.7 (2026-08-31)
 
 - FIX#181-DOC：关联脚本后关闭应用层「DNS 覆写」及独立的「追加系统 DNS」，移除要求重复粘贴 UI DNS YAML 的教程与脚本头部错误提示；说明 UI 整体替换 DNS、丢失未知字段、最终配置验证和 IPv6 的应用层边界。

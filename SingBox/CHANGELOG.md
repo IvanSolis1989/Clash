@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.12-sing.3 (2026-09-01)
+
+- FIX#181-PC：首段 fused SRS 增加 `login.nvidia.cn` 精确域名并绑定 `DIRECT`；其余 NVIDIA 域名仍由下载出站处理。
+- SYNC：Full JSON 保持 69 个 fused SRS、76 个 remote rule_set 与 88 条路由规则。
+
 ## v6.0.11-sing.2 (2026-08-22)
 
 - Full JSON 由最终 fused SRS 重生成：Gemini 与 Accademia Gemini 的首命中由 AI 改为 Google，其他 AI 规则保持原有策略和顺序。

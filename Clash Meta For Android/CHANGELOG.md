@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.12-cmfa.4 (2026-09-01)
+
+- FIX#181-PC：同步首段精确直连资产，`login.nvidia.cn` 优先于 NVIDIA 下载规则；其余 NVIDIA 下载/开发域名不变。
+- SYNC：保持 132 个融合 provider / 151 条主规则，仅升级发布缓存键并重放授权差异。
+
 ## v6.0.11-cmfa.3 (2026-08-22)
 
 - ROUTING：同步 Gemini 与 Accademia Gemini 的融合引用至 `🔍 Google 服务`；不移动或改写 `szkane-ai`。
