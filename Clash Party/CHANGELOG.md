@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.13-dns.6 / v6.0.13-normal.7 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：`linuxdo.org`、`connect.linuxdo.org` 与 `invite.linuxdo.org` 首命中固定为 `scki-fused-013-cn-site-domain → 🏠 国内网站`。
+- GUARD：`linux.do` 继续命中 `scki-fused-059-gfw-domain → 🚫 受限网站`；第 013 域名段保持在通用国际 IP 兜底之前。
+
 ## v6.0.12-dns.5 / v6.0.12-normal.6 (2026-09-01)
 
 - FIX#181-PC：`login.nvidia.cn` 进入首段 `scki-adfp-direct`，在 NVIDIA 下载宽规则之前精确命中 `DIRECT`。

@@ -1,5 +1,10 @@
 # Egern — 变更日志
 
+## v6.0.13-egern.4 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：以 `39b9a1e` 固定载荷重放原生 rule_set，仅在第 013 国内网站 provider 增加 `linuxdo.org`。
+- SYNC：保持 125 个原生资产、137 条规则与 120 个 rule_set 引用；`linux.do` 的第 059 受限网站语义不变。
+
 ## v6.0.12-egern.3 (2026-09-01)
 
 - FIX#181-PC：以 `HEAD` 固定载荷重放原生 rule_set，仅在首段 DIRECT provider 增加 `login.nvidia.cn`；保持 125 个原生资产、137 条规则与 120 个 rule_set 引用。

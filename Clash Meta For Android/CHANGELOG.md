@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.13-cmfa.5 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：同步第 013 融合域名资产，`linuxdo.org` 及子域进入 `🏠 国内网站`；`linux.do` 保持受限网站。
+- SYNC：保持 132 个融合 provider / 151 条主规则，仅升级发布缓存键并接受目标资产的单域名增量。
+
 ## v6.0.12-cmfa.4 (2026-09-01)
 
 - FIX#181-PC：同步首段精确直连资产，`login.nvidia.cn` 优先于 NVIDIA 下载规则；其余 NVIDIA 下载/开发域名不变。

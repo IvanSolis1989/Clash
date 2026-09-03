@@ -6,6 +6,12 @@
 
 ---
 
+## v6.0.13 LINUX DO 大陆备用域名国内路由 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：将 `linuxdo.org` 及全部子域加入前置的 `🏠 国内网站` 融合段，避免落入通用国际站点/IP 兜底。
+- GUARD：主站 `linux.do` 保持 `🚫 受限网站`；新增回归固定 apex、`connect`、`invite` 子域的首命中和两类域名的分离语义。
+- SYNC：以 `39b9a1e` 固定载荷定向重放全部客户端，仅第 013 段新增一个域名，不发布 fresh-cache 的无关上游漂移。
+
 ## v6.0.12 NVIDIA 中国账号登录精确直连 (2026-09-01)
 
 - FIX#181-PC：`login.nvidia.cn` 加入最前置的精确 `DIRECT` 融合资产，避开 Smart 通用健康检查无法识别的目标站点 TLS 失败。

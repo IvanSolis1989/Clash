@@ -4,6 +4,10 @@
 
 ---
 
+## v6.0.13-Loon.4 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：第 013 Remote Rule 增加 `linuxdo.org` 后缀并绑定 `🏠 国内网站`；`linux.do` 保持受限网站。
+
 ## v6.0.12-Loon.3 (2026-09-01)
 
 - FIX#181-PC：首个融合 Remote Rule 增加 `login.nvidia.cn` 精确直连，优先于 NVIDIA 下载宽规则；其他 NVIDIA 域名不变。

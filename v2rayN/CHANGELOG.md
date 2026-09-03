@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.13-v2n.4 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：Xray fallback 的第 013 RuleObject 增加 `domain:linuxdo.org` 并保持 direct 国内语义；`linux.do` 仍在第 059 proxy 规则。
+- SYNC：产物保持 69 个非空融合段 + 19 条可表达内联规则 + 1 条元数据，共 89 条 RuleObject。
+
 ## v6.0.12-v2n.3 (2026-09-01)
 
 - FIX#181-PC：Xray fallback 从首段 fused JSON 重建，`login.nvidia.cn` 在 NVIDIA 下载段之前命中 `direct`。

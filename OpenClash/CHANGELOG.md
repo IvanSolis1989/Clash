@@ -7,6 +7,11 @@
 
 ---
 
+## v6.0.13-oc-normal.7 / v6.0.13-oc-smart.7 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：Normal 与 Smart 同步第 013 融合域名资产，`linuxdo.org` 及子域进入 `🏠 国内网站`。
+- GUARD：主站 `linux.do` 继续由第 059 GFW 段接管；其余融合段沿用 v6.0.12 固定载荷。
+
 ## v6.0.12-oc-normal.6 / v6.0.12-oc-smart.6 (2026-09-01)
 
 - FIX#181-PC：Normal 与 Smart 同步 `login.nvidia.cn` 的首段精确直连资产，优先于 NVIDIA 下载宽规则。

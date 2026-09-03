@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-01T07:06:50.971Z",
+  "generated_at": "2026-09-03T05:02:01.133Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
   "mihomo_bin": "mihomo-v1.19.30",
   "output_dir": "rulesets/generated/mihomo-mrs",
@@ -2874,13 +2874,13 @@
       "source_format": "text",
       "source_url": "https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/supplemental/clash/cnsite-guard.list",
       "type_counts": {
-        "domain": 2
+        "domain": 3
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "scki-cnsite-guard.mrs",
-          "entries": 2
+          "entries": 3
         }
       ]
     },

@@ -6,6 +6,11 @@
 
 ---
 
+## v6.0.13-pw2.4 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：第 013 fused SRS shunt rule 增加 `linuxdo.org` 后缀并保持 direct 国内语义；`linux.do` 保持第 059 proxy 语义。
+- SYNC：继续发布 69 条非空 shunt rule，发布缓存键升级为 `v6.0.13`。
+
 ## v6.0.12-pw2.3 (2026-09-01)
 
 - FIX#181-PC：重建首段 fused SRS shunt rule，`login.nvidia.cn` 由 `direct` 优先处理；其余 NVIDIA 域名保持下载组语义。

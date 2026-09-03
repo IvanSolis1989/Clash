@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.13-sing.4 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：第 013 fused SRS 增加 `linuxdo.org` domain_suffix 并绑定国内网站出站；`linux.do` 保持 GFW 出站。
+- SYNC：Full JSON 继续使用 69 个 fused SRS、76 个 remote rule_set 与 88 条路由规则。
+
 ## v6.0.12-sing.3 (2026-09-01)
 
 - FIX#181-PC：首段 fused SRS 增加 `login.nvidia.cn` 精确域名并绑定 `DIRECT`；其余 NVIDIA 域名仍由下载出站处理。

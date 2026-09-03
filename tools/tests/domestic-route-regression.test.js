@@ -18,6 +18,11 @@ const CN_SITE = '🏠 国内网站';
 const CN_MEDIA = '📺 国内流媒体';
 const DIRECT = 'DIRECT';
 const NVIDIA_CHINA_LOGIN_HOST = 'login.nvidia.cn';
+const LINUX_DO_MAINLAND_HOSTS = [
+  'linuxdo.org',
+  'connect.linuxdo.org',
+  'invite.linuxdo.org',
+];
 const NETEASE_GAME_DIRECT_HOSTS = [
   'drpf-g10.proxima.nie.netease.com',
   'sigma-performance-g10.proxima.nie.netease.com',
@@ -118,6 +123,41 @@ test('reported domestic services and representative shared-CDN hosts keep their 
     assert.ok(route, `${host} must match a fused domain rule set`);
     assert.equal(route.policy, policy, `${host} first matched ${route.provider}`);
   }
+});
+
+test('LINUX DO mainland backup domain stays domestic without broadening the main site', () => {
+  const domesticGuard = readText('rulesets/supplemental/clash/cnsite-guard.list');
+  const qxGuard = readText('rulesets/supplemental/quantumultx/cnsite-guard.list');
+  const egernProvider = readText('rulesets/generated/egern/provider-scki-fused-013-cn-site-domain.yaml');
+  const qxFused = readText('rulesets/generated/fused/quantumultx/scki-fused-013-cn-site.list');
+  const surgeFused = readText('rulesets/generated/fused/surge/scki-fused-013-cn-site.list');
+  const singBoxFused = JSON.parse(readText('rulesets/generated/fused/sing-box/scki-fused-013-cn-site.json'));
+  const xrayRules = JSON.parse(readText('v2rayN/v2rayN(xray).json'));
+  const xrayDomesticRule = xrayRules.find((rule) => rule.id === 'scki-fused-013-cn-site');
+  const fusedRules = parseFusedRules();
+  const domesticIndex = fusedRules.indexOf('RULE-SET,scki-fused-013-cn-site-domain,🏠 国内网站');
+  const genericIntlIpIndex = fusedRules.findIndex((rule) => rule.startsWith('RULE-SET,scki-fused-068-intl-site-ipcidr,'));
+  assert.match(domesticGuard, /^DOMAIN-SUFFIX,linuxdo\.org$/m);
+  assert.match(qxGuard, /^host-suffix, linuxdo\.org$/m);
+  assert.match(egernProvider, /^  - "linuxdo\.org"$/m);
+  assert.match(qxFused, /^host-suffix, linuxdo\.org$/m);
+  assert.match(surgeFused, /^DOMAIN-SUFFIX,linuxdo\.org$/m);
+  assert.ok(singBoxFused.rules[0].domain_suffix.includes('linuxdo.org'));
+  assert.ok(xrayDomesticRule.domain.includes('domain:linuxdo.org'));
+  assert.ok(domesticIndex >= 0, 'the LINUX DO domestic domain segment must exist');
+  assert.ok(genericIntlIpIndex > domesticIndex, 'the LINUX DO domestic segment must precede the generic international IP fallback');
+
+  for (const host of LINUX_DO_MAINLAND_HOSTS) {
+    assert.deepEqual(firstDomainRoute(host), {
+      provider: 'scki-fused-013-cn-site-domain',
+      policy: CN_SITE,
+    });
+  }
+
+  assert.deepEqual(firstDomainRoute('linux.do'), {
+    provider: 'scki-fused-059-gfw-domain',
+    policy: '🚫 受限网站',
+  }, 'linux.do must retain its existing GFW route');
 });
 
 test('reported NetEase game endpoints use the early direct guard before generic game routing', () => {

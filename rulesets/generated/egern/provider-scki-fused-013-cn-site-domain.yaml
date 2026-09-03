@@ -3,3 +3,4 @@
 # Source URL: https://fastly.jsdelivr.net/gh/IvanSolis1989/Smart-Config-Kit@main/rulesets/generated/fused/mihomo/scki-fused-013-cn-site-domain.yaml
 domain_suffix_set:
   - "copilot.tencent.com"
+  - "linuxdo.org"

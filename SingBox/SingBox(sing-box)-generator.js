@@ -3,9 +3,9 @@ const path = require('path');
 const vm = require('vm');
 const { repositoryAssetUrl } = require('../tools/lib/generated-asset-url');
 
-const VERSION = 'v6.0.12-sing.3';
-const BUILD = '2026-09-01';
-const BASELINE = 'Clash Party v6.0.12';
+const VERSION = 'v6.0.13-sing.4';
+const BUILD = '2026-09-03';
+const BASELINE = 'Clash Party v6.0.13';
 
 const SMART = {
   GLOBAL: '🌍 全球节点',

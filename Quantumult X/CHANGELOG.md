@@ -6,6 +6,10 @@
 
 ---
 
+## v6.0.13-QX.5 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：第 013 remote filter 增加 `host-suffix, linuxdo.org` 并绑定 `🏠 国内网站`；`linux.do` 保持第 059 受限网站 filter。
+
 ## v6.0.12-QX.4 (2026-09-01)
 
 - FIX#181-PC：第一个 remote URL filter 增加 `host, login.nvidia.cn` 并绑定 `direct`，其余 NVIDIA 域名继续使用下载组 filter。

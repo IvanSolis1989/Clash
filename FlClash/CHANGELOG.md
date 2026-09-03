@@ -5,6 +5,11 @@
 
 ---
 
+## v6.0.13-flclash.9 (2026-09-03)
+
+- FIX-LINUXDO-CN-ROUTE：与 Clash Party Normal 同步第 013 国内网站资产；`linuxdo.org` 及子域不再落入国外网站，`linux.do` 保持受限网站。
+- SCOPE：保留 v6.0.11-flclash.7 的应用层 DNS / Android VPN 修正，不改变 TUN、系统代理或应用排除配置。
+
 ## v6.0.12-flclash.8 (2026-09-01)
 
 - FIX#181-PC：与 Clash Party Normal 同步首段精确直连资产；`login.nvidia.cn` 优先于 NVIDIA 下载宽规则，其余 NVIDIA 域名不变。
