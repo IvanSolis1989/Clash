@@ -11,6 +11,7 @@ DOMAIN-SUFFIX,azurewebsites.net
 DOMAIN-SUFFIX,azureedge.net
 DOMAIN-SUFFIX,edge.microsoft.com
 DOMAIN-SUFFIX,nav-edge.smartscreen.microsoft.com
+DOMAIN-SUFFIX,cdn.designerapp.osi.office.net
 DOMAIN-SUFFIX,live.com
 DOMAIN-SUFFIX,virtualearth.net
 DOMAIN-SUFFIX,windows.net

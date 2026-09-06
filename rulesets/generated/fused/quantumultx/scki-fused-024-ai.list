@@ -11,6 +11,7 @@ host-suffix, azurewebsites.net
 host-suffix, azureedge.net
 host-suffix, edge.microsoft.com
 host-suffix, nav-edge.smartscreen.microsoft.com
+host-suffix, cdn.designerapp.osi.office.net
 host-suffix, live.com
 host-suffix, virtualearth.net
 host-suffix, windows.net

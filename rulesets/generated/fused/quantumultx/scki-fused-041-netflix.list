@@ -74,8 +74,8 @@ ip6-cidr, 2a03:5640:f060::/43, no-resolve
 ip6-cidr, 2a03:5640:f080::/41, no-resolve
 ip6-cidr, 2a03:5640:f140::/47, no-resolve
 ip6-cidr, 2a03:5640:f142::/48, no-resolve
-ip6-cidr, 2a03:5640:f153::/48, no-resolve
-ip6-cidr, 2a03:5640:f154::/46, no-resolve
+ip6-cidr, 2a03:5640:f155::/48, no-resolve
+ip6-cidr, 2a03:5640:f156::/47, no-resolve
 ip6-cidr, 2a03:5640:f158::/45, no-resolve
 ip6-cidr, 2a03:5640:f160::/43, no-resolve
 ip6-cidr, 2a03:5640:f180::/41, no-resolve
@@ -110,7 +110,13 @@ ip6-cidr, 2a03:5640:f571::/48, no-resolve
 ip6-cidr, 2a03:5640:f572::/47, no-resolve
 ip6-cidr, 2a03:5640:f574::/46, no-resolve
 ip6-cidr, 2a03:5640:f578::/45, no-resolve
-ip6-cidr, 2a03:5640:f580::/41, no-resolve
+ip6-cidr, 2a03:5640:f580::/47, no-resolve
+ip6-cidr, 2a03:5640:f583::/48, no-resolve
+ip6-cidr, 2a03:5640:f584::/46, no-resolve
+ip6-cidr, 2a03:5640:f588::/45, no-resolve
+ip6-cidr, 2a03:5640:f590::/44, no-resolve
+ip6-cidr, 2a03:5640:f5a0::/43, no-resolve
+ip6-cidr, 2a03:5640:f5c0::/42, no-resolve
 ip6-cidr, 2a03:5640:f600::/39, no-resolve
 ip6-cidr, 2a03:5640:f800::/37, no-resolve
 ip-cidr, 3.0.5.32/29, no-resolve

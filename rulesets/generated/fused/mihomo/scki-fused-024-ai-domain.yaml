@@ -19,6 +19,7 @@ payload:
   - "+.edge.microsoft.com"
   - "+.copilot.microsoft.com"
   - "+.nav-edge.smartscreen.microsoft.com"
+  - "+.cdn.designerapp.osi.office.net"
   - "+.live.com"
   - "+.virtualearth.net"
   - "+.windows.net"

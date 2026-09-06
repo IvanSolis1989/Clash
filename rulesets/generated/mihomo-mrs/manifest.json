@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-03T05:02:01.133Z",
+  "generated_at": "2026-09-06T22:10:04.178Z",
   "source": "rulesets/source/routing-graph.js raw provider graph before Mihomo MRS normalization",
   "mihomo_bin": "mihomo-v1.19.30",
   "output_dir": "rulesets/generated/mihomo-mrs",
@@ -3178,13 +3178,13 @@
       "source_format": "text",
       "source_url": "https://ruleset.skk.moe/Clash/domainset/reject_phishing.txt",
       "type_counts": {
-        "domain": 146444
+        "domain": 148051
       },
       "generated": [
         {
           "behavior": "domain",
           "file": "sukka-phishing.mrs",
-          "entries": 146444
+          "entries": 148051
         }
       ]
     },
@@ -5958,7 +5958,7 @@
       "source_format": "yaml",
       "source_url": "https://fastly.jsdelivr.net/gh/VPSDance/ai-proxy-rules@main/rules/clash/coding.yaml",
       "type_counts": {
-        "domain": 205,
+        "domain": 211,
         "PROCESS-NAME": 23,
         "ipcidr": 6,
         "IP-ASN": 3
@@ -5967,7 +5967,7 @@
         {
           "behavior": "domain",
           "file": "vpsdance-ai-coding-domain.mrs",
-          "entries": 199
+          "entries": 205
         },
         {
           "behavior": "ipcidr",
